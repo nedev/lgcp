@@ -273,12 +273,35 @@ GAupdate.nullAverage <- function(F,...){
 
 GAupdate.MonteCarloAverage <- function(F,...){
     F$iterinc()
-    if (F$returniter()==1){
-        F$initialise(Y=get("ymats",envir=parent.frame()))   
+    if(get("SpatialOnlyMode",envir=parent.frame())|get("ImprovedAlgorithm",envir=parent.frame())){ # then in spatial only mode
+        M <- get("M",envir=parent.frame()) 
+        N <- get("N",envir=parent.frame()) 
+        if(get("SpatialOnlyMode",envir=parent.frame())){
+            if (F$returniter()==1){
+                F$initialise(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) # note Y converted to a list to make the other functions work   
+            }
+            else{
+                F$update(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) 
+            }
+        }
+        else{
+            if (F$returniter()==1){
+                F$initialise(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:(M-1),1:(N-1)]}))   
+            }
+            else{
+                F$update(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:(M-1),1:(N-1)]})) 
+            }
+        }
     }
     else{
-        F$update(Y=get("ymats",envir=parent.frame())) 
+        if (F$returniter()==1){
+            F$initialise(Y=get("ymats",envir=parent.frame()))   
+        }
+        else{
+            F$update(Y=get("ymats",envir=parent.frame())) 
+        }
     }
+    
 }
 
 
@@ -385,6 +408,77 @@ exceedProbs <- function(threshold){
         }
     }
     attr(fun,"threshold") <- threshold
+    return(fun)
+}
+
+##' exceedProbsAggregated function
+##'
+##' NOTE THIS FUNCTION IS IN TESTING AT PRESENT
+##'
+##' This function computes regional exceedance probabilities after MCMC has finished, it requires the information to have been dumped to disk, and
+##' to have been computed using the function lgcpPredictAggregated
+##' \deqn{P[\exp(Y_{t_1:t_2})>k],}{%
+##'       P[\exp(Y_{t_1:t_2})>k],}
+##' that is the probability that the relative risk exceeds threshold \eqn{k}{k}. Note that it is possible
+##' to pass vectors of tresholds to the function, and the exceedance probabilities will be computed for each
+##' of these.
+##'  
+##' @param threshold vector of threshold levels for the indicator function
+##' @param lg an object of class aggregatedPredict
+##' @param lastonly logical, whether to only compute the exceedances for the last time point. default is TRUE  
+##' @return a function of Y that computes the indicator function I(exp(Y)>threshold) evaluated for each cell of a matrix Y, but with values aggregated to regions
+##' If several tresholds are specified an array is returned with the [,,i]th slice equal to I(exp(Y)>threshold[i])
+##' @seealso \link{lgcpPredictAggregated}
+##' @export
+
+exceedProbsAggregated <- function(threshold,lg=NULL,lastonly=TRUE){
+
+    if(!is.null(lg)){
+        M <- lg$M-1
+        N <- lg$N-1
+        verifyclass(lg,"aggregatedPredict")
+        regpop <- lg$app$spdf$population
+        nreg <- length(regpop)
+        if(is.null(regpop)){
+            stop("Reguire regional population denominators to compute excedances. Add data $population to the SpatialPolygonsDataFrame.")
+        }
+        olay <- lg$overlay
+        cellarea <- (lg$mcens[2]-lg$mcens[1])*(lg$ncens[2]-lg$ncens[1])
+        lambda <- lg$grid
+        mu <- lg$temporal
+        nt <- 1
+        if(!lastonly){
+            nt <- length(mu)
+        }        
+        cts <- lg$RegCounts
+    }
+    else{
+        stop("Currently, this is only implemented for post processing.")
+    }
+    len <- length(threshold)
+    tempfunc <- function(i,EY,d,cnt){
+        if(cts[i]==0){
+            return(rep(NA,len))
+        }
+        else{
+            A <- rep(NA,len)            
+            for(j in 1:len){
+                A[j] <- as.numeric((sum((cellarea*mu[cnt]*lambda[[j]][1:M,1:N][olay==i]*EY[olay==i]))/regpop[i])>threshold[j])
+            }
+            return(A)
+        }
+    }
+    fun <- function(Y){
+        EY <- exp(Y)
+        d <- dim(Y)
+        cnt <- 1
+        if(lastonly){
+           cnt <- nt 
+        }
+        return(t(sapply(1:nreg,function(i){ans<-tempfunc(i,EY=EY,d=d,cnt=cnt);cnt<<-cnt+1;if(cnt>nt){cnt<<-1};return(ans)})))
+    }
+    attr(fun,"threshold") <- threshold
+    class(fun) <- "exceedProbs"
     return(fun)
 }
 

@@ -1,0 +1,20 @@
+\name{exceedProbsAggregated}
+\alias{exceedProbsAggregated}
+\title{exceedProbsAggregated function...}
+\usage{exceedProbsAggregated(threshold, lg, lastonly=TRUE)}
+\description{exceedProbsAggregated function}
+\details{NOTE THIS FUNCTION IS IN TESTING AT PRESENT
+
+This function computes regional exceedance probabilities after MCMC has finished, it requires the information to have been dumped to disk, and
+to have been computed using the function lgcpPredictAggregated
+\deqn{P[\exp(Y_{t_1:t_2})>k],}{%
+P[\exp(Y_{t_1:t_2})>k],}
+that is the probability that the relative risk exceeds threshold \eqn{k}{k}. Note that it is possible
+to pass vectors of tresholds to the function, and the exceedance probabilities will be computed for each
+of these.}
+\value{a function of Y that computes the indicator function I(exp(Y)>threshold) evaluated for each cell of a matrix Y, but with values aggregated to regions
+If several tresholds are specified an array is returned with the [,,i]th slice equal to I(exp(Y)>threshold[i])}
+\seealso{\link{lgcpPredictAggregated}}
+\arguments{\item{threshold}{vector of threshold levels for the indicator function}
+\item{lg}{an object of class aggregatedPredict}
+\item{lastonly}{logical, whether to only compute the exceedances for the last time point. default is TRUE}}

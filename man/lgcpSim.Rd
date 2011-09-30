@@ -1,11 +1,12 @@
 \name{lgcpSim}
 \alias{lgcpSim}
-\title{lgcpsim function...}
+\title{lgcpSim function...}
 \usage{lgcpSim(owin, tlim=as.integer(c(0, 10)), spatial.intensity,
     temporal.intensity, cellwidth=0.05, model.parameters=lgcppars(sigma
-    = 2, phi = 0.2, theta = 3), spatial.covmodel="exponential",
-    covpars=c(), progressbar=TRUE, returnintensities=FALSE, plot=FALSE)}
-\description{lgcpsim function}
+    = 2, phi = 0.2, theta = 1), spatial.covmodel="exponential",
+    covpars=c(), returnintensities=FALSE, progressbar=TRUE, ext=2,
+    plot=FALSE, ratepow=0.25, sleeptime=0)}
+\description{lgcpSim function}
 \details{Approximate simulation from a spatiotemoporal log-Gaussian Cox Process. Returns an stppp object.
 
 The following is a mathematical description of a log-Gaussian Cox Process, it is best viewed in the pdf version of the manual.
@@ -32,7 +33,7 @@ whilst the fixed temporal component,
 \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{%
 \mu(t) \delta t = E[X_{W,\delta t}],}
 for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.}
-\value{returns an object of class stppp containing the simulated data}
+\value{an stppp object containing the data}
 \references{\enumerate{
 \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
 \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
@@ -40,15 +41,18 @@ for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which
 \item Moller J, Syversveen AR, Waagepetersen RP (1998). Log Gaussian Cox Processes. Scandinavian Journal of Statistics, 25(3), 451-482.
 }}
 \seealso{\link{lgcpPredict}, \link{showGrid.stppp}, \link{stppp}}
-\arguments{\item{owin}{a spatstat owin object, possibly with polygonal boundary}
+\arguments{\item{owin}{polygonal observation window}
 \item{tlim}{time interval on which to simulate data}
 \item{spatial.intensity}{object that can be coerced into a spatialAtRisk object. if NULL then uniform spatial is chosen}
 \item{temporal.intensity}{the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk}
-\item{cellwidth}{size of gris discretisation as in lgcpPredict}
-\item{model.parameters}{parameters of hte Gaussian process, specify using function lgcppars,}
-\item{spatial.covmodel}{spatial covariance model, default is "exponential"}
-\item{covpars}{additional covariance parameters}
+\item{cellwidth}{width of cells}
+\item{model.parameters}{parameters of model, see ?lgcppars.}
+\item{spatial.covmodel}{spatial covariance function, default is exponential, see ?CovarianceFct}
+\item{covpars}{vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct}
+\item{returnintensities}{logigal, whether to return the spatial intensities and true field Y at each time. Default FALSE.}
 \item{progressbar}{logical, whether to print a progress bar. Default TRUE.}
-\item{returnintensities}{logigal, whether to return the vector of simulation times and corresponding array of spatial intensities at each time. Default FALSE.}
-\item{plot}{plot each time step? Only really useful for debugging purposes.}}
+\item{ext}{how much to extend the parameter space by. Default is 2.}
+\item{plot}{logical, whether to plot intensities.}
+\item{ratepow}{power that intensity is raised to for plotting purposes (makes the plot more pleasign to the eye), defaul 0.25}
+\item{sleeptime}{time in seconds to sleep between plots}}
 \examples{xyt <- lgcpSim()}

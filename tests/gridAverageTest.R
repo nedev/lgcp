@@ -2,6 +2,9 @@ library(lgcp)
 
 n <- 3 # "number of iterations"
 m <- 3 # "number of aggregated time points"
+temporal.fitted <- c(1,2,3) # required to set up MonteCarloAverage
+SpatialOnlyMode <- FALSE
+ImprovedAlgorithm <- FALSE
 
 Y <- list()
 for(i in 1:n){
@@ -47,3 +50,4 @@ for (j in 1:m){
     print(all(ret$return[[1]][[j]]==Ymean[[j]]))
     print(all(ret$return[[2]][[j]]==Ymean2[[j]]))
 }
+

@@ -19,12 +19,13 @@ selectObsWindow <- function(xyt,...){
 ##'
 ##' @method selectObsWindow default
 ##' @param xyt an object
+##' @param gridsize size of the grid spacing in chosen units (equivalent to the cell width argument in \link{lgcpPredict})
 ##' @param ... additional arguments      
 ##' @return currently no default implementation
 ##' @export
 
-selectObsWindow.default <- function(xyt,...){
-    stop("Method only implemented for objects of class stppp")
+selectObsWindow.default <- function(xyt,gridsize,...){
+    return(selectObsWindow.stppp(xyt,gridsize,...))
 }
 
 
@@ -311,3 +312,5 @@ affine.fromSPDF <- function(X,mat,...){
     class(obj) <- c("fromSPDF","spatialAtRisk","SpatialPolygonsDataFrame")
     return(obj)
 }
+
+

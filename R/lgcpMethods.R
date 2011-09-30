@@ -113,6 +113,24 @@ lgcpgrid.array <- function(grid,...){
     return(obj)
 }
 
+##' lgcpgrid.matrix function
+##'
+##' Creates an lgcp grid object from an 2-dimensional matrix.
+##'
+##' @method lgcpgrid matrix
+##' @param grid a three dimensional array object
+##' @param ... other arguments      
+##' @return an object of class lgcpgrid
+##' @seealso \link{lgcpgrid.list}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+lgcpgrid.matrix <- function(grid,...){
+    arr <- array(dim=c(dim(grid),1))
+    arr[,,1] <- grid
+    return(lgcpgrid.array(arr))
+}
+
 
 
 ##' as.list.lgcpgrid function
@@ -266,12 +284,30 @@ print.lgcpPredict <- function(x,...){
     cat("\n")
     cat("  General Information\n")
     cat("  -------------------\n")
-    cat(paste("      FFT Gridsize: [ ",2*(x$M-1)," , ",2*(x$N-1)," ]\n",sep=""))
-    cat("\n")
-    cat(paste("              Data:\n",sep=""))
-    neattable(matrix(c("Time |",x$aggtimes,"Counts |",sapply(x$nis,sum)),nrow=2,byrow=TRUE),indent=4)
-    cat("\n")
-    cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),", theta=",round(x$theta,3),"\n",sep=""))
+    flag <- TRUE
+
+    if(is.null(x$spatialonly)){
+        flag <- FALSE
+    }
+    else{
+        flag <- x$spatialonly
+    }
+    
+    if(!flag){ # is.null(x$spatialonly) for backwards compatibility
+        cat(paste("      FFT Gridsize: [ ",2*(x$M-1)," , ",2*(x$N-1)," ]\n",sep=""))
+        cat("\n")
+    
+        cat(paste("              Data:\n",sep=""))
+        neattable(matrix(c("Time |",x$aggtimes,"Counts |",sapply(x$nis,sum)),nrow=2,byrow=TRUE),indent=4)
+        cat("\n")
+        cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),", theta=",round(x$theta,3),"\n",sep=""))
+    }
+    else{ # spatial only
+        cat(paste("      FFT Gridsize: [ ",x$ext*x$M," , ",x$ext*x$N," ]\n",sep=""))
+        cat("\n")
+    
+        cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),"\n",sep=""))
+    }
     if (!is.null(x$gridfunction)){
         cat(paste("    Dump Directory: ",x$gridfunction$dirname,"\n",sep=""))
     }
@@ -395,7 +431,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,serr[[i]],sub="S.E. Relative Risk",...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid$gridvals[1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid[[i]][1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'")            
@@ -412,7 +448,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub="S.E. Relative Risk",...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid$gridvals[1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'") 
@@ -588,8 +624,10 @@ intens <- function(obj,...){
 
 intens.lgcpPredict <- function(obj,...){
     intens <- list()
+    MN <- dim(obj$EY.mean$grid[[1]])
+    cellarea <- diff(obj$mcens[1:2])*diff(obj$ncens[1:2]) 
     for(i in 1:obj$EY.mean$len){
-        intens[[i]] <- obj$temporal[i]*obj$grid$gridvals[1:(obj$M-1),1:(obj$N-1)]*obj$EY.mean$grid[[i]]
+        intens[[i]] <- cellarea*obj$temporal[i]*obj$grid[[i]][1:MN[1],1:MN[2]]*obj$EY.mean$grid[[i]]
     }
     return(lgcpgrid(intens))
 }
@@ -1221,27 +1259,41 @@ loc2poly <- function(n=512,type="l",col="black",...){
 ##'
 ##' @method expectation lgcpPredict
 ##' @param obj an object of class lgcpPredict
-##' @param fun a function accepting a single argument that returns a numeric vector, matrix or array object    
+##' @param fun a function accepting a single argument that returns a numeric vector, matrix or array object
+##' @param maxit Not used in ordinary circumstances. Defines subset of samples over which to compute expectation. Expectation is computed using information from iterations 1:maxit, where 1 is the first non-burn in iteration dumped to disk. 
 ##' @param ... additional arguments  
 ##' @return the expectated value of that quantity
 ##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}
 ##' @export
 
-expectation.lgcpPredict <- function(obj,fun,...){
+expectation.lgcpPredict <- function(obj,fun,maxit=NULL,...){
     if (is.null(obj$gridfunction$dirname)){
         stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
     }
     fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
     ncdata <- open.ncdf(fn)
+    if (!is.null(maxit)){
+        if (maxit<2 | maxit>ncdata$dim$iter$len){
+            stop(paste("maxit must be between 2 and",ncdata$dim$iter$len))
+        }
+        endloop <- maxit
+    }
+    else{
+        endloop <- ncdata$dim$iter$len
+    }
     Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
     result <- tryCatch(lapply(Y$grid,fun),finally=close.ncdf(ncdata))
-    for (i in 2:ncdata$dim$iter$len){
+    pb <- txtProgressBar(min=1,max=endloop,style=3)
+    setTxtProgressBar(pb,1)
+    for (i in 2:endloop){
         ncdata <- open.ncdf(fn)
         Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
         result <- tryCatch(add.list(result,lapply(Y$grid,fun)),finally=close.ncdf(ncdata))
+        setTxtProgressBar(pb,i)
     }
+    close(pb)
     for (i in 1:length(result)){
-        result[[i]] <- result[[i]] / ncdata$dim$iter$len
+        result[[i]] <- result[[i]] / endloop
     }
     return(result)
 }
