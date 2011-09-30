@@ -213,7 +213,7 @@ lgcpSim <- function(owin=NULL,
         Sys.sleep(sleeptime)
     }
     for(i in 2:ndivs){
-        Y <- mu*(1-exp(-theta)) + exp(-theta)*Y + sqrt(1-exp(-2*theta))*YfromGamma(matrix(rnorm(Mext*Next),Mext,Next),invrootQeigs=irqe,mu=0)[1:M,1:N] # note delta t is integral here
+        Y <- mu*(1-exp(-theta)) + exp(-theta)*Y + sqrt(1-exp(-2*theta))*YfromGamma(matrix(rnorm(Mext*Next),Mext,Next),invrootQeigs=irqe,mu=0)[1:M,1:N] # note delta t is integral and = 1 here
         rate <- as.vector(mut[i]*spatialvals*cellarea*exp(Y))
         cmat <- matrix(rpois(M*N,rate),M,N)
         ncases <- sum(cmat)
@@ -272,3 +272,4 @@ lgcpSim <- function(owin=NULL,
     attr(xyt,"truefield") <- truefield 
     return(xyt)
 }
+

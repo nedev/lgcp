@@ -105,9 +105,14 @@ spatialAtRisk.fromXYZ <- function(X,Y,Zm,...){
     obj$X <- X
     obj$Y <- Y
     obj$Zm <- Zm
-    obj$Zm <- obj$Zm / (dx[1]*dy[1]*sum(obj$Zm,na.rm=TRUE)) # normalise so lambda(s) integrates to 1
+    NC <- dx[1]*dy[1]*sum(obj$Zm,na.rm=TRUE)
+    obj$Zm <- obj$Zm / NC # normalise so lambda(s) integrates to 1
+    if (any(obj$Zm<0,na.rm=TRUE)){
+        stop("Negative at risk entries in matrix")
+    }
     class(obj) <- c("fromXYZ","spatialAtRisk")
     attr(class(obj),"package") <- "lgcp"
+    attr(obj,"NC") <- NC # normalising constant
     return(obj)
 }
 
@@ -136,9 +141,14 @@ spatialAtRisk.im <- function(X,...){
         stop("Both X and Y must be equi-spaced vectors")
     }
     obj$Zm <- t(X$v)
-    obj$Zm <- obj$Zm / (dx[1]*dy[1]*sum(obj$Zm,na.rm=TRUE)) # normalise so lambda(s) integrates to 1
+    if (any(obj$Zm<0,na.rm=TRUE)){
+        stop("Negative at risk entries in matrix")
+    }
+    NC <- dx[1]*dy[1]*sum(obj$Zm,na.rm=TRUE)
+    obj$Zm <- obj$Zm / NC # normalise so lambda(s) integrates to 1
     class(obj) <- c("fromXYZ","spatialAtRisk")
     attr(class(obj),"package") <- "lgcp"
+    attr(obj,"NC") <- NC # normalising constant
     return(obj)
 }
 
@@ -218,10 +228,12 @@ spatialAtRisk.SpatialPolygonsDataFrame <- function(X,...){
     }
     obj <- list()
     region.areas <- sapply(X@polygons,function(x){x@area})
-    obj$atrisk <- (data.frame(X)$atrisk/sum(data.frame(X)$atrisk)) / region.areas # normalise so lambda(s) integrates to 1
+    NC <- region.areas*sum(data.frame(X)$atrisk)
+    obj$atrisk <- (data.frame(X)$atrisk/NC)  # normalise so lambda(s) integrates to 1
     X$atrisk <- obj$atrisk 
     obj$spdf <- X
     class(obj) <- c("fromSPDF","spatialAtRisk")
+    attr(obj,"NC") <- NC # normalising constant
     return(obj)
 }
 

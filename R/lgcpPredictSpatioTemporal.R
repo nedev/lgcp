@@ -48,7 +48,7 @@
 ##' @param model.parameters values for parameters, see ?lgcppars
 ##' @param spatial.covmodel correlation type see ?CovarianceFct 
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
-##' @param cellwidth width of grid cells on which to do MALA (grid cells are square). Note EITHER gridsize OR cellwidthe must be specified.
+##' @param cellwidth width of grid cells on which to do MALA (grid cells are square). Note EITHER gridsize OR cellwidth must be specified.
 ##' @param gridsize size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param spatial.intensity the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk
 ##' @param temporal.intensity the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk
@@ -222,17 +222,24 @@ lgcpPredict <- function(xyt,
         test <- roteffgain(xyt,cellwidth)
         if (!test){
             warning("There is no gain in efficiency by rotating, see ?roteffgain",immediate.=TRUE)
+            cat("Not rotating window.\n")
         }
-        rotmat <- getRotation(xyt)$rotation
-        xyt <- affine(xyt,mat=rotmat)
+        else{
+            rotmat <- getRotation(xyt)$rotation
+            xyt <- affine(xyt,mat=rotmat)
+        }
     }
     ow <- selectObsWindow(xyt,cellwidth)
 	xyt <- ow$xyt
 	M <- ow$M
 	N <- ow$N
 	if(!is.null(missing.data.areas)){
-	    missing.data.areas <- lapply(missing.data.areas,affine,mat=rotmat)
-	    lapply(1:numt,function(i){missing.data.areas[[i]]$xrange<<-xyt$window$xrange;missing.data.areas[[i]]$yrange<<-xyt$window$yrange})
+	    if(autorotate){
+	        if(test){ # only bother if it was worthwhile rotating
+        	    missing.data.areas <- lapply(missing.data.areas,affine,mat=rotmat)
+        	    lapply(1:numt,function(i){missing.data.areas[[i]]$xrange<<-xyt$window$xrange;missing.data.areas[[i]]$yrange<<-xyt$window$yrange})
+    	    }
+	    }
 	}
 	
 	tst <- mget("lgcpPredictstapptriggertestvalue",envir=parent.frame(),ifnotfound=FALSE)$lgcpPredictstapptriggertestvalue
@@ -277,7 +284,9 @@ lgcpPredict <- function(xyt,
     }
     
     if(autorotate){
-        spatial <- affine(spatial,mat=rotmat)
+        if(test){
+            spatial <- affine(spatial,mat=rotmat)
+        }
     }
     
     ################################################################
@@ -311,7 +320,7 @@ lgcpPredict <- function(xyt,
 	    cellInside <- list()
 	    for (i in 1:numt){
 	        cellInside[[i]] <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=missing.data.areas[[i]])
-    	    cellInside[[i]] <- matrix(as.numeric(cellInside),Mext,Next,byrow=TRUE)
+    	    cellInside[[i]] <- matrix(as.numeric(cellInside[[i]]),Mext,Next,byrow=TRUE)
 	    }
 	}
 	
@@ -326,7 +335,7 @@ lgcpPredict <- function(xyt,
 	}
 	else{
 	    cellIns <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region) # for purposes of computing normalising constant of lambda
-    	cellIns <- matrix(as.numeric(cellInside),Mext,Next,byrow=TRUE)
+    	cellIns <- matrix(as.numeric(cellIns),Mext,Next,byrow=TRUE)
 	    spatialinterp <- fftinterpolate(spatial,mcens,ncens)
 	    tempinterp <- spatialinterp*cellIns
 	    NC <- cellarea*sum(tempinterp) # gives normalising constant for lambda over the whole observation window, with no missing areas (compare with the version where missing.data.area is null above)
@@ -569,7 +578,7 @@ MALAlgcp <- function(mcmcloop,
     Gamma <- rep(list(matrix(0,Mext,Next)),n)  # initialise with mean                         
     oldtags <- target.and.grad.spatiotemporal(Gamma=Gamma,nis=nis,cellarea=cellarea,rootQeigs=rootQeigs,invrootQeigs=invrootQeigs,mu=mu,spatial=spatialvals,logspat=logspatial,temporal=temporal.fitted,bt=bt,gt=gt,gradtrunc=gradtrunc)    
     
-    while(nextStep(mcmcloop)){  
+    while(nextStep(mcmcloop)){
     
         propmeans <- lapply(1:n,function(i){Gamma[[i]] + (h/2)*oldtags$grad[[i]]})
         
@@ -677,6 +686,8 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
     gradmult <- list()
     gradcomp <- list()
     grad <- list()
+    ml <- get("mcmcloop",envir=parent.frame())
+    iter <- iteration(ml)
     gradfun <- function(i){
         Y[[i]] <<- YfromGamma(Gamma[[i]],invrootQeigs=invrootQeigs,mu=mu)
         expY[[i]] <<- exp(Y[[i]])
@@ -684,20 +695,22 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
         expYtrunc[expYtrunc>gradtrunc] <- gradtrunc # gradient truncation
         grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]] + (1/ncells)*Re(fft(invrootQeigs*fft(nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea,inverse=TRUE)))
         ###grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]
-        ###gradmult[[i]] <<- as.list(c(rep(0,i-1),c(1,cumprod(bt[-c(1,1:i)])))) # computes the product of beta(delta t) terms in the summation
-        ###gradcomp[[i]] <<- (1/ncells)*Re(fft(invrootQeigs*fft(nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea,inverse=TRUE)))
+        ###gradmult[[i]] <<- as.list(gt[i]*c(rep(0,i-1),c(1,cumprod(bt[-c(1,1:i)])))) # computes the product of g(i) * beta(delta t) terms in the summation
+        ###gradcomp[[i]] <<- nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea
     }
     sapply(1:n,gradfun)
-    
+
     ###for(i in 1:n){
+    ###    gradcum <- 0
     ###    for(j in i:n){
-    ###        grad[[i]] <- grad[[i]] + gradmult[[i]][[j]] * gradcomp[[j]]
+    ###        gradcum <- gradcum + gradmult[[i]][[j]] * gradcomp[[j]]
     ###    }
+    ###    grad[[i]] <- grad[[i]] + (1/ncells)*Re(fft(invrootQeigs*fft(gradcum,inverse=TRUE)))
     ###}
     
     ### Note commented out code is Brix and Diggle MALA (but with 5th line "grad[[i]] <- ...etc" in gradfun set to the commented out 6th line, "grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]") ... ignoring the dependence between time-points appears to give an algorithm that mixes better ...
     
-    logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum((Y[[i]]+logspat[[i]])*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
+    logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum((Y[[i]]+log(temporal[i])+logspat[[i]])*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
     
     return(list(Y=Y,expY=expY,logtarget=logtarget,grad=grad))
 }
@@ -764,6 +777,9 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
 ##' @param output.control output choice, see ?setoutput
 ##' @param autorotate logical: whether or not to automatically do MCMC on optimised, rotated grid.   
 ##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.
+##' @param n parameter for as.stppp. If popden is NULL, then this parameter controls the resolution of the uniform. Otherwise if popden is of class 'fromFunction', it controls the size of the imputation grid used for sampling. Default is 100.
+##' @param dmin parameter for as.stppp. If any reginal counts are missing, then a set of polygonal 'holes' in the observation window will be computed for each. dmin is the parameter used to control the simplification of these holes (see ?simplify.owin). default is zero.
+##' @param check logical parameter for as.stppp. If any reginal counts are missing, then roughly speaking, check specifies whether to check the 'holes'. 
 ##' further notes on autorotate argument: If set to TRUE, and the argument spatial is not NULL, then the argument spatial must be computed in the original frame of reference (ie NOT in the rotated frame). 
 ##' Autorotate performs bilinear interpolation (via interp.im) on an inverse transformed grid; if there is no computational advantage in doing this, a warning message will be issued. Note that best accuracy 
 ##' is achieved by manually rotating xyt and then computing spatial on the transformed xyt and finally feeding these in as arguments to the function lgcpPredict. By default autorotate is set to FALSE.
@@ -798,15 +814,24 @@ lgcpPredictAggregated <- function(  app,
             					    mcmc.control,
             					    output.control=setoutput(),
             					    autorotate=FALSE,
-        					        gradtrunc=NULL){
+        					        gradtrunc=NULL,
+        					        n=100,
+        					        dmin=0,
+        					        check=TRUE){
 
-    xyt <- as.stppp(app,popden=popden) # generate imputed xyt object
+    cat("Imputing data ...\n")
+    xyt <- as.stppp(app,popden=popden,n=n,dmin=dmin,check=check) # generate imputed xyt object
     olay <- attr(xyt,"overlay")
     
     if(mget("lgcpPredictstapptriggertestvalue",envir=parent.frame(),ifnotfound="no-object")$lgcpPredictstapptriggertestvalue!="no-object"){
         stop("Please rename object 'lgcpPredictstapptriggertestvalue' before using lgcpPredict.stapp.")
     }
     lgcpPredictstapptriggertestvalue <- TRUE # used in lgcpPredict.stppp
+    
+    mda <- NULL
+    if(!is.null(attr(xyt,"owinlist"))){
+        mda <- attr(xyt,"owinlist")
+    }
         					    
     lg <- lgcpPredict(  xyt=xyt,
 					    T=T,
@@ -820,6 +845,7 @@ lgcpPredictAggregated <- function(  app,
 					    temporal.intensity=temporal.intensity,					
 					    mcmc.control=mcmc.control,
 					    output.control=output.control,
+					    missing.data.areas=mda[(T-laglength):T],
 					    autorotate=autorotate,
 					    gradtrunc=gradtrunc)
     
@@ -827,6 +853,7 @@ lgcpPredictAggregated <- function(  app,
     nreg <- length(lg$app$spdf) # number of regions
     lg$RegCounts <- sapply(1:nreg,function(x){sum(olay==x)}) # regional counts, some may be zero reflects accuracy of aggregated operations   					    
     attr(lg$xyt,"overlay") <- olay # since this attribute is stripped off inside lgcpPredict.stppp
+    attr(lg$xyt,"owinlist") <- mda
     					           					    
     class(lg) <- c("aggregatedPredict","lgcpPredict","lgcpobject")
     return(lg)	        					    
