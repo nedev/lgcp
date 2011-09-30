@@ -1,0 +1,1472 @@
+###
+# generic methods
+###
+
+##' expectation function
+##'
+##' Generic function used in the computation of Monte Carlo expectations.
+##'
+##' @param obj an object    
+##' @param ... additional arguments  
+##' @return method expectation
+##' @export
+
+expectation <- function(obj,...){
+    UseMethod("expectation")
+}
+
+
+
+##' extract function
+##'
+##' Generic function for extracting information dumped to disk.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method extract
+##' @export
+
+extract <- function(obj,...){
+    UseMethod("extract")
+}
+
+
+
+##' lgcpgrid function
+##'
+##' Generic function for the hadling of list objects where each element of the list is
+##' a matrix. Each matrix is assumed to have the same dimension. Such objects arise from the 
+##' various routines in the package lgcp. 
+##'
+##' @param grid a list object with each member of the list being a numeric matrix, each matrix having the same dimension
+##' @param ... other arguments     
+##' @return method lgcpgrid
+##' @export
+
+lgcpgrid <- function(grid,...){
+    UseMethod("lgcpgrid")
+}
+
+
+
+###
+# Functions associated with output grids
+###
+
+
+
+##' lgcpgrid.list function
+##'
+##' Creates an lgcpgrid object from a list object. Note that each element of the list should be a matrix,
+##' and that each matrix should have the same dimension.
+##'
+##' @method lgcpgrid list
+##' @param grid a list object with each member of the list being a numeric matrix, each matrix having the same dimension
+##' @param ... other arguments      
+##' @return an object of class lgcpgrid
+##' @seealso \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+lgcpgrid.list <- function(grid,...){
+    obj <- list()
+    obj$grid <- grid
+    obj$len <- length(grid)
+    for(i in 1:obj$len){
+        verifyclass(grid[[i]],"matrix")
+    }
+    dims <- sapply(grid,dim)
+    if (!all(dims[1,]==dims[1,1]) | !all(dims[2,]==dims[2,1])){
+        stop("Matrices in list must have the same dimension")
+    }
+    obj$nrow <- nrow(grid[[1]])
+    obj$ncol <- ncol(grid[[1]])
+    class(obj) <- c("lgcpgrid","lgcpobject")
+    return(obj)
+}
+
+
+
+##' lgcpgrid.array function
+##'
+##' Creates an lgcp grid object from an 3-dimensional array.
+##'
+##' @method lgcpgrid array
+##' @param grid a three dimensional array object
+##' @param ... other arguments      
+##' @return an object of class lgcpgrid
+##' @seealso \link{lgcpgrid.list}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+lgcpgrid.array <- function(grid,...){
+    if(length(dim(grid))!=3){
+        stop("Array object must have 3 dimensions.")
+    }
+    obj <- list()
+    d <- dim(grid)
+    obj$len <- d[3]  
+    obj$nrow <- d[1]
+    obj$ncol <- d[2]
+    obj$grid <- unlist(apply(grid,3,function(x){return(list(x))}),recursive=FALSE)
+    class(obj) <- c("lgcpgrid","lgcpobject")
+    return(obj)
+}
+
+
+
+##' as.list.lgcpgrid function
+##'
+##' Method to convert an lgcpgrid object into a list of matrices.
+##'
+##' @method as.list lgcpgrid
+##' @param x an object of class lgcpgrid  
+##' @param ... other arguments   
+##' @return conversion from lgcpgrid to list
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+as.list.lgcpgrid <- function(x,...){
+    return(x$grid)
+}
+
+
+##' print.lgcpgrid function
+##'
+##' Print method for lgcp grid objects.
+##'
+##' @method print lgcpgrid
+##' @param x an object of class lgcpgrid  
+##' @param ... other arguments   
+##' @return just prints out details to the console
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid},
+##' \link{summary.lgcpgrid} \link{quantile.lgcpgrid} \link{image.lgcpgrid} \link{plot.lgcpgrid} 
+##' @export
+
+print.lgcpgrid <- function(x,...){
+    cat("lgcpgrid object.\n")
+    cat(paste("   Length: ",x$len,"\n",sep=""))
+    cat(paste("  Matsize: [ ",x$nrow," , ",x$ncol," ]\n",sep=""))
+}
+
+
+
+##' summary.lgcpgrid function
+##'
+##' Summary method for lgcp objects. This just applies the summary function to each
+##' of the elements of object$grid.
+##'
+##' @method summary lgcpgrid
+##' @param object an object of class lgcpgrid  
+##' @param ... other arguments   
+##' @return Summary per grid, see ?summary for further options
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+summary.lgcpgrid <- function(object,...){
+    for(i in 1:object$len){
+        cat(paste("Summary for grid ",i,":\n",sep=""))
+        print(summary(as.vector(object$grid[[i]],...)))
+        cat("\n")
+    }
+}
+
+
+
+##' quantile.lgcpgrid function
+##'
+##' Quantile method for lgcp objects. This just applies the quantile function to each of
+##' the elements of x$grid
+##'
+##' @method quantile lgcpgrid
+##' @param x an object of class lgcpgrid  
+##' @param ... other arguments   
+##' @return Quantiles per grid, see ?quantile for further options
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+quantile.lgcpgrid <- function(x,...){
+    for(i in 1:x$len){
+        cat(paste("Quantiles for grid ",i,":\n",sep=""))
+        print(quantile(x$grid[[i]],...))
+        cat("\n")
+    }
+}
+
+
+
+##' image.lgcpgrid function
+##'
+##' Produce an image plot of an lgcpgrid object.
+##'
+##' @method image lgcpgrid
+##' @param x an object of class lgcpgrid
+##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
+##' @param ask logical; if TRUE the user is asked before each plot  
+##' @param ... other arguments   
+##' @return grid plotting
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{plot.lgcpgrid} 
+##' @export
+
+image.lgcpgrid <- function(x,sel=1:x$len,ask=TRUE,...){
+    if (ask) {
+        oask <- devAskNewPage(TRUE)
+        on.exit(devAskNewPage(oask))
+    }
+    for(i in sel){
+        image.plot(1:x$nrow,1:x$ncol,x$grid[[i]],...)
+    }    
+} 
+
+
+
+##' plot.lgcpgrid function
+##'
+##' This is a wrapper function for image.lgcpgrid
+##'
+##' @method plot lgcpgrid
+##' @param x an object of class lgcpgrid
+##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
+##' @param ask logical; if TRUE the user is asked before each plot  
+##' @param ... other arguments   
+##' @return an image-type plot
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
+##' \link{summary.lgcpgrid},\link{quantile.lgcpgrid}, \link{image.lgcpgrid}
+##' @export
+
+plot.lgcpgrid <- function(x,sel=1:x$len,ask=TRUE,...){
+    image.lgcpgrid(x,sel=1:x$len,ask=TRUE,...)  
+} 
+
+
+
+###
+# Functions associated with objects of class lgcpPredict
+###
+
+
+
+##' print.lgcpPredict function
+##'
+##' Print method for lgcpPredict objects.
+##'
+##' @method print lgcpPredict
+##' @param x an object of class dump2dir    
+##' @param ... additional arguments 
+##' @return just prints information to the screen
+##' @seealso \link{lgcpPredict}
+##' @export
+
+print.lgcpPredict <- function(x,...){
+    cat("lgcpPredict object.\n")
+    cat("\n")
+    cat("  General Information\n")
+    cat("  -------------------\n")
+    cat(paste("      FFT Gridsize: [ ",2*(x$M-1)," , ",2*(x$N-1)," ]\n",sep=""))
+    cat("\n")
+    cat(paste("              Data:\n",sep=""))
+    neattable(matrix(c("Time |",x$aggtimes,"Counts |",sapply(x$nis,sum)),nrow=2,byrow=TRUE),indent=4)
+    cat("\n")
+    cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),", theta=",round(x$theta,3),"\n",sep=""))
+    if (!is.null(x$gridfunction)){
+        cat(paste("    Dump Directory: ",x$gridfunction$dirname,"\n",sep=""))
+    }
+    if (!is.null(x$gridaverage)){
+        cat("\n")
+        cat(paste("     Grid Averages:\n",sep=""))
+        fname <- unlist(x$gridaverage[[1]])
+        fclass <- sapply(x$gridaverage[[2]],function(xx){class(xx)})
+        neattable(matrix(c("Function",fname,"Output Class",fclass),ncol=2),indent=4)
+        cat("\n")
+    }
+    
+    cat(paste("        Time taken: ",round(x$timetaken,3)," ",units(x$timetaken),"\n",sep=""))
+    cat("\n")
+    
+    cat("  MCMC Information\n")
+    cat("  ----------------\n")
+    cat(paste("    Number Iterations: ",x$mcmcinfo$N,"\n",sep=""))
+    cat(paste("              Burn-in: ",x$mcmcinfo$burnin,"\n",sep=""))
+    cat(paste("             Thinning: ",x$mcmcinfo$thin,"\n",sep=""))
+    cat(paste("      Mean Acceptance: ",round(mean(x$mcmcacc),3),"\n",sep=""))  
+    cat(paste("      Adaptive Scheme: ",class(x$mcmcpars$adaptivescheme)[1],"\n",sep=""))
+    cat(paste("               Last h: ",x$lasth,"\n",sep=""))
+}  
+
+
+
+##' neattable function
+##'
+##' Function to print right-aligned tables to the console.
+##'
+##' @param mat a numeric or character matrix object
+##' @param indent indent
+##' @return prints to screen with specified indent
+##' @examples
+##' mat <- rbind(c("one","two","three"),matrix(round(runif(9),3),3,3))
+##' neattable(mat)
+##' @export
+
+neattable <- function(mat,indent=0){
+    mat <- t(apply(mat,1,as.character))
+    wd <- max(nchar(mat)) + 1
+    sp <- wd - nchar(mat)    
+    for (i in 1:nrow(mat)){
+        cat(rep(" ",indent),sep="")
+        for (j in 1:ncol(mat)){
+            cat(rep(" ",sp[i,j]),sep="")
+            cat(mat[i,j],sep="")
+        }
+        cat("\n")
+    }
+}   
+
+
+###
+# Accessor functions
+### 
+
+##' xvals.lgcpPredict function
+##'
+##' Gets the x-coordinates of the centroids of the prediction grid.
+##'
+##' @method xvals lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return the x coordinates of the centroids of the grid
+##' @seealso \link{lgcpPredict}
+##' @export
+
+xvals.lgcpPredict <- function(obj,...){
+    return(obj$mcens)
+}
+
+
+
+##' yvals.lgcpPredict function
+##'
+##' Gets the y-coordinates of the centroids of the prediction grid.
+##'
+##' @method yvals lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return the y coordinates of the centroids of the grid
+##' @seealso \link{lgcpPredict}
+##' @export
+
+yvals.lgcpPredict <- function(obj,...){
+    return(obj$ncens)
+}
+
+
+
+##' plot.lgcpPredict function
+##'
+##' Simple plotting function for objects of class \code{lgcpPredict}.
+##'
+##' @method plot lgcpPredict
+##' @param x an object of class lgcpPredict
+##' @param type Character string: what type of plot to produce. Choices are "relrisk" (=exp(Y)); "serr" (standard error of relative risk); or "intensity" (=lambda*mu*exp(Y)).
+##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
+##' @param plotdata whether or not to overlay the data
+##' @param ask logical; if TRUE the user is asked before each plot
+##' @param clipWindow whether to plot grid cells outside the observation window  
+##' @param ... additional arguments passed to image.plot
+##' @return plots the Monte Carlo mean of Y obtained via simulation
+##' @seealso \link{lgcpPredict}
+##' @export
+
+plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,ask=TRUE,clipWindow=TRUE,...){#
+    if (ask) {
+        oask <- devAskNewPage(TRUE)
+        on.exit(devAskNewPage(oask))
+    }
+    for(i in sel){
+        if (!clipWindow){
+            if (type=="relrisk"){
+                image.plot(x$mcens,x$ncens,x$EY.mean$grid[[i]],sub="Relative Risk",...)
+            }
+            else if (type=="serr"){
+                serr <- serr(x)$grid
+                image.plot(x$mcens,x$ncens,serr[[i]],sub="S.E. Relative Risk",...)
+            }
+            else if (type=="intensity"){
+                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid$gridvals[1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+            }
+            else{
+                stop("type must be 'relrisk', 'serr' or 'intensity'")            
+            }
+        }
+        else{
+            grinw <- gridInWindow(x$mcens,x$ncens,x$xyt$window)
+            grinw[grinw==0] <- NA
+            if (type=="relrisk"){
+                image.plot(x$mcens,x$ncens,grinw*x$EY.mean$grid[[i]],sub="Relative Risk",...)
+            }
+            else if (type=="serr"){
+                serr <- serr(x)$grid
+                image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub="S.E. Relative Risk",...)
+            }
+            else if (type=="intensity"){
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid$gridvals[1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+            }
+            else{
+                stop("type must be 'relrisk', 'serr' or 'intensity'") 
+            }
+        }        
+        
+        if(plotdata){
+            plot(x$xyt[as.integer(x$xyt$t)==x$aggtimes[[i]]],add=TRUE)
+        }
+        plot(x$xyt$window,lwd=2,add=TRUE)
+    }    
+}
+
+
+
+##' meanfield function
+##'
+##' Generic function to extract the mean of the latent field Y.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method meanfield
+##' @export
+
+meanfield <- function(obj,...){
+    UseMethod("meanfield")
+}
+
+
+
+##' meanfield.lgcpPredict function
+##'
+##' This is an accessor function for objects of class \code{lgcpPredict} and returns the mean of the 
+##' field Y as an lgcpgrid object.
+##'
+##' @method meanfield lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the cell-wise mean of Y computed via Monte Carlo.
+##' @seealso \link{lgcpPredict}, \link{lgcpgrid}
+##' @export
+
+meanfield.lgcpPredict <- function(obj,...){
+    return(obj$y.mean)
+}  
+
+
+
+##' varfield function
+##'
+##' Generic function to extract the variance of the latent field Y.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method meanfield
+##' @seealso \link{lgcpPredict}
+##' @export
+
+varfield <- function(obj,...){
+    UseMethod("varfield")
+}
+
+
+
+##' varfield.lgcpPredict function
+##'
+##' This is an accessor function for objects of class \code{lgcpPredict} and returns the variance of the 
+##' field Y as an lgcpgrid object.
+##'
+##' @method varfield lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the cell-wise variance of Y computed via Monte Carlo.
+##' @seealso \link{lgcpPredict}
+##' @export
+
+varfield.lgcpPredict <- function(obj,...){
+    return(obj$y.var)
+}
+
+
+
+##' rr function
+##'
+##' Generic function to return relative risk.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method rr
+##' @seealso \link{lgcpPredict}
+##' @export
+
+rr <- function(obj,...){
+    UseMethod("rr")
+}
+
+
+
+##' rr.lgcpPredict function
+##'
+##' Accessor function returning the relative risk = exp(Y) as an lgcpgrid object. 
+##'
+##' @method rr lgcpPredict
+##' @param obj an lgcpPredict object
+##' @param ... additional arguments
+##' @return the relative risk as computed my MCMC
+##' @seealso \link{lgcpPredict}
+##' @export
+
+rr.lgcpPredict <- function(obj,...){
+    return(obj$EY.mean)
+}
+
+##' serr function
+##'
+##' Generic function to return standard error of relative risk.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method serr
+##' @seealso \link{lgcpPredict}
+##' @export
+
+serr <- function(obj,...){
+    UseMethod("serr")
+}
+
+
+
+##' serr.lgcpPredict function
+##'
+##' Accessor function returning the standard error of relative risk as an lgcpgrid object. 
+##'
+##' @method serr lgcpPredict
+##' @param obj an lgcpPredict object
+##' @param ... additional arguments
+##' @return Standard error of the relative risk as computed by MCMC.
+##' @seealso \link{lgcpPredict}
+##' @export
+
+serr.lgcpPredict <- function(obj,...){
+    se <- lapply(obj$EY.var$grid,sqrt)
+    return(lgcpgrid(se))
+}
+
+
+##' intens function
+##'
+##' Generic function to return the Poisson Intensity.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method intens
+##' @seealso \link{lgcpPredict}
+##' @export
+
+intens <- function(obj,...){
+    UseMethod("intens")
+}
+
+
+
+##' intens.lgcpPredict function
+##'
+##' Accessor function returning the Poisson intensity as an lgcpgrid object.
+##'
+##' @method intens lgcpPredict
+##' @param obj an lgcpPredict object
+##' @param ... additional arguments
+##' @return the cell-wise Poisson intensity, as computed by MCMC.
+##' @seealso \link{lgcpPredict}
+##' @export
+
+intens.lgcpPredict <- function(obj,...){
+    intens <- list()
+    for(i in 1:obj$EY.mean$len){
+        intens[[i]] <- obj$temporal[i]*obj$grid$gridvals[1:(obj$M-1),1:(obj$N-1)]*obj$EY.mean$grid[[i]]
+    }
+    return(lgcpgrid(intens))
+}
+
+
+
+
+
+
+##' gridfun function
+##'
+##' A generic function for returning \code{gridfunction} objects. 
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method gridfun
+##' @seealso \link{setoutput}, \link{lgcpgrid}
+##' @export
+
+gridfun <- function(obj,...){
+    UseMethod("gridfun")
+}
+
+
+
+##' gridfun.lgcpPredict function
+##' 
+##' Accessor function for \code{lgcpPredict objects}: returns the \code{gridfunction} argument
+##' set in the \code{output.control} argument of the function \code{lgcpPredict}.
+##'
+##' @method gridfun lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the output from the gridfunction option of the setoutput argument of lgcpPredict
+##' @seealso \link{setoutput}, \link{lgcpgrid}
+##' @export
+
+gridfun.lgcpPredict <- function(obj,...){
+    if (is.null(obj$gridfunction)){
+        stop("No gridfunction was specified")
+    }
+    return(obj$gridfunction)
+}
+
+
+
+##' gridav function
+##'
+##' A generic function for returning \code{gridmeans} objects.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method gridav
+##' @seealso \link{setoutput}, \link{lgcpgrid}
+##' @export
+
+gridav <- function(obj,...){
+    UseMethod("gridav")
+}
+
+
+
+##' gridav.lgcpPredict function
+##'
+##' Accessor function for \code{lgcpPredict objects}: returns the \code{gridmeans} argument
+##' set in the \code{output.control} argument of the function \code{lgcpPredict}.
+##'
+##' @method gridav lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param fun an optional character vector of length 1 giving the name of a function to return Monte Carlo average of
+##' @param ... additional arguments
+##' @return returns the output from the gridmeans option of the setoutput argument of lgcpPredict
+##' @seealso \link{setoutput}, \link{lgcpgrid}
+##' @export
+
+gridav.lgcpPredict <- function(obj,fun=NULL,...){
+    if (is.null(obj$gridaverage)){
+        stop("No Monte Carlo averages were requested.")
+    }
+    if(is.null(fun)){
+        x <- list()
+        x$names <- obj$gridaverage[[1]]
+        x$output <- obj$gridaverage[[2]]
+        class(x) <- c("gridaverage","lgcpobject")
+        return(x)
+    }
+    else{
+        if(length(fun)>1){
+            stop("fun must be a character vector of length 1.")
+        }
+        if(sum(obj$gridaverage[[1]]==fun)==0){
+            stop("The Monte Carlo average of that function was not requested.")
+        }
+        return(obj$gridaverage[[2]][[which(obj$gridaverage[[1]]==fun)]])
+    }
+}
+
+
+
+##' print.gridaverage function
+##'
+##' Print method for \code{gridaverage} objects
+##'
+##' @method print gridaverage
+##' @param x an object of class gridaverage  
+##' @param ... other arguments   
+##' @return just prints out details
+##' @export
+
+print.gridaverage <- function(x,...){
+    cat("gridaverage object.\n")
+    cat("  Functions:",paste(unlist(x$names),collapse=" "),"\n")
+    cat("  $names returns function names, $output returns function output.\n")
+}
+
+
+
+##' hvals function
+##'
+##' Generic function to return the values of the proposal scaling \eqn{h}{h} in the MCMC algorithm.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method hvals
+##' @export
+
+hvals <- function(obj,...){
+    UseMethod("hvals")
+}
+
+
+
+##' hvals.lgcpPredict function
+##'
+##' Accessor function returning the value of \eqn{h}{h}, the MALA proposal scaling constant over the iterations of the algorithm for 
+##' objects of class \code{lgcpPredict}
+##'
+##' @method hvals lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the values of h taken during the progress of the algorithm
+##' @seealso \link{lgcpPredict}
+##' @export
+
+hvals.lgcpPredict <- function(obj,...){
+    return(obj$hrec)
+}
+
+
+
+##' window.lgcpPredict function
+##'
+##' Accessor function returning the observation window from objects of class \code{lgcpPredict}. Note that for
+##' computational purposes, the window of an \code{stppp} object will be extended to accommodate the requirement that 
+##' the dimensions must be powers of 2. The function \code{window.lgcpPredict} returns the extended window.
+##'
+##' @method window lgcpPredict
+##' @param x an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the observation window used durign computation
+##' @seealso \link{lgcpPredict}
+##' @export
+
+window.lgcpPredict <- function(x,...){
+    return(x$xyt$window)
+}
+
+
+
+##' mcmctrace function
+##'
+##' Generic function to extract the information required to produce MCMC trace plots.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method mcmctrace
+##' @export
+
+mcmctrace <- function(obj,...){
+    UseMethod("mcmctrace")
+}
+
+
+
+##' mcmctrace.lgcpPredict function
+##'
+##' If \code{MCMCdiag} was positive when \code{lgcpPredict} was called, then this retrieves information from the chains stored.
+##'
+##' @method mcmctrace lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param ... additional arguments
+##' @return returns the saved MCMC chains in an object of class \code{mcmcdiag}.
+##' @seealso \link{lgcpPredict}, \link{plot.mcmcdiag}
+##' @export
+
+mcmctrace.lgcpPredict <- function(obj,...){
+    if (is.null(obj$mcmcsamp)){
+        stop("No information is available on the chain unless it was dumped to disk.")
+    }
+    tr <- list()
+    tr$cellidx <- obj$ijcells
+    tr$trace <- obj$mcmcsamp
+    class(tr) <- "mcmcdiag"
+    return(tr)
+}
+
+##' plot.mcmcdiag function
+##'
+##' The command \code{plot(trace(lg))}, where \code{lg} is an object of class \code{lgcpPredict} will plot the 
+##' mcmc traces of a subset of the cells, provided they have been stored, see \code{mcmpars}.
+##'
+##' @method plot mcmcdiag
+##' @param x an object of class mcmcdiag
+##' @param idx vector of chain indices to plot, default plots all chains
+##' @param ... additional arguments passed to plot
+##' @return plots the saved MCMC chains
+##' @seealso \link{mcmctrace.lgcpPredict}, \link{mcmcpars}, 
+##' @export
+
+plot.mcmcdiag <- function(x,idx=1:dim(x$trace)[2],...){
+    plot(NULL,xlim=c(1,dim(x$trace)[1]),ylim=range(x$trace),xlab="Iteration",ylab="Y",...)
+    n <- length(idx)
+    cols <- rainbow(n)
+    lab <- apply(x$cellidx,1,paste,collapse=",")[idx]
+    for (i in 1:n){
+        lines(x$trace[,idx[i]],col=cols[i])
+    }
+    legend("topleft",lty=rep("solid",n),col=cols,legend=lab,title="Cell Index")
+}
+
+
+
+##' plotExceed function
+##'
+##' A generic function for plotting exceedance probabilities.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return generic function returning method plotExceed
+##' @export
+
+plotExceed <- function(obj,...){
+    UseMethod("plotExceed")
+}
+
+
+
+##' plotExceed.array function
+##'
+##' Function for plotting exceedance probabilities stored in array objects. Used in \code{plotExceed.lgcpPredict}.
+##'
+##' @method plotExceed array
+##' @param obj an object
+##' @param fun the name of the function used to compute exceedances (character vector of length 1). Note that the named function must be in memory.
+##' @param lgcppredict an object of class lgcpPredict that can be used to supply an observation window and x and y coordinates
+##' @param xvals optional vector giving x coords of centroids of cells
+##' @param yvals optional vector giving y coords of centroids of cells
+##' @param window optional obervation window
+##' @param cases optional xy (n x 2) matrix of locations of cases to plot 
+##' @param nlevel number of colour levels to use in plot, default is 64
+##' @param ask whether or not to ask for a new plot between plotting exceedances at different thresholds.
+##' @param ... additional arguments passed to image.plot
+##' @return generic function returning method plotExceed
+##' @seealso \link{plotExceed.lgcpPredict}
+##' @export
+
+plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,window=NULL,cases=NULL,nlevel=64,ask=TRUE,...){
+    if (!is.null(lgcppredict)){
+        xvals <- lgcppredict$mcens
+        yvals <- lgcppredict$ncens
+        window <- lgcppredict$xyt$window
+    }
+    if (is.null(xvals)){
+        xvals <- 1:dim(obj)[1]
+    }
+    if (is.null(yvals)){
+        yvals <- 1:dim(obj)[2]
+    }
+    if (ask) {
+        oask <- devAskNewPage(TRUE)
+        on.exit(devAskNewPage(oask))
+    }
+    
+    relrisks <- attr(get(fun),"threshold")
+    
+    if (is.null(window)){
+        grinw <- 1
+    }
+    else{
+        grinw <- gridInWindow(xvals,yvals,window)
+        grinw[as.numeric(grinw)==0] <- NA
+    }
+    
+    for (i in 1:length(relrisks)){
+        image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),...)
+        if (!is.null(window)){
+            plot(window,lwd=2,add=TRUE)
+        }
+        if(!is.null(cases)){
+            points(cases,pch="+",cex=0.5)
+        }
+    }
+}
+
+
+
+##' is.pow2 function
+##'
+##' Tests whether a number id
+##'
+##' @param num a numeric
+##' @return logical: is num a power of 2?
+##' @examples
+##' is.pow2(128)  # TRUE
+##' is.pow2(64.9) # FALSE
+##' @export
+
+is.pow2 <- function(num){
+    return(isTRUE(all.equal(log(num,base=2),as.integer(log(num,base=2)))))
+}
+
+
+
+##' plotExceed.lgcpPredict function
+##'
+##' Function for plotting exceedance probabilities stored in \code{lgcpPredict} ojects.
+##'
+##' @method plotExceed lgcpPredict
+##' @param obj an object
+##' @param fun the name of the function used to compute exceedances (character vector of length 1). Note that the named function must be in memory.
+##' @param nlevel number of colour levels to use in plot, default is 64
+##' @param ask whether or not to ask for a new plot between plotting exceedances at different thresholds.
+##' @param plotcases whether or not to plot the cases on the map
+##' @param ... additional arguments passed to image.plot
+##' @return plot of exceedances
+##' @seealso \link{lgcpPredict}, \link{MonteCarloAverage}, \link{setoutput}
+##' @examples
+##' \dontrun{exceedfun <- exceedProbs(c(1.5,2,4))}
+##' \dontrun{
+##'     plot(lg,"exceedfun") # lg is an object of class lgcpPredict
+##'                          # in which the Monte Carlo mean of 
+##'                          # "exceedfun" was computed  
+##'                          # see ?MonteCarloAverage and ?setoutput
+##' }
+##' @export
+
+plotExceed.lgcpPredict <- function(obj,fun,nlevel=64,ask=TRUE,plotcases=FALSE,...){
+    if(!inherits(get(fun),"function")){
+        stop("Argument fun should be the name of a function in memory")
+    }
+    if (is.null(attr(get(fun),"threshold"))){
+        stop("Function fun has no threshold attribute: is fun the correct function?")
+    }
+    funidx <- which(obj$gridaverage[[1]]==fun)
+    len <- 1
+    if (inherits(obj$gridaverage[[2]][[funidx]],"list")){
+        len <- length(obj$gridaverage[[2]][[funidx]])
+        for (i in 1:len){
+            if(plotcases){
+                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==obj$aggtimes[i]],nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),...)
+            }
+            else{
+                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),...)
+            }
+        }
+    }
+    else if (inherits(obj$gridaverage[[2]][[funidx]],"array")){
+        warning("Labels on plot assume that this is the last time point",immediate.=TRUE)
+        if(plotcases){
+            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==rev(obj$aggtimes)[1]],nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),...)
+        }
+        else{
+            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),...)
+        }
+    }
+    else{
+        stop("obj$gridaverage[[2]][[funidx]] should either be an array or a list object.")    
+    }
+}
+
+##' gridInWindow function
+##'
+##' For the grid defined by x-coordinates, xvals, and y-coordinates, yvals, and an owin object W, this function just returns
+##' a logical matrix M, whose [i,j] entry is TRUE if the point(xvals[i], yvals[j]) is inside the observation window. 
+##'
+##' @param xvals x coordinates
+##' @param yvals y coordinates
+##' @param win owin object
+##' @return matrix of TRUE/FALSE, which elements of the grid are inside the observation window win
+##' @export
+
+gridInWindow <- function(xvals,yvals,win){
+    nx <- length(xvals)
+    ny <- length(yvals)
+    return(matrix(inside.owin(rep(xvals,ny),rep(yvals,each=nx),win),nx,ny))
+}
+
+
+
+##' quantile.lgcpPredict function
+##'
+##' \bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. The routine \code{quantile.lgcpPredict} 
+##' computes quantiles of functions of Y. For example, to get cell-wise quantiles of exceedance probabilities, set \code{fun=exp}. 
+##' Since computign the quantiles is an expensive operation, the option to output the quantiles on a subregion of interest is also provided (by
+##' setting the argument \code{inWindow}, which has a sensible default).
+##'
+##' @method quantile lgcpPredict
+##' @param x an object of class lgcpPredict
+##' @param qt a vector of the required quantiles
+##' @param tidx the index number of the the time interval of interest, default is the last time point.
+##' @param fun a 1-1 function (default the identity function) to be applied cell-wise to the grid. Must be able to evaluate sapply(vec,fun) for vectors vec.
+##' @param inWindow an observation owin window on which to compute the quantiles, can speed up calculation. Default is x$xyt$window.
+##' @param crop2parentwindow logical: whether to only compute the quantiles for cells inside x$xyt$window (the 'parent window')
+##' @param ... additional arguments
+##' @return an array, the [,,i]th slice being the grid of cell-wise quantiles, qt[i], of fun(Y), where Y is the MCMC output dumped to disk.
+##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpQuantiles}
+##' @export
+
+quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,crop2parentwindow=TRUE,...){
+    if (is.null(x$gridfunction$dirname)){
+        stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function. See ?dump2dir.")
+    }
+    if (length(tidx)>1){
+        stop("tidx should either be NULL, or a vector of length 1")
+    }
+    if (is.null(fun)){
+        fun <- function(a){return(a)}
+    }
+    fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
+    ncdata <- open.ncdf(fn)
+    datadim <- ncdata$var$simrun$varsize
+    if (is.null(tidx)){
+        tidx <- datadim[3]
+    }
+    if(!is.null(inWindow)){
+        if (crop2parentwindow){
+            grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow) * gridInWindow(x$mcens,x$ncens,x$xyt$window)),length(xvals(x)),length(yvals(x)))
+        }
+        else{
+            grinw <- gridInWindow(x$mcens,x$ncens,inWindow)
+        }
+    }
+    result <- array(dim=c(datadim[1],datadim[2],length(qt)))
+    pb <- txtProgressBar(min=1,max=datadim[1]*datadim[2],style=3)
+    for (i in 1:datadim[1]){
+        for(j in 1:datadim[2]){
+            setTxtProgressBar(pb,j+(i-1)*datadim[2])
+            if(!is.null(inWindow)){
+                if (isTRUE(grinw[i,j])){
+                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                    tr <- sapply(tr,fun)
+                    result[i,j,] <- quantile(tr,qt)
+                }
+                else{
+                    result[i,j,] <- NA
+                }
+            }
+            else{
+                tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                tr <- sapply(tr,fun)
+                result[i,j,] <- quantile(tr,qt)
+            }
+        }
+    }
+    close(pb)
+    close.ncdf(ncdata)
+    attr(result,"quantiles") <- qt
+    attr(result,"xcoords") <- x$mcens
+    attr(result,"ycoords") <- x$ncens
+    attr(result,"window") <- NULL
+    if(!is.null(inWindow)){
+        attr(result,"window") <- inWindow
+    }
+    attr(result,"ParentWindow") <- x$xyt$window
+    class(result) <- c("lgcpQuantiles","array")
+    return(result)   
+}
+
+
+
+##' plot.lgcpQuantiles function
+##'
+##' Plots \code{lgcpQuantiles} objects: output from \code{quantiles.lgcpPredict}
+##'
+##' @method plot lgcpQuantiles
+##' @param x an object of class lgcpgrid
+##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
+##' @param ask logical; if TRUE the user is asked before each plot  
+##' @param crop whether or not to crop to bounding box of observation window
+##' @param plotwin logical whether to plot the window attr(x,"window"), default is FALSE
+##' @param ... other arguments  passed to image.plot  
+##' @return grid plotting
+##' This is a wrapper function for image.lgcpgrid
+##' @seealso \link{quantile.lgcpPredict}
+##' @examples
+##' \dontrun{qtiles <- quantile(lg,qt=c(0.5,0.75,0.9),fun=exp)} 
+##'                           # assumed that lg has class lgcpPredict
+##' \dontrun{plot(qtiles)}
+##' @export
+
+plot.lgcpQuantiles <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALSE,...){
+    if (ask) {
+        oask <- devAskNewPage(TRUE)
+        on.exit(devAskNewPage(oask))
+    }
+    for (i in sel){
+        if(crop & !is.null(attr(x,"window"))){
+            image.plot(attr(x,"xcoords"),attr(x,"ycoords"),x[,,i],xlim=attr(x,"window")$xrange,ylim=attr(x,"window")$yrange,sub=paste("quantile:",attr(x,"quantiles")[i]),...)
+        }
+        else{
+            image.plot(attr(x,"xcoords"),attr(x,"ycoords"),x[,,i],xlim=attr(x,"ParentWindow")$xrange,ylim=attr(x,"ParentWindow")$yrange,sub=paste("quantile:",attr(x,"quantiles")[i]),...)
+        }
+        
+        if (plotwin){
+            if(!is.null(attr(x,"window"))){
+                plot(attr(x,"window"),lwd=1,add=TRUE)
+            }
+        }
+        plot(attr(x,"ParentWindow"),lwd=2,add=TRUE)    
+    }
+} 
+
+
+
+##' identify.lgcpPredict function
+##'
+##' Identifies the indices of grid cells on plots of \code{lgcpPredict} objects. Can be used to identify
+##' a small number of cells for further information eg trace or autocorrelation plots (provided data has been dumped to disk). On calling
+##' \code{identify(lg)} for example (see code below), the user can click multiply with the left mouse button on the graphics device; once
+##' the user has selected all points of interest, the right button is pressed, which returns them.
+##'
+##' @method identify lgcpPredict
+##' @param x an object of class lgcpPredict
+##' @param ... additional arguments 
+##' @return a 2 x n matrix containing the grid indices of the points of interest, where n is the number of points selected via the mouse.
+##' @seealso \link{lgcpPredict}, \link{loc2poly}
+##' @examples
+##' \dontrun{plot(lg)} # lg an lgcpPredict object
+##' \dontrun{pt_indices <- identify(lg)}
+##' @export
+
+identify.lgcpPredict <- function(x,...){
+    points(rep(x$mcens,x$N-1),rep(x$ncens,each=x$M-1),col=NA)
+    id <- identify(x=rep(x$mcens,x$N-1),y=rep(x$ncens,each=x$M-1),plot=FALSE)
+    retidx <- function(idx){
+        y <- floor(idx/(x$M-1)) + 1
+        x <- idx - y * (x$M-1) + (x$M-1)
+        return(c(x,y))
+    }
+    return(t(sapply(id,retidx)))
+}
+
+
+
+##' identifygrid function
+##'
+##' Identifies the indices of grid cells on plots of objects.
+##'
+##' @param x the x grid centroids
+##' @param y the y grid centroids 
+##' @return a 2 x n matrix containing the grid indices of the points of interest, where n is the number of points selected via the mouse.
+##' @seealso \link{lgcpPredict}, \link{loc2poly}, \link{identify.lgcpPredict}
+##' @export
+
+identifygrid <- function(x,y){
+    points(rep(x,length(y)),rep(y,each=length(x)),col=NA)
+    id <- identify(rep(x,length(y)),y=rep(y,each=length(x)),plot=FALSE)
+    retidx <- function(idx){
+        y <- floor(idx/length(x)) + 1
+        x <- idx - y * length(x) + length(x)
+        return(c(x,y))
+    }
+    return(t(sapply(id,retidx)))
+}
+
+
+
+##' loc2poly function
+##'
+##' Converts a polygon selected via the mouse in a graphics window into an polygonal owin object. (Make sure the x and y scales are correct!)
+##' Points must be selected traversing the required window in one direction (ie either clockwise, or anticlockwise), points must not be overlapping.
+##' Select the sequence of edges via left mouse button clicks and store the polygon with a right click. 
+##'
+##' @param n the maximum number of points to locate
+##' @param type same as argument type in function locator. see ?locator. Default draws lines
+##' @param col colour of lines/points
+##' @param ... other arguments to pass to locate
+##' @return a polygonal owin object
+##' @seealso \link{lgcpPredict}, \link{identify.lgcpPredict}
+##' @examples
+##' \dontrun{plot(lg)} # lg an lgcpPredict object
+##' \dontrun{subwin <- loc2poly())}
+##' @export
+
+loc2poly <- function(n=512,type="l",col="black",...){
+    l <- locator(n=n,type=type,col=col,...)
+    win <- try(owin(poly=list(x=l$x,y=l$y)),silent=TRUE)
+    if(class(win)=="try-error"){
+        win <- try(owin(poly=list(x=rev(l$x),y=rev(l$y))),silent=TRUE) # try the points ordering in the other direction
+        if(class(win)=="try-error"){
+            owin(poly=list(x=l$x,y=l$y)) # if there is still a problem with the chosen set of points, then this should print out the underlying issue
+        }
+        else{
+            return(win)
+        }
+    }
+    else{
+        return(win)    
+    }
+}
+
+
+
+##' expectation.lgcpPredict function
+##'
+##' \bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. This function computes the 
+##' Monte Carlo Average of a function where data from a run of \code{lgcpPredict} has been dumped to disk.
+##'
+##' A Monte Carlo Average is computed as:
+##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{%
+##'       E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
+##' where \eqn{g}{g} is a function of interest, \eqn{Y_{t_1:t_2}^{(i)}}{Y_{t_1:t_2}^{(i)}} is the \eqn{i}{i}th retained sample from the target  
+##' and \eqn{n}{n} is the total number of retained iterations. For example, to compute the mean of \eqn{Y_{t_1:t_2}}{Y_{t_1:t_2}} set,
+##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{%
+##'       g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
+##' the output from such a Monte Carlo average would be a set of \eqn{t_2-t_1}{t_2-t_1} grids, each cell of which 
+##' being equal to the mean over all retained iterations of the algorithm (NOTE: this is just an example computation, in
+##' practice, there is no need to compute the mean on line explicitly, as this is already done by default in \code{lgcpPredict}).
+##'
+##' @method expectation lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param fun a function accepting a single argument that returns a numeric vector, matrix or array object    
+##' @param ... additional arguments  
+##' @return the expectated value of that quantity
+##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}
+##' @export
+
+expectation.lgcpPredict <- function(obj,fun,...){
+    if (is.null(obj$gridfunction$dirname)){
+        stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
+    }
+    fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
+    ncdata <- open.ncdf(fn)
+    Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
+    result <- tryCatch(lapply(Y$grid,fun),finally=close.ncdf(ncdata))
+    for (i in 2:ncdata$dim$iter$len){
+        ncdata <- open.ncdf(fn)
+        Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
+        result <- tryCatch(add.list(result,lapply(Y$grid,fun)),finally=close.ncdf(ncdata))
+    }
+    for (i in 1:length(result)){
+        result[[i]] <- result[[i]] / ncdata$dim$iter$len
+    }
+    return(result)
+}
+
+
+
+##' extract.lgcpPredict function
+##'
+##' \bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. \code{extract.lgcpPredict}  
+##' extracts chunks of data that have been dumped to disk. The subset of data can either be specified using an (x,y,t,s) box or (window,t,s) region
+##' where window is a polygonal subregion of interest.
+##'
+##' @method extract lgcpPredict
+##' @param obj an object of class lgcpPredict
+##' @param x range of x-indices vector (eg c(2,4)) corresponding to desired subset of x coordinates. If equal to -1, then all cells in this dimension are extracted
+##' @param y range of y-indices as above
+##' @param inWindow an observation owin window over which to extract the data (alternative to specifying x and y).
+##' @param t range of t-indices time indices of interest
+##' @param s range of s-indices ie the simulation indices of interest
+##' @param crop2parentwindow logical: whether to only extract cells inside obj$xyt$window (the 'parent window') 
+##' @param ... additional arguments
+##' @return extracted array
+##' @seealso \link{lgcpPredict}, \link{loc2poly}, \link{dump2dir}, \link{setoutput}
+##' @export
+
+extract.lgcpPredict <- function(obj,x=NULL,y=NULL,inWindow=NULL,t,s=-1,crop2parentwindow=TRUE,...){
+    if (is.null(obj$gridfunction$dirname)){
+        stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
+    }
+    if(all(is.null(c(x,y,inWindow))) | (!is.null(inWindow)&any(!is.null(c(x,y))))){
+        stop("either x and y OR inWindow must be given")
+    }
+    fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
+    ncdata <- open.ncdf(fn)
+    if (is.null(inWindow)){
+        startidx <- c(min(x),min(y),min(t),min(s))
+        mo <- (startidx==-1)
+        startidx[mo] <- 1
+        ct <- rep(-1,4)
+        ct[which(!mo)] <- c(max(x),max(y),max(t),max(s))[which(!mo)] - c(min(x),min(y),min(t),min(s))[which(!mo)] + 1
+        data <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=startidx, count=ct)
+        attr(data,"mode") <- "block"
+        attr(data,"xcoords") <- obj$mcens[min(x):max(x)]
+        attr(data,"ycoords") <- obj$ncens[min(y):max(y)]
+        class(data) <- c("lgcpExtract","array")
+    }
+    else{
+        if (crop2parentwindow){
+            grinw <- matrix(as.logical(gridInWindow(obj$mcens,obj$ncens,inWindow) * gridInWindow(obj$mcens,obj$ncens,obj$xyt$window)),length(xvals(obj)),length(yvals(obj)))
+        }
+        else{
+            grinw <- gridInWindow(obj$mcens,obj$ncens,inWindow)
+        }
+        n <- sum(grinw)
+        idx <- which(grinw,arr.ind=TRUE)
+        startidx <- c(min(t),min(s))
+        mo <- (startidx==-1)
+        startidx[mo] <- 1
+        ct <- rep(-1,2)
+        ct[which(!mo)] <- c(max(t),max(s))[which(!mo)] - c(min(t),min(s))[which(!mo)] + 1
+        vs <- ncdata$var[[1]]$varsize[3:4]
+        d <- ct
+        d[d==-1] <- vs[d==-1]
+        data <- array(dim=c(n,d))
+        for (i in 1:n){
+            data[i,,] <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(idx[i,],startidx), count=c(1,1,ct))
+        }
+        attr(data,"xcoords") <- obj$mcens
+        attr(data,"ycoords") <- obj$ncens
+        attr(data,"mode") <- "inWindow"
+        attr(data,"window") <- inWindow
+        attr(data,"mask") <- grinw # can be used to translate returned vector back into 2 dimensional object (idea is to save storage space)
+        class(data) <- c("lgcpExtractInWindow","lgcpExtract","array")
+    }
+    close.ncdf(ncdata)   
+    return(data)
+}
+
+
+
+##' add.list function
+##'
+##' This function adds the elements of two list objects together and returns the result in another list object.
+##'
+##' @param list1 a list of objects that could be summed using "+"
+##' @param list2 a list of objects that could be summed using "+"
+##' @return a list with ith entry the sum of list1[[i]] and list2[[i]]
+##' @export
+
+add.list <- function(list1,list2){
+    l1 <- length(list1)
+    if(length(list2)!=l1){
+        stop("Lists must be of the same length")
+    }
+    lst <- list()
+    if(l1>0){
+        for (i in 1:l1){
+            lst[[i]] <- list1[[i]] + list2[[i]]
+        }
+    }
+    return(lst)    
+}
+
+
+
+##' multiply.list function
+##'
+##' This function multiplies the elements of two list objects together and returns the result in another list object.
+##'
+##' @param list1 a list of objects that could be summed using "+"
+##' @param list2 a list of objects that could be summed using "+"
+##' @return a list with ith entry the sum of list1[[i]] and list2[[i]]
+##' @export
+
+multiply.list <- function(list1,list2){
+    l1 <- length(list1)
+    if(length(list2)!=l1){
+        stop("Lists must be of the same length")
+    }
+    lst <- list()
+    if(l1>0){
+        for (i in 1:l1){
+            lst[[i]] <- list1[[i]] * list2[[i]]
+        }
+    }
+    return(lst)    
+}
+
+
+
+##' smultiply.list function
+##'
+##' This function multiplies each element of a list by a scalar constant.
+##'
+##' @param list a list of objects that could be summed using "+"
+##' @param const a numeric constant
+##' @return a list with ith entry the scalar multiple of const * list[[i]]
+##' @export
+
+smultiply.list <- function(list,const){
+    lst <- list()
+    for (i in 1:length(list)){
+        lst[[i]] <- list[[i]] * const
+    }
+    return(lst)    
+}
+
+
+
+##' showGrid function
+##'
+##' Generic method for displaying the FFT grid used in computation.
+##'
+##' @param x an object
+##' @param ... additional arguments
+##' @return generic function returning method showGrid
+##' @seealso \link{showGrid.default}, \link{showGrid.lgcpPredict}, \link{showGrid.stppp}
+##' @export
+
+showGrid <- function(x,...){
+    UseMethod("showGrid")
+}
+
+
+
+##' showGrid.default function
+##'
+##' Default method for printing a grid to a screen. Arguments are vectors giving the x any y coordinates of the
+##' centroids.
+##'
+##' @method showGrid default
+##' @param x an vector of grid values for the x coordinates
+##' @param y an vector of grid values for the y coordinates
+##' @param ... additional arguments passed to points
+##' @return plots grid centroids on the current graphics device
+##' @seealso \link{showGrid.lgcpPredict}, \link{showGrid.stppp}
+##' @export
+
+showGrid.default <- function(x,y,...){
+     points(cbind(rep(x,length(y)),rep(y,each=length(x))),...)
+}
+
+
+
+##' showGrid.lgcpPredict function
+##'
+##' This function displays the FFT grid used on a plot of an \code{lgcpPredict} object.
+##' First plot the object using for example \code{plot(lg)}, where \code{lg} is an object
+##' of class \code{lgcpPredict}, then for any of the plots produced, a call to
+##' \code{showGrid(lg,pch=="+",cex=0.5)} will display the centroids of the FFT grid.
+##'
+##' @method showGrid lgcpPredict
+##' @param x an object of class lgcpPredict
+##' @param ... additional arguments  passed to points
+##' @return plots grid centroids on the current graphics device
+##' @seealso \link{lgcpPredict}, \link{showGrid.default}, \link{showGrid.stppp}
+##' @export
+
+showGrid.lgcpPredict <- function(x,...){
+    points(cbind(rep(xvals(x),x$N-1),rep(yvals(x),each=x$M-1)),...)
+}
+
+
+
+##' showGrid.stppp function
+##'
+##' If an stppp object has been created via simulation, ie using the function \code{lgcpSim}, then
+##' this function will display the grid centroids that were used in the simulation
+##'
+##' @method showGrid stppp
+##' @param x an object of class stppp. Note this function oly applies to SIMULATED data.
+##' @param ... additional arguments  passed to points
+##' @return plots grid centroids on the current graphics device. FOR SIMULATED DATA ONLY.
+##' @seealso \link{lgcpSim}, \link{showGrid.default}, \link{showGrid.lgcpPredict}
+##' @examples
+##' \dontrun{xyt <- lgcpSim()}
+##' \dontrun{plot(xyt)}
+##' \dontrun{showGrid(xyt,pch="+",cex=0.5)}
+##' @export
+
+showGrid.stppp <- function(x,...){
+    if (is.null(attr(x,"xvals"))){
+        stop("No grid available. Data must have been simulated using function lgcpSim.")
+    }    
+    xv <- attr(x,"xvals")
+    yv <- attr(x,"yvals")
+    points(cbind(rep(xv,length(yv)),rep(yv,each=length(xv))),...)
+}
