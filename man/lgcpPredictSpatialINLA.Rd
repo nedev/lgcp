@@ -51,7 +51,7 @@ required. Note there is no autorotate option for this function.}
 \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}}
+\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict},}
 \arguments{\item{sd}{a spatial point pattern object, see ?ppp}
 \item{ns}{size of neighbourhood to use for GMRF approximation ns=1 corresponds to 3^2-1=8 eight neighbours around each point, ns=2 corresponds to 5^2-1=24 neighbours etc ...}
 \item{model.parameters}{values for parameters, see ?lgcppars}

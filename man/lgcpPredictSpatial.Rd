@@ -45,7 +45,7 @@ required. Note there is no autorotate option for this function.}
 \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}}
+\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}}
 \arguments{\item{sd}{a spatial point pattern object, see ?ppp}
 \item{model.parameters}{values for parameters, see ?lgcppars}
 \item{spatial.covmodel}{correlation type see ?CovarianceFct}

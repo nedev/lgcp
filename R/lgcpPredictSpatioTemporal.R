@@ -75,7 +75,7 @@
 ##' \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 ##' \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 ##' \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}
+##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}
 ##' @export 
     
 lgcpPredict <- function(xyt,
@@ -144,7 +144,7 @@ lgcpPredict <- function(xyt,
 	    cwseq <- seq(approxcw/2,2*approxcw,length.out=500)
 	    cwfun <- function(cw){
 	        ow <- selectObsWindow(xyt,cw)
-	        return(c(ow$M-1,ow$N-1))
+	        return(c(ow$M,ow$N))
 	    }
 	    gsmat <- t(sapply(cwseq,cwfun))
 	    tf <- apply(gsmat,1,function(x){return(all(x==gridsize))})
@@ -244,12 +244,12 @@ lgcpPredict <- function(xyt,
 	
 	tst <- mget("lgcpPredictstapptriggertestvalue",envir=parent.frame(),ifnotfound=FALSE)$lgcpPredictstapptriggertestvalue
 	if (tst){
-	    del1 <- (xyt$window$xrange[2]-xyt$window$xrange[1])/(M-1)
-	    del2 <- (xyt$window$yrange[2]-xyt$window$yrange[1])/(N-1) 
-	    mcens <- xyt$window$xrange[1]+.5*del1+(0:(M-2))*del1
-	    ncens <- xyt$window$yrange[1]+.5*del2+(0:(N-2))*del2
-        xls <- rep(mcens,N-1)
-        yls <- rep(ncens,each=(M-1))	    
+	    del1 <- (xyt$window$xrange[2]-xyt$window$xrange[1])/M
+	    del2 <- (xyt$window$yrange[2]-xyt$window$yrange[1])/N 
+	    mcens <- xyt$window$xrange[1]+.5*del1+(0:(M-1))*del1
+	    ncens <- xyt$window$yrange[1]+.5*del2+(0:(N-1))*del2
+        xls <- rep(mcens,N)
+        yls <- rep(ncens,each=M)	    
 	    spdf <- get("app",envir=parent.frame())$spdf
 	    olay <- overlay(SpatialPoints(cbind(xls,yls)),spdf)
 	    if(length(table(olay))!=length(spdf)){
@@ -258,7 +258,7 @@ lgcpPredict <- function(xyt,
 	        cat("\n")
 	    }
 	    olay[is.na(olay)] <- 0
-	    olay <- matrix(olay,M-1,N-1)
+	    olay <- matrix(olay,M,N)
 	}
 	
 	if (M*N>=(256^2)){
@@ -268,7 +268,7 @@ lgcpPredict <- function(xyt,
 	    cat("\n")
 	}  
 	
-	cat(paste("FFT Grid size: [",2*(M-1)," , ",2*(N-1),"]\n",sep=""))
+	cat(paste("FFT Grid size: [",2*M," , ",2*N,"]\n",sep=""))
 	Sys.sleep(1)
     rm(ow)
     
@@ -291,10 +291,7 @@ lgcpPredict <- function(xyt,
     
     ################################################################
     # Create grid and FFT objects
-    ################################################################
-    
-    M <- M-1
-    N <- N-1    
+    ################################################################   
     
     study.region <- xyt$window
 	
@@ -330,7 +327,6 @@ lgcpPredict <- function(xyt,
     	spatialvals <- fftinterpolate(spatial,mcens,ncens)
     	spatialvals <- spatialvals*cellInside[[1]]
     	spatialvals <- spatialvals / (cellarea*sum(spatialvals))
-    	### NOT NECESSARY spatialvals[cellInside[[1]] & spatialvals==0] <- 1e-200 # impute a very small number into cells inside the observation window with apparently zero risk
     	spatialvals <- rep(list(spatialvals),numt)
 	}
 	else{
@@ -343,7 +339,6 @@ lgcpPredict <- function(xyt,
 	    for (i in 1:numt){ 
         	spatialvals[[i]] <- spatialinterp*cellInside[[i]]
         	spatialvals[[i]] <- spatialvals[[i]] / NC
-        	### NOT NECESSARY spatialvals[[i]][cellInside[[i]] & spatialvals[[i]]==0] <- 1e-200 # impute a very small number into cells inside the observation window with apparently zero risk
 	    }
 	}
 	
@@ -353,9 +348,6 @@ lgcpPredict <- function(xyt,
     Qeigs <- eigenfrombase(inversebase(bcb)) # eigenvalues of Q (the precision matrix)
     rqe <- sqrt(Qeigs) # square root of the eigenvalues (used in computation)
     irqe <- 1/rqe # reciprocal root (commputation)
-    
-    M <- M+1
-    N <- N+1
     	
 	################################################################
 		
@@ -369,7 +361,7 @@ lgcpPredict <- function(xyt,
 	# issue warning if dumping information to disc
 	nsamp <- floor((mLoop$N-mLoop$burnin)/mLoop$thin)
 	if (!is.null(output.control$gridfunction) & class(output.control$gridfunction)[1]=="dump2dir"){
-    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif((M-1)*(N-1)),dim=c((M-1),(N-1))))/1024^2,2)," Mb, ",sep="")
+    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif(M*N),dim=c(M,N)))/1024^2,2)," Mb, ",sep="")
         if (!output.control$gridfunction$forceSave){
             m <- menu(c("yes","no"),title="continue?")
             if(m==1){
@@ -385,10 +377,10 @@ lgcpPredict <- function(xyt,
 	nis <- list()
 	for(i in 1:numt){
 	    if (sum(xyt$t==aggtimes[i])>0){
-		    nis[[i]] <- getCounts(xyt=xyt,subset=(xyt$t==aggtimes[i]),M=M,N=N)
+		    nis[[i]] <- getCounts(xyt=xyt,subset=(xyt$t==aggtimes[i]),M=M,N=N,ext=ext)
 		}
 		else{
-		    nis[[i]] <- matrix(0,2*M-2,2*N-2)
+		    nis[[i]] <- matrix(0,ext*M,ext*N)
 		}
 		ct1 <- sum(nis[[i]])
 		nis[[i]] <- nis[[i]] * (spatialvals[[i]]>0)
@@ -427,9 +419,6 @@ lgcpPredict <- function(xyt,
 	if (is.null(gridav)){
 	    gridav <- nullAverage()
 	} 
-	
-	M <- M-1 # to get back to M,N being powers of 2.
-    N <- N-1  
     
     lg <- MALAlgcp( mcmcloop=mLoop,
                     inits=mcmc.control$inits,
@@ -460,8 +449,8 @@ lgcpPredict <- function(xyt,
 	timetaken <- endtime-starttime
 	
 	lg$xyt <- xyt
-	lg$M <- M + 1 # to maintain consistency with original code
-	lg$N <- N + 1
+	lg$M <- M
+	lg$N <- N
 	lg$aggtimes <- aggtimes
 	lg$tdiffs <- tdiff
 	lg$vars <- bt
@@ -548,7 +537,7 @@ MALAlgcp <- function(mcmcloop,
                             gridav){
                             
     SpatialOnlyMode <- FALSE
-    ImprovedAlgorithm <- TRUE
+    ##ImprovedAlgorithm <- TRUE
     
     n <- length(temporal.fitted)
     gt <- 1-exp(-2*theta*tdiff) # note tdiff[1] defined as Inf, for psimplifying code
@@ -559,9 +548,7 @@ MALAlgcp <- function(mcmcloop,
     cellOutside <- lapply(cellInside,function(x){!as.logical(x)})
     logspatial <- lapply(1:n,function(i){log(temporal.fitted[i]*spatialvals[[i]])})
     lapply(1:n,function(i){logspatial[[i]][cellOutside[[i]] | spatialvals[[i]]==0] <<- 0}) # NOTE THIS IS FOR SIMPLIFYING THE COMPUTATION OF THE TARGET!!                               
-    
-    M <- M+1
-    N <- N+1                            
+                                
     GFinitialise(gridfun) # note these two lines must come after M and N have been computed or defined
 	GAinitialise(gridav) # note these two lines must come after M and N have been computed or defined
     
@@ -570,10 +557,10 @@ MALAlgcp <- function(mcmcloop,
     nsamp <- 0
     icount <- 0
     MCMCacc <- 0
-    y.mean <- rep(list(matrix(0,M-1,N-1)),n)
-    y.var <- rep(list(matrix(0,M-1,N-1)),n)
-    EY.mean <- rep(list(matrix(0,M-1,N-1)),n)
-    EY.var <- rep(list(matrix(0,M-1,N-1)),n)
+    y.mean <- rep(list(matrix(0,M,N)),n)
+    y.var <- rep(list(matrix(0,M,N)),n)
+    EY.mean <- rep(list(matrix(0,M,N)),n)
+    EY.var <- rep(list(matrix(0,M,N)),n)
     	    
     Gamma <- rep(list(matrix(0,Mext,Next)),n)  # initialise with mean                         
     oldtags <- target.and.grad.spatiotemporal(Gamma=Gamma,nis=nis,cellarea=cellarea,rootQeigs=rootQeigs,invrootQeigs=invrootQeigs,mu=mu,spatial=spatialvals,logspat=logspatial,temporal=temporal.fitted,bt=bt,gt=gt,gradtrunc=gradtrunc)    
@@ -627,11 +614,11 @@ MALAlgcp <- function(mcmcloop,
         
         if (is.retain(mcmcloop)){
 	        nsamp <- nsamp + 1
-        	y.mean <- lapply(1:n,function(i){((nsamp-1)/nsamp) * y.mean[[i]] + oldtags$Y[[i]][1:(M-1),1:(N-1)]/nsamp})
-        	EY.mean <- lapply(1:n,function(i){((nsamp-1)/nsamp) * EY.mean[[i]] + oldtags$expY[[i]][1:(M-1),1:(N-1)]/nsamp})
+        	y.mean <- lapply(1:n,function(i){((nsamp-1)/nsamp) * y.mean[[i]] + oldtags$Y[[i]][1:M,1:N]/nsamp})
+        	EY.mean <- lapply(1:n,function(i){((nsamp-1)/nsamp) * EY.mean[[i]] + oldtags$expY[[i]][1:M,1:N]/nsamp})
         	if (nsamp>1){
-    			y.var <- lapply(1:n,function(i){((nsamp-2)/(nsamp-1))*y.var[[i]] + (nsamp/(nsamp-1)^2)*(y.mean[[i]]-oldtags$Y[[i]][1:(M-1),1:(N-1)])^2})
-    			EY.var <- lapply(1:n,function(i){((nsamp-2)/(nsamp-1))*EY.var[[i]] + (nsamp/(nsamp-1)^2)*(EY.mean[[i]]-oldtags$expY[[i]][1:(M-1),1:(N-1)])^2})
+    			y.var <- lapply(1:n,function(i){((nsamp-2)/(nsamp-1))*y.var[[i]] + (nsamp/(nsamp-1)^2)*(y.mean[[i]]-oldtags$Y[[i]][1:M,1:N])^2})
+    			EY.var <- lapply(1:n,function(i){((nsamp-2)/(nsamp-1))*EY.var[[i]] + (nsamp/(nsamp-1)^2)*(EY.mean[[i]]-oldtags$expY[[i]][1:M,1:N])^2})
     		}                 	               
 			GFupdate(gridfun)
 			GAupdate(gridav)		    
@@ -710,7 +697,8 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
     
     ### Note commented out code is Brix and Diggle MALA (but with 5th line "grad[[i]] <- ...etc" in gradfun set to the commented out 6th line, "grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]") ... ignoring the dependence between time-points appears to give an algorithm that mixes better ...
     
-    logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum((Y[[i]]+log(temporal[i])+logspat[[i]])*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
+    ###logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum((Y[[i]]+log(temporal[i])+logspat[[i]])*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
+    logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum(Y[[i]]*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # ... a more computationally efficient way of doing this # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
     
     return(list(Y=Y,expY=expY,logtarget=logtarget,grad=grad))
 }
@@ -797,7 +785,7 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
 ##' \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 ##' \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 ##' \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}
+##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}
 ##' @export 
     
 lgcpPredictAggregated <- function(  app,

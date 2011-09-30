@@ -61,7 +61,7 @@ required.}
 \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}}
+\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}}
 \arguments{\item{xyt}{a spatio-temporal point pattern object, see ?stppp}
 \item{T}{time point of interest}
 \item{laglength}{specifies lag window, so that data from and including  time (T-laglength) to time T is used in the MALA algorithm}

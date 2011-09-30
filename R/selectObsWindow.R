@@ -48,15 +48,15 @@ selectObsWindow.stppp <- function(xyt,gridsize,...){
     # compute M and N
     ###
 
-    M <- 1 + 2^ceiling(log(diff(xyt$window$xrange)/gridsize,base=2)) # minimum gridsize in x-direction
-    N <- 1 + 2^ceiling(log(diff(xyt$window$yrange)/gridsize,base=2)) # minimum gridsize in x-direction  
+    M <- 2^ceiling(log(diff(xyt$window$xrange)/gridsize,base=2)) # minimum gridsize in x-direction
+    N <- 2^ceiling(log(diff(xyt$window$yrange)/gridsize,base=2)) # minimum gridsize in x-direction  
     
     ###
     # Lastly, adjust size of observation window to suit
     ###
     
-    xdim <- (M-1) * gridsize
-    ydim <- (N-1) * gridsize
+    xdim <- M * gridsize
+    ydim <- N * gridsize
     xadd <- (xdim - diff(xyt$window$xrange))/2
     yadd <- (ydim - diff(xyt$window$yrange))/2    
 
@@ -164,8 +164,8 @@ roteffgain <- function(xyt,cellwidth){
     
     rotinf <- getRotation(xyt)
     rot <- selectObsWindow(rotinf$xyt,cellwidth)
-    rotws <- (2*rot$M-2)*(2*rot$N-2)
-    notrotws <- (2*M-2)*(2*N-2)
+    rotws <- 4*rot$M*rot$N
+    notrotws <- 4*M*N
     if (round(100*rotws/notrotws)<100){
         cat(paste("By rotating observation window, the efficiency gain would be: ",round(100*notrotws/rotws),"%, see ?getRotation.stppp\n",sep=""))
         cat("NOTE: efficiency gain is measured as the percentage increase in FFT grid cells from not rotating compared with rotating\n")

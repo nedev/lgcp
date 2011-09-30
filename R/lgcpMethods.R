@@ -294,7 +294,7 @@ print.lgcpPredict <- function(x,...){
     }
     
     if(!flag){ # is.null(x$spatialonly) for backwards compatibility
-        cat(paste("      FFT Gridsize: [ ",2*(x$M-1)," , ",2*(x$N-1)," ]\n",sep=""))
+        cat(paste("      FFT Gridsize: [ ",2*x$M," , ",2*x$N," ]\n",sep=""))
         cat("\n")
     
         cat(paste("              Data:\n",sep=""))
@@ -431,7 +431,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,serr[[i]],sub="S.E. Relative Risk",...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid[[i]][1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'")            
@@ -448,7 +448,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub="S.E. Relative Risk",...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:(x$M-1),1:(x$N-1)]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'") 
@@ -1175,11 +1175,11 @@ plot.lgcpQuantiles <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALS
 ##' @export
 
 identify.lgcpPredict <- function(x,...){
-    points(rep(x$mcens,x$N-1),rep(x$ncens,each=x$M-1),col=NA)
-    id <- identify(x=rep(x$mcens,x$N-1),y=rep(x$ncens,each=x$M-1),plot=FALSE)
+    points(rep(x$mcens,x$N),rep(x$ncens,each=x$M),col=NA)
+    id <- identify(x=rep(x$mcens,x$N),y=rep(x$ncens,each=x$M),plot=FALSE)
     retidx <- function(idx){
-        y <- floor(idx/(x$M-1)) + 1
-        x <- idx - y * (x$M-1) + (x$M-1)
+        y <- floor(idx/x$N) + 1
+        x <- idx - y * x$N + x$M
         return(c(x,y))
     }
     return(t(sapply(id,retidx)))
@@ -1198,11 +1198,13 @@ identify.lgcpPredict <- function(x,...){
 ##' @export
 
 identifygrid <- function(x,y){
-    points(rep(x,length(y)),rep(y,each=length(x)),col=NA)
-    id <- identify(rep(x,length(y)),y=rep(y,each=length(x)),plot=FALSE)
+    M <- length(x)
+    N <- length(y)
+    points(rep(x,N),rep(y,each=M),col=NA)
+    id <- identify(rep(x,N),y=rep(y,each=M),plot=FALSE)
     retidx <- function(idx){
-        y <- floor(idx/length(x)) + 1
-        x <- idx - y * length(x) + length(x)
+        y <- floor(idx/N) + 1
+        x <- idx - y * N + M
         return(c(x,y))
     }
     return(t(sapply(id,retidx)))
@@ -1498,7 +1500,7 @@ showGrid.default <- function(x,y,...){
 ##' @export
 
 showGrid.lgcpPredict <- function(x,...){
-    points(cbind(rep(xvals(x),x$N-1),rep(yvals(x),each=x$M-1)),...)
+    points(cbind(rep(xvals(x),x$N),rep(yvals(x),each=x$M)),...)
 }
 
 
@@ -1521,7 +1523,7 @@ showGrid.lgcpPredict <- function(x,...){
 
 showGrid.stppp <- function(x,...){
     if (is.null(attr(x,"xvals"))){
-        stop("No grid available. Data must have been simulated using function lgcpSim.")
+        stop("No grid available")
     }    
     xv <- attr(x,"xvals")
     yv <- attr(x,"yvals")

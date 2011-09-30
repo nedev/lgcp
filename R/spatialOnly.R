@@ -118,8 +118,12 @@ target.and.grad.spatial <- function(Gamma,nis,cellarea,rootQeigs,invrootQeigs,mu
     
     Y <- YfromGamma(Gamma=Gamma,invrootQeigs=invrootQeigs,mu=mu)
     expY <- exp(Y)    
-
-    logtarget <- -(1/2)*sum(Gamma^2) + sum((Y+logspat)*nis - scaleconst*spatial*expY*cellarea) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only 
+    
+    ###
+    ### note logspat not necessary ...logtarget <- -(1/2)*sum(Gamma^2) + sum((Y+logspat)*nis - scaleconst*spatial*expY*cellarea) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only 
+    ###    
+     
+    logtarget <- -(1/2)*sum(Gamma^2) + sum(Y*nis - scaleconst*spatial*expY*cellarea) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
 
     expYtrunc <- expY
     expYtrunc[expYtrunc>gradtrunc] <- gradtrunc
@@ -229,7 +233,7 @@ toral.cov.mat <- function(xg,yg,sigma,phi,model,additionalparameters){
 ##' @param spatial.covmodel spatial covariance function, default is exponential, see ?CovarianceFct
 ##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct
 ##' @param ext how much to extend the parameter space by. Default is 2.
-##' @param plot logical, wheter to plot the latent field.
+##' @param plot logical, whether to plot the latent field.
 ##' @return a ppp object containing the data
 ##' @export
 lgcpSimSpatial <- function( owin=NULL,
@@ -263,8 +267,8 @@ lgcpSimSpatial <- function( owin=NULL,
       
     ow <- selectObsWindow(xyt,cellwidth)
 	xyt <- ow$xyt
-	M <- ow$M - 1
-	N <- ow$N - 1
+	M <- ow$M
+	N <- ow$N
 	cat(paste("FFT Grid size: [",ext*M," , ",ext*N,"]\n",sep=""))
 	if(is.null(spatial.intensity)){
         spatial <- spatialAtRisk(list(X=seq(xyt$window$xrange[1],xyt$window$xrange[2],length.out=M),Y=seq(xyt$window$yrange[1],xyt$window$yrange[2],length.out=N),Zm=matrix(1/(M*N),M,N)))

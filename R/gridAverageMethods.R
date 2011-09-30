@@ -147,6 +147,7 @@ MonteCarloAverage <- function(funlist,lastonly=TRUE){
     iter <- 0
     itinc <- function(){
         iter <<- iter + 1
+        print(iter)
     }
     retit <- function(){
         return(iter)
@@ -189,7 +190,7 @@ MonteCarloAverage <- function(funlist,lastonly=TRUE){
         else{
             for(i in 1:length(result)){
                 for (j in 1:length(result[[i]])){
-                    result[[i]][[j]] <<- result[[i]][[j]] / iter 
+                    result[[i]][[j]] <<- result[[i]][[j]] / iter
                 }
             }
         }
@@ -273,35 +274,24 @@ GAupdate.nullAverage <- function(F,...){
 
 GAupdate.MonteCarloAverage <- function(F,...){
     F$iterinc()
-    if(get("SpatialOnlyMode",envir=parent.frame())|get("ImprovedAlgorithm",envir=parent.frame())){ # then in spatial only mode
-        M <- get("M",envir=parent.frame()) 
-        N <- get("N",envir=parent.frame()) 
-        if(get("SpatialOnlyMode",envir=parent.frame())){
-            if (F$returniter()==1){
-                F$initialise(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) # note Y converted to a list to make the other functions work   
-            }
-            else{
-                F$update(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) 
-            }
-        }
-        else{
-            if (F$returniter()==1){
-                F$initialise(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:(M-1),1:(N-1)]}))   
-            }
-            else{
-                F$update(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:(M-1),1:(N-1)]})) 
-            }
-        }
-    }
-    else{
+    M <- get("M",envir=parent.frame()) 
+    N <- get("N",envir=parent.frame()) 
+    if(get("SpatialOnlyMode",envir=parent.frame())){
         if (F$returniter()==1){
-            F$initialise(Y=get("ymats",envir=parent.frame()))   
+            F$initialise(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) # note Y converted to a list to make the other functions work   
         }
         else{
-            F$update(Y=get("ymats",envir=parent.frame())) 
+            F$update(Y=list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])) 
         }
     }
-    
+    else{ # otherwise in space-time mode 
+        if (F$returniter()==1){
+            F$initialise(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:M,1:N]}))   
+        }
+        else{
+            F$update(Y=lapply(get("oldtags",envir=parent.frame())$Y,function(x){x[1:M,1:N]})) 
+        }
+    }    
 }
 
 
@@ -434,8 +424,8 @@ exceedProbs <- function(threshold){
 exceedProbsAggregated <- function(threshold,lg=NULL,lastonly=TRUE){
 
     if(!is.null(lg)){
-        M <- lg$M-1
-        N <- lg$N-1
+        M <- lg$M
+        N <- lg$N
         verifyclass(lg,"aggregatedPredict")
         regpop <- lg$app$spdf$population
         nreg <- length(regpop)

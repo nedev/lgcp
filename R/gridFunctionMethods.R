@@ -187,7 +187,7 @@ GFinitialise.dump2dir <- function(F,...){
     # Create directory for dumping files
     dir.create(F$dirname)
     runid <- F$runid
-    gridsize <- c(get("M",envir=parent.frame())-1,get("N",envir=parent.frame())-1,length(get("temporal.fitted",envir=parent.frame())))
+    gridsize <- c(get("M",envir=parent.frame()),get("N",envir=parent.frame()),length(get("temporal.fitted",envir=parent.frame())))
     mLoop <- get("mcmcloop",envir=parent.frame())
     nsamp <- floor((mLoop$N-mLoop$burnin)/mLoop$thin)
     fn <- paste(F$dirname,"simulationinfo.RData",sep="")
@@ -197,8 +197,8 @@ GFinitialise.dump2dir <- function(F,...){
     N <-get("N",envir=parent.frame())
     tlen <- length(get("temporal.fitted",envir=parent.frame()))
     fn <- paste(F$dirname,"simout.nc",sep="")  
-    x <- dim.def.ncdf( "X", "x coordinates", 1:(M-1)) 
-    y <- dim.def.ncdf( "Y", "y coordinates", 1:(N-1))
+    x <- dim.def.ncdf( "X", "x coordinates", 1:M) 
+    y <- dim.def.ncdf( "Y", "y coordinates", 1:N)
     if (F$lastonly){
         t <- dim.def.ncdf( "T", "time index", 1) 
     }
@@ -252,24 +252,21 @@ GFupdate.dump2dir <- function(F,...){
     tfit <- get("temporal.fitted",envir=parent.frame())
     tlen <- length(tfit)
     ncdata <- open.ncdf(paste(F$dirname,"simout.nc",sep=""),write=TRUE)
-    if(get("SpatialOnlyMode",envir=parent.frame())|get("ImprovedAlgorithm",envir=parent.frame())){ # then in spatial only mode
-        if(get("SpatialOnlyMode",envir=parent.frame())){
-            Y <- list(get("oldtags",envir=parent.frame())$Y[1:(M-1),1:(N-1)])
-        }
-        else{
-            Y <- get("oldtags",envir=parent.frame())$Y
-            Y <- lapply(Y,function(x){x[1:(M-1),1:(N-1)]})
-        }
+    
+    if(get("SpatialOnlyMode",envir=parent.frame())){
+        Y <- list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])
     }
     else{
-        Y <- get("ymats",envir=parent.frame())
+        Y <- get("oldtags",envir=parent.frame())$Y
+        Y <- lapply(Y,function(x){x[1:M,1:N]})
     }
+
     if (F$lastonly){       
-        put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M-1,N-1,1,1))
+        put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M,N,1,1))
     }
     else{
         for (i in 1:tlen){ 
-            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[i]],start=c(1,1,i,F$ret()),count=c(M-1,N-1,1,1))
+            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[i]],start=c(1,1,i,F$ret()),count=c(M,N,1,1))
         }
     }
     sync.ncdf(ncdata)
