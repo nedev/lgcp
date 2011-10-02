@@ -1,0 +1,12 @@
+\name{stppp}
+\alias{stppp}
+\title{stppp function...}
+\usage{stppp(P, ...)}
+\description{stppp function}
+\details{Generic function used in the construction of space-time planar point patterns. An stppp object is like a ppp object,
+but with extra 'slots' for (1) a vector giving the time at whcih the event occurred and (2) a time-window over which observations occurred.
+Observations are assumed to occur in the plane and the observation window is assumed not to change over time.}
+\value{method stppp}
+\seealso{\link{stppp}, \link{stppp.ppp}, \link{stppp.list}}
+\arguments{\item{P}{an object}
+\item{...}{additional arguments}}
