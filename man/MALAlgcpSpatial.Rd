@@ -1,11 +1,10 @@
-\name{MALAlgcp}
-\alias{MALAlgcp}
-\title{MALAlgcp function...}
-\usage{MALAlgcp(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi,
-    theta, mu, nis, cellarea, spatialvals, temporal.fitted, tdiff,
-    scaleconst, rootQeigs, invrootQeigs, cellInside, MCMCdiag,
-    gradtrunc, gridfun, gridav)}
-\description{MALAlgcp function}
+\name{MALAlgcpSpatial}
+\alias{MALAlgcpSpatial}
+\title{MALAlgcpSpatial function...}
+\usage{MALAlgcpSpatial(mcmcloop, inits, adaptivescheme, M, N, Mext, Next,
+    sigma, phi, mu, nis, cellarea, spatialvals, scaleconst, rootQeigs,
+    invrootQeigs, cellInside, MCMCdiag, gradtrunc, gridfun, gridav)}
+\description{MALAlgcpSpatial function}
 \details{ADVANCED USE ONLY A function to perform MALA for the spatial only case}
 \value{object passed back to lgcpPredictSpatial}
 \arguments{\item{mcmcloop}{an mcmcLoop object}
@@ -17,13 +16,10 @@
 \item{Next}{number of cells in y direction on extended output grid}
 \item{sigma}{spatial covariance parameter sigma}
 \item{phi}{spatial covariance parameter phi}
-\item{theta}{temporal correlation parameter theta}
 \item{mu}{spatial covariance parameter mu}
 \item{nis}{cell counts matrix}
 \item{cellarea}{area of cells}
 \item{spatialvals}{spatial at risk, function lambda, interpolated onto the requisite grid}
-\item{temporal.fitted}{temporal fitted values representing mu(t)}
-\item{tdiff}{vecto of time differences with convention that the first element is Inf}
 \item{scaleconst}{expected number of observations}
 \item{rootQeigs}{square root of eigenvalues of precision matrix}
 \item{invrootQeigs}{inverse square root of eigenvalues of precision matrix}

@@ -1,13 +1,16 @@
-\name{lgcpPredict}
-\alias{lgcpPredict}
-\title{lgcpPredict function...}
-\usage{lgcpPredict(xyt, T, laglength, model.parameters=lgcppars(),
-    spatial.covmodel="exponential", covpars=c(), cellwidth, gridsize,
-    spatial.intensity, temporal.intensity, mcmc.control,
-    output.control=setoutput(), missing.data.areas, autorotate=FALSE,
-    gradtrunc, ext=2)}
-\description{lgcpPredict function}
-\details{The function \code{lgcpPredict} performs spatiotemporal prediction for log-Gaussian Cox Processes
+\name{lgcpPredictAggregated}
+\alias{lgcpPredictAggregated}
+\title{lgcpPredictAggregated function...}
+\usage{lgcpPredictAggregated(app, popden, T, laglength,
+    model.parameters=lgcppars(), spatial.covmodel="exponential",
+    covpars=c(), cellwidth, gridsize, spatial.intensity,
+    temporal.intensity, mcmc.control, output.control=setoutput(),
+    autorotate=FALSE, gradtrunc)}
+\description{lgcpPredictAggregated function}
+\details{The function \code{lgcpPredict} performs spatiotemporal prediction for log-Gaussian Cox Processes for point process data where counts
+have been aggregated to the regional level. This is achieved by imputation of the regional counts onto a spatial continuum; if something
+is known about the underlying spatial density of cases, then this information can be added to improve the quality of the imputation, 
+without this, the counts are distributed uniformly within regions.
 
 The following is a mathematical description of a log-Gaussian Cox Process, it is best viewed in the pdf version of the manual.
 
@@ -62,7 +65,8 @@ required.}
 \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
 \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}}
-\arguments{\item{xyt}{a spatio-temporal point pattern object, see ?stppp}
+\arguments{\item{app}{a spatio-temporal aggregated point pattern object, see ?stapp}
+\item{popden}{a spatialAtRisk object of class 'fromFunction' describing the population density, if known. Default is NULL, which gives a uniform density on each region.}
 \item{T}{time point of interest}
 \item{laglength}{specifies lag window, so that data from and including  time (T-laglength) to time T is used in the MALA algorithm}
 \item{model.parameters}{values for parameters, see ?lgcppars}
@@ -74,10 +78,8 @@ required.}
 \item{temporal.intensity}{the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk}
 \item{mcmc.control}{MCMC paramters, see ?mcmcpars}
 \item{output.control}{output choice, see ?setoutput}
-\item{missing.data.areas}{a list of owin objects (of length laglength+1) which has xyt$window as a base window, but with polygonal holes specifying spatial areas where there is missing data.}
 \item{autorotate}{logical: whether or not to automatically do MCMC on optimised, rotated grid.}
-\item{gradtrunc}{truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.}
-\item{ext}{integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays very slowly (compared withe the size of hte observation window), increasing 'ext' may be necessary.
+\item{gradtrunc}{truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.
 further notes on autorotate argument: If set to TRUE, and the argument spatial is not NULL, then the argument spatial must be computed in the original frame of reference (ie NOT in the rotated frame). 
 Autorotate performs bilinear interpolation (via interp.im) on an inverse transformed grid; if there is no computational advantage in doing this, a warning message will be issued. Note that best accuracy 
 is achieved by manually rotating xyt and then computing spatial on the transformed xyt and finally feeding these in as arguments to the function lgcpPredict. By default autorotate is set to FALSE.}}

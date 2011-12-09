@@ -18,6 +18,10 @@ mcmcpars <- function(	mala.length,
 						inits = NULL,
 						MCMCdiag=0,
                         adaptivescheme){
+                        
+    if(MCMCdiag>0){
+        warning("NOTE: MCMCdiag option is no-longer operational. For MCMC diagnostics use output.control(dump2dir='your_directory') to save chain to disk",.immediate=TRUE)
+    } 
 
 	return(list(mala.length=mala.length,
 				burnin=burnin,

@@ -7,7 +7,7 @@
 ##' Generic function used in the construction of temporalAtRisk objects. A temporalAtRisk object describes the at risk
 ##' population globally in an observation time window [t_1,t_2]. Therefore, for any t in [t_1,t_2], a temporalAtRisk object should be able
 ##' to return the global at risk population, mu(t) = E(number of cases in the unit time interval containing t). This is in contrast to the class of 
-##' \link{spatialAtRisk} objects, which describe the spatial inhomogeneity in the poopulation at risk, lambda(s).
+##' \link{spatialAtRisk} objects, which describe the spatial inhomogeneity in the population at risk, lambda(s).
 ##'
 ##' Note that in the prediction routine, \link{lgcpPredict}, and the simulation routine, \link{lgcpSim}, time discretisation is achieved
 ##' using \code{as.integer} on both observation times and time limits t_1 and t_2 (which may be stored as non-integer values). The

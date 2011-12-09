@@ -1,7 +1,7 @@
 \name{expectation.lgcpPredict}
 \alias{expectation.lgcpPredict}
 \title{expectation...}
-\usage{\method{expectation}{lgcpPredict} (obj, fun, ...)}
+\usage{\method{expectation}{lgcpPredict} (obj, fun, maxit, ...)}
 \description{expectation.lgcpPredict function}
 \details{\bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. This function computes the 
 Monte Carlo Average of a function where data from a run of \code{lgcpPredict} has been dumped to disk.
@@ -20,4 +20,5 @@ practice, there is no need to compute the mean on line explicitly, as this is al
 \seealso{\link{lgcpPredict}, \link{dump2dir}, \link{setoutput}}
 \arguments{\item{obj}{an object of class lgcpPredict}
 \item{fun}{a function accepting a single argument that returns a numeric vector, matrix or array object}
+\item{maxit}{Not used in ordinary circumstances. Defines subset of samples over which to compute expectation. Expectation is computed using information from iterations 1:maxit, where 1 is the first non-burn in iteration dumped to disk.}
 \item{...}{additional arguments}}

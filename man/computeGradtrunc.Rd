@@ -4,7 +4,9 @@
 \usage{computeGradtrunc(nsims=100, scale=1, nis, theta, timediffs, mu,
     temporal, grid)}
 \description{computeGradtrunc function}
-\details{\bold{Advanced use only.} A function to compute a gradient truncation parameter for MALA via simulation. The function
+\details{NOTE THIS FUNCTiON IS NOW REDUNDANT AND HAS BEEN REPLACED BY computeGradtruncSpatioTemporal
+
+\bold{Advanced use only.} A function to compute a gradient truncation parameter for MALA via simulation. The function
 requires an FFT 'grid' to be pre-computed, see \link{fftgrid}.}
 \value{gradient truncation parameter}
 \seealso{\link{fftgrid}}

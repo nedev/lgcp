@@ -83,9 +83,12 @@ mcmcLoop <- function(N,burnin,thin, trim=TRUE, progressor=mcmcProgressPrint){
   obj
 }
 
-###' print method
+###' print.mcmc function
 ###'
-###' print a mcmc iterator's details
+###' print method
+###' print an mcmc iterator's details
+###'
+###' @method print mcmc
 ###' @param x a mcmc iterator
 ###' @param ... other args
 ###' @export
@@ -106,9 +109,12 @@ hasNext <- function(obj) {
   UseMethod("hasNext")
 }
 
+###' hasNext.iter function
+###' 
 ###' method for iter objects
-###'
 ###' test if an iterator has any more values to go
+###'
+###' @method hasNext iter
 ###' @param obj an iterator
 ###' @export
 hasNext.iter <- function(obj){
@@ -156,10 +162,13 @@ resetLoop <- function(obj){
   obj$restart()
 }
 
+###' summary.mcmc function
+###' 
 ###' summary of an mcmc iterator
-###'
 ###' print out values of an iterator and reset it. DONT call this
 ###' in a loop that uses this iterator - it will reset it. And break.
+###'
+###' @method summary mcmc
 ###' @param object an mcmc iterator
 ###' @param ... other args
 ###' @export

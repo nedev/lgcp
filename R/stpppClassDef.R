@@ -174,3 +174,5 @@ rescale.stppp <- function(X,s){
     xnew <- stppp(xnew,tlim=tlim,t=t)
     return(xnew) 
 }
+
+

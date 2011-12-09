@@ -249,9 +249,21 @@ GFupdate.dump2dir <- function(F,...){
     F$incr() 
     M <- get("M",envir=parent.frame())
     N <- get("N",envir=parent.frame())
-    tlen <- length(get("temporal.fitted",envir=parent.frame()))
+    tfit <- get("temporal.fitted",envir=parent.frame())
+    tlen <- length(tfit)
     ncdata <- open.ncdf(paste(F$dirname,"simout.nc",sep=""),write=TRUE)
-    Y <- get("ymats",envir=parent.frame())
+    if(get("SpatialOnlyMode",envir=parent.frame())|get("ImprovedAlgorithm",envir=parent.frame())){ # then in spatial only mode
+        if(get("SpatialOnlyMode",envir=parent.frame())){
+            Y <- list(get("oldtags",envir=parent.frame())$Y[1:(M-1),1:(N-1)])
+        }
+        else{
+            Y <- get("oldtags",envir=parent.frame())$Y
+            Y <- lapply(Y,function(x){x[1:(M-1),1:(N-1)]})
+        }
+    }
+    else{
+        Y <- get("ymats",envir=parent.frame())
+    }
     if (F$lastonly){       
         put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M-1,N-1,1,1))
     }
