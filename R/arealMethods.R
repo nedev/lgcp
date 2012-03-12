@@ -161,12 +161,14 @@ as.stppp <- function(obj,...){
 ##' @param popden a 'spatialAtRisk' of sub-class 'fromXYZ' object representing the population density, or for better results, lambda(s) can also
 ##' be used here. Cases are distributed across the spatial region according to popden. NULL by default, which has the effect of assigning counts uniformly.
 ##' @param n if popden is NULL, then this parameter controls the resolution of the uniform. Otherwise if popden is of class 'fromFunction', it controls the size of the imputation grid used for sampling. Default is 100.
+##' @param dmin If any reginal counts are missing, then a set of polygonal 'holes' in the observation window will be computed for each. dmin is the parameter used to control the simplification of these holes (see ?simplify.owin). default is zero.
+##' @param check logical. If any reginal counts are missing, then roughly speaking, check specifies whether to check the 'holes'. 
 ##' @param ... additional arguments
 ##' @return ...
 ##' @export
 
 
-as.stppp.stapp <- function(obj,popden=NULL,n=100,...){
+as.stppp.stapp <- function(obj,popden=NULL,n=100,dmin=0,check=TRUE,...){
     verifyclass(popden,"fromXYZ")
     #verifyclass(owinlist,"owinlist") no longer needed
 
@@ -198,7 +200,7 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,...){
     t <- c()
     for (i in 1:dim(rcounts)[1]){
         rcts <- rcounts[i,] # total counts in region
-        ncts <- sum(rcts)
+        ncts <- sum(rcts,na.rm=TRUE)
         if (ncts==0){
                 next
             } 
@@ -219,7 +221,9 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,...){
         } 
         x <- c(x,newx)
         y <- c(y,newy)
-        t <- c(t,rep(obj$t,rcts))
+        rctssub <- rcts
+        rctssub[is.na(rcts)] <- 0
+        t <- c(t,rep(obj$t,rctssub))
     }
     ord <- order(t) # put them in time order (for no particular reason)
     t <- t[ord]
@@ -229,6 +233,24 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,...){
     xyt <- stppp(pointpat,t=t,tlim=obj$tlim)    
     #attr(xyt,"cellInsideList") <- lapply(cellInside,function(M){matrix(M,nx,ny)}) no longer needed
     attr(xyt,"overlay") <- olay
+    if (any(is.na(rcounts))){
+        cat("... Missing data in regional counts, computing polygon holes...\n")
+        ss <- apply(rcounts,1,function(x){any(is.na(x))})
+        owlss <- as.owinlist(obj$spdf,dmin=dmin,check=check,subset=ss)
+        owl <- rep(list(obj$window),dim(rcounts)[2])
+        spatstat.options(gpclib=TRUE)
+        ind <- apply(rcounts,2,function(x){any(is.na(x))})
+        for(i in 1:dim(rcounts)[2]){
+            if(!ind[i]){
+                next
+            }
+            regidx <- which(is.na(rcounts[,i]))
+            for(j in 1:length(regidx)){
+                owl[[i]] <- setminus.owin(owl[[i]],owlss[[regidx[j]]])
+            }
+        }
+        attr(xyt,"owinlist") <- owl
+    }
     return(xyt)
 }
 
@@ -255,11 +277,12 @@ as.owinlist <- function(obj,...){
 ##' @param obj a SpatialPolygonsDataFrame object
 ##' @param dmin purpose is to simplify the SpatialPolygons. A numeric value giving the smallest permissible length of an edge. See ? simplify.owin
 ##' @param check whether or not to use spatstat functions to check the validity of SpatialPolygons objects
+##' @param subset logical vector. Subset of regions to extract and conver to owin objects. By default, all regions are extracted.
 ##' @param ... additional arguments
 ##' @return a list of owin objects corresponding to the constituent Polygons objects
 ##' @export
 
-as.owinlist.SpatialPolygonsDataFrame <- function(obj,dmin=0,check=TRUE,...){
+as.owinlist.SpatialPolygonsDataFrame <- function(obj,dmin=0,check=TRUE,subset=rep(TRUE,length(obj)),...){
     proj <- obj@proj4string
     nreg <- length(obj) # number of regions
     
@@ -267,6 +290,9 @@ as.owinlist.SpatialPolygonsDataFrame <- function(obj,dmin=0,check=TRUE,...){
     
     owinlist <- list()
     for (i in 1:nreg){
+        if(!subset[i]){
+            next
+        }
         pol <- list()
         pol[[1]] <- obj@polygons[[i]]
         owinlist[[i]] <- as(SpatialPolygons(pol,proj4string=proj),"owin")

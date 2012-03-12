@@ -2,7 +2,8 @@
 \alias{quantile.lgcpPredict}
 \title{quantile...}
 \usage{\method{quantile}{lgcpPredict} (x, qt, tidx, fun,
-    inWindow=x$xyt$window, crop2parentwindow=TRUE, ...)}
+    inWindow=x$xyt$window, crop2parentwindow=TRUE, startidx=1,
+    sampcount, ...)}
 \description{quantile.lgcpPredict function}
 \details{\bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. The routine \code{quantile.lgcpPredict} 
 computes quantiles of functions of Y. For example, to get cell-wise quantiles of exceedance probabilities, set \code{fun=exp}. 
@@ -16,4 +17,6 @@ setting the argument \code{inWindow}, which has a sensible default).}
 \item{fun}{a 1-1 function (default the identity function) to be applied cell-wise to the grid. Must be able to evaluate sapply(vec,fun) for vectors vec.}
 \item{inWindow}{an observation owin window on which to compute the quantiles, can speed up calculation. Default is x$xyt$window.}
 \item{crop2parentwindow}{logical: whether to only compute the quantiles for cells inside x$xyt$window (the 'parent window')}
+\item{startidx}{optional starting sample index for computing quantiles. Default is 1.}
+\item{sampcount}{number of samples to include in computation of quantiles after startidx. Default is all}
 \item{...}{additional arguments}}

@@ -5,7 +5,7 @@
     model.parameters=lgcppars(), spatial.covmodel="exponential",
     covpars=c(), cellwidth, gridsize, spatial.intensity,
     temporal.intensity, mcmc.control, output.control=setoutput(),
-    autorotate=FALSE, gradtrunc)}
+    autorotate=FALSE, gradtrunc, n=100, dmin=0, check=TRUE)}
 \description{lgcpPredictAggregated function}
 \details{The function \code{lgcpPredict} performs spatiotemporal prediction for log-Gaussian Cox Processes for point process data where counts
 have been aggregated to the regional level. This is achieved by imputation of the regional counts onto a spatial continuum; if something
@@ -79,7 +79,10 @@ required.}
 \item{mcmc.control}{MCMC paramters, see ?mcmcpars}
 \item{output.control}{output choice, see ?setoutput}
 \item{autorotate}{logical: whether or not to automatically do MCMC on optimised, rotated grid.}
-\item{gradtrunc}{truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.
+\item{gradtrunc}{truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.}
+\item{n}{parameter for as.stppp. If popden is NULL, then this parameter controls the resolution of the uniform. Otherwise if popden is of class 'fromFunction', it controls the size of the imputation grid used for sampling. Default is 100.}
+\item{dmin}{parameter for as.stppp. If any reginal counts are missing, then a set of polygonal 'holes' in the observation window will be computed for each. dmin is the parameter used to control the simplification of these holes (see ?simplify.owin). default is zero.}
+\item{check}{logical parameter for as.stppp. If any reginal counts are missing, then roughly speaking, check specifies whether to check the 'holes'. 
 further notes on autorotate argument: If set to TRUE, and the argument spatial is not NULL, then the argument spatial must be computed in the original frame of reference (ie NOT in the rotated frame). 
 Autorotate performs bilinear interpolation (via interp.im) on an inverse transformed grid; if there is no computational advantage in doing this, a warning message will be issued. Note that best accuracy 
 is achieved by manually rotating xyt and then computing spatial on the transformed xyt and finally feeding these in as arguments to the function lgcpPredict. By default autorotate is set to FALSE.}}

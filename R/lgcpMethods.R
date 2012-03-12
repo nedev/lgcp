@@ -1041,12 +1041,14 @@ gridInWindow <- function(xvals,yvals,win){
 ##' @param fun a 1-1 function (default the identity function) to be applied cell-wise to the grid. Must be able to evaluate sapply(vec,fun) for vectors vec.
 ##' @param inWindow an observation owin window on which to compute the quantiles, can speed up calculation. Default is x$xyt$window.
 ##' @param crop2parentwindow logical: whether to only compute the quantiles for cells inside x$xyt$window (the 'parent window')
+##' @param startidx optional starting sample index for computing quantiles. Default is 1.   
+##' @param sampcount number of samples to include in computation of quantiles after startidx. Default is all
 ##' @param ... additional arguments
 ##' @return an array, the [,,i]th slice being the grid of cell-wise quantiles, qt[i], of fun(Y), where Y is the MCMC output dumped to disk.
 ##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpQuantiles}
 ##' @export
 
-quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,crop2parentwindow=TRUE,...){
+quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,crop2parentwindow=TRUE,startidx=1,sampcount=NULL,...){
     if (is.null(x$gridfunction$dirname)){
         stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function. See ?dump2dir.")
     }
@@ -1071,13 +1073,16 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
         }
     }
     result <- array(dim=c(datadim[1],datadim[2],length(qt)))
+    if(is.null(sampcount)){
+        sampcount <- datadim[4]
+    }
     pb <- txtProgressBar(min=1,max=datadim[1]*datadim[2],style=3)
     for (i in 1:datadim[1]){
         for(j in 1:datadim[2]){
             setTxtProgressBar(pb,j+(i-1)*datadim[2])
             if(!is.null(inWindow)){
                 if (isTRUE(grinw[i,j])){
-                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,startidx), count=c(1,1,1,sampcount))
                     tr <- sapply(tr,fun)
                     result[i,j,] <- quantile(tr,qt)
                 }

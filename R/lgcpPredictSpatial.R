@@ -69,6 +69,11 @@ lgcpPredictSpatial <- function( sd,
     
     starttime <- Sys.time()
     
+    GMRF <- FALSE
+    if(!is.null(attr(sd,"covbase"))){
+        GMRF <- TRUE
+    }
+    
     if(sd$window$type=="rectangle"){
 	    sd$window <- as.polygonal(sd$window)
 	}
@@ -126,7 +131,12 @@ lgcpPredictSpatial <- function( sd,
 	phi <- model.parameters$phi
 	mu <- model.parameters$mu
 	theta <- model.parameters$theta
-	scaleconst <- sd$n # ML estimate of scaling constant 
+	if(!GMRF){
+	    scaleconst <- sd$n # ML estimate of scaling constant
+    }
+    else{ # in this case, the data have been simulated from lgcpSimSpatialGMRF
+        scaleconst <- attr(sd,"expectednumcases")
+    }
 	
     ow <- selectObsWindow(sd,cellwidth) # outputs M and N as 2^m+1 or 2^n+1 hence correction 2 lines below
 	sd <- ow$xyt
@@ -185,9 +195,15 @@ lgcpPredictSpatial <- function( sd,
 	#### NOT NECESSARY spatialvals[cellInside & spatialvals==0] <- 1e-200 # impute a very small number into cells inside the observation window with apparently zero risk
 	
 	# compute the base matrix of the covariance matrix
-    bcb <- blockcircbase(x=mcens,y=ncens,sigma=sigma,phi=phi,model=spatial.covmodel,additionalparameters=covpars)
+	if(GMRF){
+        bcb <- attr(sd,"covbase")
+        Qeigs <- eigenfrombase(attr(bcb,"precbase"))
+    }
+    else{
+        bcb <- blockcircbase(x=mcens,y=ncens,sigma=sigma,phi=phi,model=spatial.covmodel,additionalparameters=covpars)    
+        Qeigs <- eigenfrombase(inversebase(bcb)) # eigenvalues of Q (the precision matrix)
+    }
     
-    Qeigs <- eigenfrombase(inversebase(bcb)) # eigenvalues of Q (the precision matrix)
     rqe <- sqrt(Qeigs) # square root of the eigenvalues (used in computation)
     irqe <- 1/rqe # reciprocal root (commputation)
     	
@@ -278,7 +294,7 @@ lgcpPredictSpatial <- function( sd,
                                                   
 	
 	endtime <- Sys.time()
-	timetaken <- endtime-starttime
+	timetaken <- difftime(endtime,starttime,units="mins")
 	
 	lg$xyt <- sd
 	lg$M <- M

@@ -440,7 +440,7 @@ exceedProbsAggregated <- function(threshold,lg=NULL,lastonly=TRUE){
         regpop <- lg$app$spdf$population
         nreg <- length(regpop)
         if(is.null(regpop)){
-            stop("Reguire regional population denominators to compute excedances. Add data $population to the SpatialPolygonsDataFrame.")
+            stop("Reguire regional population denominators to compute exceedances. Add data $population to the SpatialPolygonsDataFrame.")
         }
         olay <- lg$overlay
         cellarea <- (lg$mcens[2]-lg$mcens[1])*(lg$ncens[2]-lg$ncens[1])
