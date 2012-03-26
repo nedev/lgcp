@@ -15,4 +15,4 @@
 \item{spatial.covmodel}{spatial covariance function, default is exponential, see ?CovarianceFct}
 \item{covpars}{vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct}
 \item{ext}{how much to extend the parameter space by. Default is 2.}
-\item{plot}{logical, wheter to plot the latent field.}}
+\item{plot}{logical, whether to plot the latent field.}}

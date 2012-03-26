@@ -64,7 +64,7 @@ required.}
 \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}}
+\link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}}
 \arguments{\item{app}{a spatio-temporal aggregated point pattern object, see ?stapp}
 \item{popden}{a spatialAtRisk object of class 'fromFunction' describing the population density, if known. Default is NULL, which gives a uniform density on each region.}
 \item{T}{time point of interest}

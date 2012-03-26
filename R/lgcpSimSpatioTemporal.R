@@ -121,8 +121,8 @@ lgcpSim <- function(owin=NULL,
       
     ow <- selectObsWindow(xyt,cellwidth)
 	xyt <- ow$xyt
-	M <- ow$M - 1
-	N <- ow$N - 1
+	M <- ow$M
+	N <- ow$N
 	cat(paste("FFT Grid size: [",ext*M," , ",ext*N,"]\n",sep=""))
 	if(is.null(spatial.intensity)){
         spatial <- spatialAtRisk(list(X=seq(xyt$window$xrange[1],xyt$window$xrange[2],length.out=M),Y=seq(xyt$window$yrange[1],xyt$window$yrange[2],length.out=N),Zm=matrix(1/(M*N),M,N)))

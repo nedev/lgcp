@@ -52,7 +52,7 @@
 ##' \link{rr.lgcpPredict}, \link{serr.lgcpPredict}, \link{intens.lgcpPredict},   
 ##' \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
 ##' \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
-##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}, \link{computeGradtrunc}
+##' \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}
 ##' @export 
     
 lgcpPredictSpatial <- function( sd,
@@ -96,7 +96,7 @@ lgcpPredictSpatial <- function( sd,
 	    cwseq <- seq(approxcw/2,2*approxcw,length.out=500)
 	    cwfun <- function(cw){
 	        ow <- selectObsWindow(sd,cw)
-	        return(c(ow$M-1,ow$N-1))
+	        return(c(ow$M,ow$N))
 	    }
 	    gsmat <- t(sapply(cwseq,cwfun))
 	    tf <- apply(gsmat,1,function(x){return(all(x==gridsize))})
@@ -138,10 +138,10 @@ lgcpPredictSpatial <- function( sd,
         scaleconst <- attr(sd,"expectednumcases")
     }
 	
-    ow <- selectObsWindow(sd,cellwidth) # outputs M and N as 2^m+1 or 2^n+1 hence correction 2 lines below
+    ow <- selectObsWindow(sd,cellwidth) 
 	sd <- ow$xyt
-	M <- ow$M - 1 # note for this function, M and N are powers of 2 (NOT M-1 and N-1)
-	N <- ow$N - 1
+	M <- ow$M
+	N <- ow$N
 	
 	if (M*N>=(256^2)){
 	    Sys.sleep(1)
@@ -195,7 +195,7 @@ lgcpPredictSpatial <- function( sd,
 	#### NOT NECESSARY spatialvals[cellInside & spatialvals==0] <- 1e-200 # impute a very small number into cells inside the observation window with apparently zero risk
 	
 	# compute the base matrix of the covariance matrix
-	if(GMRF){
+	if(GMRF){ # this is invoked if data have been simulated from lgcpSimSpatialGMRF
         bcb <- attr(sd,"covbase")
         Qeigs <- eigenfrombase(attr(bcb,"precbase"))
     }
@@ -219,7 +219,7 @@ lgcpPredictSpatial <- function( sd,
 	# issue warning if dumping information to disc
 	nsamp <- floor((mLoop$N-mLoop$burnin)/mLoop$thin)
 	if (!is.null(output.control$gridfunction) & class(output.control$gridfunction)[1]=="dump2dir"){
-    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif((M-1)*(N-1)),dim=c((M-1),(N-1))))/1024^2,2)," Mb, ",sep="")
+    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif(N*N),dim=c(M,N)))/1024^2,2)," Mb, ",sep="")
         if (!output.control$gridfunction$forceSave){
             m <- menu(c("yes","no"),title="continue?")
             if(m==1){
@@ -232,8 +232,7 @@ lgcpPredictSpatial <- function( sd,
         }
     }
 	
-	nis <- matrix(0,ext*M,ext*N)
-    nis[1:(2*M),1:(2*N)] <- getCounts(xyt=sd,M=M+1,N=N+1) # M+1 and N+1 here because M and N are powers of 2
+	nis  <- getCounts(xyt=sd,M=M,N=N,ext=ext) 
     ct1 <- sum(nis)
 	nis <- nis * cellInside
 	ct2 <- sum(nis)
@@ -375,15 +374,12 @@ MALAlgcpSpatial <- function(mcmcloop,
                             gridav){
                             
     SpatialOnlyMode <- TRUE
-    ImprovedAlgorithm <- TRUE
+    ##ImprovedAlgorithm <- TRUE
 
     cellOutside <- !as.logical(cellInside)
     logspatial <- log(scaleconst*spatialvals)
     logspatial[cellOutside|spatialvals==0] <- 0 # NOTE THIS IS FOR SIMPLIFYING THE COMPUTATION OF THE TARGET!!
                                   
-    
-    M <- M+1
-    N <- N+1
     temporal.fitted <- Inf # note this line is here for gridFunction and gridAverage methods and is not used otherwise                            
     GFinitialise(gridfun) # note these two lines must come after M and N have been computed or defined
 	GAinitialise(gridav) # note these two lines must come after M and N have been computed or defined
@@ -393,10 +389,10 @@ MALAlgcpSpatial <- function(mcmcloop,
     nsamp <- 0
     icount <- 0
     MCMCacc <- 0
-    y.mean <- matrix(0,M-1,N-1)
-    y.var <- matrix(0,M-1,N-1)
-    EY.mean <- matrix(0,M-1,N-1)
-    EY.var <- matrix(0,M-1,N-1)	                 
+    y.mean <- matrix(0,M,N)
+    y.var <- matrix(0,M,N)
+    EY.mean <- matrix(0,M,N)
+    EY.var <- matrix(0,M,N)	                 
              
     Gamma <- matrix(0,Mext,Next) # initialise with mean     
     oldtags <- target.and.grad.spatial(Gamma=Gamma,nis=nis,cellarea=cellarea,rootQeigs=rootQeigs,invrootQeigs=invrootQeigs,mu=mu,spatial=spatialvals,logspat=logspatial,scaleconst=scaleconst,gradtrunc=gradtrunc)
@@ -447,11 +443,11 @@ MALAlgcpSpatial <- function(mcmcloop,
         
         if (is.retain(mcmcloop)){
 	        nsamp <- nsamp + 1
-        	y.mean <- ((nsamp-1)/nsamp) * y.mean + oldtags$Y[1:(M-1),1:(N-1)]/nsamp
-        	EY.mean <- ((nsamp-1)/nsamp) * EY.mean + oldtags$expY[1:(M-1),1:(N-1)]/nsamp
+        	y.mean <- ((nsamp-1)/nsamp) * y.mean + oldtags$Y[1:M,1:N]/nsamp
+        	EY.mean <- ((nsamp-1)/nsamp) * EY.mean + oldtags$expY[1:M,1:N]/nsamp
         	if (nsamp>1){
-    			y.var <- ((nsamp-2)/(nsamp-1))*y.var + (nsamp/(nsamp-1)^2)*(y.mean-oldtags$Y[1:(M-1),1:(N-1)])^2
-    			EY.var <- ((nsamp-2)/(nsamp-1))*EY.var + (nsamp/(nsamp-1)^2)*(EY.mean-oldtags$expY[1:(M-1),1:(N-1)])^2
+    			y.var <- ((nsamp-2)/(nsamp-1))*y.var + (nsamp/(nsamp-1)^2)*(y.mean-oldtags$Y[1:M,1:N])^2
+    			EY.var <- ((nsamp-2)/(nsamp-1))*EY.var + (nsamp/(nsamp-1)^2)*(EY.mean-oldtags$expY[1:M,1:N])^2
     		}                 	               
 			GFupdate(gridfun)
 			GAupdate(gridav)		    
@@ -459,6 +455,10 @@ MALAlgcpSpatial <- function(mcmcloop,
     } 
 	
 	retlist <- list(lasth=h,lastGAM=oldtags$Gamma)
+
+    GFfinalise(gridfun) # these two lines must appear after retlist has been initialised
+	GAfinalise(gridav)  #	
+	
 	retlist$mcmcacc <- MCMCacc
 	retlist$hrec <- hrec
     retlist$y.mean <- lgcpgrid(list(y.mean))

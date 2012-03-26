@@ -4,7 +4,9 @@ n <- 3 # "number of iterations"
 m <- 3 # "number of aggregated time points"
 temporal.fitted <- c(1,2,3) # required to set up MonteCarloAverage
 SpatialOnlyMode <- FALSE
-ImprovedAlgorithm <- FALSE
+
+M <- 5
+N <- 5
 
 Y <- list()
 for(i in 1:n){
@@ -24,8 +26,9 @@ fun2 <- function(Y){
 mca <- MonteCarloAverage(list("fun1","fun2"))
 
 GAinitialise(mca)
+oldtags <- list()
 for(i in 1:n){
-    ymats <- Y[[i]]
+    oldtags$Y <- Y[[i]]
     GAupdate(mca)
 }
 
