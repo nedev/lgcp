@@ -4,6 +4,8 @@
 
 ##' fftgrid function
 ##'
+##' ! As of lgcp version 0.9-5, this function is no longer used !
+##'
 ##' \bold{Advanced use only.} Computes various quantities for use in \code{lgcpPredict},
 ##' \code{lgcpSim} .
 ##' 
@@ -16,10 +18,6 @@
 ##' @param model correlation type see ?CovarianceFct
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
 ##' @return fft objects for use in MALA
-##' @examples
-##' xyt <- stppp(ppp(),t=c(),tlim=c(0,1))
-##' sar <- spatialAtRisk(function(x,y){return(1)},warn=FALSE)
-##' grid <- fftgrid(xyt,64,64,sar,1,0.01,"exponential",covpars=c())
 ##' @export
 
 
@@ -103,16 +101,17 @@ fftinterpolate <- function(spatial,...){
 ##' @param spatial objects of class spatialAtRisk
 ##' @param mcens x-coordinates of interpolation grid in extended space
 ##' @param ncens y-coordinates of interpolation grid in extended space
+##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays slowly, increasing 'ext' may be necessary.
 ##' @param ... additional arguments
 ##' @return matrix of interpolated values
 ##' @seealso \link{fftgrid}, \link{spatialAtRisk.fromXYZ}
 ##' @export
 
-fftinterpolate.fromXYZ <- function(spatial,mcens,ncens,...){
+fftinterpolate.fromXYZ <- function(spatial,mcens,ncens,ext,...){
     M.ext <- length(mcens)
     N.ext <- length(ncens)
-    M <- M.ext/2
-    N <- N.ext/2
+    M <- M.ext/ext
+    N <- N.ext/ext
 	
 	spatialvals <- matrix(0,M.ext,N.ext)
     spatialextend <- spatial$Zm
@@ -133,16 +132,17 @@ fftinterpolate.fromXYZ <- function(spatial,mcens,ncens,...){
 ##' @param spatial objects of class spatialAtRisk
 ##' @param mcens x-coordinates of interpolation grid in extended space
 ##' @param ncens y-coordinates of interpolation grid in extended space
+##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays slowly, increasing 'ext' may be necessary.
 ##' @param ... additional arguments
 ##' @return matrix of interpolated values
 ##' @seealso \link{fftgrid}, \link{spatialAtRisk.function}
 ##' @export
 
-fftinterpolate.fromFunction <- function(spatial,mcens,ncens,...){
+fftinterpolate.fromFunction <- function(spatial,mcens,ncens,ext,...){
     M.ext <- length(mcens)
     N.ext <- length(ncens)
-    M <- M.ext/2
-    N <- N.ext/2
+    M <- M.ext/ext
+    N <- N.ext/ext
     spatialvals <- matrix(0,M.ext,N.ext)
     xyvals <- matrix(cbind(rep(mcens[1:M],N),rep(ncens[1:N],each=M)),M*N,2)
     interp <- apply(xyvals,1,function(pt){return(spatial$f(pt[1],pt[2]))})
@@ -159,16 +159,17 @@ fftinterpolate.fromFunction <- function(spatial,mcens,ncens,...){
 ##' @param spatial objects of class spatialAtRisk
 ##' @param mcens x-coordinates of interpolation grid in extended space
 ##' @param ncens y-coordinates of interpolation grid in extended space
+##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays slowly, increasing 'ext' may be necessary.
 ##' @param ... additional arguments
 ##' @return matrix of interpolated values
 ##' @seealso \link{fftgrid}, \link{spatialAtRisk.SpatialPolygonsDataFrame}
 ##' @export
 
-fftinterpolate.fromSPDF<- function(spatial,mcens,ncens,...){
+fftinterpolate.fromSPDF<- function(spatial,mcens,ncens,ext,...){
     M.ext <- length(mcens)
     N.ext <- length(ncens)
-    M <- M.ext/2
-    N <- N.ext/2
+    M <- M.ext/ext
+    N <- N.ext/ext
     spatialvals <- matrix(0,M.ext,N.ext)
     xyvals <- SpatialPoints(matrix(cbind(rep(mcens[1:M],N),rep(ncens[1:N],each=M)),M*N,2))
     interp <- overlay(spatial$spdf,xyvals)$atrisk    

@@ -186,7 +186,7 @@ lgcpPredict <- function(xyt,
 	aggtimes <- T - laglength:0
 	nobser <- 0
 	for (i in 1:(laglength+1)){
-	    nobser <- nobser + sum(xyt$t==aggtimes(i))
+	    nobser <- nobser + sum(xyt$t==aggtimes[i])
 	}
 	if(nobser==0){
 	    cat("NOTE: time data should be integer-valued.\n")
@@ -324,7 +324,7 @@ lgcpPredict <- function(xyt,
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
 	if(is.null(missing.data.areas)){
-    	spatialvals <- fftinterpolate(spatial,mcens,ncens)
+    	spatialvals <- fftinterpolate(spatial,mcens,ncens,ext=ext)
     	spatialvals <- spatialvals*cellInside[[1]]
     	spatialvals <- spatialvals / (cellarea*sum(spatialvals))
     	spatialvals <- rep(list(spatialvals),numt)
@@ -332,7 +332,7 @@ lgcpPredict <- function(xyt,
 	else{
 	    cellIns <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region) # for purposes of computing normalising constant of lambda
     	cellIns <- matrix(as.numeric(cellIns),Mext,Next,byrow=TRUE)
-	    spatialinterp <- fftinterpolate(spatial,mcens,ncens)
+	    spatialinterp <- fftinterpolate(spatial,mcens,ncens,ext=ext)
 	    tempinterp <- spatialinterp*cellIns
 	    NC <- cellarea*sum(tempinterp) # gives normalising constant for lambda over the whole observation window, with no missing areas (compare with the version where missing.data.area is null above)
 	    spatialvals <- list()

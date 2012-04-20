@@ -191,7 +191,7 @@ lgcpPredictSpatial <- function( sd,
 	
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
-	spatialvals <- fftinterpolate(spatial,mcens,ncens)
+	spatialvals <- fftinterpolate(spatial,mcens,ncens,ext=ext)
 	spatialvals <- spatialvals*cellInside
 	spatialvals <- spatialvals / (cellarea*sum(spatialvals))
 	#### NOT NECESSARY spatialvals[cellInside & spatialvals==0] <- 1e-200 # impute a very small number into cells inside the observation window with apparently zero risk
@@ -304,7 +304,7 @@ lgcpPredictSpatial <- function( sd,
 	lg$tdiffs <- NA
 	lg$vars <- NA
 	lg$spatial <- spatial
-	lg$temporal <- NA
+	lg$temporal <- scaleconst
 	lg$grid <- spatialvals
 	lg$nis <- nis
 	lg$mcens <- mcens[1:M]

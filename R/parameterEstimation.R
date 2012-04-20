@@ -484,9 +484,24 @@ thetaEst <- function(xyt,spatial.intensity=NULL,temporal.intensity=NULL,sigma,ph
     return(theta)    
 }
 
-
-
 ##' lambdaEst function
+##'
+##' Generic function for estimating bivariate densities by eye. Specific methods exist for stppp objects and ppp objects.
+##'
+##' @param xyt an object
+##' @param ... additional arguments
+##' @return method lambdaEst
+##' @seealso \link{lambdaEst.stppp}, \link{lambdaEst.ppp}
+##' @export
+
+lambdaEst <- function(xyt,...){
+    UseMethod("lambdaEst")
+}
+
+
+
+
+##' lambdaEst.stppp function
 ##'
 ##' A tool for the visual estimation of lambda(s) via a 2 dimensional smoothing of the case locations. For parameter estimation, the alternative is
 ##' to estimate lambda(s) by some other means, convert it into a spatialAtRisk object and then into a pixel image object using the build in coercion 
@@ -502,9 +517,11 @@ thetaEst <- function(xyt,spatial.intensity=NULL,temporal.intensity=NULL,sigma,ph
 ##' that displayed when colour adjustment is set equal to 1.
 ##'
 ##'
+##' @method lambdaEst stppp
 ##' @param xyt object of class stppp
 ##' @param weights Optional vector of weights to be attached to the points.  May include negative values. See ?density.ppp.
 ##' @param edge Logical flag: if TRUE, apply edge correction. See ?density.ppp.
+##' @param bw optional bandwidth. Set to NULL by default, which calls teh resolve.2D.kernel function for computing an initial value of this
 ##' @param ... arguments to be passed to plot
 ##' @return This is an rpanel function for visual choice of lambda(s), the output is a variable, varname, with the density *per unit time* 
 ##' the variable varname can be fed to the function ginhomAverage or KinhomAverage as the argument density (see for example ?ginhomAverage), or into the 
@@ -517,7 +534,7 @@ thetaEst <- function(xyt,spatial.intensity=NULL,temporal.intensity=NULL,sigma,ph
 ##' @seealso \link{spatialAtRisk}, \link{ginhomAverage}, \link{KinhomAverage}, \link{spatialparsEst}, \link{thetaEst}, \link{muEst} 
 ##' @export
 
-lambdaEst <- function(xyt,weights=c(),edge=TRUE,...){
+lambdaEst.stppp <- function(xyt,weights=c(),edge=TRUE,bw=NULL,...){
 
     ## dummy function callback needed for OK button:
     ok <- function(panel){
@@ -528,7 +545,9 @@ lambdaEst <- function(xyt,weights=c(),edge=TRUE,...){
     plotdata <- c()
     pow <- c()
 
-    bw <- resolve.2D.kernel(NULL,x = xyt,adjust = 1)$sigma 
+    if(is.null(bw)){
+        bw <- resolve.2D.kernel(NULL,x = xyt,adjust = 1)$sigma
+    } 
     varlist <- list(bw=bw,adjust=1,plotdata=TRUE,pow=1)
     
     env <- NULL
@@ -540,6 +559,87 @@ lambdaEst <- function(xyt,weights=c(),edge=TRUE,...){
         d <- density(xyt,bandwidth=bw,weights=weights,edge=edge)
         plotden <- d
         plotden$v <- (d$v / diff(xyt$tlim))^p$pow
+        plot(plotden,main="Density",...)
+        if(p$plotdata){
+            points(xyt,pch="+",cex=0.5)
+        }
+        return(p)
+    }
+    panfun(varlist)
+    pancontrol <- rp.control("Density Estimation")
+    rp.textentry(pancontrol,var=bw,initval=bw,action=panfun,title="bandwidth")
+    rp.checkbox(pancontrol,var=plotdata,action=panfun,labels = "Plot Data",initval = TRUE)
+    rp.slider(pancontrol,var=pow,from=0,to=1,initval=1,action=panfun,showvalue=TRUE,title="colour adjustment")
+    ## add our OK button. Make it a quitbutton:
+    rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
+
+    ## now wait until our panel quits.
+    rp.block(pancontrol)
+    dev.off()    
+
+    return(get("d",envir=env))
+}
+
+
+
+##' lambdaEst.ppp function
+##'
+##' A tool for the visual estimation of lambda(s) via a 2 dimensional smoothing of the case locations. For parameter estimation, the alternative is
+##' to estimate lambda(s) by some other means, convert it into a spatialAtRisk object and then into a pixel image object using the build in coercion 
+##' methods, this \code{im} object can then be fed to \link{ginhomAverage}, \link{KinhomAverage} or \link{thetaEst} for instance.
+##'
+##' The function lambdaEst is built directly on the density.ppp function and as such, implements a bivariate 
+##' Gaussian smoothing kernel. The bandwidth is initially that which is automatically chosen by the default method 
+##' of density.ppp. Since image plots of these kernel density estimates may not have appropriate 
+##' colour scales, the ability to adjust this is given with the slider 'colour adjustment'. With colour adjustment set 
+##' to 1, the default image.plot for the equivalent pixel image object is shown and for values less than 1, the colour 
+##' scheme is more spread out, allowing the user to get a better feel for the density that is being fitted. NOTE: colour 
+##' adjustment does not affect the returned density and the user should be aware that the returned density will 'look like' 
+##' that displayed when colour adjustment is set equal to 1.
+##'
+##'
+##' @method lambdaEst ppp
+##' @param xyt object of class stppp
+##' @param weights Optional vector of weights to be attached to the points.  May include negative values. See ?density.ppp.
+##' @param edge Logical flag: if TRUE, apply edge correction. See ?density.ppp.
+##' @param bw optional bandwidth. Set to NULL by default, which calls teh resolve.2D.kernel function for computing an initial value of this
+##' @param ... arguments to be passed to plot
+##' @return This is an rpanel function for visual choice of lambda(s), the output is a variable, varname, with the density *per unit time* 
+##' the variable varname can be fed to the function ginhomAverage or KinhomAverage as the argument density (see for example ?ginhomAverage), or into the 
+##' function thetaEst as the argument spatial.intensity.
+##' @references 
+##' \enumerate{
+##'     \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
+##'     \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
+##' }
+##' @seealso \link{spatialAtRisk}, \link{ginhomAverage}, \link{KinhomAverage}, \link{spatialparsEst}, \link{thetaEst}, \link{muEst} 
+##' @export
+
+lambdaEst.ppp <- function(xyt,weights=c(),edge=TRUE,bw=NULL,...){
+
+    ## dummy function callback needed for OK button:
+    ok <- function(panel){
+        return(panel)
+    }
+
+    adjust <- c() # to get rid of 'no visible binding' messages on checking
+    plotdata <- c()
+    pow <- c()
+
+    if(is.null(bw)){
+        bw <- resolve.2D.kernel(NULL,x = xyt,adjust = 1)$sigma
+    } 
+    varlist <- list(bw=bw,adjust=1,plotdata=TRUE,pow=1)
+    
+    env <- NULL
+
+    panfun <- function(p){
+        env <<- environment()
+        bw <- as.numeric(p$bw)
+        adjust <- as.numeric(p$adjust)        
+        d <- density(xyt,sigma=bw,weights=weights,edge=edge)
+        plotden <- d
+        plotden$v <- d$v^p$pow
         plot(plotden,main="Density",...)
         if(p$plotdata){
             points(xyt,pch="+",cex=0.5)

@@ -309,7 +309,7 @@ lgcpSimSpatial <- function( owin=NULL,
 	
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
-	spatialvals <- fftinterpolate(spatial,mcens,ncens)
+	spatialvals <- fftinterpolate(spatial,mcens,ncens,ext=ext)
 	spatialvals <- spatialvals[1:M,1:N]
 	spatialvals <- spatialvals*cellInside
 	spatialvals <- spatialvals / (cellarea*sum(spatialvals))

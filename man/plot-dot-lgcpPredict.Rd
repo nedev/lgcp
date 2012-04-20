@@ -5,7 +5,7 @@
     plotdata=TRUE, ask=TRUE, clipWindow=TRUE, ...)}
 \description{plot.lgcpPredict function}
 \details{Simple plotting function for objects of class \code{lgcpPredict}.}
-\value{plots the Monte Carlo mean of Y obtained via simulation}
+\value{plots the Monte Carlo mean of quantities obtained via simulation. By default the mean relative risk is plotted.}
 \seealso{\link{lgcpPredict}}
 \arguments{\item{x}{an object of class lgcpPredict}
 \item{type}{Character string: what type of plot to produce. Choices are "relrisk" (=exp(Y)); "serr" (standard error of relative risk); or "intensity" (=lambda*mu*exp(Y)).}
