@@ -122,6 +122,7 @@ print.stapp <- function(x,printhead=TRUE,...){
 ##'
 ##' A function to extract the SpatialPolygons part of W and return it as an owin object.
 ##'
+##' @importFrom spatstat as.owin
 ##' @method as.owin stapp
 ##' @param W see ?as.owin
 ##' @param ... see ?as.owin
@@ -189,7 +190,8 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,dmin=0,check=TRUE,...){
     ydiv <- ygrid[2] - ygrid[1]   
     
     #cellInside <- lapply(owinlist,function(w){inside.owin(x=xls,y=yls,w=w)}) no longer needed
-    olay <- overlay(SpatialPoints(cbind(xls,yls)),obj$spdf)
+    #EJP: olay <- overlay(SpatialPoints(cbind(xls,yls)),obj$spdf)
+    olay <- over(SpatialPoints(cbind(xls,yls)), geometry(obj$spdf))
     olay[is.na(olay)] <- 0
     
     rcounts <- obj$spdf@data$counts
@@ -340,12 +342,10 @@ as.owinlist.stapp <- function(obj,dmin=0,check=TRUE,...){
 ##' regions defined in the original stapp object.
 ##'
 ##' A Monte Carlo Average is computed as:
-##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{%
-##'       E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
+##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
 ##' where \eqn{g}{g} is a function of interest, \eqn{Y_{t_1:t_2}^{(i)}}{Y_{t_1:t_2}^{(i)}} is the \eqn{i}{i}th retained sample from the target  
 ##' and \eqn{n}{n} is the total number of retained iterations. For example, to compute the mean of \eqn{Y_{t_1:t_2}}{Y_{t_1:t_2}} set,
-##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{%
-##'       g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
+##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
 ##' the output from such a Monte Carlo average would be a set of \eqn{t_2-t_1}{t_2-t_1} grids, each cell of which 
 ##' being equal to the mean over all retained iterations of the algorithm (NOTE: this is just an example computation, in
 ##' practice, there is no need to compute the mean on line explicitly, as this is already done by default in \code{lgcpPredict}).

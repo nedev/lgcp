@@ -1,0 +1,23 @@
+\name{GFinitialise.nullFunction}
+\alias{GFinitialise.nullFunction}
+\title{GFinitialise.nullFunction function}
+\usage{
+  \method{GFinitialise}{nullFunction} (F, ...)
+}
+\arguments{
+  \item{F}{an object of class dump2dir}
+
+  \item{...}{additional arguments}
+}
+\value{
+  nothing
+}
+\description{
+  This is a null function and performs no action.
+}
+\seealso{
+  \link{nullFunction}, \link{setoutput},
+  \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise},
+  \link{GFreturnvalue}
+}
+

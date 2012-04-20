@@ -1,0 +1,21 @@
+\name{plot.mstppp}
+\alias{plot.mstppp}
+\title{plot.mstppp function}
+\usage{
+  \method{plot}{mstppp} (x, cols = "red", ...)
+}
+\arguments{
+  \item{x}{an object of class mstppp}
+
+  \item{cols}{optional vector of colours to plot points
+  with}
+
+  \item{...}{additional arguments passed to plot}
+}
+\value{
+  plots the mstppp object x
+}
+\description{
+  Plot method for mstppp objects
+}
+

@@ -1,0 +1,21 @@
+\name{smultiply.list}
+\alias{smultiply.list}
+\title{smultiply.list function}
+\usage{
+  smultiply.list(list, const)
+}
+\arguments{
+  \item{list}{a list of objects that could be summed using
+  "+"}
+
+  \item{const}{a numeric constant}
+}
+\value{
+  a list with ith entry the scalar multiple of const *
+  list[[i]]
+}
+\description{
+  This function multiplies each element of a list by a
+  scalar constant.
+}
+

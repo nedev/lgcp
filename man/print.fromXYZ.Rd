@@ -1,0 +1,18 @@
+\name{print.fromXYZ}
+\alias{print.fromXYZ}
+\title{print.fromXYZ function}
+\usage{
+  \method{print}{fromXYZ} (x, ...)
+}
+\arguments{
+  \item{x}{an object of class spatialAtRisk}
+
+  \item{...}{additional arguments}
+}
+\value{
+  prints the object
+}
+\description{
+  Print method for objects of class fromXYZ.
+}
+

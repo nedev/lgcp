@@ -1,0 +1,21 @@
+\name{affine.stppp}
+\alias{affine.stppp}
+\title{affine.stppp function}
+\usage{
+  \method{affine}{stppp} (X, mat, ...)
+}
+\arguments{
+  \item{X}{an object of class stppp}
+
+  \item{mat}{matrix of affine transformation}
+
+  \item{...}{additional arguments}
+}
+\value{
+  the object acted on by the transformation matrix
+}
+\description{
+  An affine transformation of an object of class
+  \code{stppp}
+}
+

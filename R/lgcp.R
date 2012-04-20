@@ -26,11 +26,11 @@
 ###' 
 ###' \emph{Summary statistics, diagnostics and visualisation}\cr
 ###' 
-###' } % this bracket closes the "Details"
+###' }
 ###' 
 ###' \section{Dependencies}{
 ###' The \code{lgcp} package depends upon some other important contributions to CRAN in order to operate; their uses here are indicated:\cr\cr
-###'     spatstat, sp, RandomFields, iterators, ncdf, methods, tcltk, rgl, rpanel, fields, rgdal, maptools
+###'     spatstat, sp, RandomFields, iterators, ncdf, methods, tcltk, rgl, rpanel, fields, rgdal, maptools, rgeos, raster
 ###' }
 ###' 
 ###' \section{Citation}{
@@ -38,7 +38,7 @@
 ###' lgcp -- An R package for Inference With Spatiotemporal Log-Gaussian Cox Processes. Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, 
 ###' Peter J. Diggle. Submitted to The Journal Of Statistical Software.
 ###' }
-###' % note no closing bracket at end of last section in source of this - roxygen will add it:
+###' 
 ###' \references{
 ###' \enumerate{
 ###'     \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.

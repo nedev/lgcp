@@ -234,6 +234,7 @@ toral.cov.mat <- function(xg,yg,sigma,phi,model,additionalparameters){
 ##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct
 ##' @param ext how much to extend the parameter space by. Default is 2.
 ##' @param plot logical, whether to plot the latent field.
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return a ppp object containing the data
 ##' @export
 lgcpSimSpatial <- function( owin=NULL,
@@ -244,7 +245,8 @@ lgcpSimSpatial <- function( owin=NULL,
                             spatial.covmodel="exponential",
                             covpars=c(),
                             ext=2,
-                            plot=FALSE){
+                            plot=FALSE,
+                            inclusion="touching"){
                                                   
     sigma <- model.parameters$sigma
 	phi <- model.parameters$phi
@@ -304,8 +306,16 @@ lgcpSimSpatial <- function( owin=NULL,
 	
 	cellarea <- del1*del2
 	
-	cellInside <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region)
-	cellInside <- as.numeric(matrix(as.logical(cellInside),Mext,Next,byrow=TRUE)[1:M,1:N])
+	if(inclusion=="centroid"){
+        cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
+    }    
+    else if(inclusion=="touching"){
+        cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
+	cellInside <- as.numeric(matrix(as.logical(cellInside),Mext,Next)[1:M,1:N])
 	
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
@@ -355,7 +365,8 @@ lgcpSimSpatial <- function( owin=NULL,
     attr(xyt,"xvals") <- xg
     attr(xyt,"yvals") <- yg
     attr(xyt,"rate") <- matrix(rate,M,N)
-    attr(xyt,"truefield") <- truefield 
+    attr(xyt,"truefield") <- truefield
+    attr(xyt,"inclusion") <- inclusion  
     return(xyt)
 }
 

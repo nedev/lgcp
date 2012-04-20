@@ -1,0 +1,27 @@
+\name{yvals.default}
+\alias{yvals.default}
+\title{yvals.default function}
+\usage{
+  \method{yvals}{default} (obj, ...)
+}
+\arguments{
+  \item{obj}{an object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  the y values
+}
+\description{
+  Default method for extracting 'y values' looks for $Y, $y
+  in that order.
+}
+\seealso{
+  \link{xvals}, \link{yvals}, \link{zvals},
+  \link{xvals.default}, \link{zvals.default},
+  \link{xvals.fromXYZ}, \link{yvals.fromXYZ},
+  \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
+  \link{yvals.SpatialGridDataFrame},
+  \link{zvals.SpatialGridDataFrame}
+}
+

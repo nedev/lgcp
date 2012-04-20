@@ -1,0 +1,19 @@
+\name{getCovParameters}
+\alias{getCovParameters}
+\title{getCovParameters function}
+\usage{
+  getCovParameters(obj, ...)
+}
+\arguments{
+  \item{obj}{an object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  method getCovParameters
+}
+\description{
+  Internal function for retrieving covariance parameters.
+  not indended for general use.
+}
+

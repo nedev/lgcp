@@ -82,7 +82,7 @@ lgcpgrid <- function(grid,...){
 ##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
 ##' @export
 
-lgcpgrid.list <- function(grid,xvals=1:dim(grid)[[1]][1],yvals=1:dim(grid)[[1]][2],zvals=1:length(grid),...){
+lgcpgrid.list <- function(grid,xvals=1:dim(grid[[1]])[1],yvals=1:dim(grid[[1]])[2],zvals=1:length(grid),...){
     obj <- list()
     obj$grid <- grid
     obj$len <- length(grid)
@@ -197,6 +197,7 @@ as.array.lgcpgrid <- function(x,...){
 ##'
 ##' A function to convert lgcpgrid objects into either a raster object, or a RasterBrick object.
 ##'
+##' @importFrom raster raster
 ##' @method raster lgcpgrid
 ##' @param x an lgcpgrid object
 ##' @param crs PROJ4 type description of a map projection (optional). See ?raster
@@ -216,12 +217,13 @@ raster.lgcpgrid <- function(x,crs=NA,transpose=FALSE,...){
     dx <- diff(x$xvals[1:2])
     dy <- diff(x$yvals[1:2])
     if (length(x$zvals)==1){    
-        return(raster(x$grid[[1]], xmn=x$xvals[1]-dx/2, xmx=x$xvals[M]+dx/2, ymn=x$yvals[1]-dy/2, ymx=x$yvals[N]+dy/2, crs=crs))
+        return(raster(t(x$grid[[1]][,N:1]), xmn=x$xvals[1]-dx/2, xmx=x$xvals[M]+dx/2, ymn=x$yvals[1]-dy/2, ymx=x$yvals[N]+dy/2, crs=crs))
     }
     else{
-        ar <- as.array(x)
+        x$grid <- lapply(x$grid,function(xx){t(xx[,N:1])})
+        ar <- as.array(x)        
         br <- brick(ar, xmn=x$xvals[1]-dx/2, xmx=x$xvals[M]+dx/2, ymn=x$yvals[1]-dy/2, ymx=x$yvals[N]+dy/2, crs=crs,transpose=transpose)
-        layerNames(br) <- paste("Time",x$zvals,sep="")
+        names(br) <- paste("Time",x$zvals,sep="")
         return(br)
     }
 }
@@ -330,6 +332,7 @@ summary.lgcpgrid <- function(object,...){
 ##' Quantile method for lgcp objects. This just applies the quantile function to each of
 ##' the elements of x$grid
 ##'
+##' @importFrom stats quantile
 ##' @method quantile lgcpgrid
 ##' @param x an object of class lgcpgrid  
 ##' @param ... other arguments   
@@ -352,6 +355,7 @@ quantile.lgcpgrid <- function(x,...){
 ##'
 ##' Produce an image plot of an lgcpgrid object.
 ##'
+##' @importFrom graphics image
 ##' @method image lgcpgrid
 ##' @param x an object of class lgcpgrid
 ##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
@@ -421,30 +425,30 @@ print.lgcpPredict <- function(x,...){
     cat("\n")
     cat("  General Information\n")
     cat("  -------------------\n")
-    flag <- TRUE
+    #flag <- TRUE
 
-    if(is.null(x$spatialonly)){
-        flag <- FALSE
-    }
-    else{
-        flag <- x$spatialonly
-    }
+    #if(is.null(x$spatialonly)){
+    #    flag <- FALSE
+    #}
+    #else{
+    #    flag <- x$spatialonly
+    #}
     
-    if(!flag){ # is.null(x$spatialonly) for backwards compatibility
+    #if(!flag){ # is.null(x$spatialonly) for backwards compatibility
+    #    cat(paste("      FFT Gridsize: [ ",x$ext*x$M," , ",x$ext*x$N," ]\n",sep=""))
+    #    cat("\n")
+    #
+    #    cat(paste("              Data:\n",sep=""))
+    #    neattable(matrix(c("Time |",x$aggtimes,"Counts |",sapply(x$nis,sum)),nrow=2,byrow=TRUE),indent=4)
+    #    cat("\n")
+    #    cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),", theta=",round(x$theta,3),"\n",sep=""))
+    #}
+    #else{ # spatial only
         cat(paste("      FFT Gridsize: [ ",x$ext*x$M," , ",x$ext*x$N," ]\n",sep=""))
         cat("\n")
     
-        cat(paste("              Data:\n",sep=""))
-        neattable(matrix(c("Time |",x$aggtimes,"Counts |",sapply(x$nis,sum)),nrow=2,byrow=TRUE),indent=4)
-        cat("\n")
-        cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),", theta=",round(x$theta,3),"\n",sep=""))
-    }
-    else{ # spatial only
-        cat(paste("      FFT Gridsize: [ ",x$ext*x$M," , ",x$ext*x$N," ]\n",sep=""))
-        cat("\n")
-    
-        cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),"\n",sep=""))
-    }
+    #    cat(paste("        Parameters: sigma=",round(x$sigma,3),", phi=",round(x$phi,3),"\n",sep=""))
+    #}
     if (!is.null(x$gridfunction)){
         cat(paste("    Dump Directory: ",x$gridfunction$dirname,"\n",sep=""))
     }
@@ -575,7 +579,13 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
             }
         }
         else{
-            grinw <- gridInWindow(x$mcens,x$ncens,x$xyt$window)
+            incl <- "centroid"
+            if(!inherits(try(x$inclusion),"try-error")){
+                if(!is.null(x$inclusion)){
+                    incl <- x$inclusion
+                }
+            }
+            grinw <- gridInWindow(x$mcens,x$ncens,x$xyt$window,inclusion=incl)
             grinw[grinw==0] <- NA
             if (type=="relrisk"){
                 image.plot(x$mcens,x$ncens,grinw*x$EY.mean$grid[[i]],sub=paste("Relative Risk, time",x$aggtimes[i]),...)
@@ -832,15 +842,25 @@ discreteWindow <- function(obj,...){
 ##'
 ##' @method discreteWindow lgcpPredict
 ##' @param obj an lgcpPredict object
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @param ... additional arguments
 ##' @return ...
 ##' @export
 
-discreteWindow.lgcpPredict <- function(obj,...){
+discreteWindow.lgcpPredict <- function(obj,inclusion="touching",...){
     xv <- xvals(obj)
     yv <- yvals(obj)
     gr <- expand.grid(xv,yv)
-    return(matrix(inside.owin(gr[,1],gr[,2],obj$xyt$window),obj$M,obj$N))
+        
+    if(inclusion=="centroid"){
+        return(matrix(inside.owin(gr[,1],gr[,2],obj$xyt$window),obj$M,obj$N))
+    }
+    else if(inclusion=="touching"){
+        return(matrix(touchingowin(xv,yv,obj$xyt$window),obj$M,obj$N))
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
 }
 
 
@@ -993,6 +1013,7 @@ hvals.lgcpPredict <- function(obj,...){
 ##' computational purposes, the window of an \code{stppp} object will be extended to accommodate the requirement that 
 ##' the dimensions must be powers of 2. The function \code{window.lgcpPredict} returns the extended window.
 ##'
+##' @importFrom stats window
 ##' @method window lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param ... additional arguments
@@ -1101,12 +1122,13 @@ plotExceed <- function(obj,...){
 ##' @param ask whether or not to ask for a new plot between plotting exceedances at different thresholds.
 ##' @param mapunderlay optional underlay to plot underneath maps of exceedance probabilities. Use in conjunction with rainbow parameter 'alpha' (eg alpha=0.3) to set transparency of exceedance layer.
 ##' @param alpha graphical parameter takign values in [0,1] controlling transparency of exceedance layer. Default is 1.
+##' @param sub optional subtitle for plot
 ##' @param ... additional arguments passed to image.plot
 ##' @return generic function returning method plotExceed
 ##' @seealso \link{plotExceed.lgcpPredict}
 ##' @export
 
-plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,window=NULL,cases=NULL,nlevel=64,ask=TRUE,mapunderlay=NULL,alpha=1,...){
+plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,window=NULL,cases=NULL,nlevel=64,ask=TRUE,mapunderlay=NULL,alpha=1,sub=NULL,...){
     if (!is.null(lgcppredict)){
         xvals <- lgcppredict$mcens
         yvals <- lgcppredict$ncens
@@ -1129,17 +1151,34 @@ plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,wind
         grinw <- 1
     }
     else{
-        grinw <- gridInWindow(xvals,yvals,window)
+        incl <- "touching"
+        #if(!inherits(try(obj$inclusion),"try-error")){
+        #    if(!is.null(obj$inclusion)){
+        #        incl <- obj$inclusion
+        #    }
+        #}
+        
+        if(!is.null(lgcppredict)){
+            dm <- dim(lgcppredict$cellInside)
+            grinw <- array(as.logical(lgcppredict$cellInside),dim=dm)
+        }
+        else{
+            grinw <- gridInWindow(xvals,yvals,window,inclusion=incl)
+        }
         grinw[as.numeric(grinw)==0] <- NA
     }
     
     for (i in 1:length(relrisks)){
+        subt <- sub
+        if(is.null(subt)){
+            subt <- paste("Prob(Relative Risk)>",relrisks[i])
+        }
         if(is.null(mapunderlay)){
-            image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),...)
+            image.plot(xvals,yvals,grinw*obj[,,i],col=rev(heat.colors(nlevel)),sub=subt,...)
         }
         else{
             plot(mapunderlay)
-            image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel,alpha)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),add=TRUE,...)        
+            image.plot(xvals,yvals,grinw*obj[,,i],col=rev(heat.colors(nlevel)),sub=subt,add=TRUE,...)        
         }        
         
         if (!is.null(window)){
@@ -1237,13 +1276,22 @@ plotExceed.lgcpPredict <- function(obj,fun,nlevel=64,ask=TRUE,plotcases=FALSE,ma
 ##' @param xvals x coordinates
 ##' @param yvals y coordinates
 ##' @param win owin object
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return matrix of TRUE/FALSE, which elements of the grid are inside the observation window win
 ##' @export
 
-gridInWindow <- function(xvals,yvals,win){
+gridInWindow <- function(xvals,yvals,win,inclusion="touching"){
     nx <- length(xvals)
-    ny <- length(yvals)
-    return(matrix(inside.owin(rep(xvals,ny),rep(yvals,each=nx),win),nx,ny))
+    ny <- length(yvals)  
+    if(inclusion=="centroid"){
+        return(matrix(inside.owin(rep(xvals,ny),rep(yvals,each=nx),win),nx,ny))
+    }    
+    else if(inclusion=="touching"){
+        return(matrix(touchingowin(xvals,yvals,win),nx,ny))
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
 }
 
 
@@ -1255,6 +1303,7 @@ gridInWindow <- function(xvals,yvals,win){
 ##' Since computign the quantiles is an expensive operation, the option to output the quantiles on a subregion of interest is also provided (by
 ##' setting the argument \code{inWindow}, which has a sensible default).
 ##'
+##' @importFrom stats quantile
 ##' @method quantile lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param qt a vector of the required quantiles
@@ -1286,11 +1335,17 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
         tidx <- datadim[3]
     }
     if(!is.null(inWindow)){
+        incl <- "centroid"
+        if(!inherits(try(x$inclusion),"try-error")){
+            if(!is.null(x$inclusion)){
+                incl <- x$inclusion
+            }
+        }
         if (crop2parentwindow){
-            grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow) * gridInWindow(x$mcens,x$ncens,x$xyt$window)),length(xvals(x)),length(yvals(x)))
+            grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow,inclusion=incl) * gridInWindow(x$mcens,x$ncens,x$xyt$window,inclusion=incl)),length(xvals(x)),length(yvals(x)))
         }
         else{
-            grinw <- gridInWindow(x$mcens,x$ncens,inWindow)
+            grinw <- gridInWindow(x$mcens,x$ncens,inWindow,inclusion=incl)
         }
     }
     result <- array(dim=c(datadim[1],datadim[2],length(qt)))
@@ -1385,6 +1440,7 @@ plot.lgcpQuantiles <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALS
 ##' \code{identify(lg)} for example (see code below), the user can click multiply with the left mouse button on the graphics device; once
 ##' the user has selected all points of interest, the right button is pressed, which returns them.
 ##'
+##' @importFrom graphics identify
 ##' @method identify lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param ... additional arguments 
@@ -1475,12 +1531,10 @@ loc2poly <- function(n=512,type="l",col="black",...){
 ##' Monte Carlo Average of a function where data from a run of \code{lgcpPredict} has been dumped to disk.
 ##'
 ##' A Monte Carlo Average is computed as:
-##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{%
-##'       E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
+##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
 ##' where \eqn{g}{g} is a function of interest, \eqn{Y_{t_1:t_2}^{(i)}}{Y_{t_1:t_2}^{(i)}} is the \eqn{i}{i}th retained sample from the target  
 ##' and \eqn{n}{n} is the total number of retained iterations. For example, to compute the mean of \eqn{Y_{t_1:t_2}}{Y_{t_1:t_2}} set,
-##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{%
-##'       g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
+##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
 ##' the output from such a Monte Carlo average would be a set of \eqn{t_2-t_1}{t_2-t_1} grids, each cell of which 
 ##' being equal to the mean over all retained iterations of the algorithm (NOTE: this is just an example computation, in
 ##' practice, there is no need to compute the mean on line explicitly, as this is already done by default in \code{lgcpPredict}).
@@ -1490,7 +1544,7 @@ loc2poly <- function(n=512,type="l",col="black",...){
 ##' @param fun a function accepting a single argument that returns a numeric vector, matrix or array object
 ##' @param maxit Not used in ordinary circumstances. Defines subset of samples over which to compute expectation. Expectation is computed using information from iterations 1:maxit, where 1 is the first non-burn in iteration dumped to disk. 
 ##' @param ... additional arguments  
-##' @return the expectated value of that quantity
+##' @return the expectated value of that function
 ##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}
 ##' @export
 
@@ -1517,6 +1571,53 @@ expectation.lgcpPredict <- function(obj,fun,maxit=NULL,...){
         ncdata <- open.ncdf(fn)
         Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
         result <- tryCatch(add.list(result,lapply(Y$grid,fun)),finally=close.ncdf(ncdata))
+        setTxtProgressBar(pb,i)
+    }
+    close(pb)
+    for (i in 1:length(result)){
+        result[[i]] <- result[[i]] / endloop
+    }
+    return(result)
+}
+
+
+##' expectation.lgcpPredictSpatialOnlyPlusParameters function
+##'
+##' \bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. This function computes the 
+##' Monte Carlo Average of a function where data from a run of \code{lgcpPredict} has been dumped to disk.
+##'
+##' @method expectation lgcpPredictSpatialOnlyPlusParameters
+##' @param obj an object of class lgcpPredictSpatialOnlyPlusParameters
+##' @param fun a function with arguments 'Y', 'beta', 'eta', 'Z' and 'otherargs'. See vignette("Bayesian_lgcp") for an example
+##' @param maxit Not used in ordinary circumstances. Defines subset of samples over which to compute expectation. Expectation is computed using information from iterations 1:maxit, where 1 is the first non-burn in iteration dumped to disk.
+##' @param ... additional arguments
+##' @usage "expectation(obj,fun,maxit=NULL,...)"
+##' @return the expectated value of that function
+##' @export
+
+expectation.lgcpPredictSpatialOnlyPlusParameters <- function(obj,fun,maxit=NULL,...){
+    if (is.null(obj$gridfunction$dirname)){
+        stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
+    }
+    fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
+    ncdata <- open.ncdf(fn)
+    if (!is.null(maxit)){
+        if (maxit<2 | maxit>ncdata$dim$iter$len){
+            stop(paste("maxit must be between 2 and",ncdata$dim$iter$len))
+        }
+        endloop <- maxit
+    }
+    else{
+        endloop <- ncdata$dim$iter$len
+    }
+    Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
+    result <- tryCatch(lapply(Y$grid,fun,eta=obj$etarec[1,,drop=FALSE],beta=obj$betarec[1,,drop=FALSE],Z=obj$Z,otherargs=obj),finally=close.ncdf(ncdata))
+    pb <- txtProgressBar(min=1,max=endloop,style=3)
+    setTxtProgressBar(pb,1)
+    for (i in 2:endloop){
+        ncdata <- open.ncdf(fn)
+        Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
+        result <- tryCatch(add.list(result,lapply(Y$grid,fun,eta=obj$etarec[i,,drop=FALSE],beta=obj$betarec[i,,drop=FALSE],Z=obj$Z,otherargs=obj)),finally=close.ncdf(ncdata))
         setTxtProgressBar(pb,i)
     }
     close(pb)
@@ -1589,11 +1690,17 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2pare
         class(data) <- c("lgcpExtract","array")
     }
     else{
+        incl <- "centroid"
+        if(!inherits(try(obj$inclusion),"try-error")){
+            if(!is.null(obj$inclusion)){
+                incl <- obj$inclusion
+            }
+        }
         if (crop2parentwindow){
-            grinw <- matrix(as.logical(gridInWindow(obj$mcens,obj$ncens,inWindow) * gridInWindow(obj$mcens,obj$ncens,obj$xyt$window)),length(xvals(obj)),length(yvals(obj)))
+            grinw <- matrix(as.logical(gridInWindow(obj$mcens,obj$ncens,inWindow,inclusion=incl) * gridInWindow(obj$mcens,obj$ncens,obj$xyt$window,inclusion=incl)),length(xvals(obj)),length(yvals(obj)))
         }
         else{
-            grinw <- gridInWindow(obj$mcens,obj$ncens,inWindow)
+            grinw <- gridInWindow(obj$mcens,obj$ncens,inWindow,inclusion=incl)
         }
         n <- sum(grinw)
         idx <- which(grinw,arr.ind=TRUE)
@@ -1786,7 +1893,8 @@ showGrid.stppp <- function(x,...){
 ##' @param crop2parentwindow logical: whether to only compute autocorrelations for cells inside x$xyt$window (the 'parent window')
 ##' @param ... additional arguments
 ##' @return an array, the [,,i]th slice being the grid of cell-wise autocorrelations.
-##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpAutocorr}
+##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpAutocorr}, \link{ltar}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
+##' \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 ##' @export
 
 autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TRUE,...){
@@ -1803,11 +1911,29 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
         tidx <- datadim[3]
     }
     if(!is.null(inWindow)){
+        incl <- "centroid"
+        if(!inherits(try(x$inclusion),"try-error")){
+            if(!is.null(x$inclusion)){
+                incl <- x$inclusion
+            }
+        }
         if (crop2parentwindow){
-            grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow) * gridInWindow(x$mcens,x$ncens,x$xyt$window)),length(xvals(x)),length(yvals(x)))
+            if(identical(x$xyt$window,inWindow)){
+                dm <- dim(x$cellInside)
+                grinw <- array(as.logical(x$cellInside),dim=dm)
+            }
+            else{
+                grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow,inclusion=incl) * gridInWindow(x$mcens,x$ncens,x$xyt$window,inclusion=incl)),length(xvals(x)),length(yvals(x)))
+            }
         }
         else{
-            grinw <- gridInWindow(x$mcens,x$ncens,inWindow)
+            if(identical(x$xyt$window,inWindow)){
+                dm <- dim(x$cellInside)
+                grinw <- array(as.logical(x$cellInside),dim=dm)
+            }
+            else{
+                grinw <- gridInWindow(x$mcens,x$ncens,inWindow,inclusion=incl)
+            }
         }
     }
     result <- array(dim=c(datadim[1],datadim[2],length(lags)))
@@ -1897,3 +2023,73 @@ plot.lgcpAutocorr <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALSE
 } 
 
 
+##' touchingowin function
+##'
+##' A function to compute which cells are touching an owin or spatial polygons object
+##'
+##' @param x grid centroids in x-direction note this will be expanded into a GRID of (x,y) values in the function
+##' @param y grid centroids in y-direction note this will be expanded into a GRID of (x,y) values in the function
+##' @param w an owin or SpatialPolygons object 
+##' @return vector of TRUE or FALSE according to whether the cell
+##' @export
+
+touchingowin <- function(x, y, w){
+    if (inherits(w,"owin")){
+        w <- as(w,"SpatialPolygons")
+    }
+    gri <- grid2spoly(x,y)
+    int <- !gDisjoint(w,gri,byid=TRUE) & !gTouches(w,gri,byid=TRUE) # cells that have some internal points in common
+    return(apply(int,1,any))
+} 
+
+
+##' grid2spoly function
+##'
+##' A function to convert a regular (x,y) grid of centroids into a SpatialPolygons object
+##'
+##' @param xgrid vector of x centroids (equally spaced)
+##' @param ygrid vector of x centroids (equally spaced)
+##' @param proj4string proj 4 string: specify in the usual way
+##' @return a SpatialPolygons object
+##' @export
+
+grid2spoly <- function(xgrid,ygrid,proj4string=CRS(as.character(NA))){
+    m <- length(xgrid)
+    n <- length(ygrid)
+    spts <- SpatialPixels(SpatialPoints(cbind(rep(xgrid,n),rep(ygrid,each=m))),proj4string=proj4string)
+    return(as(spts,"SpatialPolygons"))
+}
+
+
+##' plot.lgcpZmat function
+##'
+##' A function to plot lgcpZmat objects
+##'
+##' @method plot lgcpZmat
+##' @param x an lgcpZmat object, see ?getZmat
+##' @param ask graphical parameter ask, see ?par
+##' @param pow power parameter, raises the image values to this power (helps with visualisation, default is 1.)
+##' @param main title for plot, default is null which gives an automatic title to the plot (the name of the covariate) 
+##' @param ... other paramters 
+##' @return a sequence of plots of the interpolated covariate values
+##' @export
+
+plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,...){
+    MAIN <- main
+    par(ask=ask)
+    mcens <- attr(x,"mcens")
+    ncens <- attr(x,"ncens")
+    M <- attr(x,"M")
+    N <- attr(x,"N")
+    cellInside <- attr(x,"cellInside")
+    cellInside[cellInside==0] <- NA    
+    
+    npar <- ncol(x)
+    parn <- colnames(x)
+    for(i in 1:npar){
+        if(is.null(MAIN)){
+            main <- parn[i]
+        }
+        image.plot(mcens,ncens,(matrix(x[,i],M,N)*cellInside)^pow,main=main,...)
+    }
+}

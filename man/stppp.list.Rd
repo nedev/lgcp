@@ -1,0 +1,26 @@
+\name{stppp.list}
+\alias{stppp.list}
+\title{stppp.list function}
+\usage{
+  \method{stppp}{list} (P, ...)
+}
+\arguments{
+  \item{P}{list object containing $data, an (n x 3) matrix
+  corresponding to (x,y,t) values; $tlim, a vector of
+  length 2 givign the observation time window; and $window
+  giving an owin spatial observation winow, see ?owin for
+  more details}
+
+  \item{...}{additional arguments}
+}
+\value{
+  an object of class stppp
+}
+\description{
+  Construct a space-time planar point pattern from a list
+  object
+}
+\seealso{
+  \link{stppp}, \link{stppp.ppp},
+}
+

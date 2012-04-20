@@ -1,0 +1,25 @@
+\name{mstppp.stppp}
+\alias{mstppp.stppp}
+\title{mstppp.stppp function}
+\usage{
+  \method{mstppp}{stppp} (P, data, ...)
+}
+\arguments{
+  \item{P}{an lgcp stppp object}
+
+  \item{data}{a data frame containing the collection of
+  marks}
+
+  \item{...}{additional arguments}
+}
+\value{
+  an object of class mstppp
+}
+\description{
+  Construct a marked space-time planar point pattern from
+  an stppp object
+}
+\seealso{
+  \link{mstppp}, \link{mstppp.list}
+}
+

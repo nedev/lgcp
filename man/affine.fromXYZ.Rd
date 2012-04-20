@@ -1,0 +1,21 @@
+\name{affine.fromXYZ}
+\alias{affine.fromXYZ}
+\title{affine.fromXYZ function}
+\usage{
+  \method{affine}{fromXYZ} (X, mat, ...)
+}
+\arguments{
+  \item{X}{an object of class fromFunction}
+
+  \item{mat}{matrix of affine transformation}
+
+  \item{...}{additional arguments}
+}
+\value{
+  the object acted on by the transformation matrix
+}
+\description{
+  An affine transformation of an object of class
+  \code{fromXYZ}. Nearest Neighbour interpolation
+}
+

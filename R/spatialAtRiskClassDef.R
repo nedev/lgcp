@@ -30,19 +30,15 @@
 ##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{%
-##'    X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
+##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1,}{%
-##'    \int_W\lambda(s)d s=1,}
+##' \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
 ##' whilst the fixed temporal component, 
 ##'  \eqn{\mu:R_{\geq 0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known function with
-##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{%
-##'    \mu(t) \delta t = E[X_{W,\delta t}],}
+##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
 ##' for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant. 
 ##'
 ##' @param X an object
@@ -298,6 +294,7 @@ spatialAtRisk.lgcpgrid <- function(X,idx=length(X$grid),...){
 ##'
 ##' Convert an object of class fromXYZ (created by spatialAtRisk for example) into a spatstat im object.
 ##'
+##' @importFrom spatstat as.im
 ##' @method as.im fromXYZ
 ##' @param X object of class fromXYZ
 ##' @param ... additional arguments
@@ -316,6 +313,7 @@ as.im.fromXYZ <- function(X,...){
 ##'
 ##' Convert an object of class fromSPDF (created by spatialAtRisk for example) into a spatstat im object.
 ##'
+##' @importFrom spatstat as.im
 ##' @method as.im fromSPDF
 ##' @param X an object of class fromSPDF
 ##' @param ncells number of cells to divide range into; default 100
@@ -329,7 +327,8 @@ as.im.fromSPDF <- function(X,ncells=100,...){
     xgrid <- seq(bbox[1,1],bbox[1,2],length.out=ncells)
     ygrid <- seq(bbox[2,1],bbox[2,2],length.out=ncells)
     xyvals <- SpatialPoints(matrix(c(rep(xgrid,ncells),rep(ygrid,each=ncells)),ncells*ncells,2))
-    interp <- t(matrix(overlay(X$spdf,xyvals)$atrisk,ncells,ncells))
+    #EJP: interp <- t(matrix(overlay(X$spdf,xyvals)$atrisk,ncells,ncells))
+    interp <- t(matrix(over(xyvals, X$spdf)$atrisk,ncells,ncells))
     return(im(mat=interp,xcol=xgrid,yrow=ygrid)) 
 }
 
@@ -339,6 +338,7 @@ as.im.fromSPDF <- function(X,ncells=100,...){
 ##'
 ##' Convert an object of class fromFunction(created by spatialAtRisk for example) into a spatstat im object.
 ##'
+##' @importFrom spatstat as.im
 ##' @method as.im fromFunction
 ##' @param X an object of class fromSPDF
 ##' @param xyt and objects of class stppp
@@ -434,7 +434,8 @@ spatialIntensities <- function(X,...){
 
 spatialIntensities.fromXYZ <- function(X,xyt,...){ 
     sgdf <- as.SpatialGridDataFrame(X)    
-    return(overlay(sgdf,SpatialPoints(cbind(xyt$x,xyt$y)))$atrisk)
+    #EJP: return(overlay(sgdf,SpatialPoints(cbind(xyt$x,xyt$y)))$atrisk)
+    return(over(SpatialPoints(cbind(xyt$x,xyt$y)), sgdf)$atrisk)
 }
 
 
@@ -452,7 +453,8 @@ spatialIntensities.fromXYZ <- function(X,xyt,...){
 ##' @export
 
 spatialIntensities.fromSPDF <- function(X,xyt,...){
-    return(overlay(X$spdf,SpatialPoints(cbind(xyt$x,xyt$y)))$atrisk)
+    #EJP: return(overlay(X$spdf,SpatialPoints(cbind(xyt$x,xyt$y)))$atrisk)
+    return(over(SpatialPoints(cbind(xyt$x,xyt$y)), X$spdf)$atrisk)
 }
 
 
@@ -544,9 +546,15 @@ plot.fromXYZ <- function(x,...){
 plot.fromSPDF <- function(x,...){
     plot(x$spdf,...)
 }
-##' method for spplot
-##' @importFrom sp spplot
-suppressWarnings(setMethod("spplot","fromSPDF", function(obj,...){spplot(obj$spdf,...)}))
+
+## spplot.fromSPDF function
+##
+## @name spplot.fromSPDF
+## @docType methods
+## @rdname spplot.fromSPDF
+## @importFrom sp spplot
+## method for spplot
+#suppressWarnings(setMethod("spplot","fromSPDF", function(obj,...){spplot(obj$spdf,...)}))
 
 
 ###

@@ -1,10 +1,21 @@
 \name{intens}
 \alias{intens}
-\title{intens function...}
-\usage{intens(obj, ...)}
-\description{intens function}
-\details{Generic function to return the Poisson Intensity.}
-\value{method intens}
-\seealso{\link{lgcpPredict}, \link{intens.lgcpPredict}}
-\arguments{\item{obj}{an object}
-\item{...}{additional arguments}}
+\title{intens function}
+\usage{
+  intens(obj, ...)
+}
+\arguments{
+  \item{obj}{an object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  method intens
+}
+\description{
+  Generic function to return the Poisson Intensity.
+}
+\seealso{
+  \link{lgcpPredict}, \link{intens.lgcpPredict}
+}
+

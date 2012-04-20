@@ -1,11 +1,24 @@
 \name{mcmcLoop}
 \alias{mcmcLoop}
-\title{iterator for MCMC loops...}
-\usage{mcmcLoop(N, burnin, thin, trim=TRUE, progressor=mcmcProgressPrint)}
-\description{iterator for MCMC loops}
-\details{control an MCMC loop with this iterator}
-\arguments{\item{N}{number of iterations}
-\item{burnin}{length of burn-in}
-\item{thin}{frequency of thinning}
-\item{trim}{whether to cut off iterations after the last retained iteration}
-\item{progressor}{a function that returns a progress object}}
+\title{iterator for MCMC loops}
+\usage{
+  mcmcLoop(N, burnin, thin, trim = TRUE,
+    progressor = mcmcProgressPrint)
+}
+\arguments{
+  \item{N}{number of iterations}
+
+  \item{burnin}{length of burn-in}
+
+  \item{thin}{frequency of thinning}
+
+  \item{trim}{whether to cut off iterations after the last
+  retained iteration}
+
+  \item{progressor}{a function that returns a progress
+  object}
+}
+\description{
+  control an MCMC loop with this iterator
+}
+
