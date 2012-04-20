@@ -2,7 +2,7 @@
 \alias{getRotation}
 \title{getRotation function}
 \usage{
-  getRotation(xyt, ...)
+getRotation(xyt, ...)
 }
 \arguments{
   \item{xyt}{an object}
@@ -10,13 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method getRotation
+method getRotation
 }
 \description{
-  Generic function for the computation of rotation
-  matrices.
+Generic function for the computation of rotation matrices.
 }
 \seealso{
-  \link{getRotation.stppp}
+\link{getRotation.stppp}
 }
 

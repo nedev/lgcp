@@ -2,7 +2,7 @@
 \alias{aggregateformulaList}
 \title{aggregateformulaList function}
 \usage{
-  aggregateformulaList(x, ...)
+aggregateformulaList(x, ...)
 }
 \arguments{
   \item{x}{an object of class "formulaList"}
@@ -10,10 +10,10 @@
   \item{...}{other arguments}
 }
 \value{
-  a formula of the form X ~ var1 + var2 tec.
+a formula of the form X ~ var1 + var2 tec.
 }
 \description{
-  An internal function to collect terms from a formulalist.
-  Not intended for general use.
+An internal function to collect terms from a formulalist.
+Not intended for general use.
 }
 

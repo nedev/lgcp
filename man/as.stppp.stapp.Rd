@@ -2,8 +2,8 @@
 \alias{as.stppp.stapp}
 \title{as.stppp.stapp function}
 \usage{
-  \method{as.stppp}{stapp} (obj, popden = NULL, n = 100,
-    dmin = 0, check = TRUE, ...)
+\method{as.stppp}{stapp}(obj, popden = NULL, n = 100, dmin = 0,
+  check = TRUE, ...)
 }
 \arguments{
   \item{obj}{an object of class stapp}
@@ -33,14 +33,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  ...
+...
 }
 \description{
-  A function to convert stapp objects to stppp objects for
-  use in lgcpPredict. The regional counts in the stapp
-  object are assigned a random location within each areal
-  region proportional to a population density (if that is
-  available) else the counts are distributed uniformly
-  across the observation windows.
+A function to convert stapp objects to stppp objects for
+use in lgcpPredict. The regional counts in the stapp object
+are assigned a random location within each areal region
+proportional to a population density (if that is available)
+else the counts are distributed uniformly across the
+observation windows.
 }
 

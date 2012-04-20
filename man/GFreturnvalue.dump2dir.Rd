@@ -2,7 +2,7 @@
 \alias{GFreturnvalue.dump2dir}
 \title{GFreturnvalue.dump2dir function}
 \usage{
-  \method{GFreturnvalue}{dump2dir} (F, ...)
+\method{GFreturnvalue}{dump2dir}(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  display where files have been written to
+display where files have been written to
 }
 \description{
-  This function returns the name of the directory the
-  netCDF file was written to.
+This function returns the name of the directory the netCDF
+file was written to.
 }
 \seealso{
-  \link{dump2dir}, \link{setoutput}, \link{GFinitialise},
-  \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
+\link{dump2dir}, \link{setoutput}, \link{GFinitialise},
+\link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
 

@@ -2,9 +2,8 @@
 \alias{target.and.grad.MultitypespatialPlusPars}
 \title{target.and.grad.MultitypespatialPlusPars function}
 \usage{
-  target.and.grad.MultitypespatialPlusPars(GPlist,
-    priorlist, Zlist, Ztlist, eta, beta, nis, cellarea,
-    spatial, gradtrunc)
+target.and.grad.MultitypespatialPlusPars(GPlist, priorlist, Zlist, Ztlist, eta,
+  beta, nis, cellarea, spatial, gradtrunc)
 }
 \arguments{
   \item{GPlist}{list of Gaussian processes}
@@ -29,10 +28,10 @@
   \item{gradtrunc}{gradient truncation paramter}
 }
 \value{
-  the target and gradient
+the target and gradient
 }
 \description{
-  A function to compute the taget an gradient for the
-  Bayesian multivariate lgcp
+A function to compute the taget an gradient for the
+Bayesian multivariate lgcp
 }
 

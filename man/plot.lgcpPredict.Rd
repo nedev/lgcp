@@ -2,9 +2,8 @@
 \alias{plot.lgcpPredict}
 \title{plot.lgcpPredict function}
 \usage{
-  \method{plot}{lgcpPredict} (x, type = "relrisk",
-    sel = 1:x$EY.mean$len, plotdata = TRUE, ask = TRUE,
-    clipWindow = TRUE, ...)
+\method{plot}{lgcpPredict}(x, type = "relrisk", sel = 1:x$EY.mean$len,
+  plotdata = TRUE, ask = TRUE, clipWindow = TRUE, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpPredict}
@@ -29,14 +28,14 @@
   \item{...}{additional arguments passed to image.plot}
 }
 \value{
-  plots the Monte Carlo mean of quantities obtained via
-  simulation. By default the mean relative risk is plotted.
+plots the Monte Carlo mean of quantities obtained via
+simulation. By default the mean relative risk is plotted.
 }
 \description{
-  Simple plotting function for objects of class
-  \code{lgcpPredict}.
+Simple plotting function for objects of class
+\code{lgcpPredict}.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

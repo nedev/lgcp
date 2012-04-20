@@ -2,7 +2,7 @@
 \alias{spatialIntensities.fromXYZ}
 \title{spatialIntensities.fromXYZ function}
 \usage{
-  \method{spatialIntensities}{fromXYZ} (X, xyt, ...)
+\method{spatialIntensities}{fromXYZ}(X, xyt, ...)
 }
 \arguments{
   \item{X}{object of class fromXYZ}
@@ -13,15 +13,15 @@
   \item{...}{additional arguments}
 }
 \value{
-  normalised spatial intensities
+normalised spatial intensities
 }
 \description{
-  Extract the spatial intensities from an object of class
-  fromXYZ (as would have been created by spatialAtRisk for
-  example).
+Extract the spatial intensities from an object of class
+fromXYZ (as would have been created by spatialAtRisk for
+example).
 }
 \seealso{
-  \link{spatialIntensities},
-  \link{spatialIntensities.fromSPDF}
+\link{spatialIntensities},
+\link{spatialIntensities.fromSPDF}
 }
 

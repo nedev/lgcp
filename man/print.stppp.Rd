@@ -2,7 +2,7 @@
 \alias{print.stppp}
 \title{print.stppp function}
 \usage{
-  \method{print}{stppp} (x, ...)
+\method{print}{stppp}(x, ...)
 }
 \arguments{
   \item{x}{an object of class stppp}
@@ -10,9 +10,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  prints the stppp object x
+prints the stppp object x
 }
 \description{
-  Print method for stppp objects
+Print method for stppp objects
 }
 

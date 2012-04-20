@@ -2,8 +2,8 @@
 \alias{target.and.grad.spatialPlusPars}
 \title{target.and.grad.spatialPlusPars function}
 \usage{
-  target.and.grad.spatialPlusPars(GP, prior, Z, Zt, eta,
-    beta, nis, cellarea, spatial, gradtrunc)
+target.and.grad.spatialPlusPars(GP, prior, Z, Zt, eta, beta, nis, cellarea,
+  spatial, gradtrunc)
 }
 \arguments{
   \item{GP}{an object created using GPrealisation}
@@ -27,10 +27,10 @@
   \item{gradtrunc}{the gradient truncation parameter}
 }
 \value{
-  the target and graient for this model
+the target and graient for this model
 }
 \description{
-  A function to compute the target and gradient for the
-  Bayesian spatial LGCP
+A function to compute the target and gradient for the
+Bayesian spatial LGCP
 }
 

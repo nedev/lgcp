@@ -246,8 +246,9 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     cellin <- which(as.logical(cellInside))
     dmat <- dmat[cellin,,drop=FALSE]
     anymiss <- apply(dmat,1,function(x){any(is.na(x))})
+    anymisscopy <- anymiss
     if(any(anymiss)){
-        warning("There are missing values in the covariate data. Imputing with median of non-missing values.",immediate.=TRUE)
+        warning(paste("There is(are)",sum(anymiss),"missing value(s) in the covariate data. Imputing with median of non-missing values."),immediate.=TRUE)
         for(iii in 1:ncol(dmat)){
             if(any(is.na(dmat[,iii]))){
                 dmat[,iii][is.na(dmat[,iii])] <- median(dmat[,iii],na.rm=TRUE)
@@ -263,12 +264,17 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     DM <- dmat
     dmat <- model.matrix(formula,data=dmat)
     
+    missingind <- rep(0,dim(dmat)[2])
+    
     Zmat <- matrix(0,M*N,dim(dmat)[2])
     colnames(Zmat) <- colnames(dmat)
     rownames(dmat) <- NULL
     idx <- as.logical(cellInside)
     idx[as.logical(cellInside)] <- !anymiss
     Zmat[idx,] <- dmat # [!anymiss] because NAs are removed by model.matrix
+    if(any(anymisscopy)){
+        missingind[idx] <- as.numeric(anymisscopy)
+    }
     attr(Zmat,"data.frame") <- DM
     attr(Zmat,"cellInside") <- cellInside
     attr(Zmat,"anymiss") <- anymiss
@@ -280,6 +286,7 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     attr(Zmat,"pixelOverlay") <- pixeloverlay
     attr(Zmat,"FORM") <- formula
     attr(Zmat,"fftpoly") <- fftpoly
+    attr(Zmat,"missingind") <- missingind
     
     return(Zmat)  
 }

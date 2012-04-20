@@ -2,8 +2,8 @@
 \alias{autocorr}
 \title{autocorr function}
 \usage{
-  autocorr(x, lags, tidx = NULL, inWindow = x$xyt$window,
-    crop2parentwindow = TRUE, ...)
+autocorr(x, lags, tidx = NULL, inWindow = x$xyt$window,
+  crop2parentwindow = TRUE, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpPredict}
@@ -24,24 +24,24 @@
   \item{...}{additional arguments}
 }
 \value{
-  an array, the [,,i]th slice being the grid of cell-wise
-  autocorrelations.
+an array, the [,,i]th slice being the grid of cell-wise
+autocorrelations.
 }
 \description{
-  \bold{This function requires data to have been dumped to
-  disk}: see \code{?dump2dir} and \code{?setoutput}. The
-  routine \code{autocorr.lgcpPredict} computes cellwise
-  selected autocorrelations of Y. Since computing the
-  quantiles is an expensive operation, the option to output
-  the quantiles on a subregion of interest is also provided
-  (by setting the argument \code{inWindow}, which has a
-  sensible default).
+\bold{This function requires data to have been dumped to
+disk}: see \code{?dump2dir} and \code{?setoutput}. The
+routine \code{autocorr.lgcpPredict} computes cellwise
+selected autocorrelations of Y. Since computing the
+quantiles is an expensive operation, the option to output
+the quantiles on a subregion of interest is also provided
+(by setting the argument \code{inWindow}, which has a
+sensible default).
 }
 \seealso{
-  \link{lgcpPredict}, \link{dump2dir}, \link{setoutput},
-  \link{plot.lgcpAutocorr}, \link{ltar},
-  \link{parautocorr}, \link{traceplots}, \link{parsummary},
-  \link{textsummary}, \link{priorpost}, \link{postcov},
-  \link{exceedProbs}, \link{betavals}, \link{etavals}
+\link{lgcpPredict}, \link{dump2dir}, \link{setoutput},
+\link{plot.lgcpAutocorr}, \link{ltar}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{priorpost}, \link{postcov}, \link{exceedProbs},
+\link{betavals}, \link{etavals}
 }
 

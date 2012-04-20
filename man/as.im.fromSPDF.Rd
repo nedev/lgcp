@@ -2,7 +2,7 @@
 \alias{as.im.fromSPDF}
 \title{as.im.fromSPDF function}
 \usage{
-  \method{as.im}{fromSPDF} (X, ncells = 100, ...)
+\method{as.im}{fromSPDF}(X, ncells = 100, ...)
 }
 \arguments{
   \item{X}{an object of class fromSPDF}
@@ -13,14 +13,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  object of class im containing normalised intensities
+object of class im containing normalised intensities
 }
 \description{
-  Convert an object of class fromSPDF (created by
-  spatialAtRisk for example) into a spatstat im object.
+Convert an object of class fromSPDF (created by
+spatialAtRisk for example) into a spatstat im object.
 }
 \seealso{
-  \link{as.im.fromXYZ}, \link{as.im.fromSPDF},
-  \link{as.im.fromFunction}, \link{as.fromXYZ}
+\link{as.im.fromXYZ}, \link{as.im.fromSPDF},
+\link{as.im.fromFunction}, \link{as.fromXYZ}
 }
 

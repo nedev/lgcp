@@ -2,7 +2,7 @@
 \alias{K.u}
 \title{K.u function}
 \usage{
-  K.u(u, phi, sig2, model, ...)
+K.u(u, phi, sig2, model, ...)
 }
 \arguments{
   \item{u}{Spatial lag at which we wish to find the
@@ -22,11 +22,11 @@
   See ?CovarianceFct (RandomFields)}
 }
 \value{
-  A single numeric value representing the theoretical K
-  function evaluated at u.
+A single numeric value representing the theoretical K
+function evaluated at u.
 }
 \description{
-  A function to compute the theoretical K function for the
-  LGCP.
+A function to compute the theoretical K function for the
+LGCP.
 }
 

@@ -2,7 +2,7 @@
 \alias{getCellCounts}
 \title{getCellCounts function}
 \usage{
-  getCellCounts(x, y, xgrid, ygrid)
+getCellCounts(x, y, xgrid, ygrid)
 }
 \arguments{
   \item{x}{x-coordinates of events}
@@ -14,10 +14,10 @@
   \item{ygrid}{y-coordinates of grid centroids}
 }
 \value{
-  The number of observations in each grid cell.
+The number of observations in each grid cell.
 }
 \description{
-  This function is used to count the number of observations
-  falling inside grid cells.
+This function is used to count the number of observations
+falling inside grid cells.
 }
 

@@ -2,7 +2,7 @@
 \alias{as.fromXYZ}
 \title{as.fromXYZ function}
 \usage{
-  as.fromXYZ(X, ...)
+as.fromXYZ(X, ...)
 }
 \arguments{
   \item{X}{an object}
@@ -10,15 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  generic function returning method as.fromXYZ
+generic function returning method as.fromXYZ
 }
 \description{
-  Generic function for conversion to a fromXYZ object (eg
-  as would have been produced by spatialAtRisk for
-  example.)
+Generic function for conversion to a fromXYZ object (eg as
+would have been produced by spatialAtRisk for example.)
 }
 \seealso{
-  \link{as.im.fromXYZ}, \link{as.im.fromSPDF},
-  \link{as.im.fromFunction}, \link{as.fromXYZ}
+\link{as.im.fromXYZ}, \link{as.im.fromSPDF},
+\link{as.im.fromFunction}, \link{as.fromXYZ}
 }
 

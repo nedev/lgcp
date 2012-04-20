@@ -2,7 +2,7 @@
 \alias{loc2poly}
 \title{loc2poly function}
 \usage{
-  loc2poly(n = 512, type = "l", col = "black", ...)
+loc2poly(n = 512, type = "l", col = "black", ...)
 }
 \arguments{
   \item{n}{the maximum number of points to locate}
@@ -15,22 +15,22 @@
   \item{...}{other arguments to pass to locate}
 }
 \value{
-  a polygonal owin object
+a polygonal owin object
 }
 \description{
-  Converts a polygon selected via the mouse in a graphics
-  window into an polygonal owin object. (Make sure the x
-  and y scales are correct!) Points must be selected
-  traversing the required window in one direction (ie
-  either clockwise, or anticlockwise), points must not be
-  overlapping. Select the sequence of edges via left mouse
-  button clicks and store the polygon with a right click.
+Converts a polygon selected via the mouse in a graphics
+window into an polygonal owin object. (Make sure the x and
+y scales are correct!) Points must be selected traversing
+the required window in one direction (ie either clockwise,
+or anticlockwise), points must not be overlapping. Select
+the sequence of edges via left mouse button clicks and
+store the polygon with a right click.
 }
 \examples{
 \dontrun{plot(lg)} # lg an lgcpPredict object
 \dontrun{subwin <- loc2poly())}
 }
 \seealso{
-  \link{lgcpPredict}, \link{identify.lgcpPredict}
+\link{lgcpPredict}, \link{identify.lgcpPredict}
 }
 

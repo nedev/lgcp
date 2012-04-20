@@ -2,7 +2,7 @@
 \alias{stppp.ppp}
 \title{stppp.ppp function}
 \usage{
-  \method{stppp}{ppp} (P, t, tlim, ...)
+\method{stppp}{ppp}(P, t, tlim, ...)
 }
 \arguments{
   \item{P}{a spatstat ppp object}
@@ -15,13 +15,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class stppp
+an object of class stppp
 }
 \description{
-  Construct a space-time planar point pattern from a ppp
-  object
+Construct a space-time planar point pattern from a ppp
+object
 }
 \seealso{
-  \link{stppp}, \link{stppp.list}
+\link{stppp}, \link{stppp.list}
 }
 

@@ -2,7 +2,7 @@
 \alias{neigh2D}
 \title{neigh2D function}
 \usage{
-  neigh2D(i, j, ns, M, N)
+neigh2D(i, j, ns, M, N)
 }
 \arguments{
   \item{i}{cell index i}
@@ -16,10 +16,10 @@
   \item{N}{size of grid in y direction}
 }
 \value{
-  the cell indices of the neighbours
+the cell indices of the neighbours
 }
 \description{
-  A function to compute the neighbours of a cell on a toral
-  grid
+A function to compute the neighbours of a cell on a toral
+grid
 }
 

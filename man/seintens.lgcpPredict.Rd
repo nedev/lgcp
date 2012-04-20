@@ -2,7 +2,7 @@
 \alias{seintens.lgcpPredict}
 \title{seintens.lgcpPredict function}
 \usage{
-  \method{seintens}{lgcpPredict} (obj, ...)
+\method{seintens}{lgcpPredict}(obj, ...)
 }
 \arguments{
   \item{obj}{an lgcpPredict object}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  the cell-wise standard error of the Poisson intensity, as
-  computed by MCMC.
+the cell-wise standard error of the Poisson intensity, as
+computed by MCMC.
 }
 \description{
-  Accessor function returning the standard error of the
-  Poisson intensity as an lgcpgrid object.
+Accessor function returning the standard error of the
+Poisson intensity as an lgcpgrid object.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

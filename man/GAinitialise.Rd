@@ -2,7 +2,7 @@
 \alias{GAinitialise}
 \title{GAinitialise function}
 \usage{
-  GAinitialise(F, ...)
+GAinitialise(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,17 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  method GAinitialise
+method GAinitialise
 }
 \description{
-  Generic function defining the the initialisation step for
-  the \code{gridAverage} class of functions. The function
-  is called invisibly within \code{MALAlgcp} and
-  facilitates the computation of Monte Carlo Averages
-  online.
+Generic function defining the the initialisation step for
+the \code{gridAverage} class of functions. The function is
+called invisibly within \code{MALAlgcp} and facilitates the
+computation of Monte Carlo Averages online.
 }
 \seealso{
-  \link{setoutput}, \link{GAupdate}, \link{GAfinalise},
-  \link{GAreturnvalue}
+\link{setoutput}, \link{GAupdate}, \link{GAfinalise},
+\link{GAreturnvalue}
 }
 

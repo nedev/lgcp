@@ -803,7 +803,7 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
     tarrec <- oldtags$logtarget 
     hallrec <- h  
     
-    reject_its <- c()    
+    reject_its <- c()   
        
     while(nextStep(mcmcloop)){
     

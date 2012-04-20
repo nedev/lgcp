@@ -2,8 +2,7 @@
 \alias{mcmcpars}
 \title{mcmcpars function}
 \usage{
-  mcmcpars(mala.length, burnin, retain, inits = NULL,
-    adaptivescheme)
+mcmcpars(mala.length, burnin, retain, inits = NULL, adaptivescheme)
 }
 \arguments{
   \item{mala.length}{default = 100,}
@@ -21,13 +20,13 @@
   MCMC of Andrieu and Thoms (2008))}
 }
 \value{
-  mcmc parameters
+mcmc parameters
 }
 \description{
-  A function for setting MCMC options in a run of
-  \code{lgcpPredict} for example.
+A function for setting MCMC options in a run of
+\code{lgcpPredict} for example.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

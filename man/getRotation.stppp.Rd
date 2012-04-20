@@ -2,7 +2,7 @@
 \alias{getRotation.stppp}
 \title{getRotation.stppp function}
 \usage{
-  \method{getRotation}{stppp} (xyt, ...)
+\method{getRotation}{stppp}(xyt, ...)
 }
 \arguments{
   \item{xyt}{an object of class stppp}
@@ -10,14 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  the optimal rotation matrix and rotated data and
-  observation window. Note it may or may not be
-  advantageous to rotate the window, this information is
-  displayed prior to the MALA routine when using
-  lgcpPredict
+the optimal rotation matrix and rotated data and
+observation window. Note it may or may not be advantageous
+to rotate the window, this information is displayed prior
+to the MALA routine when using lgcpPredict
 }
 \description{
-  Compute rotation matrix if observation window is a
-  polygonal boundary
+Compute rotation matrix if observation window is a
+polygonal boundary
 }
 

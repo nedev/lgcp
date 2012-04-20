@@ -2,7 +2,7 @@
 \alias{K.val}
 \title{K.val function}
 \usage{
-  K.val(val, phi, sig2, model, ...)
+K.val(val, phi, sig2, model, ...)
 }
 \arguments{
   \item{val}{Spatial lag}
@@ -21,12 +21,12 @@
   See ?CovarianceFct (RandomFields)}
 }
 \value{
-  A single numeric value representing a component of the
-  theoretical K function
+A single numeric value representing a component of the
+theoretical K function
 }
 \description{
-  An internal function used in computing the theoretical K
-  function for the LGCP. See \link{K.u} for the theoretical
-  K.
+An internal function used in computing the theoretical K
+function for the LGCP. See \link{K.u} for the theoretical
+K.
 }
 

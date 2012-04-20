@@ -2,12 +2,10 @@
 \alias{MALAlgcpSpatioTemporal.PlusPars}
 \title{MALAlgcpSpatioTemporal.PlusPars function}
 \usage{
-  MALAlgcpSpatioTemporal.PlusPars(mcmcloop, inits,
-    adaptivescheme, M, N, Mext, Next, mcens, ncens,
-    formula, ZmatList, model.priors, model.inits, fftgrid,
-    spatial.covmodel, nis, tdiff, cellarea, spatialvals,
-    cellInside, MCMCdiag, gradtrunc, gridfun, gridav, d,
-    aggtimes, spatialOnlyCovariates)
+MALAlgcpSpatioTemporal.PlusPars(mcmcloop, inits, adaptivescheme, M, N, Mext,
+  Next, mcens, ncens, formula, ZmatList, model.priors, model.inits, fftgrid,
+  spatial.covmodel, nis, tdiff, cellarea, spatialvals, cellInside, MCMCdiag,
+  gradtrunc, gridfun, gridav, d, aggtimes, spatialOnlyCovariates)
 }
 \arguments{
   \item{mcmcloop}{details of the mcmc loop}
@@ -75,10 +73,10 @@
   only problem}
 }
 \value{
-  output from the MCMC run
+output from the MCMC run
 }
 \description{
-  A function to run the MCMC algorithm for spatiotemporal
-  point process data. Not for general purpose use.
+A function to run the MCMC algorithm for spatiotemporal
+point process data. Not for general purpose use.
 }
 

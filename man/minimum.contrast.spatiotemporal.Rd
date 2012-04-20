@@ -2,11 +2,10 @@
 \alias{minimum.contrast.spatiotemporal}
 \title{minimum.contrast.spatiotemporal function}
 \usage{
-  minimum.contrast.spatiotemporal(data, model,
-    method = "g", spatial.dens = NULL,
-    temporal.intens = NULL, power = 1, transform = NULL,
-    spatial.startvals = NULL, temporal.interval = NULL,
-    verbose = TRUE, ...)
+minimum.contrast.spatiotemporal(data, model, method = "g",
+  spatial.dens = NULL, temporal.intens = NULL, power = 1,
+  transform = NULL, spatial.startvals = NULL, temporal.interval = NULL,
+  verbose = TRUE, ...)
 }
 \arguments{
   \item{data}{An object of class 'stppp' from package
@@ -57,30 +56,30 @@
   'model').}
 }
 \value{
-  Returned values are the minimum contrast estimates of
-  phi, sigma^2 and theta, as well as the overall squared
-  discrepancy between the parametric and nonparametric
-  forms of the spatial function used corresponding to these
-  estimates. (This can be useful in deciding between
-  several different theoretical forms of the spatial
-  correlation specified by 'model').
+Returned values are the minimum contrast estimates of phi,
+sigma^2 and theta, as well as the overall squared
+discrepancy between the parametric and nonparametric forms
+of the spatial function used corresponding to these
+estimates. (This can be useful in deciding between several
+different theoretical forms of the spatial correlation
+specified by 'model').
 }
 \description{
-  A function to provide minimum contrast (aka least
-  squares) estimates of the spatial scale (phi), spatial
-  variance (sigma^2) and temporal scale (theta) assuming an
-  LGCP modelling framework for spatiotemporal data.
-  Currently only implemented for univariate (i.e. unmarked)
-  spatiotemporal point patterns
+A function to provide minimum contrast (aka least squares)
+estimates of the spatial scale (phi), spatial variance
+(sigma^2) and temporal scale (theta) assuming an LGCP
+modelling framework for spatiotemporal data. Currently only
+implemented for univariate (i.e. unmarked) spatiotemporal
+point patterns
 }
 \seealso{
-  \link{minimum.contrast}, link{chooseCellWidth},
-  \link{getpolyol}, \link{guessinterp}, \link{getZmat},
-  \link{addTemporalCovariates}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast}, link{chooseCellWidth},
+\link{getpolyol}, \link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

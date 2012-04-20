@@ -2,7 +2,7 @@
 \alias{getCovParameters}
 \title{getCovParameters function}
 \usage{
-  getCovParameters(obj, ...)
+getCovParameters(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,10 +10,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  method getCovParameters
+method getCovParameters
 }
 \description{
-  Internal function for retrieving covariance parameters.
-  not indended for general use.
+Internal function for retrieving covariance parameters. not
+indended for general use.
 }
 

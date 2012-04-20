@@ -2,10 +2,9 @@
 \alias{my.KinhomAverage}
 \title{my.KinhomAverage function}
 \usage{
-  my.KinhomAverage(xyt, spatial.intensity,
-    temporal.intensity, time.window = xyt$tlim,
-    rvals = NULL, correction = "iso",
-    suppresswarnings = FALSE, verbose = TRUE)
+my.KinhomAverage(xyt, spatial.intensity, temporal.intensity,
+  time.window = xyt$tlim, rvals = NULL, correction = "iso",
+  suppresswarnings = FALSE, verbose = TRUE)
 }
 \arguments{
   \item{xyt}{an object of class stppp.}
@@ -37,15 +36,15 @@
   TRUE.}
 }
 \value{
-  A vector corresponding to the time-averaged K function
-  for spatiotemporal data, evaluated at spatial lags
-  defined by 'rvals'.
+A vector corresponding to the time-averaged K function for
+spatiotemporal data, evaluated at spatial lags defined by
+'rvals'.
 }
 \description{
-  A carbon-copy of KinhomAverage from package 'lgcp', with
-  extra control over the printing of progress bars and
-  other output to the console during execution. Computes
-  the time-averaged version of the nonparametric K function
-  (for use with spatiotemporal data).
+A carbon-copy of KinhomAverage from package 'lgcp', with
+extra control over the printing of progress bars and other
+output to the console during execution. Computes the
+time-averaged version of the nonparametric K function (for
+use with spatiotemporal data).
 }
 

@@ -2,9 +2,8 @@
 \alias{GPdrv2}
 \title{GPdrv2 function}
 \usage{
-  GPdrv2(GP, prior, Z, Zt, eta, beta, nis, cellarea,
-    spatial, gradtrunc, fftgrid, covfunction, d,
-    eps = 1e-06)
+GPdrv2(GP, prior, Z, Zt, eta, beta, nis, cellarea, spatial, gradtrunc, fftgrid,
+  covfunction, d, eps = 1e-06)
 }
 \arguments{
   \item{GP}{an object of class GPrealisation}
@@ -37,12 +36,12 @@
   \item{eps}{the finite difference step size}
 }
 \value{
-  first and second derivatives of the log target at the
-  specified paramters Y, eta and beta
+first and second derivatives of the log target at the
+specified paramters Y, eta and beta
 }
 \description{
-  A function to compute the second derivative of the log
-  target with respect to the paramters of the latent field.
-  Not intended for general purpose use.
+A function to compute the second derivative of the log
+target with respect to the paramters of the latent field.
+Not intended for general purpose use.
 }
 

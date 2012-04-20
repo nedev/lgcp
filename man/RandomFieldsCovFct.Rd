@@ -2,7 +2,7 @@
 \alias{RandomFieldsCovFct}
 \title{RandomFieldsCovFct function}
 \usage{
-  RandomFieldsCovFct(model, additionalparameters = c())
+RandomFieldsCovFct(model, additionalparameters = c())
 }
 \arguments{
   \item{model}{the choice of model e.g.  "matern"}
@@ -11,20 +11,20 @@
   chosen covariance model. See ?CovarianceFct}
 }
 \value{
-  a covariance function from the RandomFields package
+a covariance function from the RandomFields package
 }
 \description{
-  A function to declare and also evaluate an covariance
-  function from the RandomFields Package. See
-  ?CovarianceFct. Note that the present version of lgcp
-  only offers estimation for sigma and phi, any additional
-  paramters are treated as fixed.
+A function to declare and also evaluate an covariance
+function from the RandomFields Package. See ?CovarianceFct.
+Note that the present version of lgcp only offers
+estimation for sigma and phi, any additional paramters are
+treated as fixed.
 }
 \examples{
 \dontrun{RandomFieldsCovFct(model="matern",additionalparameters=1)}
 }
 \seealso{
-  \link{CovFunction.function}, \link{exponentialCovFct},
-  \link{SpikedExponentialCovFct}, \link{CovarianceFct}
+\link{CovFunction.function}, \link{exponentialCovFct},
+\link{SpikedExponentialCovFct}, \link{CovarianceFct}
 }
 

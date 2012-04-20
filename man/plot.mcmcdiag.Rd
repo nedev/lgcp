@@ -2,7 +2,7 @@
 \alias{plot.mcmcdiag}
 \title{plot.mcmcdiag function}
 \usage{
-  \method{plot}{mcmcdiag} (x, idx = 1:dim(x$trace)[2], ...)
+\method{plot}{mcmcdiag}(x, idx = 1:dim(x$trace)[2], ...)
 }
 \arguments{
   \item{x}{an object of class mcmcdiag}
@@ -13,15 +13,15 @@
   \item{...}{additional arguments passed to plot}
 }
 \value{
-  plots the saved MCMC chains
+plots the saved MCMC chains
 }
 \description{
-  The command \code{plot(trace(lg))}, where \code{lg} is an
-  object of class \code{lgcpPredict} will plot the mcmc
-  traces of a subset of the cells, provided they have been
-  stored, see \code{mcmpars}.
+The command \code{plot(trace(lg))}, where \code{lg} is an
+object of class \code{lgcpPredict} will plot the mcmc
+traces of a subset of the cells, provided they have been
+stored, see \code{mcmpars}.
 }
 \seealso{
-  \link{mcmctrace.lgcpPredict}, \link{mcmcpars},
+\link{mcmctrace.lgcpPredict}, \link{mcmcpars},
 }
 

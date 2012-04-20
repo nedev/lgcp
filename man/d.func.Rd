@@ -2,7 +2,7 @@
 \alias{d.func}
 \title{d.func function}
 \usage{
-  d.func(mat1il, mat2jk, i, j, l, k)
+d.func(mat1il, mat2jk, i, j, l, k)
 }
 \arguments{
   \item{mat1il}{matrix 1}
@@ -18,9 +18,9 @@
   \item{k}{index matrix 2 number 2}
 }
 \value{
-  ...
+...
 }
 \description{
-  d.func function
+d.func function
 }
 

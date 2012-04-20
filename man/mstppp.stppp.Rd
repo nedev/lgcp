@@ -2,7 +2,7 @@
 \alias{mstppp.stppp}
 \title{mstppp.stppp function}
 \usage{
-  \method{mstppp}{stppp} (P, data, ...)
+\method{mstppp}{stppp}(P, data, ...)
 }
 \arguments{
   \item{P}{an lgcp stppp object}
@@ -13,13 +13,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class mstppp
+an object of class mstppp
 }
 \description{
-  Construct a marked space-time planar point pattern from
-  an stppp object
+Construct a marked space-time planar point pattern from an
+stppp object
 }
 \seealso{
-  \link{mstppp}, \link{mstppp.list}
+\link{mstppp}, \link{mstppp.list}
 }
 

@@ -2,7 +2,7 @@
 \alias{print.dump2dir}
 \title{print.dump2dir function}
 \usage{
-  \method{print}{dump2dir} (x, ...)
+\method{print}{dump2dir}(x, ...)
 }
 \arguments{
   \item{x}{an object of class dump2dir}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  nothing
+nothing
 }
 \description{
-  Display function for dump2dir objects.
+Display function for dump2dir objects.
 }
 \seealso{
-  \link{dump2dir},
+\link{dump2dir},
 }
 

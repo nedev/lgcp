@@ -2,7 +2,7 @@
 \alias{stppp.list}
 \title{stppp.list function}
 \usage{
-  \method{stppp}{list} (P, ...)
+\method{stppp}{list}(P, ...)
 }
 \arguments{
   \item{P}{list object containing $data, an (n x 3) matrix
@@ -14,13 +14,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class stppp
+an object of class stppp
 }
 \description{
-  Construct a space-time planar point pattern from a list
-  object
+Construct a space-time planar point pattern from a list
+object
 }
 \seealso{
-  \link{stppp}, \link{stppp.ppp},
+\link{stppp}, \link{stppp.ppp},
 }
 

@@ -2,8 +2,8 @@
 \alias{plot.lgcpZmat}
 \title{plot.lgcpZmat function}
 \usage{
-  \method{plot}{lgcpZmat} (x, ask = TRUE, pow = 1,
-    main = NULL, ...)
+\method{plot}{lgcpZmat}(x, ask = TRUE, pow = 1, main = NULL,
+  misscol = "black", obswin = NULL, ...)
 }
 \arguments{
   \item{x}{an lgcpZmat object, see ?getZmat}
@@ -17,12 +17,18 @@
   an automatic title to the plot (the name of the
   covariate)}
 
+  \item{misscol}{colour to identify imputed grid cells,
+  default is yellow}
+
+  \item{obswin}{optional observation window to add to plot
+  using plot(obswin).}
+
   \item{...}{other paramters}
 }
 \value{
-  a sequence of plots of the interpolated covariate values
+a sequence of plots of the interpolated covariate values
 }
 \description{
-  A function to plot lgcpZmat objects
+A function to plot lgcpZmat objects
 }
 

@@ -2,8 +2,7 @@
 \alias{textsummary}
 \title{textsummary function}
 \usage{
-  textsummary(obj, digits = 3, scientific = -3,
-    inclIntercept = FALSE, ...)
+textsummary(obj, digits = 3, scientific = -3, inclIntercept = FALSE, ...)
 }
 \arguments{
   \item{obj}{an object produced by a call to
@@ -23,21 +22,21 @@
   "format"}
 }
 \value{
-  A text summary, that can be pasted into a LaTeX document
-  and later edited.
+A text summary, that can be pasted into a LaTeX document
+and later edited.
 }
 \description{
-  A function to print a text description of the inferred
-  paramerers beta and eta from a call to the function
-  lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to print a text description of the inferred
+paramerers beta and eta from a call to the function
+lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{priorpost},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{priorpost},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

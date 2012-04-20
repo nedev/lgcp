@@ -2,8 +2,7 @@
 \alias{stapp.SpatialPolygonsDataFrame}
 \title{stapp.SpatialPolygonsDataFrame function}
 \usage{
-  \method{stapp}{SpatialPolygonsDataFrame} (obj, counts, t,
-    tlim, window, ...)
+\method{stapp}{SpatialPolygonsDataFrame}(obj, counts, t, tlim, window, ...)
 }
 \arguments{
   \item{obj}{an SpatialPolygonsDataFrame object}
@@ -25,11 +24,11 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class stapp
+an object of class stapp
 }
 \description{
-  Construct a space-time aggregated point-process (stapp)
-  object from a SpatialPolygonsDataFrame (along with some
-  other info)
+Construct a space-time aggregated point-process (stapp)
+object from a SpatialPolygonsDataFrame (along with some
+other info)
 }
 

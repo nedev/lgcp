@@ -2,10 +2,8 @@
 \alias{lgcpgrid.list}
 \title{lgcpgrid.list function}
 \usage{
-  \method{lgcpgrid}{list} (grid,
-    xvals = 1:dim(grid[[1]])[1],
-    yvals = 1:dim(grid[[1]])[2], zvals = 1:length(grid),
-    ...)
+\method{lgcpgrid}{list}(grid, xvals = 1:dim(grid[[1]])[1],
+  yvals = 1:dim(grid[[1]])[2], zvals = 1:length(grid), ...)
 }
 \arguments{
   \item{grid}{a list object with each member of the list
@@ -27,18 +25,18 @@
   \item{...}{other arguments}
 }
 \value{
-  an object of class lgcpgrid
+an object of class lgcpgrid
 }
 \description{
-  Creates an lgcpgrid object from a list object plus some
-  optional coordinates. Note that each element of the list
-  should be a matrix, and that each matrix should have the
-  same dimension.
+Creates an lgcpgrid object from a list object plus some
+optional coordinates. Note that each element of the list
+should be a matrix, and that each matrix should have the
+same dimension.
 }
 \seealso{
-  \link{lgcpgrid.array}, \link{as.list.lgcpgrid},
-  \link{print.lgcpgrid}, \link{summary.lgcpgrid},
-  \link{quantile.lgcpgrid}, \link{image.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.array}, \link{as.list.lgcpgrid},
+\link{print.lgcpgrid}, \link{summary.lgcpgrid},
+\link{quantile.lgcpgrid}, \link{image.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 

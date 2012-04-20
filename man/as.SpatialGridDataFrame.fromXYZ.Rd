@@ -2,7 +2,7 @@
 \alias{as.SpatialGridDataFrame.fromXYZ}
 \title{as.SpatialGridDataFrame.fromXYZ function}
 \usage{
-  \method{as.SpatialGridDataFrame}{fromXYZ} (obj, ...)
+\method{as.SpatialGridDataFrame}{fromXYZ}(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class spatialAtRisk}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class SpatialGridDataFrame
+an object of class SpatialGridDataFrame
 }
 \description{
-  Method for converting objects of class fromXYZ into those
-  of class SpatialGridDataFrame
+Method for converting objects of class fromXYZ into those
+of class SpatialGridDataFrame
 }
 \seealso{
-  \link{as.SpatialGridDataFrame}
+\link{as.SpatialGridDataFrame}
 }
 

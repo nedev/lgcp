@@ -2,7 +2,7 @@
 \alias{chooseCellwidth}
 \title{chooseCellwidth function}
 \usage{
-  chooseCellwidth(obj, cwinit)
+chooseCellwidth(obj, cwinit)
 }
 \arguments{
   \item{obj}{an object of class ppp, stppp,
@@ -11,30 +11,30 @@
   \item{cwinit}{the cell width}
 }
 \value{
-  produces a plot of the observation window and
-  computational grid.
+produces a plot of the observation window and computational
+grid.
 }
 \description{
-  A function to help choose the cell width (the parameter
-  "cellwidth" in lgcpPredictSpatialPlusPars, for example)
-  prior to setting up the FFT grid, before an MCMC run.
+A function to help choose the cell width (the parameter
+"cellwidth" in lgcpPredictSpatialPlusPars, for example)
+prior to setting up the FFT grid, before an MCMC run.
 }
 \details{
-  Ideally this function should be used after having made a
-  preliminary guess at the parameters of the latent
-  field.The idea is to run chooseCellwidth several times,
-  adjusting the parameter "cwinit" so as to balance
-  available computational resources with output grid size.
+Ideally this function should be used after having made a
+preliminary guess at the parameters of the latent field.The
+idea is to run chooseCellwidth several times, adjusting the
+parameter "cwinit" so as to balance available computational
+resources with output grid size.
 }
 \seealso{
-  \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal}, \link{getpolyol},
-  \link{guessinterp}, \link{getZmat},
-  \link{addTemporalCovariates}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal}, \link{getpolyol},
+\link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

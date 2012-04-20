@@ -32,6 +32,7 @@ genFFTgrid <- function(study.region,M,N,ext,inclusion="touching"){
     else{
         stop("Invlaid choice for argument 'inclusion'.")
     }
+    
     cellInside <- matrix(as.numeric(cellInside),Mext,Next)
     
     obj <- list(del1=del1,del2=del2,Mext=Mext,Next=Next,mcens=mcens,ncens=ncens,cellarea=cellarea,cellInside=cellInside,inclusion=inclusion)    
@@ -1094,6 +1095,11 @@ gOverlay <- function(grid,spdf){
 ##' @export
 
 getZmat <- function(formula,data,regionalcovariates=NULL,pixelcovariates=NULL,cellwidth,ext=2,inclusion="touching",overl=NULL){
+    if(!is.null(overl)){
+        cat("Using 'cellwidth' and 'ext' from overl\n")
+        cellwidth <- overl$cellwidth
+        ext <- overl$ext
+    }
     if(inherits(data,"SpatialPolygonsDataFrame")){
         spatstat.options(checkpolygons=FALSE)
         W <- as(gUnaryUnion(data),"owin")
@@ -1126,6 +1132,8 @@ getZmat <- function(formula,data,regionalcovariates=NULL,pixelcovariates=NULL,ce
 	ans <- cov.interp.fft(formula=formula,W=study.region,regionalcovariates=regionalcovariates,pixelcovariates=pixelcovariates,mcens=mcens[1:M],ncens=ncens[1:N],cellInside=cellInside[1:M,1:N],overl=overl)
 	attr(ans,"gridobj") <- gridobj
 	attr(ans,"inclusion") <- inclusion
+	attr(ans,"ext") <- ext
+	attr(ans,"cellwidth") <- cellwidth 
 	class(ans) <- c("lgcpZmat","matrix")
     return(ans)
 }
@@ -1159,6 +1167,9 @@ chooseCellwidth <- function(obj,cwinit){
     }
     else if(inherits(obj,"owin")){
         W <- obj
+    }
+    else{
+        stop("Cannot extract observation window.")
     }
     
     OW <- selectObsWindow(ppp(window=W),cellwidth=cwinit)           
@@ -1980,6 +1991,7 @@ postcov <- function(obj,...){
 ##' @export
 
 postcov.lgcpPredictSpatioTemporalPlusParameters <- function(obj,qts=c(0.025,0.5,0.975),covmodel=NULL,ask=TRUE,...){
+    postcov.lgcpPredictSpatialOnlyPlusParameters(obj=obj,qts=qts,covmodel=covmodel,ask=ask,...)   
    
     xrg <- seq(0,diff(range(obj$aggtimes))+1,length.out=100)
     n <- nrow(obj$etarec) 
@@ -2361,7 +2373,9 @@ addTemporalCovariates <- function(temporal.formula,T,laglength,tdata,Zmat){
         attr(zmtemp,"pixelOverlay") <- attr(Zmat,"pixelOverlay")
         attr(zmtemp,"FORM") <- as.formula(paste("X ~ ",as.character(attr(Zmat,"FORM"))[3],paste("+",varn,collapse=" ")))
         attr(zmtemp,"gridobj") <- attr(Zmat,"gridobj")
-	    attr(zmtemp,"inclusion") <- attr(Zmat,"inclusion") 
+	    attr(zmtemp,"inclusion") <- attr(Zmat,"inclusion")
+	    attr(zmtemp,"ext") <- attr(Zmat,"ext")
+	    attr(zmtemp,"cellwidth") <- attr(Zmat,"cellwidth") 
               
         ZmatList[[i]] <- zmtemp
     }	

@@ -2,13 +2,12 @@
 \alias{lgcpPredictAggregated}
 \title{lgcpPredictAggregated function}
 \usage{
-  lgcpPredictAggregated(app, popden = NULL, T, laglength,
-    model.parameters = lgcppars(),
-    spatial.covmodel = "exponential", covpars = c(),
-    cellwidth = NULL, gridsize = NULL, spatial.intensity,
-    temporal.intensity, mcmc.control,
-    output.control = setoutput(), autorotate = FALSE,
-    gradtrunc = NULL, n = 100, dmin = 0, check = TRUE)
+lgcpPredictAggregated(app, popden = NULL, T, laglength,
+  model.parameters = lgcppars(), spatial.covmodel = "exponential",
+  covpars = c(), cellwidth = NULL, gridsize = NULL, spatial.intensity,
+  temporal.intensity, mcmc.control, output.control = setoutput(),
+  autorotate = FALSE, gradtrunc = NULL, n = 100, dmin = 0,
+  check = TRUE)
 }
 \arguments{
   \item{app}{a spatio-temporal aggregated point pattern
@@ -90,115 +89,114 @@
   lgcpPredict. By default autorotate is set to FALSE.}
 }
 \value{
-  the results of fitting the model in an object of class
-  \code{lgcpPredict}
+the results of fitting the model in an object of class
+\code{lgcpPredict}
 }
 \description{
-  The function \code{lgcpPredict} performs spatiotemporal
-  prediction for log-Gaussian Cox Processes for point
-  process data where counts have been aggregated to the
-  regional level. This is achieved by imputation of the
-  regional counts onto a spatial continuum; if something is
-  known about the underlying spatial density of cases, then
-  this information can be added to improve the quality of
-  the imputation, without this, the counts are distributed
-  uniformly within regions.
+The function \code{lgcpPredict} performs spatiotemporal
+prediction for log-Gaussian Cox Processes for point process
+data where counts have been aggregated to the regional
+level. This is achieved by imputation of the regional
+counts onto a spatial continuum; if something is known
+about the underlying spatial density of cases, then this
+information can be added to improve the quality of the
+imputation, without this, the counts are distributed
+uniformly within regions.
 }
 \details{
-  The following is a mathematical description of a
-  log-Gaussian Cox Process, it is best viewed in the pdf
-  version of the manual.
+The following is a mathematical description of a
+log-Gaussian Cox Process, it is best viewed in the pdf
+version of the manual.
 
-  Let \eqn{\mathcal Y(s,t)}{\mathcal Y(s,t)} be a
-  spatiotemporal Gaussian process, \eqn{W\subset
-  R^2}{W\subset R^2} be an observation window in space and
-  \eqn{T\subset R_{\geq 0}}{T\subset R_{\geq 0}} be an
-  interval of time of interest. Cases occur at
-  spatio-temporal positions \eqn{(x,t) \in W \times
-  T}{(x,t) \in W \times T} according to an inhomogeneous
-  spatio-temporal Cox process, i.e. a Poisson process with
-  a stochastic intensity \eqn{R(x,t)}{R(x,t)}, The number
-  of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising
-  in any \eqn{S \subseteq W}{S \subseteq W} during the
-  interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T}
-  is then Poisson distributed conditional on
-  \eqn{R(\cdot)}{R(\cdot)}, \deqn{X_{S,[t_1,t_2]} \sim
-  \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd
-  t\right\}}{X_{S,[t_1,t_2]} \sim
-  \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd
-  t\right\}.} Following Brix and Diggle (2001) and Diggle
-  et al (2005), the intensity is decomposed
-  multiplicatively as \deqn{R(s,t) =
-  \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) =
-  \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.} In the above,
-  the fixed spatial component, \eqn{\lambda:R^2\mapsto
-  R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, is a known
-  function, proportional to the population at risk at each
-  point in space and scaled so that \deqn{\int_W\lambda(s)d
-  s=1,}{\int_W\lambda(s)d s=1,} whilst the fixed temporal
-  component, \eqn{\mu:R_{\geq 0}\mapsto R_{\geq
-  0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known
-  function with \deqn{\mu(t) \delta t = E[X_{W,\delta
-  t}],}{\mu(t) \delta t = E[X_{W,\delta t}],} for
-  \eqn{t}{t} in a small interval of time, \eqn{\delta
-  t}{\delta t}, over which the rate of the process over
-  \eqn{W}{W} can be considered constant.
+Let \eqn{\mathcal Y(s,t)}{\mathcal Y(s,t)} be a
+spatiotemporal Gaussian process, \eqn{W\subset
+R^2}{W\subset R^2} be an observation window in space and
+\eqn{T\subset R_{\geq 0}}{T\subset R_{\geq 0}} be an
+interval of time of interest. Cases occur at
+spatio-temporal positions \eqn{(x,t) \in W \times T}{(x,t)
+\in W \times T} according to an inhomogeneous
+spatio-temporal Cox process, i.e. a Poisson process with a
+stochastic intensity \eqn{R(x,t)}{R(x,t)}, The number of
+cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in
+any \eqn{S \subseteq W}{S \subseteq W} during the interval
+\eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is then
+Poisson distributed conditional on
+\eqn{R(\cdot)}{R(\cdot)}, \deqn{X_{S,[t_1,t_2]} \sim
+\mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd
+t\right\}}{X_{S,[t_1,t_2]} \sim
+\mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd
+t\right\}.} Following Brix and Diggle (2001) and Diggle et
+al (2005), the intensity is decomposed multiplicatively as
+\deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal
+Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal
+Y(s,t)\}.} In the above, the fixed spatial component,
+\eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto
+R_{\geq 0}}, is a known function, proportional to the
+population at risk at each point in space and scaled so
+that \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
+whilst the fixed temporal component, \eqn{\mu:R_{\geq
+0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is
+also a known function with \deqn{\mu(t) \delta t =
+E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
+for \eqn{t}{t} in a small interval of time, \eqn{\delta
+t}{\delta t}, over which the rate of the process over
+\eqn{W}{W} can be considered constant.
 
-  \bold{ NOTE: the xyt stppp object can be recorded in
-  continuous time, but for the purposes of prediciton,
-  discretisation must take place. For the time dimension,
-  this is achieved invisibly by \code{as.integer(xyt$t)}
-  and \code{as.integer(xyt$tlim)}. Therefore, before
-  running an analysis please make sure that this is
-  commensurate with the physical inerpretation and
-  requirements of your output. The spatial discretisation
-  is chosen with the argument cellwidth (or gridsize). If
-  the chosen discretisation in time and space is too coarse
-  for a given set of parameters (sigma, phi and theta) then
-  the proper correlation structures implied by the model
-  will not be captured in the output. }
+\bold{ NOTE: the xyt stppp object can be recorded in
+continuous time, but for the purposes of prediciton,
+discretisation must take place. For the time dimension,
+this is achieved invisibly by \code{as.integer(xyt$t)} and
+\code{as.integer(xyt$tlim)}. Therefore, before running an
+analysis please make sure that this is commensurate with
+the physical inerpretation and requirements of your output.
+The spatial discretisation is chosen with the argument
+cellwidth (or gridsize). If the chosen discretisation in
+time and space is too coarse for a given set of parameters
+(sigma, phi and theta) then the proper correlation
+structures implied by the model will not be captured in the
+output. }
 
-  Before calling this function, the user must decide on the
-  time point of interest, the number of intervals of data
-  to use, the parameters, spatial covariance model, spatial
-  discretisation, fixed spatial
-  (\eqn{\lambda(s)}{\lambda(s)}) and temporal
-  (\eqn{\mu(t)}{\mu(t)}) components, mcmc parameters, and
-  whether or not any output is required.
+Before calling this function, the user must decide on the
+time point of interest, the number of intervals of data to
+use, the parameters, spatial covariance model, spatial
+discretisation, fixed spatial
+(\eqn{\lambda(s)}{\lambda(s)}) and temporal
+(\eqn{\mu(t)}{\mu(t)}) components, mcmc parameters, and
+whether or not any output is required.
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434.  \item Wood ATA, Chan G (1994).
-  Simulation of Stationary Gaussian Processes in [0,1]d.
-  Journal of Computational and Graphical Statistics, 3(4),
-  409-432.  \item Moller J, Syversveen AR, Waagepetersen RP
-  (1998). Log Gaussian Cox Processes. Scandinavian Journal
-  of Statistics, 25(3), 451-482. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
+(2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434.  \item Wood ATA, Chan G (1994). Simulation
+of Stationary Gaussian Processes in [0,1]d. Journal of
+Computational and Graphical Statistics, 3(4), 409-432.
+\item Moller J, Syversveen AR, Waagepetersen RP (1998). Log
+Gaussian Cox Processes. Scandinavian Journal of Statistics,
+25(3), 451-482. }
 }
 \seealso{
-  \link{KinhomAverage}, \link{ginhomAverage},
-  \link{lambdaEst}, \link{muEst}, \link{spatialparsEst},
-  \link{thetaEst}, \link{spatialAtRisk},
-  \link{temporalAtRisk}, \link{lgcppars},
-  \link{CovarianceFct}, \link{mcmcpars}, \link{setoutput}
-  \link{print.lgcpPredict}, \link{xvals.lgcpPredict},
-  \link{yvals.lgcpPredict}, \link{plot.lgcpPredict},
-  \link{meanfield.lgcpPredict}, \link{rr.lgcpPredict},
-  \link{serr.lgcpPredict}, \link{intens.lgcpPredict},
-  \link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict},
-  \link{gridav.lgcpPredict}, \link{hvals.lgcpPredict},
-  \link{window.lgcpPredict}, \link{mcmctrace.lgcpPredict},
-  \link{plotExceed.lgcpPredict},
-  \link{quantile.lgcpPredict}, \link{identify.lgcpPredict},
-  \link{expectation.lgcpPredict},
-  \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}
+\link{KinhomAverage}, \link{ginhomAverage},
+\link{lambdaEst}, \link{muEst}, \link{spatialparsEst},
+\link{thetaEst}, \link{spatialAtRisk},
+\link{temporalAtRisk}, \link{lgcppars},
+\link{CovarianceFct}, \link{mcmcpars}, \link{setoutput}
+\link{print.lgcpPredict}, \link{xvals.lgcpPredict},
+\link{yvals.lgcpPredict}, \link{plot.lgcpPredict},
+\link{meanfield.lgcpPredict}, \link{rr.lgcpPredict},
+\link{serr.lgcpPredict}, \link{intens.lgcpPredict},
+\link{varfield.lgcpPredict}, \link{gridfun.lgcpPredict},
+\link{gridav.lgcpPredict}, \link{hvals.lgcpPredict},
+\link{window.lgcpPredict}, \link{mcmctrace.lgcpPredict},
+\link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict},
+\link{identify.lgcpPredict},
+\link{expectation.lgcpPredict}, \link{extract.lgcpPredict},
+\link{showGrid.lgcpPredict}
 }
 

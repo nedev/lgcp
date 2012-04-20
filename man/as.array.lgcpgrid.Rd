@@ -2,7 +2,7 @@
 \alias{as.array.lgcpgrid}
 \title{as.array.lgcpgrid function}
 \usage{
-  \method{as.array}{lgcpgrid} (x, ...)
+\method{as.array}{lgcpgrid}(x, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpgrid}
@@ -10,9 +10,9 @@
   \item{...}{other arguments}
 }
 \value{
-  conversion from lgcpgrid to array
+conversion from lgcpgrid to array
 }
 \description{
-  Method to convert an lgcpgrid object into an array.
+Method to convert an lgcpgrid object into an array.
 }
 

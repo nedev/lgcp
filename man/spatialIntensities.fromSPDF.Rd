@@ -2,7 +2,7 @@
 \alias{spatialIntensities.fromSPDF}
 \title{spatialIntensities.fromSPDF function}
 \usage{
-  \method{spatialIntensities}{fromSPDF} (X, xyt, ...)
+\method{spatialIntensities}{fromSPDF}(X, xyt, ...)
 }
 \arguments{
   \item{X}{an object of class fromSPDF}
@@ -13,15 +13,15 @@
   \item{...}{additional arguments}
 }
 \value{
-  normalised spatial intensities
+normalised spatial intensities
 }
 \description{
-  Extract the spatial intensities from an object of class
-  fromSPDF (as would have been created by
-  spatialAtRisk.SpatialPolygonsDataFrame for example).
+Extract the spatial intensities from an object of class
+fromSPDF (as would have been created by
+spatialAtRisk.SpatialPolygonsDataFrame for example).
 }
 \seealso{
-  \link{spatialIntensities},
-  \link{spatialIntensities.fromXYZ}
+\link{spatialIntensities},
+\link{spatialIntensities.fromXYZ}
 }
 

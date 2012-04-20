@@ -2,8 +2,7 @@
 \alias{spatialAtRisk.lgcpgrid}
 \title{spatialAtRisk.lgcpgrid function}
 \usage{
-  \method{spatialAtRisk}{lgcpgrid} (X,
-    idx = length(X$grid), ...)
+\method{spatialAtRisk}{lgcpgrid}(X, idx = length(X$grid), ...)
 }
 \arguments{
   \item{X}{an lgcpgrid object}
@@ -15,23 +14,22 @@
   \item{...}{additional arguments}
 }
 \value{
-  object of class spatialAtRisk \enumerate{ \item Brix A,
-  Diggle PJ (2001). Spatiotemporal Prediction for
-  log-Gaussian Cox processes. Journal of the Royal
-  Statistical Society, Series B, 63(4), 823-841.  \item
-  Diggle P, Rowlingson B, Su T (2005). Point Process
-  Methodology for On-line Spatio-temporal Disease
-  Surveillance. Environmetrics, 16(5), 423-434. }
+object of class spatialAtRisk \enumerate{ \item Brix A,
+Diggle PJ (2001). Spatiotemporal Prediction for
+log-Gaussian Cox processes. Journal of the Royal
+Statistical Society, Series B, 63(4), 823-841.  \item
+Diggle P, Rowlingson B, Su T (2005). Point Process
+Methodology for On-line Spatio-temporal Disease
+Surveillance. Environmetrics, 16(5), 423-434. }
 }
 \description{
-  Creates a spatialAtRisk object from an lgcpgrid object
+Creates a spatialAtRisk object from an lgcpgrid object
 }
 \seealso{
-  \link{lgcpPredict}, link{lgcpSim},
-  \link{spatialAtRisk.default},
-  \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im},
-  \link{spatialAtRisk.function},
-  \link{spatialAtRisk.SpatialGridDataFrame},
-  \link{spatialAtRisk.SpatialPolygonsDataFrame}
+\link{lgcpPredict}, link{lgcpSim},
+\link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ},
+\link{spatialAtRisk.im}, \link{spatialAtRisk.function},
+\link{spatialAtRisk.SpatialGridDataFrame},
+\link{spatialAtRisk.SpatialPolygonsDataFrame}
 }
 

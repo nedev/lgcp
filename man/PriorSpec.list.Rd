@@ -2,7 +2,7 @@
 \alias{PriorSpec.list}
 \title{PriorSpec.list function}
 \usage{
-  \method{PriorSpec}{list} (obj, ...)
+\method{PriorSpec}{list}(obj, ...)
 }
 \arguments{
   \item{obj}{a list object defining a prior , see
@@ -11,18 +11,18 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object suitable for use in a call to the MCMC routines
+an object suitable for use in a call to the MCMC routines
 }
 \description{
-  Method for declaring a Bayesian prior density in lgcp.
-  Checks to confirm that the object obj has the requisite
-  components for functioning as a prior.
+Method for declaring a Bayesian prior density in lgcp.
+Checks to confirm that the object obj has the requisite
+components for functioning as a prior.
 }
 \examples{
 \dontrun{PriorSpec(LogGaussianPrior(mean=log(c(1,500)),variance=diag(0.15,2)))}
 \dontrun{PriorSpec(GaussianPrior(mean=rep(0,9),variance=diag(10^6,9)))}
 }
 \seealso{
-  \link{GaussianPrior}, \link{LogGaussianPrior}
+\link{GaussianPrior}, \link{LogGaussianPrior}
 }
 

@@ -2,7 +2,7 @@
 \alias{dump2dir}
 \title{dump2dir function}
 \usage{
-  dump2dir(dirname, lastonly = TRUE, forceSave = FALSE)
+dump2dir(dirname, lastonly = TRUE, forceSave = FALSE)
 }
 \arguments{
   \item{dirname}{character vector of length 1 containing
@@ -14,27 +14,27 @@
   \item{forceSave}{option to override display of menu}
 }
 \value{
-  object of class dump2dir
+object of class dump2dir
 }
 \description{
-  This function, when set by the \code{gridfunction}
-  argument of \link{setoutput}, in turn called by the
-  argument \code{output.control} of \code{lgcpPredict}
-  facilitates the dumping of data to disk. Data is dumped
-  to a netCDF file, \code{simout.nc}, stored in the
-  directory specified by the user. If the directory does
-  not exist, then it will be created. Since the requested
-  data dumped to disk may be very large in a run of
-  \code{lgcpPredict}, by default, the user is prompted as
-  to whether to proceed with prediction, this can be turned
-  off by setting the option \code{forceSave=TRUE} detailed
-  here. To save space, or increase the number of
-  simulations that can be stored for a fixed disk space the
-  option to only save the last time point is also available
-  (\code{lastonly=TRUE}, which is the default setting).
+This function, when set by the \code{gridfunction} argument
+of \link{setoutput}, in turn called by the argument
+\code{output.control} of \code{lgcpPredict} facilitates the
+dumping of data to disk. Data is dumped to a netCDF file,
+\code{simout.nc}, stored in the directory specified by the
+user. If the directory does not exist, then it will be
+created. Since the requested data dumped to disk may be
+very large in a run of \code{lgcpPredict}, by default, the
+user is prompted as to whether to proceed with prediction,
+this can be turned off by setting the option
+\code{forceSave=TRUE} detailed here. To save space, or
+increase the number of simulations that can be stored for a
+fixed disk space the option to only save the last time
+point is also available (\code{lastonly=TRUE}, which is the
+default setting).
 }
 \seealso{
-  \link{setoutput}, \ \link{GFinitialise}, \link{GFupdate},
-  \link{GFfinalise}, \link{GFreturnvalue}
+\link{setoutput}, \ \link{GFinitialise}, \link{GFupdate},
+\link{GFfinalise}, \link{GFreturnvalue}
 }
 

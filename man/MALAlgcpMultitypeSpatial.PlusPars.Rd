@@ -2,12 +2,10 @@
 \alias{MALAlgcpMultitypeSpatial.PlusPars}
 \title{MALAlgcpMultitypeSpatial.PlusPars function}
 \usage{
-  MALAlgcpMultitypeSpatial.PlusPars(mcmcloop, inits,
-    adaptivescheme, M, N, Mext, Next, mcens, ncens,
-    formulaList, zml, Zmat, model.priorsList,
-    model.initsList, fftgrid, spatial.covmodelList, nis,
-    cellarea, spatialvals, cellInside, MCMCdiag, gradtrunc,
-    gridfun, gridav, marks, ntypes, d)
+MALAlgcpMultitypeSpatial.PlusPars(mcmcloop, inits, adaptivescheme, M, N, Mext,
+  Next, mcens, ncens, formulaList, zml, Zmat, model.priorsList, model.initsList,
+  fftgrid, spatial.covmodelList, nis, cellarea, spatialvals, cellInside,
+  MCMCdiag, gradtrunc, gridfun, gridav, marks, ntypes, d)
 }
 \arguments{
   \item{mcmcloop}{details of the mcmc loop}
@@ -74,10 +72,10 @@
   \item{d}{matrix of toral distances}
 }
 \value{
-  output from the MCMC run
+output from the MCMC run
 }
 \description{
-  A function to run the MCMC algorithm for multivariate
-  spatial point process data. Not for general purpose use.
+A function to run the MCMC algorithm for multivariate
+spatial point process data. Not for general purpose use.
 }
 

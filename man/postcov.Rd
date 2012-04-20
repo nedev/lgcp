@@ -2,7 +2,7 @@
 \alias{postcov}
 \title{postcov function}
 \usage{
-  postcov(obj, ...)
+postcov(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,23 +10,23 @@
   \item{...}{additional arguments}
 }
 \value{
-  method postcov
+method postcov
 }
 \description{
-  Generic function for producing plots of the posterior
-  covariance function from a call to the function
-  lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars.
+Generic function for producing plots of the posterior
+covariance function from a call to the function
+lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars.
 }
 \seealso{
-  \link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters},
-  \link{postcov.lgcpPredictSpatioTemporalPlusParameters},
-  \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{textsummary},
-  \link{priorpost}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters},
+\link{postcov.lgcpPredictSpatioTemporalPlusParameters},
+\link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{priorpost}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

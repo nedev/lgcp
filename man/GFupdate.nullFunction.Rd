@@ -2,7 +2,7 @@
 \alias{GFupdate.nullFunction}
 \title{GFupdate.nullFunction function}
 \usage{
-  \method{GFupdate}{nullFunction} (F, ...)
+\method{GFupdate}{nullFunction}(F, ...)
 }
 \arguments{
   \item{F}{an object of class dump2dir}
@@ -10,14 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  nothing
+nothing
 }
 \description{
-  This is a null function and performs no action.
+This is a null function and performs no action.
 }
 \seealso{
-  \link{nullFunction}, \link{setoutput},
-  \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise},
-  \link{GFreturnvalue}
+\link{nullFunction}, \link{setoutput}, \link{GFinitialise},
+\link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
 

@@ -2,7 +2,7 @@
 \alias{SpikedExponentialCovFct}
 \title{SpikedExponentialCovFct function}
 \usage{
-  SpikedExponentialCovFct(d, CovParameters, spikevar = 1)
+SpikedExponentialCovFct(d, CovParameters, spikevar = 1)
 }
 \arguments{
   \item{d}{toral distance}
@@ -13,18 +13,18 @@
   \item{spikevar}{the additional variance at distance 0}
 }
 \value{
-  the spiked exponential covariance function; note that the
-  spikevariance is currently not estimated as part of the
-  MCMC routine, and is thus treated as a fixed parameter.
+the spiked exponential covariance function; note that the
+spikevariance is currently not estimated as part of the
+MCMC routine, and is thus treated as a fixed parameter.
 }
 \description{
-  A function to declare and also evaluate a spiked
-  exponential covariance function. Note that the present
-  version of lgcp only offers estimation for sigma and phi,
-  the additional parameter 'spikevar' is treated as fixed.
+A function to declare and also evaluate a spiked
+exponential covariance function. Note that the present
+version of lgcp only offers estimation for sigma and phi,
+the additional parameter 'spikevar' is treated as fixed.
 }
 \seealso{
-  \link{CovFunction.function}, \link{exponentialCovFct},
-  \link{RandomFieldsCovFct}
+\link{CovFunction.function}, \link{exponentialCovFct},
+\link{RandomFieldsCovFct}
 }
 

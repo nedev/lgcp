@@ -2,7 +2,7 @@
 \alias{expectation.lgcpPredictSpatialOnlyPlusParameters}
 \title{expectation.lgcpPredictSpatialOnlyPlusParameters function}
 \usage{
-  "expectation(obj,fun,maxit=NULL,...)"
+"expectation(obj,fun,maxit=NULL,...)"
 }
 \arguments{
   \item{obj}{an object of class
@@ -21,13 +21,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  the expectated value of that function
+the expectated value of that function
 }
 \description{
-  \bold{This function requires data to have been dumped to
-  disk}: see \code{?dump2dir} and \code{?setoutput}. This
-  function computes the Monte Carlo Average of a function
-  where data from a run of \code{lgcpPredict} has been
-  dumped to disk.
+\bold{This function requires data to have been dumped to
+disk}: see \code{?dump2dir} and \code{?setoutput}. This
+function computes the Monte Carlo Average of a function
+where data from a run of \code{lgcpPredict} has been dumped
+to disk.
 }
 

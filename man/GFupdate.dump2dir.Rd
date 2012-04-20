@@ -2,7 +2,7 @@
 \alias{GFupdate.dump2dir}
 \title{GFupdate.dump2dir function}
 \usage{
-  \method{GFupdate}{dump2dir} (F, ...)
+\method{GFupdate}{dump2dir}(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  saves latent field
+saves latent field
 }
 \description{
-  This function gets the required information from
-  \code{MALAlgcp} and writes the data to the netCDF file.
+This function gets the required information from
+\code{MALAlgcp} and writes the data to the netCDF file.
 }
 \seealso{
-  \link{dump2dir}, \link{setoutput}, \link{GFinitialise},
-  \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
+\link{dump2dir}, \link{setoutput}, \link{GFinitialise},
+\link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
 

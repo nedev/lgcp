@@ -2,7 +2,7 @@
 \alias{intens.lgcpSimSpatialPlusParameters}
 \title{intens.lgcpSimSpatialPlusParameters function}
 \usage{
-  \method{intens}{lgcpSimSpatialPlusParameters} (obj, ...)
+\method{intens}{lgcpSimSpatialPlusParameters}(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class
@@ -11,10 +11,10 @@
   \item{...}{other parameters}
 }
 \value{
-  the Poisson intensity
+the Poisson intensity
 }
 \description{
-  A function to return the cellwise Poisson intensity used
-  during in constructing the simulated data.
+A function to return the cellwise Poisson intensity used
+during in constructing the simulated data.
 }
 

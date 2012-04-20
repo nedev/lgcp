@@ -2,8 +2,7 @@
 \alias{grid2spoly}
 \title{grid2spoly function}
 \usage{
-  grid2spoly(xgrid, ygrid,
-    proj4string = CRS(as.character(NA)))
+grid2spoly(xgrid, ygrid, proj4string = CRS(as.character(NA)))
 }
 \arguments{
   \item{xgrid}{vector of x centroids (equally spaced)}
@@ -14,10 +13,10 @@
   way}
 }
 \value{
-  a SpatialPolygons object
+a SpatialPolygons object
 }
 \description{
-  A function to convert a regular (x,y) grid of centroids
-  into a SpatialPolygons object
+A function to convert a regular (x,y) grid of centroids
+into a SpatialPolygons object
 }
 

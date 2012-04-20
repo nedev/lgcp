@@ -2,7 +2,7 @@
 \alias{gOverlay}
 \title{gOverlay function}
 \usage{
-  gOverlay(grid, spdf)
+gOverlay(grid, spdf)
 }
 \arguments{
   \item{grid}{the FFT grid, a SpatialPolygons object}
@@ -10,16 +10,16 @@
   \item{spdf}{a SpatialPolygonsDataFrame object}
 }
 \value{
-  a matrix describing the features of the overlay: the
-  originating indices of grid and spdf (all non-trivial
-  intersections) and the area of each intersection.
+a matrix describing the features of the overlay: the
+originating indices of grid and spdf (all non-trivial
+intersections) and the area of each intersection.
 }
 \description{
-  A function to overlay the FFT grid, a SpatialPolygons
-  object, onto a SpatialPolygonsDataFrame object.
+A function to overlay the FFT grid, a SpatialPolygons
+object, onto a SpatialPolygonsDataFrame object.
 }
 \details{
-  this code was adapted from Roger Bivand:\cr
-  https://stat.ethz.ch/pipermail/r-sig-geo/2011-June/012099.html
+this code was adapted from Roger Bivand:\cr
+https://stat.ethz.ch/pipermail/r-sig-geo/2011-June/012099.html
 }
 

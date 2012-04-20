@@ -2,7 +2,7 @@
 \alias{stapp}
 \title{stapp function}
 \usage{
-  stapp(obj, ...)
+stapp(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,10 +10,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  method stapp
+method stapp
 }
 \description{
-  Generic function for space-time aggregated point-process
-  data
+Generic function for space-time aggregated point-process
+data
 }
 

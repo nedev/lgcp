@@ -2,7 +2,7 @@
 \alias{CovFunction.function}
 \title{CovFunction.function function}
 \usage{
-  \method{CovFunction}{function} (obj, ...)
+\method{CovFunction}{function}(obj, ...)
 }
 \arguments{
   \item{obj}{a function object}
@@ -10,18 +10,18 @@
   \item{...}{additional arguments}
 }
 \value{
-  the covariance function ready to run the MCMC routine.
+the covariance function ready to run the MCMC routine.
 }
 \description{
-  A function used to define the covariance function for the
-  latent field prior to running the MCMC algorithm
+A function used to define the covariance function for the
+latent field prior to running the MCMC algorithm
 }
 \examples{
 \dontrun{cf1 <- CovFunction(exponentialCovFct)}
 \dontrun{cf2 <- CovFunction(RandomFieldsCovFct(model="matern",additionalparameters=1))}
 }
 \seealso{
-  \link{exponentialCovFct}, \link{RandomFieldsCovFct},
-  \link{SpikedExponentialCovFct}, \link{CovarianceFct}
+\link{exponentialCovFct}, \link{RandomFieldsCovFct},
+\link{SpikedExponentialCovFct}, \link{CovarianceFct}
 }
 

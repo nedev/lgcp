@@ -2,8 +2,8 @@
 \alias{target.and.grad.AggregateSpatialPlusPars}
 \title{target.and.grad.AggregateSpatialPlusPars function}
 \usage{
-  target.and.grad.AggregateSpatialPlusPars(GP, prior, Z,
-    Zt, eta, beta, nis, cellarea, spatial, gradtrunc)
+target.and.grad.AggregateSpatialPlusPars(GP, prior, Z, Zt, eta, beta, nis,
+  cellarea, spatial, gradtrunc)
 }
 \arguments{
   \item{GP}{an object constructed using GPrealisation}
@@ -27,11 +27,11 @@
   \item{gradtrunc}{the gradient truncation parameter}
 }
 \value{
-  the target and gradient
+the target and gradient
 }
 \description{
-  A function to compute the target and gradient for the
-  Bayesian aggregated point process model. Not for general
-  use.
+A function to compute the target and gradient for the
+Bayesian aggregated point process model. Not for general
+use.
 }
 

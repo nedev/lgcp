@@ -2,9 +2,8 @@
 \alias{as.owinlist.SpatialPolygonsDataFrame}
 \title{as.owinlist.SpatialPolygonsDataFrame function}
 \usage{
-  \method{as.owinlist}{SpatialPolygonsDataFrame} (obj,
-    dmin = 0, check = TRUE,
-    subset = rep(TRUE, length(obj)), ...)
+\method{as.owinlist}{SpatialPolygonsDataFrame}(obj, dmin = 0, check = TRUE,
+  subset = rep(TRUE, length(obj)), ...)
 }
 \arguments{
   \item{obj}{a SpatialPolygonsDataFrame object}
@@ -23,11 +22,11 @@
   \item{...}{additional arguments}
 }
 \value{
-  a list of owin objects corresponding to the constituent
-  Polygons objects
+a list of owin objects corresponding to the constituent
+Polygons objects
 }
 \description{
-  A function to create a list of owin objects from a
-  SpatialPolygonsDataFrame
+A function to create a list of owin objects from a
+SpatialPolygonsDataFrame
 }
 

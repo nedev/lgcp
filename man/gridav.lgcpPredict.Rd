@@ -2,7 +2,7 @@
 \alias{gridav.lgcpPredict}
 \title{gridav.lgcpPredict function}
 \usage{
-  \method{gridav}{lgcpPredict} (obj, fun = NULL, ...)
+\method{gridav}{lgcpPredict}(obj, fun = NULL, ...)
 }
 \arguments{
   \item{obj}{an object of class lgcpPredict}
@@ -14,16 +14,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  returns the output from the gridmeans option of the
-  setoutput argument of lgcpPredict
+returns the output from the gridmeans option of the
+setoutput argument of lgcpPredict
 }
 \description{
-  Accessor function for \code{lgcpPredict objects}: returns
-  the \code{gridmeans} argument set in the
-  \code{output.control} argument of the function
-  \code{lgcpPredict}.
+Accessor function for \code{lgcpPredict objects}: returns
+the \code{gridmeans} argument set in the
+\code{output.control} argument of the function
+\code{lgcpPredict}.
 }
 \seealso{
-  \link{setoutput}, \link{lgcpgrid}
+\link{setoutput}, \link{lgcpgrid}
 }
 

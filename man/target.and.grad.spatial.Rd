@@ -2,9 +2,8 @@
 \alias{target.and.grad.spatial}
 \title{target.and.grad.spatial function}
 \usage{
-  target.and.grad.spatial(Gamma, nis, cellarea, rootQeigs,
-    invrootQeigs, mu, spatial, logspat, scaleconst,
-    gradtrunc)
+target.and.grad.spatial(Gamma, nis, cellarea, rootQeigs, invrootQeigs, mu,
+  spatial, logspat, scaleconst, gradtrunc)
 }
 \arguments{
   \item{Gamma}{current state of the chain, Gamma}
@@ -32,11 +31,11 @@
   \item{gradtrunc}{gradient truncation parameter}
 }
 \value{
-  the back-transformed Y, its exponential, the log-target
-  and gradient for use in MALAlgcpSpatial
+the back-transformed Y, its exponential, the log-target and
+gradient for use in MALAlgcpSpatial
 }
 \description{
-  A function to compute the target and gradient for
-  'spatial only' MALA
+A function to compute the target and gradient for 'spatial
+only' MALA
 }
 

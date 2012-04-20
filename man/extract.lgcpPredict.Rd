@@ -2,9 +2,8 @@
 \alias{extract.lgcpPredict}
 \title{extract.lgcpPredict function}
 \usage{
-  \method{extract}{lgcpPredict} (obj, x = NULL, y = NULL,
-    t, s = -1, inWindow = NULL, crop2parentwindow = TRUE,
-    ...)
+\method{extract}{lgcpPredict}(obj, x = NULL, y = NULL, t, s = -1,
+  inWindow = NULL, crop2parentwindow = TRUE, ...)
 }
 \arguments{
   \item{obj}{an object of class lgcpPredict}
@@ -30,18 +29,18 @@
   \item{...}{additional arguments}
 }
 \value{
-  extracted array
+extracted array
 }
 \description{
-  \bold{This function requires data to have been dumped to
-  disk}: see \code{?dump2dir} and \code{?setoutput}.
-  \code{extract.lgcpPredict} extracts chunks of data that
-  have been dumped to disk. The subset of data can either
-  be specified using an (x,y,t,s) box or (window,t,s)
-  region where window is a polygonal subregion of interest.
+\bold{This function requires data to have been dumped to
+disk}: see \code{?dump2dir} and \code{?setoutput}.
+\code{extract.lgcpPredict} extracts chunks of data that
+have been dumped to disk. The subset of data can either be
+specified using an (x,y,t,s) box or (window,t,s) region
+where window is a polygonal subregion of interest.
 }
 \seealso{
-  \link{lgcpPredict}, \link{loc2poly}, \link{dump2dir},
-  \link{setoutput}
+\link{lgcpPredict}, \link{loc2poly}, \link{dump2dir},
+\link{setoutput}
 }
 

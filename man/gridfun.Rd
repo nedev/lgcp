@@ -2,7 +2,7 @@
 \alias{gridfun}
 \title{gridfun function}
 \usage{
-  gridfun(obj, ...)
+gridfun(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method gridfun
+method gridfun
 }
 \description{
-  A generic function for returning \code{gridfunction}
-  objects.
+A generic function for returning \code{gridfunction}
+objects.
 }
 \seealso{
-  \link{setoutput}, \link{lgcpgrid}
+\link{setoutput}, \link{lgcpgrid}
 }
 

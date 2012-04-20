@@ -2,7 +2,7 @@
 \alias{constantInTime}
 \title{constantInTime function}
 \usage{
-  constantInTime(obj, ...)
+constantInTime(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,25 +10,24 @@
   \item{...}{additional arguments}
 }
 \value{
-  method constantInTime
+method constantInTime
 }
 \description{
-  Generic function for creating constant-in-time
-  temporalAtRisk objects, that is for models where mu(t)
-  can be assumed to be constant in time. The assumption
-  being that the global at-risk population does not change
-  in size over time.
+Generic function for creating constant-in-time
+temporalAtRisk objects, that is for models where mu(t) can
+be assumed to be constant in time. The assumption being
+that the global at-risk population does not change in size
+over time.
 }
 \details{
-  For further details of temporalAtRisk objects, see
-  ?temporalAtRisk>
+For further details of temporalAtRisk objects, see
+?temporalAtRisk>
 }
 \seealso{
-  \link{temporalAtRisk}, \link{spatialAtRisk},
-  \link{temporalAtRisk.numeric},
-  \link{temporalAtRisk.function},
-  \link{constantInTime.numeric},
-  \link{constantInTime.stppp}, \link{print.temporalAtRisk},
-  \link{plot.temporalAtRisk}
+\link{temporalAtRisk}, \link{spatialAtRisk},
+\link{temporalAtRisk.numeric},
+\link{temporalAtRisk.function},
+\link{constantInTime.numeric}, \link{constantInTime.stppp},
+\link{print.temporalAtRisk}, \link{plot.temporalAtRisk}
 }
 

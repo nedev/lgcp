@@ -2,7 +2,7 @@
 \alias{mstppp.list}
 \title{mstppp.list function}
 \usage{
-  \method{mstppp}{list} (P, ...)
+\method{mstppp}{list}(P, ...)
 }
 \arguments{
   \item{P}{list object containing $xyt, an (n x 3) matrix
@@ -15,13 +15,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class mstppp
+an object of class mstppp
 }
 \description{
-  Construct a marked space-time planar point pattern from a
-  list object
+Construct a marked space-time planar point pattern from a
+list object
 }
 \seealso{
-  \link{mstppp}, \link{mstppp.ppp},
+\link{mstppp}, \link{mstppp.ppp},
 }
 

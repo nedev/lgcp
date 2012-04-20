@@ -2,7 +2,7 @@
 \alias{as.ppp.mstppp}
 \title{as.ppp.mstppp function}
 \usage{
-  \method{as.ppp}{mstppp} (X, ..., fatal = TRUE)
+\method{as.ppp}{mstppp}(X, ..., fatal = TRUE)
 }
 \arguments{
   \item{X}{an object of class mstppp}
@@ -13,10 +13,10 @@
   ?as.ppp}
 }
 \value{
-  a ppp object without observation times
+a ppp object without observation times
 }
 \description{
-  Convert from mstppp to ppp. Can be useful for data
-  handling.
+Convert from mstppp to ppp. Can be useful for data
+handling.
 }
 

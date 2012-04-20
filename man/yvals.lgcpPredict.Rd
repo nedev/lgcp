@@ -2,7 +2,7 @@
 \alias{yvals.lgcpPredict}
 \title{yvals.lgcpPredict function}
 \usage{
-  \method{yvals}{lgcpPredict} (obj, ...)
+\method{yvals}{lgcpPredict}(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class lgcpPredict}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  the y coordinates of the centroids of the grid
+the y coordinates of the centroids of the grid
 }
 \description{
-  Gets the y-coordinates of the centroids of the prediction
-  grid.
+Gets the y-coordinates of the centroids of the prediction
+grid.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

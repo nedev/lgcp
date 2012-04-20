@@ -2,9 +2,8 @@
 \alias{plotExceed.lgcpPredict}
 \title{plotExceed.lgcpPredict function}
 \usage{
-  \method{plotExceed}{lgcpPredict} (obj, fun, nlevel = 64,
-    ask = TRUE, plotcases = FALSE, mapunderlay = NULL,
-    alpha = 1, ...)
+\method{plotExceed}{lgcpPredict}(obj, fun, nlevel = 64, ask = TRUE,
+  plotcases = FALSE, mapunderlay = NULL, alpha = 1, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -34,11 +33,11 @@
   \item{...}{additional arguments passed to image.plot}
 }
 \value{
-  plot of exceedances
+plot of exceedances
 }
 \description{
-  Function for plotting exceedance probabilities stored in
-  \code{lgcpPredict} ojects.
+Function for plotting exceedance probabilities stored in
+\code{lgcpPredict} ojects.
 }
 \examples{
 \dontrun{exceedfun <- exceedProbs(c(1.5,2,4))}
@@ -50,7 +49,7 @@
 }
 }
 \seealso{
-  \link{lgcpPredict}, \link{MonteCarloAverage},
-  \link{setoutput}
+\link{lgcpPredict}, \link{MonteCarloAverage},
+\link{setoutput}
 }
 

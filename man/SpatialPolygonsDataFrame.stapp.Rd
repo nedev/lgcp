@@ -2,16 +2,16 @@
 \alias{SpatialPolygonsDataFrame.stapp}
 \title{SpatialPolygonsDataFrame.stapp function}
 \usage{
-  SpatialPolygonsDataFrame.stapp(from)
+SpatialPolygonsDataFrame.stapp(from)
 }
 \arguments{
   \item{from}{stapp object}
 }
 \value{
-  an object of class SpatialPolygonsDataFrame
+an object of class SpatialPolygonsDataFrame
 }
 \description{
-  A function to return the SpatialPolygonsDataFrame part of
-  an stapp object
+A function to return the SpatialPolygonsDataFrame part of
+an stapp object
 }
 

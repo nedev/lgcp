@@ -2,7 +2,7 @@
 \alias{updateAMCMC.constanth}
 \title{updateAMCMC.constanth function}
 \usage{
-  \method{updateAMCMC}{constanth} (obj, ...)
+\method{updateAMCMC}{constanth}(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  update and return current h for scheme
+update and return current h for scheme
 }
 \description{
-  Updates the \link{constanth} adaptive scheme.
+Updates the \link{constanth} adaptive scheme.
 }
 \seealso{
-  \link{constanth}
+\link{constanth}
 }
 

@@ -2,8 +2,7 @@
 \alias{aggregateCovariateInfo}
 \title{aggregateCovariateInfo function}
 \usage{
-  aggregateCovariateInfo(cellidx, cidx, gidx, df, fftovl,
-    classes, polyareas)
+aggregateCovariateInfo(cellidx, cidx, gidx, df, fftovl, classes, polyareas)
 }
 \arguments{
   \item{cellidx}{the index of the cell}
@@ -27,11 +26,10 @@
   objects}
 }
 \value{
-  the interpolated covariate information onto the FFT grid
+the interpolated covariate information onto the FFT grid
 }
 \description{
-  A function called by cov.interp.fft to allocate and
-  perform interpolation of covariate infomation onto the
-  FFT grid
+A function called by cov.interp.fft to allocate and perform
+interpolation of covariate infomation onto the FFT grid
 }
 

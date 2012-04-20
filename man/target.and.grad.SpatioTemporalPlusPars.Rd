@@ -2,9 +2,8 @@
 \alias{target.and.grad.SpatioTemporalPlusPars}
 \title{target.and.grad.SpatioTemporalPlusPars function}
 \usage{
-  target.and.grad.SpatioTemporalPlusPars(GP, prior, Z, Zt,
-    eta, beta, nis, cellarea, spatial, gradtrunc, ETA0,
-    tdiff)
+target.and.grad.SpatioTemporalPlusPars(GP, prior, Z, Zt, eta, beta, nis,
+  cellarea, spatial, gradtrunc, ETA0, tdiff)
 }
 \arguments{
   \item{GP}{an object created using the stGPrealisation
@@ -35,10 +34,10 @@
   points}
 }
 \value{
-  the target and gradient for the spatiotemporal model.
+the target and gradient for the spatiotemporal model.
 }
 \description{
-  A function to compute the target and gradient for the
-  Bayesian spatiotemporal LGCP.
+A function to compute the target and gradient for the
+Bayesian spatiotemporal LGCP.
 }
 

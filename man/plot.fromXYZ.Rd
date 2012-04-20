@@ -2,7 +2,7 @@
 \alias{plot.fromXYZ}
 \title{plot.fromXYZ function}
 \usage{
-  \method{plot}{fromXYZ} (x, ...)
+\method{plot}{fromXYZ}(x, ...)
 }
 \arguments{
   \item{x}{object of class spatialAtRisk}
@@ -10,9 +10,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  an image plot
+an image plot
 }
 \description{
-  Plot method for objects of class fromXYZ.
+Plot method for objects of class fromXYZ.
 }
 

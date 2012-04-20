@@ -2,7 +2,7 @@
 \alias{lgcpPrior}
 \title{lgcpPrior function}
 \usage{
-  lgcpPrior(etaprior = NULL, betaprior = NULL)
+lgcpPrior(etaprior = NULL, betaprior = NULL)
 }
 \arguments{
   \item{etaprior}{an object of class PriorSpec defining the
@@ -14,12 +14,12 @@
   beta. See ?PriorSpec.list.}
 }
 \value{
-  an R structure representing the prior density ready for a
-  run of the MCMC algorithm.
+an R structure representing the prior density ready for a
+run of the MCMC algorithm.
 }
 \description{
-  A function to create the prior for beta and eta ready for
-  a run of the MCMC algorithm.
+A function to create the prior for beta and eta ready for a
+run of the MCMC algorithm.
 }
 \examples{
 lgcpPrior(etaprior=PriorSpec(LogGaussianPrior(mean=log(c(1,500)),
@@ -27,16 +27,16 @@ lgcpPrior(etaprior=PriorSpec(LogGaussianPrior(mean=log(c(1,500)),
     variance=diag(10^6,9))))
 }
 \seealso{
-  \link{GaussianPrior}, \link{LogGaussianPrior},
-  \link{PriorSpec.list}, \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal},
-  \link{chooseCellwidth}, \link{getpolyol},
-  \link{guessinterp}, \link{getZmat},
-  \link{addTemporalCovariates}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{GaussianPrior}, \link{LogGaussianPrior},
+\link{PriorSpec.list}, \link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal},
+\link{chooseCellwidth}, \link{getpolyol},
+\link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

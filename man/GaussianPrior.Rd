@@ -2,7 +2,7 @@
 \alias{GaussianPrior}
 \title{GaussianPrior function}
 \usage{
-  GaussianPrior(mean, variance)
+GaussianPrior(mean, variance)
 }
 \arguments{
   \item{mean}{a vector of length 2 representing the mean.}
@@ -10,16 +10,16 @@
   \item{variance}{a 2x2 matrix representing the variance.}
 }
 \value{
-  an object of class LogGaussianPrior that can be passed to
-  the function PriorSpec.
+an object of class LogGaussianPrior that can be passed to
+the function PriorSpec.
 }
 \description{
-  A function to create a Gaussian prior.
+A function to create a Gaussian prior.
 }
 \examples{
 \dontrun{GaussianPrior(mean=rep(0,9),variance=diag(10^6,9))}
 }
 \seealso{
-  \link{LogGaussianPrior}, link{PriorSpec.list}
+\link{LogGaussianPrior}, link{PriorSpec.list}
 }
 

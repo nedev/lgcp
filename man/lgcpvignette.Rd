@@ -1,0 +1,13 @@
+\name{lgcpvignette}
+\alias{lgcpvignette}
+\title{lgcpvignette function}
+\usage{
+lgcpvignette()
+}
+\value{
+displays the vignette by calling browseURL
+}
+\description{
+Display the introductory vignette for the lgcp package.
+}
+

@@ -2,17 +2,17 @@
 \alias{osppp2latlon}
 \title{osppp2latlon function}
 \usage{
-  osppp2latlon(obj)
+osppp2latlon(obj)
 }
 \arguments{
   \item{obj}{a ppp object in OSGB}
 }
 \value{
-  a pppobject in Lat/Lon
+a pppobject in Lat/Lon
 }
 \description{
-  A function to transform a ppp object in the OSGB
-  projection (epsg:27700) to a ppp object in the
-  latitude/longitude (epsg:4326) projection.
+A function to transform a ppp object in the OSGB projection
+(epsg:27700) to a ppp object in the latitude/longitude
+(epsg:4326) projection.
 }
 

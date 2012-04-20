@@ -196,7 +196,7 @@ fftinterpolate.fromXYZ  <- function(spatial,mcens,ncens,ext,...){
     
     pro <- resample(rasterspatial,tempraster)
     
-    zv <- t(raster:::as.matrix(pro))[,N:1] # raster::: necessary here, else package will not check
+    zv <- t(raster::as.matrix(pro))[,N:1] # raster:: necessary here, else package will not check
 	
 	spatialvals <- matrix(0,M.ext,N.ext)
 	spatialvals[1:M,1:N] <- zv

@@ -2,8 +2,7 @@
 \alias{raster.lgcpgrid}
 \title{raster.lgcpgrid function}
 \usage{
-  \method{raster}{lgcpgrid} (x, crs = NA,
-    transpose = FALSE, ...)
+\method{raster}{lgcpgrid}(x, crs = NA, transpose = FALSE, ...)
 }
 \arguments{
   \item{x}{an lgcpgrid object}
@@ -17,10 +16,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  ...
+...
 }
 \description{
-  A function to convert lgcpgrid objects into either a
-  raster object, or a RasterBrick object.
+A function to convert lgcpgrid objects into either a raster
+object, or a RasterBrick object.
 }
 

@@ -2,7 +2,7 @@
 \alias{GAreturnvalue.nullAverage}
 \title{GAreturnvalue.nullAverage function##'}
 \usage{
-  \method{GAreturnvalue}{nullAverage} (F, ...)
+\method{GAreturnvalue}{nullAverage}(F, ...)
 }
 \arguments{
   \item{F}{an object of class nullAverage}
@@ -10,14 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  nothing
+nothing
 }
 \description{
-  This is a null function and performs no action.
+This is a null function and performs no action.
 }
 \seealso{
-  \link{nullAverage}, \link{setoutput},
-  \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
-  \link{GAreturnvalue}
+\link{nullAverage}, \link{setoutput}, \link{GAinitialise},
+\link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
 

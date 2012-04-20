@@ -2,8 +2,7 @@
 \alias{as.fromXYZ.fromFunction}
 \title{as.fromXYZ.fromFunction function}
 \usage{
-  \method{as.fromXYZ}{fromFunction} (X, xyt, M = 100,
-    N = 100, ...)
+\method{as.fromXYZ}{fromFunction}(X, xyt, M = 100, N = 100, ...)
 }
 \arguments{
   \item{X}{an object of class fromFunction}
@@ -17,16 +16,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  object of class im containing normalised intensities
+object of class im containing normalised intensities
 }
 \description{
-  Method for converting from the fromFunction class of
-  objects to the fromXYZ class of objects. Clearly this
-  requires the user to specify a grid onto which to compute
-  the discretised verion.
+Method for converting from the fromFunction class of
+objects to the fromXYZ class of objects. Clearly this
+requires the user to specify a grid onto which to compute
+the discretised verion.
 }
 \seealso{
-  \link{as.im.fromXYZ}, \link{as.im.fromSPDF},
-  \link{as.im.fromFunction}, \link{as.fromXYZ}
+\link{as.im.fromXYZ}, \link{as.im.fromSPDF},
+\link{as.im.fromFunction}, \link{as.fromXYZ}
 }
 

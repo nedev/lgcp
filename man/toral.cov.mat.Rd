@@ -2,8 +2,7 @@
 \alias{toral.cov.mat}
 \title{toral.cov.mat function}
 \usage{
-  toral.cov.mat(xg, yg, sigma, phi, model,
-    additionalparameters)
+toral.cov.mat(xg, yg, sigma, phi, model, additionalparameters)
 }
 \arguments{
   \item{xg}{x grid}
@@ -20,10 +19,10 @@
   covariance structure}
 }
 \value{
-  circulant covariacne matrix
+circulant covariacne matrix
 }
 \description{
-  A function to compute the covariance matrix of a
-  stationary process on a torus.
+A function to compute the covariance matrix of a stationary
+process on a torus.
 }
 

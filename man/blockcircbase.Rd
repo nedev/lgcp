@@ -2,8 +2,7 @@
 \alias{blockcircbase}
 \title{blockcircbase function}
 \usage{
-  blockcircbase(x, y, sigma, phi, model,
-    additionalparameters, inverse = FALSE)
+blockcircbase(x, y, sigma, phi, model, additionalparameters, inverse = FALSE)
 }
 \arguments{
   \item{x}{x centroids, an equally spaced vector}
@@ -24,12 +23,12 @@
   the precision matrix), default is FALSE}
 }
 \value{
-  the base matrix of a block circulant matrix representing
-  a stationary covariance function on a toral grid.
+the base matrix of a block circulant matrix representing a
+stationary covariance function on a toral grid.
 }
 \description{
-  Compute the base matrix of a continuous Gaussian field.
-  Computed as a block circulant matrix on a torus where x
-  and y is the x and y centroids (must be equally spaced)
+Compute the base matrix of a continuous Gaussian field.
+Computed as a block circulant matrix on a torus where x and
+y is the x and y centroids (must be equally spaced)
 }
 

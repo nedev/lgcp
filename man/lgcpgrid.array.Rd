@@ -2,8 +2,8 @@
 \alias{lgcpgrid.array}
 \title{lgcpgrid.array function}
 \usage{
-  \method{lgcpgrid}{array} (grid, xvals = 1:dim(grid)[1],
-    yvals = 1:dim(grid)[2], zvals = 1:dim(grid)[3], ...)
+\method{lgcpgrid}{array}(grid, xvals = 1:dim(grid)[1],
+  yvals = 1:dim(grid)[2], zvals = 1:dim(grid)[3], ...)
 }
 \arguments{
   \item{grid}{a three dimensional array object}
@@ -23,15 +23,15 @@
   \item{...}{other arguments}
 }
 \value{
-  an object of class lgcpgrid
+an object of class lgcpgrid
 }
 \description{
-  Creates an lgcp grid object from an 3-dimensional array.
+Creates an lgcp grid object from an 3-dimensional array.
 }
 \seealso{
-  \link{lgcpgrid.list}, \link{as.list.lgcpgrid},
-  \link{print.lgcpgrid}, \link{summary.lgcpgrid},
-  \link{quantile.lgcpgrid}, \link{image.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.list}, \link{as.list.lgcpgrid},
+\link{print.lgcpgrid}, \link{summary.lgcpgrid},
+\link{quantile.lgcpgrid}, \link{image.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 

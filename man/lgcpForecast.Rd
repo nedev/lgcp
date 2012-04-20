@@ -2,8 +2,8 @@
 \alias{lgcpForecast}
 \title{lgcpForecast function}
 \usage{
-  lgcpForecast(lg, ptimes, spatial.intensity,
-    temporal.intensity, inclusion = "touching")
+lgcpForecast(lg, ptimes, spatial.intensity, temporal.intensity,
+  inclusion = "touching")
 }
 \arguments{
   \item{lg}{an object of class lgcpPredict}
@@ -26,21 +26,21 @@
   inside the observation window.}
 }
 \value{
-  forcasted relative risk, Poisson intensities and Y values
-  over grid, together with approximate variance.
+forcasted relative risk, Poisson intensities and Y values
+over grid, together with approximate variance.
 }
 \description{
-  Function to produce forecasts for the mean field
-  \eqn{Y}{Y} at times beyond the last time point in the
-  analysis (given by the argument \code{T} in the function
-  \code{lgcpPredict}).
+Function to produce forecasts for the mean field \eqn{Y}{Y}
+at times beyond the last time point in the analysis (given
+by the argument \code{T} in the function
+\code{lgcpPredict}).
 }
 \references{
-  Brix A, Diggle PJ (2001). Spatiotemporal Prediction for
-  log-Gaussian Cox processes. Journal of the Royal
-  Statistical Society, Series B, 63(4), 823-841.
+Brix A, Diggle PJ (2001). Spatiotemporal Prediction for
+log-Gaussian Cox processes. Journal of the Royal
+Statistical Society, Series B, 63(4), 823-841.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

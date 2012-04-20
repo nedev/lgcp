@@ -2,7 +2,7 @@
 \alias{as.list.lgcpgrid}
 \title{as.list.lgcpgrid function}
 \usage{
-  \method{as.list}{lgcpgrid} (x, ...)
+\method{as.list}{lgcpgrid}(x, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpgrid}
@@ -10,16 +10,16 @@
   \item{...}{other arguments}
 }
 \value{
-  conversion from lgcpgrid to list
+conversion from lgcpgrid to list
 }
 \description{
-  Method to convert an lgcpgrid object into a list of
-  matrices.
+Method to convert an lgcpgrid object into a list of
+matrices.
 }
 \seealso{
-  \link{lgcpgrid.list}, \link{lgcpgrid.array},
-  \link{print.lgcpgrid}, \link{summary.lgcpgrid},
-  \link{quantile.lgcpgrid}, \link{image.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.list}, \link{lgcpgrid.array},
+\link{print.lgcpgrid}, \link{summary.lgcpgrid},
+\link{quantile.lgcpgrid}, \link{image.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 

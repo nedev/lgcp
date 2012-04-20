@@ -2,7 +2,7 @@
 \alias{lambdaEst}
 \title{lambdaEst function}
 \usage{
-  lambdaEst(xyt, ...)
+lambdaEst(xyt, ...)
 }
 \arguments{
   \item{xyt}{an object}
@@ -10,14 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method lambdaEst
+method lambdaEst
 }
 \description{
-  Generic function for estimating bivariate densities by
-  eye. Specific methods exist for stppp objects and ppp
-  objects.
+Generic function for estimating bivariate densities by eye.
+Specific methods exist for stppp objects and ppp objects.
 }
 \seealso{
-  \link{lambdaEst.stppp}, \link{lambdaEst.ppp}
+\link{lambdaEst.stppp}, \link{lambdaEst.ppp}
 }
 

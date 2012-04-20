@@ -2,7 +2,7 @@
 \alias{yvals}
 \title{yvals function}
 \usage{
-  yvals(obj, ...)
+yvals(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class spatialAtRisk}
@@ -10,17 +10,17 @@
   \item{...}{additional arguments}
 }
 \value{
-  the yvals method
+the yvals method
 }
 \description{
-  Generic for extractign the 'y values' from an object.
+Generic for extractign the 'y values' from an object.
 }
 \seealso{
-  \link{xvals}, \link{zvals}, \link{xvals.default},
-  \link{yvals.default}, \link{zvals.default},
-  \link{xvals.fromXYZ}, \link{yvals.fromXYZ},
-  \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
-  \link{yvals.SpatialGridDataFrame},
-  \link{zvals.SpatialGridDataFrame}
+\link{xvals}, \link{zvals}, \link{xvals.default},
+\link{yvals.default}, \link{zvals.default},
+\link{xvals.fromXYZ}, \link{yvals.fromXYZ},
+\link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
+\link{yvals.SpatialGridDataFrame},
+\link{zvals.SpatialGridDataFrame}
 }
 

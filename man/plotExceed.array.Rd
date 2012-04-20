@@ -2,10 +2,9 @@
 \alias{plotExceed.array}
 \title{plotExceed.array function}
 \usage{
-  \method{plotExceed}{array} (obj, fun, lgcppredict = NULL,
-    xvals = NULL, yvals = NULL, window = NULL,
-    cases = NULL, nlevel = 64, ask = TRUE,
-    mapunderlay = NULL, alpha = 1, sub = NULL, ...)
+\method{plotExceed}{array}(obj, fun, lgcppredict = NULL, xvals = NULL,
+  yvals = NULL, window = NULL, cases = NULL, nlevel = 64, ask = TRUE,
+  mapunderlay = NULL, alpha = 1, sub = NULL, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -49,13 +48,13 @@
   \item{...}{additional arguments passed to image.plot}
 }
 \value{
-  generic function returning method plotExceed
+generic function returning method plotExceed
 }
 \description{
-  Function for plotting exceedance probabilities stored in
-  array objects. Used in \code{plotExceed.lgcpPredict}.
+Function for plotting exceedance probabilities stored in
+array objects. Used in \code{plotExceed.lgcpPredict}.
 }
 \seealso{
-  \link{plotExceed.lgcpPredict}
+\link{plotExceed.lgcpPredict}
 }
 

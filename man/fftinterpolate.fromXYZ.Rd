@@ -2,8 +2,7 @@
 \alias{fftinterpolate.fromXYZ}
 \title{interpolate.fromXYZ function}
 \usage{
-  \method{fftinterpolate}{fromXYZ} (spatial, mcens, ncens,
-    ext, ...)
+\method{fftinterpolate}{fromXYZ}(spatial, mcens, ncens, ext, ...)
 }
 \arguments{
   \item{spatial}{objects of class spatialAtRisk}
@@ -22,13 +21,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  matrix of interpolated values
+matrix of interpolated values
 }
 \description{
-  This method performs interpolation within the function
-  \code{fftgrid} for \code{fromXYZ} objects.
+This method performs interpolation within the function
+\code{fftgrid} for \code{fromXYZ} objects.
 }
 \seealso{
-  \link{fftgrid}, \link{spatialAtRisk.fromXYZ}
+\link{fftgrid}, \link{spatialAtRisk.fromXYZ}
 }
 

@@ -2,7 +2,7 @@
 \alias{GFupdate}
 \title{GFupdate function}
 \usage{
-  GFupdate(F, ...)
+GFupdate(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,16 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  method GFupdate
+method GFupdate
 }
 \description{
-  Generic function defining the the update step for the
-  \code{gridFunction} class of objects. The function is
-  called invisibly within \code{MALAlgcp} and facilitates
-  the dumping of data to disk
+Generic function defining the the update step for the
+\code{gridFunction} class of objects. The function is
+called invisibly within \code{MALAlgcp} and facilitates the
+dumping of data to disk
 }
 \seealso{
-  \link{setoutput}, \link{GFinitialise}, \link{GFfinalise},
-  \link{GFreturnvalue}
+\link{setoutput}, \link{GFinitialise}, \link{GFfinalise},
+\link{GFreturnvalue}
 }
 

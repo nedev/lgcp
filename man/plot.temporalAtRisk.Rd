@@ -2,7 +2,7 @@
 \alias{plot.temporalAtRisk}
 \title{plot.temporalAtRisk function}
 \usage{
-  \method{plot}{temporalAtRisk} (x, ...)
+\method{plot}{temporalAtRisk}(x, ...)
 }
 \arguments{
   \item{x}{an object}
@@ -10,16 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  print the object
+print the object
 }
 \description{
-  Pot a temporalAtRisk object.
+Pot a temporalAtRisk object.
 }
 \seealso{
-  \link{temporalAtRisk}, \link{spatialAtRisk},
-  \link{temporalAtRisk.numeric},
-  \link{temporalAtRisk.function}, \link{constantInTime},
-  \link{constantInTime.numeric},
-  \link{constantInTime.stppp}, \link{print.temporalAtRisk},
+\link{temporalAtRisk}, \link{spatialAtRisk},
+\link{temporalAtRisk.numeric},
+\link{temporalAtRisk.function}, \link{constantInTime},
+\link{constantInTime.numeric}, \link{constantInTime.stppp},
+\link{print.temporalAtRisk},
 }
 

@@ -2,7 +2,7 @@
 \alias{showGrid.lgcpPredict}
 \title{showGrid.lgcpPredict function}
 \usage{
-  \method{showGrid}{lgcpPredict} (x, ...)
+\method{showGrid}{lgcpPredict}(x, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpPredict}
@@ -10,18 +10,18 @@
   \item{...}{additional arguments passed to points}
 }
 \value{
-  plots grid centroids on the current graphics device
+plots grid centroids on the current graphics device
 }
 \description{
-  This function displays the FFT grid used on a plot of an
-  \code{lgcpPredict} object. First plot the object using
-  for example \code{plot(lg)}, where \code{lg} is an object
-  of class \code{lgcpPredict}, then for any of the plots
-  produced, a call to \code{showGrid(lg,pch=="+",cex=0.5)}
-  will display the centroids of the FFT grid.
+This function displays the FFT grid used on a plot of an
+\code{lgcpPredict} object. First plot the object using for
+example \code{plot(lg)}, where \code{lg} is an object of
+class \code{lgcpPredict}, then for any of the plots
+produced, a call to \code{showGrid(lg,pch=="+",cex=0.5)}
+will display the centroids of the FFT grid.
 }
 \seealso{
-  \link{lgcpPredict}, \link{showGrid.default},
-  \link{showGrid.stppp}
+\link{lgcpPredict}, \link{showGrid.default},
+\link{showGrid.stppp}
 }
 

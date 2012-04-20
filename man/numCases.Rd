@@ -2,7 +2,7 @@
 \alias{numCases}
 \title{numCases function}
 \usage{
-  numCases(Y, beta, eta, Z, otherargs)
+numCases(Y, beta, eta, Z, otherargs)
 }
 \arguments{
   \item{Y}{the latent field}
@@ -17,20 +17,20 @@
   vignette "Bayesian_lgcp" for an explanation)}
 }
 \value{
-  the number of cases in each cell
+the number of cases in each cell
 }
 \description{
-  A function used in conjunction with the function
-  "expectation" to compute the expected number of cases in
-  each computational grid cell. Currently only implemented
-  for spatial processes (lgcpPredictSpatialPlusPars and
-  lgcpPredictAggregateSpatialPlusPars).
+A function used in conjunction with the function
+"expectation" to compute the expected number of cases in
+each computational grid cell. Currently only implemented
+for spatial processes (lgcpPredictSpatialPlusPars and
+lgcpPredictAggregateSpatialPlusPars).
 }
 \examples{
 \dontrun{ex <- expectation(lg,numCases)[[1]] # lg is output from spatial LGCP MCMC}
 }
 \seealso{
-  \link{expectation}, \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars}
+\link{expectation}, \link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars}
 }
 

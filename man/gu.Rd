@@ -2,7 +2,7 @@
 \alias{gu}
 \title{gu function}
 \usage{
-  gu(u, sigma, phi, model, additionalparameters)
+gu(u, sigma, phi, model, additionalparameters)
 }
 \arguments{
   \item{u}{distance}
@@ -20,9 +20,9 @@
   ?CovarianceFct}
 }
 \value{
-  this is just a wrapper for CovarianceFct
+this is just a wrapper for CovarianceFct
 }
 \description{
-  gu function
+gu function
 }
 

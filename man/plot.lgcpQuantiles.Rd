@@ -2,8 +2,8 @@
 \alias{plot.lgcpQuantiles}
 \title{plot.lgcpQuantiles function}
 \usage{
-  \method{plot}{lgcpQuantiles} (x, sel = 1:dim(x)[3],
-    ask = TRUE, crop = TRUE, plotwin = FALSE, ...)
+\method{plot}{lgcpQuantiles}(x, sel = 1:dim(x)[3], ask = TRUE,
+  crop = TRUE, plotwin = FALSE, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpQuantiles}
@@ -24,12 +24,11 @@
   \item{...}{other arguments passed to image.plot}
 }
 \value{
-  grid plotting This is a wrapper function for
-  image.lgcpgrid
+grid plotting This is a wrapper function for image.lgcpgrid
 }
 \description{
-  Plots \code{lgcpQuantiles} objects: output from
-  \code{quantiles.lgcpPredict}
+Plots \code{lgcpQuantiles} objects: output from
+\code{quantiles.lgcpPredict}
 }
 \examples{
 \dontrun{qtiles <- quantile(lg,qt=c(0.5,0.75,0.9),fun=exp)}
@@ -37,6 +36,6 @@
 \dontrun{plot(qtiles)}
 }
 \seealso{
-  \link{quantile.lgcpPredict}
+\link{quantile.lgcpPredict}
 }
 

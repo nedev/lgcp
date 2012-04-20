@@ -2,7 +2,7 @@
 \alias{intens.lgcpPredict}
 \title{intens.lgcpPredict function}
 \usage{
-  \method{intens}{lgcpPredict} (obj, ...)
+\method{intens}{lgcpPredict}(obj, ...)
 }
 \arguments{
   \item{obj}{an lgcpPredict object}
@@ -10,14 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  the cell-wise mean Poisson intensity, as computed by
-  MCMC.
+the cell-wise mean Poisson intensity, as computed by MCMC.
 }
 \description{
-  Accessor function returning the Poisson intensity as an
-  lgcpgrid object.
+Accessor function returning the Poisson intensity as an
+lgcpgrid object.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

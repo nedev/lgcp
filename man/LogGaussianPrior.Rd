@@ -2,7 +2,7 @@
 \alias{LogGaussianPrior}
 \title{LogGaussianPrior function}
 \usage{
-  LogGaussianPrior(mean, variance)
+LogGaussianPrior(mean, variance)
 }
 \arguments{
   \item{mean}{a vector of length 2 representing the mean
@@ -12,16 +12,16 @@
   (on the log scale)}
 }
 \value{
-  an object of class LogGaussianPrior that can be passed to
-  the function PriorSpec.
+an object of class LogGaussianPrior that can be passed to
+the function PriorSpec.
 }
 \description{
-  A function to create a Gaussian prior on the log scale
+A function to create a Gaussian prior on the log scale
 }
 \examples{
 \dontrun{LogGaussianPrior(mean=log(c(1,500)),variance=diag(0.15,2))}
 }
 \seealso{
-  \link{GaussianPrior}, link{PriorSpec.list}
+\link{GaussianPrior}, link{PriorSpec.list}
 }
 

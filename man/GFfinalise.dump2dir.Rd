@@ -2,7 +2,7 @@
 \alias{GFfinalise.dump2dir}
 \title{GFfinalise.dump2dir function}
 \usage{
-  \method{GFfinalise}{dump2dir} (F, ...)
+\method{GFfinalise}{dump2dir}(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  nothing
+nothing
 }
 \description{
-  This function finalises the dumping of data to a netCDF
-  file.
+This function finalises the dumping of data to a netCDF
+file.
 }
 \seealso{
-  \link{dump2dir}, \link{setoutput}, \link{GFinitialise},
-  \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
+\link{dump2dir}, \link{setoutput}, \link{GFinitialise},
+\link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
 

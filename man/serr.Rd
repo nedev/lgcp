@@ -2,7 +2,7 @@
 \alias{serr}
 \title{serr function}
 \usage{
-  serr(obj, ...)
+serr(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method serr
+method serr
 }
 \description{
-  Generic function to return standard error of relative
-  risk.
+Generic function to return standard error of relative risk.
 }
 \seealso{
-  \link{lgcpPredict}, \link{serr.lgcpPredict}
+\link{lgcpPredict}, \link{serr.lgcpPredict}
 }
 

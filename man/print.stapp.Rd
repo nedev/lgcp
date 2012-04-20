@@ -2,7 +2,7 @@
 \alias{print.stapp}
 \title{print.stapp function}
 \usage{
-  \method{print}{stapp} (x, printhead = TRUE, ...)
+\method{print}{stapp}(x, printhead = TRUE, ...)
 }
 \arguments{
   \item{x}{an object of class stapp}
@@ -13,9 +13,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  prints the stapp object x
+prints the stapp object x
 }
 \description{
-  Print method for stapp objects
+Print method for stapp objects
 }
 

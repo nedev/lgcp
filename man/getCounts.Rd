@@ -2,7 +2,7 @@
 \alias{getCounts}
 \title{getCounts function}
 \usage{
-  getCounts(xyt, subset = rep(TRUE, xyt$n), M, N, ext)
+getCounts(xyt, subset = rep(TRUE, xyt$n), M, N, ext)
 }
 \arguments{
   \item{xyt}{stppp or ppp data object}
@@ -18,13 +18,13 @@
   (ext*M,ext*N)}
 }
 \value{
-  The number of observations in each grid cell returned on
-  a grid suitable for use in the extended FFT space.
+The number of observations in each grid cell returned on a
+grid suitable for use in the extended FFT space.
 }
 \description{
-  This function is used to count the number of observations
-  falling inside grid cells, the output is used in the
-  function \link{lgcpPredict}.
+This function is used to count the number of observations
+falling inside grid cells, the output is used in the
+function \link{lgcpPredict}.
 }
 \examples{
 xyt <- stppp(ppp(runif(100),runif(100)),t=1:100,tlim=c(1,100))
@@ -33,6 +33,6 @@ ctssub <- cts[1:64,1:64] # returns the cell counts in the observation
                          # window of interest
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

@@ -2,7 +2,7 @@
 \alias{exponentialCovFct}
 \title{exponentialCovFct function}
 \usage{
-  exponentialCovFct(d, CovParameters)
+exponentialCovFct(d, CovParameters)
 }
 \arguments{
   \item{d}{toral distance}
@@ -11,14 +11,14 @@
   object of class "CovParamaters".}
 }
 \value{
-  the exponential covariance function
+the exponential covariance function
 }
 \description{
-  A function to declare and also evaluate an exponential
-  covariance function.
+A function to declare and also evaluate an exponential
+covariance function.
 }
 \seealso{
-  \link{CovFunction.function}, \link{RandomFieldsCovFct},
-  \link{SpikedExponentialCovFct}
+\link{CovFunction.function}, \link{RandomFieldsCovFct},
+\link{SpikedExponentialCovFct}
 }
 

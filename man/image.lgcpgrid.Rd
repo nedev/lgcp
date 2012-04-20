@@ -2,8 +2,7 @@
 \alias{image.lgcpgrid}
 \title{image.lgcpgrid function}
 \usage{
-  \method{image}{lgcpgrid} (x, sel = 1:x$len, ask = TRUE,
-    ...)
+\method{image}{lgcpgrid}(x, sel = 1:x$len, ask = TRUE, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpgrid}
@@ -18,15 +17,15 @@
   \item{...}{other arguments}
 }
 \value{
-  grid plotting
+grid plotting
 }
 \description{
-  Produce an image plot of an lgcpgrid object.
+Produce an image plot of an lgcpgrid object.
 }
 \seealso{
-  \link{lgcpgrid.list}, \link{lgcpgrid.array},
-  \link{as.list.lgcpgrid}, \link{print.lgcpgrid},
-  \link{summary.lgcpgrid}, \link{quantile.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.list}, \link{lgcpgrid.array},
+\link{as.list.lgcpgrid}, \link{print.lgcpgrid},
+\link{summary.lgcpgrid}, \link{quantile.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 
