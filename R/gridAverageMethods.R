@@ -147,7 +147,6 @@ MonteCarloAverage <- function(funlist,lastonly=TRUE){
     iter <- 0
     itinc <- function(){
         iter <<- iter + 1
-        print(iter)
     }
     retit <- function(){
         return(iter)

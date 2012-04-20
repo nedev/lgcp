@@ -228,7 +228,7 @@ toral.cov.mat <- function(xg,yg,sigma,phi,model,additionalparameters){
 ##' @param owin observation window
 ##' @param spatial.intensity an object that can be coerced to one of class spatialAtRisk
 ##' @param expectednumcases the expected number of cases
-##' @param cellwidth width of cells
+##' @param cellwidth width of cells in same units as observation window
 ##' @param model.parameters parameters of model, see ?lgcppars. Only set sigma and phi for spatial model.
 ##' @param spatial.covmodel spatial covariance function, default is exponential, see ?CovarianceFct
 ##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct

@@ -5,6 +5,6 @@
 \description{serr function}
 \details{Generic function to return standard error of relative risk.}
 \value{method serr}
-\seealso{\link{lgcpPredict}}
+\seealso{\link{lgcpPredict}, \link{serr.lgcpPredict}}
 \arguments{\item{obj}{an object}
 \item{...}{additional arguments}}

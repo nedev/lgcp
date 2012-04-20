@@ -1,7 +1,8 @@
 \name{spatialparsEst}
 \alias{spatialparsEst}
 \title{spatialparsEst function...}
-\usage{spatialparsEst(gk, sigma.range, phi.range)}
+\usage{spatialparsEst(gk, sigma.range, phi.range, spatial.covmodel,
+    covpars=c(), guess=TRUE)}
 \description{spatialparsEst function}
 \details{Having estimated either the pair correlation or K functions using respectively \link{ginhomAverage} or \link{KinhomAverage}, the spatial 
 parameters sigma and phi can be estimated. This function provides a visual tool for this estimation procedure.}
@@ -14,4 +15,7 @@ parameters sigma and phi can be estimated. This function provides a visual tool 
 \seealso{\link{ginhomAverage}, \link{KinhomAverage}, \link{thetaEst}, \link{lambdaEst}, \link{muEst}}
 \arguments{\item{gk}{an R object; output from the function KinhomAverage or ginhomAverage}
 \item{sigma.range}{range of sigma values to consider}
-\item{phi.range}{range of phi values to consider}}
+\item{phi.range}{range of phi values to consider}
+\item{spatial.covmodel}{correlation type see ?CovarianceFct}
+\item{covpars}{vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct}
+\item{guess}{logical. Perform an initial guess at paramters (default)? Alternative sets initial values in the middle of sigma.range and phi.range.}}

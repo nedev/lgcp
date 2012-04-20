@@ -45,7 +45,7 @@ for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which
 \item{tlim}{time interval on which to simulate data}
 \item{spatial.intensity}{object that can be coerced into a spatialAtRisk object. if NULL then uniform spatial is chosen}
 \item{temporal.intensity}{the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk}
-\item{cellwidth}{width of cells}
+\item{cellwidth}{width of cells  in same units as observation window}
 \item{model.parameters}{parameters of model, see ?lgcppars.}
 \item{spatial.covmodel}{spatial covariance function, default is exponential, see ?CovarianceFct}
 \item{covpars}{vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct}

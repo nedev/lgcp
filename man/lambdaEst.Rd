@@ -5,7 +5,16 @@
 \description{lambdaEst function}
 \details{A tool for the visual estimation of lambda(s) via a 2 dimensional smoothing of the case locations. For parameter estimation, the alternative is
 to estimate lambda(s) by some other means, convert it into a spatialAtRisk object and then into a pixel image object using the build in coercion 
-methods, this \code{im} object can then be fed to \link{ginhomAverage}, \link{KinhomAverage} or \link{thetaEst} for instance.}
+methods, this \code{im} object can then be fed to \link{ginhomAverage}, \link{KinhomAverage} or \link{thetaEst} for instance.
+
+The function lambdaEst is built directly on the density.ppp function and as such, implements a bivariate 
+Gaussian smoothing kernel. The bandwidth is initially that which is automatically chosen by the default method 
+of density.ppp. Since image plots of these kernel density estimates may not have appropriate 
+colour scales, the ability to adjust this is given with the slider 'colour adjustment'. With colour adjustment set 
+to 1, the default image.plot for the equivalent pixel image object is shown and for values less than 1, the colour 
+scheme is more spread out, allowing the user to get a better feel for the density that is being fitted. NOTE: colour 
+adjustment does not affect the returned density and the user should be aware that the returned density will 'look like' 
+that displayed when colour adjustment is set equal to 1.}
 \value{This is an rpanel function for visual choice of lambda(s), the output is a variable, varname, with the density *per unit time* 
 the variable varname can be fed to the function ginhomAverage or KinhomAverage as the argument density (see for example ?ginhomAverage), or into the 
 function thetaEst as the argument spatial.intensity.}

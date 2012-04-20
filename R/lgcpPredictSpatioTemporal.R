@@ -48,7 +48,7 @@
 ##' @param model.parameters values for parameters, see ?lgcppars
 ##' @param spatial.covmodel correlation type see ?CovarianceFct 
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
-##' @param cellwidth width of grid cells on which to do MALA (grid cells are square). Note EITHER gridsize OR cellwidth must be specified.
+##' @param cellwidth width of grid cells on which to do MALA (grid cells are square) in same units as observation window. Note EITHER gridsize OR cellwidth must be specified.
 ##' @param gridsize size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param spatial.intensity the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk
 ##' @param temporal.intensity the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk
@@ -209,7 +209,7 @@ lgcpPredict <- function(xyt,
 	
 	tdiff <- c(Inf,diff(aggtimes)) # require Inf for target and gradient function to work
 	numt <- length(tdiff)
-    bt <- 1-exp(-2*theta*tdiff)
+    bt <- exp(-theta*tdiff)
 	
 	###
     # compute whether there is any efficiency gain in rotating window
@@ -418,7 +418,7 @@ lgcpPredict <- function(xyt,
     gridav <- output.control$gridmeans
 	if (is.null(gridav)){
 	    gridav <- nullAverage()
-	} 
+	}    
     
     lg <- MALAlgcp( mcmcloop=mLoop,
                     inits=mcmc.control$inits,
@@ -548,7 +548,7 @@ MALAlgcp <- function(mcmcloop,
     cellOutside <- lapply(cellInside,function(x){!as.logical(x)})
     logspatial <- lapply(1:n,function(i){log(temporal.fitted[i]*spatialvals[[i]])})
     lapply(1:n,function(i){logspatial[[i]][cellOutside[[i]] | spatialvals[[i]]==0] <<- 0}) # NOTE THIS IS FOR SIMPLIFYING THE COMPUTATION OF THE TARGET!!                               
-                                
+                                               
     GFinitialise(gridfun) # note these two lines must come after M and N have been computed or defined
 	GAinitialise(gridav) # note these two lines must come after M and N have been computed or defined
     
@@ -561,7 +561,7 @@ MALAlgcp <- function(mcmcloop,
     y.var <- rep(list(matrix(0,M,N)),n)
     EY.mean <- rep(list(matrix(0,M,N)),n)
     EY.var <- rep(list(matrix(0,M,N)),n)
-    	    
+     	    
     Gamma <- rep(list(matrix(0,Mext,Next)),n)  # initialise with mean                         
     oldtags <- target.and.grad.spatiotemporal(Gamma=Gamma,nis=nis,cellarea=cellarea,rootQeigs=rootQeigs,invrootQeigs=invrootQeigs,mu=mu,spatial=spatialvals,logspat=logspatial,temporal=temporal.fitted,bt=bt,gt=gt,gradtrunc=gradtrunc)    
     
@@ -611,6 +611,10 @@ MALAlgcp <- function(mcmcloop,
 	    if (!trigger){ # ie if there was no problem with gradient truncation
 	        h <- updateAMCMC(adaptivescheme)
         }
+        ##cat("\n")
+        ##cat(h,"\n")
+        ##cat(oldtags$logtarget)
+        ##cat("\n")
         
         if (is.retain(mcmcloop)){
 	        nsamp <- nsamp + 1
@@ -680,22 +684,19 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
         expY[[i]] <<- exp(Y[[i]])
         expYtrunc <- expY[[i]]
         expYtrunc[expYtrunc>gradtrunc] <- gradtrunc # gradient truncation
-        grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]] + (1/ncells)*Re(fft(invrootQeigs*fft(nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea,inverse=TRUE)))
-        ###grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]
-        ###gradmult[[i]] <<- as.list(gt[i]*c(rep(0,i-1),c(1,cumprod(bt[-c(1,1:i)])))) # computes the product of g(i) * beta(delta t) terms in the summation
-        ###gradcomp[[i]] <<- nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea
+        grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]
+        gradmult[[i]] <<- as.list(sqrt(gt[i])*c(rep(0,i-1),c(1,cumprod(bt[-c(1,1:i)])))) # computes the product of sqrt(gt(i)) * beta(delta t) terms in the summation
+        gradcomp[[i]] <<- nis[[i]]-temporal[i]*spatial[[i]]*expYtrunc*cellarea
     }
     sapply(1:n,gradfun)
 
-    ###for(i in 1:n){
-    ###    gradcum <- 0
-    ###    for(j in i:n){
-    ###        gradcum <- gradcum + gradmult[[i]][[j]] * gradcomp[[j]]
-    ###    }
-    ###    grad[[i]] <- grad[[i]] + (1/ncells)*Re(fft(invrootQeigs*fft(gradcum,inverse=TRUE)))
-    ###}
-    
-    ### Note commented out code is Brix and Diggle MALA (but with 5th line "grad[[i]] <- ...etc" in gradfun set to the commented out 6th line, "grad[[i]] <<- (-1)*tcons[i]*Gamma[[i]]") ... ignoring the dependence between time-points appears to give an algorithm that mixes better ...
+    for(i in 1:n){
+        gradcum <- 0
+        for(j in i:n){
+            gradcum <- gradcum + gradmult[[i]][[j]] * gradcomp[[j]]
+        }
+        grad[[i]] <- grad[[i]] + (1/ncells)*Re(fft(invrootQeigs*fft(gradcum,inverse=TRUE)))
+    }
     
     ###logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum((Y[[i]]+log(temporal[i])+logspat[[i]])*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only
     logtarget <- -(1/2)*sum(tcons*sapply(Gamma,function(x){sum(x*x)})) + sum(sapply(1:n,function(i){sum(Y[[i]]*nis[[i]] - temporal[i]*spatial[[i]]*expY[[i]]*cellarea)})) # ... a more computationally efficient way of doing this # note that both nis=0, logspat=0 and spatial=0 outside of observation window, so this effectively limits summation to the observation window only

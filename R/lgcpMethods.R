@@ -150,6 +150,26 @@ as.list.lgcpgrid <- function(x,...){
 }
 
 
+##' as.array.lgcpgrid function
+##'
+##' Method to convert an lgcpgrid object into an array.
+##'
+##' @method as.array lgcpgrid
+##' @param x an object of class lgcpgrid  
+##' @param ... other arguments
+##' @return conversion from lgcpgrid to array
+##' @export
+   
+as.array.lgcpgrid <- function(x,...){
+    arr <- array(dim=c(x$nrow,x$ncol,x$len))
+    for (i in 1:x$len){
+        arr[,,i] <- x$grid[[i]]
+    }
+    return(arr)
+} 
+
+
+
 ##' print.lgcpgrid function
 ##'
 ##' Print method for lgcp grid objects.
@@ -273,7 +293,7 @@ plot.lgcpgrid <- function(x,sel=1:x$len,ask=TRUE,...){
 ##' Print method for lgcpPredict objects.
 ##'
 ##' @method print lgcpPredict
-##' @param x an object of class dump2dir    
+##' @param x an object of class lgcpPredict    
 ##' @param ... additional arguments 
 ##' @return just prints information to the screen
 ##' @seealso \link{lgcpPredict}
@@ -424,14 +444,14 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
     for(i in sel){
         if (!clipWindow){
             if (type=="relrisk"){
-                image.plot(x$mcens,x$ncens,x$EY.mean$grid[[i]],sub="Relative Risk",...)
+                image.plot(x$mcens,x$ncens,x$EY.mean$grid[[i]],sub=paste("Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="serr"){
                 serr <- serr(x)$grid
-                image.plot(x$mcens,x$ncens,serr[[i]],sub="S.E. Relative Risk",...)
+                image.plot(x$mcens,x$ncens,serr[[i]],sub=paste("S.E. Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'")            
@@ -441,14 +461,14 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
             grinw <- gridInWindow(x$mcens,x$ncens,x$xyt$window)
             grinw[grinw==0] <- NA
             if (type=="relrisk"){
-                image.plot(x$mcens,x$ncens,grinw*x$EY.mean$grid[[i]],sub="Relative Risk",...)
+                image.plot(x$mcens,x$ncens,grinw*x$EY.mean$grid[[i]],sub=paste("Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="serr"){
                 serr <- serr(x)$grid
-                image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub="S.E. Relative Risk",...)
+                image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub=paste("S.E. Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub="Poisson Intensity",...)
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'") 
@@ -538,7 +558,7 @@ varfield.lgcpPredict <- function(obj,...){
 ##' @param obj an object
 ##' @param ... additional arguments
 ##' @return method rr
-##' @seealso \link{lgcpPredict}
+##' @seealso \link{lgcpPredict}, \link{rr.lgcpPredict}
 ##' @export
 
 rr <- function(obj,...){
@@ -569,7 +589,7 @@ rr.lgcpPredict <- function(obj,...){
 ##' @param obj an object
 ##' @param ... additional arguments
 ##' @return method serr
-##' @seealso \link{lgcpPredict}
+##' @seealso \link{lgcpPredict}, \link{serr.lgcpPredict}
 ##' @export
 
 serr <- function(obj,...){
@@ -602,7 +622,7 @@ serr.lgcpPredict <- function(obj,...){
 ##' @param obj an object
 ##' @param ... additional arguments
 ##' @return method intens
-##' @seealso \link{lgcpPredict}
+##' @seealso \link{lgcpPredict}, \link{intens.lgcpPredict}
 ##' @export
 
 intens <- function(obj,...){
@@ -618,7 +638,7 @@ intens <- function(obj,...){
 ##' @method intens lgcpPredict
 ##' @param obj an lgcpPredict object
 ##' @param ... additional arguments
-##' @return the cell-wise Poisson intensity, as computed by MCMC.
+##' @return the cell-wise mean Poisson intensity, as computed by MCMC.
 ##' @seealso \link{lgcpPredict}
 ##' @export
 
@@ -633,6 +653,77 @@ intens.lgcpPredict <- function(obj,...){
 }
 
 
+
+##' seintens function
+##'
+##' Generic function to return the standard error of the Poisson Intensity.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method seintens
+##' @seealso \link{lgcpPredict}, \link{seintens.lgcpPredict}
+##' @export
+
+seintens <- function(obj,...){
+    UseMethod("seintens")
+}
+
+
+
+##' seintens.lgcpPredict function
+##'
+##' Accessor function returning the  standard error of the Poisson intensity as an lgcpgrid object.
+##'
+##' @method seintens lgcpPredict
+##' @param obj an lgcpPredict object
+##' @param ... additional arguments
+##' @return the cell-wise standard error of the Poisson intensity, as computed by MCMC.
+##' @seealso \link{lgcpPredict}
+##' @export
+
+seintens.lgcpPredict <- function(obj,...){
+    seintens <- list()
+    MN <- dim(obj$EY.var$grid[[1]])
+    cellarea <- diff(obj$mcens[1:2])*diff(obj$ncens[1:2]) 
+    for(i in 1:obj$EY.var$len){
+        seintens[[i]] <- cellarea*obj$temporal[i]*obj$grid[[i]][1:MN[1],1:MN[2]] * sqrt(obj$EY.var$grid[[i]])
+    }
+    return(lgcpgrid(seintens))
+}
+
+
+##' discreteWindow function
+##'
+##' Generic function for extracting the FFT discrete window.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method discreteWindow
+##' @seealso \link{discreteWindow.lgcpPredict}
+##' @export
+
+discreteWindow <- function(obj,...){
+    UseMethod("discreteWindow")
+}
+
+
+
+##' discreteWindow.lgcpPredict function
+##'
+##' A function for extracting the FFT discrete window from an lgcpPredict object.
+##'
+##' @method discreteWindow lgcpPredict
+##' @param obj an lgcpPredict object
+##' @param ... additional arguments
+##' @return ...
+##' @export
+
+discreteWindow.lgcpPredict <- function(obj,...){
+    xv <- xvals(obj)
+    yv <- yvals(obj)
+    gr <- expand.grid(xv,yv)
+    return(matrix(inside.owin(gr[,1],gr[,2],obj$xyt$window),obj$M,obj$N))
+}
 
 
 
@@ -1315,18 +1406,18 @@ expectation.lgcpPredict <- function(obj,fun,maxit=NULL,...){
 ##'
 ##' @method extract lgcpPredict
 ##' @param obj an object of class lgcpPredict
-##' @param x range of x-indices vector (eg c(2,4)) corresponding to desired subset of x coordinates. If equal to -1, then all cells in this dimension are extracted
+##' @param x range of x-indices: vector (eg c(2,4)) corresponding to desired subset of x coordinates. If equal to -1, then all cells in this dimension are extracted
 ##' @param y range of y-indices as above
-##' @param inWindow an observation owin window over which to extract the data (alternative to specifying x and y).
-##' @param t range of t-indices time indices of interest
+##' @param t range of t-indices: time indices of interest
 ##' @param s range of s-indices ie the simulation indices of interest
+##' @param inWindow an observation owin window over which to extract the data (alternative to specifying x and y).
 ##' @param crop2parentwindow logical: whether to only extract cells inside obj$xyt$window (the 'parent window') 
 ##' @param ... additional arguments
 ##' @return extracted array
 ##' @seealso \link{lgcpPredict}, \link{loc2poly}, \link{dump2dir}, \link{setoutput}
 ##' @export
 
-extract.lgcpPredict <- function(obj,x=NULL,y=NULL,inWindow=NULL,t,s=-1,crop2parentwindow=TRUE,...){
+extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2parentwindow=TRUE,...){
     if (is.null(obj$gridfunction$dirname)){
         stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
     }
@@ -1335,6 +1426,26 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,inWindow=NULL,t,s=-1,crop2pare
     }
     fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
     ncdata <- open.ncdf(fn)
+    
+    if(is.null(inWindow)){
+        if(((length(x)>1)&any(x==-1)) | ((length(y)>1)&any(y==-1)) | ((length(t)>1)&any(t==-1)) | ((length(s)>1)&any(s==-1))){
+            stop("Error in one or more of x, y, t, or s: cannot mix -1's with positive indices")
+        }
+    
+        if(x[1]!=-1 & any(x<1 | x>ncdata$var$simrun$varsize[1])){
+            stop(paste("Supplied value(s) of x must be between 1 and",ncdata$var$simrun$varsize[1],"OR equal to -1, see ?extract.lgcpPredict"))
+        }
+        if(y[1]!=-1 & any(y<1 | y>ncdata$var$simrun$varsize[2])){
+            stop(paste("Supplied value(s) of y must be between 1 and",ncdata$var$simrun$varsize[2],"OR equal to -1, see ?extract.lgcpPredict"))
+        }
+        if(t[1]!=-1 & any(t<1 | t>ncdata$var$simrun$varsize[3])){
+            stop(paste("Supplied value(s) of t must be between 1 and",ncdata$var$simrun$varsize[3],"OR equal to -1, see ?extract.lgcpPredict"))
+        }
+        if(s[1]!=-1 & any(s<1 | s>ncdata$var$simrun$varsize[4])){
+            stop(paste("Supplied value(s) of s must be between 1 and",ncdata$var$simrun$varsize[4],"OR equal to -1, see ?extract.lgcpPredict"))
+        }    
+    }    
+    
     if (is.null(inWindow)){
         startidx <- c(min(x),min(y),min(t),min(s))
         mo <- (startidx==-1)
