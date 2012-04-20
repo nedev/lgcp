@@ -2090,6 +2090,6 @@ plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,...){
         if(is.null(MAIN)){
             main <- parn[i]
         }
-        image.plot(mcens,ncens,(matrix(x[,i],M,N)*cellInside)^pow,main=main,...)
+        try(image.plot(mcens,ncens,(matrix(x[,i],M,N)*cellInside)^pow,main=main,...))
     }
 }

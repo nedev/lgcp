@@ -19,3 +19,11 @@ BUG FIXES
 OTHER CHANGES
 
     o interpolation of a spatialAtRisk object onto the computational grid is now via functions from the raster package.
+
+
+
+	CHANGES IN lgcp VERSION 1.3-2
+
+BUG FIXES   	
+
+    o There was a bug in lgcpPredictSpatioTemporalPlusPars if addTemporalCovariates had been used to bolt on temporal-only variables, the columns of the matrix Z needed to be re-ordered to match the order of variables in the overall (spatiotemporal) model formula object. A warning is issued if this happens.

@@ -1,10 +1,10 @@
-fab8c39c7bba37e57aa6149f115e2a65 *DESCRIPTION
+ff2417a5a2f3718a06ab9c6191a70963 *DESCRIPTION
 32b35013e38722eca746c1ad606d58fc *NAMESPACE
-594cd01781ce7e33a746ae9dab817c6f *NEWS
+95a2c391b6c02bca5750a4902c64e6ee *NEWS
 82e402500f5ec89f463ad80044da2b3c *R/AggregateSpatialOnlyPlusParameters.R
 693ee3d33c7398a4f2a296448223bfd4 *R/MultitypeSpatialOnlyPlusParameters.R
 d730585fbb0b531a29aacc913d15444b *R/SpatialOnlyPlusParameters.R
-eb773f822c4da1b8476a6df68e5c308c *R/SpatioTemporalPlusParameters.R
+89eff580bfde6daf1ba282ef643990c0 *R/SpatioTemporalPlusParameters.R
 ab34d44845166661ee3fccb5e1a7f1ab *R/adaptiveSchemes.R
 8bdb27dee9a18e54c874f14ed88ca11f *R/arealMethods.R
 0c0c1f3fbe808e85b5f8bff22fcf2e1b *R/computeGradtrunc.R
@@ -17,7 +17,7 @@ cda3cac66cb068fe95a6742bbe4cfd52 *R/lgcp-INLA.R
 0c6cf3e9e741cd8b185bc6bfb79393e8 *R/lgcp.R
 8274d5452671aa64528b7ee2c898520c *R/lgcpForecast.R
 8240f9ce5ce6951426d6a70d716f0554 *R/lgcpInternals.R
-ac56c07e6d860a585ddb612dad65ae09 *R/lgcpMethods.R
+ba6f0c0b5801cd696ccfcb6849ee5862 *R/lgcpMethods.R
 5be1bd19c867d4c506fb25afac368708 *R/lgcpPredictSpatial.R
 4240f392e774c51b8e83394b166c3b6d *R/lgcpPredictSpatioTemporal.R
 0c2b388af26430557428fc2812cb8016 *R/lgcpSimSpatioTemporal.R

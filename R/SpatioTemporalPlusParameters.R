@@ -351,7 +351,7 @@ lgcpPredictSpatioTemporalPlusPars <- function( formula,
 	# issue warning if dumping information to disc
 	nsamp <- floor((mLoop$N-mLoop$burnin)/mLoop$thin)
 	if (!is.null(output.control$gridfunction) & class(output.control$gridfunction)[1]=="dump2dir"){
-    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif((M)*(N)),dim=c((M),(N))))/1024^2,2)," Mb, ",sep="")
+    	cat("WARNING: disk space required for saving is approximately ",round(nsamp*object.size(array(runif((M)*(N)*(length(aggtimes))),dim=c((M),(N),(length(aggtimes)))))/1024^2,2)," Mb, ",sep="")
         if (!output.control$gridfunction$forceSave){
             m <- menu(c("yes","no"),title="continue?")
             if(m==1){
@@ -530,7 +530,7 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
       
     M <- M
     N <- N
-    temporal.fitted <- Inf # note this line is here for gridFunction and gridAverage methods and is not used otherwise
+    temporal.fitted <- rep(Inf,length(aggtimes)) # note this line is here for gridFunction and gridAverage methods and is not used otherwise
     nlevs <- NULL # note this line is here for gridFunction and gridAverage methods and is not used otherwise
     GFinitialise(gridfun) # note these two lines must come after M and N have been computed or defined
 	GAinitialise(gridav) # note these two lines must come after M and N have been computed or defined
@@ -588,23 +588,36 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
         	}
         	mod <- glm(formula,data=dfr,family=quasipoisson,offset=off)
         	betaval <- coefficients(mod) # gives mean beta over each time point 
-	    }  	
+	    }
+	     
+	    if(any(is.na(betaval))){
+            stop("Initial value of beta, as computed using glm contains NA values.")
+        } 	
     }
     betaval <- BetaParameters(betaval)
+    
 
     tm <- matrix(FALSE,Mext,Next)
     tm[1:M,1:N] <- TRUE
     if(spatialOnlyCovariates){
-        Z <- matrix(0,Next*Mext,ncol=ncol(ZmatList))        
+        Z <- matrix(0,Next*Mext,ncol=ncol(ZmatList))
+        if(!all((1:length(betaval))==match(names(betaval),colnames(ZmatList)))){
+            warning("Re-ordering variables in Z matrix to match order in spatiotemporal formula.",immediate.=TRUE)
+        }
+        ZmatList <- ZmatList[,match(names(betaval),colnames(ZmatList))]        
         Z[as.vector(tm),] <- ZmatList
         Zt <- t(Z)
     } 
     else{
         Z <- list()
         Zt <- list()
+        if(!all((1:length(betaval))==match(names(betaval),colnames(ZmatList[[1]])))){
+            warning("Re-ordering variables in Z matrix to match order in spatiotemporal formula.",immediate.=TRUE)
+        }
         for(i in 1:numt){
-            Z[[i]] <- matrix(0,Next*Mext,ncol=ncol(ZmatList[[i]]))            
-            Z[[i]][as.vector(tm),] <- ZmatList[[i]]
+            Z[[i]] <- matrix(0,Next*Mext,ncol=ncol(ZmatList[[i]]))
+            ZmatList[[i]] <- ZmatList[[i]][,match(names(betaval),colnames(ZmatList[[i]]))]                        
+            Z[[i]][as.vector(tm),] <- ZmatList[[i]] 
             Zt[[i]] <- t(Z[[i]])
         }
     } 
@@ -614,11 +627,11 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
     for(i in 1:numt){
         if(inherits(Z,"matrix")){
             Zbeta <- matrix(as.vector(Z%*%betaval),Mext,Next)        
-            glmfitted[[i]] <- spatialvals[[i]]*exp(Zbeta)
+            glmfitted[[i]] <- cellarea*spatialvals[[i]]*exp(Zbeta)
         }
         else{ 
             Zbeta <- matrix(as.vector(Z[[i]]%*%betaval),Mext,Next)
-            glmfitted[[i]] <- spatialvals[[i]]*exp(Zbeta[[i]])   
+            glmfitted[[i]] <- cellarea*spatialvals[[i]]*exp(Zbeta)   
         }
         glmfitted[[i]] <- glmfitted[[i]][1:M,1:N]
      }
@@ -733,7 +746,8 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
     dffit$sigmaphi <- exgr[,1]*exgr[,2]
     dffit$sigmatheta <- exgr[,1]*exgr[,3]
     dffit$phitheta <- exgr[,2]*exgr[,3]
-
+    
+    
     try(tarmod <- lm(ltar~sigma2+sigma+phi2+phi+theta2+theta+sigmaphi+sigmatheta+phitheta,data=dffit))
     try(coef <- coefficients(tarmod))
     mmm <- matrix(c(2*coef[2],coef[8],coef[9],  
