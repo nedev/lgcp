@@ -238,7 +238,12 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,dmin=0,check=TRUE,...){
         ss <- apply(rcounts,1,function(x){any(is.na(x))})
         owlss <- as.owinlist(obj$spdf,dmin=dmin,check=check,subset=ss)
         owl <- rep(list(obj$window),dim(rcounts)[2])
-        spatstat.options(gpclib=TRUE)
+        if(require(gpclib,quietly=TRUE)){
+            spatstat.options(gpclib=TRUE)
+        }
+        else{
+            stop("This function requires the gpclib library to be installed. Please contact the lgcp package maintaner for further information.")
+        }
         ind <- apply(rcounts,2,function(x){any(is.na(x))})
         for(i in 1:dim(rcounts)[2]){
             if(!ind[i]){

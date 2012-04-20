@@ -237,7 +237,7 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     if (attr(gk,"fname") == "g[inhom]"){ 
         panfun <- function(p){            
             r <- gk$r            
-            egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars)))
+            egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars))-1)
             gvals <- gk[[idx]]
             if (p$transform!="none"){
                 if (p$transform=="log"){
@@ -255,7 +255,7 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     else if (attr(gk,"fname") == "K[inhom]"){
         panfun <- function(p){
             r <- gk$r
-            egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars)))    
+            egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars))-1)    
             rdiff <- diff(r[1:2]) # do the integral on the discrete partition of r given by Kinhom
             kest <- rdiff * egr[1] * 2 * pi * r[1]
             for(i in 2:length(r)){
@@ -289,12 +289,12 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
         rp.radiogroup(pancontrol,var=transform,values=c("none","^1/4"),action=panfun,initval="^1/4")
     }
 
-    # quick optimiser to get good initial values for sigma and phi
+    # "quick" optimiser to get poor initial values for sigma and phi
     r <- gk$r
     if(guess){
         if (attr(gk,"fname") == "g[inhom]"){
             spfun <- function(sigmaphi){
-                egr <- suppressWarnings(exp(sapply(r,gu,sigma=sigmaphi[1],phi=sigmaphi[2],model=spatial.covmodel,additionalparameters=covpars)))
+                egr <- suppressWarnings(exp(sapply(r,gu,sigma=sigmaphi[1],phi=sigmaphi[2],model=spatial.covmodel,additionalparameters=covpars))-1)
                 S <- suppressWarnings((egr-gk[[idx]])^2)
                 S[is.infinite(S)] <- NA
                 W <- 1/r^2
@@ -309,7 +309,7 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
         }
         else if (attr(gk,"fname") == "K[inhom]"){
             sigphifun <- function(sigphi){
-                egr <- suppressWarnings(exp(sapply(r,gu,sigma=sigphi[1],phi=sigphi[2],model=spatial.covmodel,additionalparameters=covpars)))    
+                egr <- suppressWarnings(exp(sapply(r,gu,sigma=sigphi[1],phi=sigphi[2],model=spatial.covmodel,additionalparameters=covpars))-1)    
                 rdiff <- diff(r[1:2]) # do the integral on the discrete partition of r given by Kinhom
                 kest <- rdiff * egr[1] * 2 * pi * r[1]
                 for(i in 2:length(r)){

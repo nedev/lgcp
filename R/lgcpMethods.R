@@ -1832,7 +1832,7 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
             }
             
             if(trigger){
-                ltst <- length(acf(tr,plot=FALSE)$acf)
+                ltst <- length(acf(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,tidx,1), count=c(1,1,1,-1)),plot=FALSE)$acf)
                 tst <- (lags+1)>ltst
                 if(any(tst)){
                     stop(paste("Cannot return lag",ltst,"or above."))
