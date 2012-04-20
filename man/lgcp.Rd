@@ -6,8 +6,8 @@
 
 \tabular{ll}{
 Package: \tab lgcp\cr
-Version: \tab 0.1-0\cr
-Date: \tab 2011-26-09\cr
+Version: \tab 0.9-4\cr
+Date: \tab 2012-17-04\cr
 License: \tab GPL (>= 2) \cr
 }
 

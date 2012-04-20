@@ -3,7 +3,15 @@
 \title{spatialAtRisk function...}
 \usage{spatialAtRisk(X, ...)}
 \description{spatialAtRisk function}
-\details{Generic function used in the construction of spatialAtRisk objects. The class of spatialAtRisk objects provide a framework for describing
+\details{The methods for this generic function:\link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, 
+\link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.SpatialPolygonsDataFrame} and \link{spatialAtRisk.bivden} are used to represent the fixed 
+spatial component, lambda(s) in the log-Gaussian Cox process model. Typically lambda(s) would be represented as a spatstat object of class im, that encodes 
+population density information. However, regardless of the physical interpretation of lambda(s), 
+in lgcp we assume that it integrates to 1 over the observation window. The above methods make sure this condition is satisfied (with the 
+exception of the method for objects of class function), as well as providing a framework for manipulating these structures. lgcp uses bilinear interpolation 
+to project a user supplied lambda(s) onto a discrete grid ready for inference via MCMC, this grid can be obtained via the \link{selectObsWindow} function.
+
+Generic function used in the construction of spatialAtRisk objects. The class of spatialAtRisk objects provide a framework for describing
 the spatial inhomogeneity of the at-risk population, lambda(s). This is in contrast to the class of 
 \link{temporalAtRisk} objects, which describe the global levels of the population at risk, mu(t).
 
@@ -40,6 +48,6 @@ for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which
 \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
 \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
 }}
-\seealso{\link{lgcpPredict}, link{lgcpSim}, \link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, \link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.SpatialPolygonsDataFrame}, \link{spatialAtRisk.bivden}}
+\seealso{\link{selectObsWindow} \link{lgcpPredict}, link{lgcpSim}, \link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, \link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.SpatialPolygonsDataFrame}, \link{spatialAtRisk.bivden}}
 \arguments{\item{X}{an object}
 \item{...}{additional arguments}}

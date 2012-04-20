@@ -1,10 +1,13 @@
 ##' selectObsWindow function
 ##'
-##' Generic function for the purpose of selecting an observation window (or more precisely a bounding box) to contain the FFT grid
+##'
+##' See ?selectObsWindow.stppp for further details on usage. This is a generic function for the purpose of selecting an observation window 
+##' (or more precisely a bounding box) to contain the extended FFT grid.
 ##'
 ##' @param xyt an object  
 ##' @param ... additional arguments  
 ##' @return method selectObsWindow
+##' @seealso \link{selectObsWindow.default}, \link{selectObsWindow.stppp}
 ##' @export
 
 selectObsWindow <- function(xyt,...){
@@ -17,15 +20,20 @@ selectObsWindow <- function(xyt,...){
 ##'
 ##' Default method, note at present, there is only an implementation for stppp objects.
 ##'
+##' !!NOTE!! that this function also returns the grid ($xvals and $yvals) on which the FFT (and hence MALA) will be performed. It is useful to
+##' define spatialAtRiskobjects on this grid to prevent loss of information from the bilinear interpolation that takes place as part of the fitting 
+##' algorithm.
+##'
 ##' @method selectObsWindow default
 ##' @param xyt an object
-##' @param gridsize size of the grid spacing in chosen units (equivalent to the cell width argument in \link{lgcpPredict})
+##' @param cellwidth size of the grid spacing in chosen units (equivalent to the cell width argument in \link{lgcpPredict})
 ##' @param ... additional arguments      
-##' @return currently no default implementation
+##' @return this is the same as selectObsWindow.stppp
+##' @seealso \link{spatialAtRisk} \link{selectObsWindow.stppp}
 ##' @export
 
-selectObsWindow.default <- function(xyt,gridsize,...){
-    return(selectObsWindow.stppp(xyt,gridsize,...))
+selectObsWindow.default <- function(xyt,cellwidth,...){
+    return(selectObsWindow.stppp(xyt,cellwidth,...))
 }
 
 
@@ -35,35 +43,45 @@ selectObsWindow.default <- function(xyt,gridsize,...){
 ##' This function computes an appropriate observation window on which to perform prediction. Since the FFT grid
 ##' must have dimension 2^M by 2^N for some M and N, the window \code{xyt$window}, is extended to allow this to be fit in for a given cell width.
 ##'
+##' !!NOTE!! that this function also returns the grid ($xvals and $yvals) on which the FFT (and hence MALA) will be performed. It is useful to
+##' define spatialAtRiskobjects on this grid to prevent loss of information from the bilinear interpolation that takes place as part of the fitting 
+##' algorithm.
+##'
 ##' @method selectObsWindow stppp
 ##' @param xyt an object of class stppp
-##' @param gridsize size of the grid spacing in chosen units (equivalent to the cell width argument in \link{lgcpPredict})
+##' @param cellwidth size of the grid spacing in chosen units (equivalent to the cell width argument in \link{lgcpPredict})
 ##' @param ... additional arguments  
-##' @return a resized stppp object together with grid sizes M and N ready for FFT
+##' @return a resized stppp object together with grid sizes M and N ready for FFT, together with the FFT grid locations, can be useful for estimating lambda(s)
+##' @seealso \link{spatialAtRisk}
 ##' @export
 
-selectObsWindow.stppp <- function(xyt,gridsize,...){
+selectObsWindow.stppp <- function(xyt,cellwidth,...){
  
     ###
     # compute M and N
     ###
 
-    M <- 2^ceiling(log(diff(xyt$window$xrange)/gridsize,base=2)) # minimum gridsize in x-direction
-    N <- 2^ceiling(log(diff(xyt$window$yrange)/gridsize,base=2)) # minimum gridsize in x-direction  
+    M <- 2^ceiling(log(diff(xyt$window$xrange)/cellwidth,base=2)) # minimum gridsize in x-direction
+    N <- 2^ceiling(log(diff(xyt$window$yrange)/cellwidth,base=2)) # minimum gridsize in x-direction  
     
     ###
     # Lastly, adjust size of observation window to suit
     ###
     
-    xdim <- M * gridsize
-    ydim <- N * gridsize
+    xdim <- M * cellwidth
+    ydim <- N * cellwidth
     xadd <- (xdim - diff(xyt$window$xrange))/2
     yadd <- (ydim - diff(xyt$window$yrange))/2    
 
     xyt$window$xrange <- xyt$window$xrange + c(-xadd,xadd)
     xyt$window$yrange <- xyt$window$yrange + c(-yadd,yadd) 
+
+    xdiff <- diff(xyt$window$xrange)/M
+    ydiff <- diff(xyt$window$yrange)/N
+    xvals <- xyt$window$xrange[1] + xdiff/2 + xdiff*(0:(M-1))
+    yvals <- xyt$window$yrange[1] + ydiff/2 + ydiff*(0:(N-1))    
     
-    obj <- list(xyt=xyt,M=M,N=N) 
+    obj <- list(xyt=xyt,M=M,N=N,xvals=xvals,yvals=yvals) 
     
     return(obj)
 

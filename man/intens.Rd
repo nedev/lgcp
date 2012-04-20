@@ -5,6 +5,6 @@
 \description{intens function}
 \details{Generic function to return the Poisson Intensity.}
 \value{method intens}
-\seealso{\link{lgcpPredict}}
+\seealso{\link{lgcpPredict}, \link{intens.lgcpPredict}}
 \arguments{\item{obj}{an object}
 \item{...}{additional arguments}}

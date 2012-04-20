@@ -31,7 +31,7 @@
 ##' @param model.parameters values for parameters, see ?lgcppars
 ##' @param spatial.covmodel correlation type see ?CovarianceFct 
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
-##' @param cellwidth width of grid cells on which to do MALA (grid cells are square). Note EITHER gridsize OR cellwidthe must be specified.
+##' @param cellwidth width of grid cells on which to do MALA (grid cells are square) in same units as observation window. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param gridsize size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param spatial.intensity the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk
 ##' @param mcmc.control MCMC paramters, see ?mcmcpars
@@ -132,7 +132,7 @@ lgcpPredictSpatial <- function( sd,
 	mu <- model.parameters$mu
 	theta <- model.parameters$theta
 	if(!GMRF){
-	    scaleconst <- sd$n # ML estimate of scaling constant
+	    scaleconst <- sd$n/exp(mu+sigma^2/2)  # ML estimate of scaling constant
     }
     else{ # in this case, the data have been simulated from lgcpSimSpatialGMRF
         scaleconst <- attr(sd,"expectednumcases")

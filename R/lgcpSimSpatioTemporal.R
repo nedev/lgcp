@@ -31,7 +31,7 @@
 ##' @param tlim time interval on which to simulate data
 ##' @param spatial.intensity object that can be coerced into a spatialAtRisk object. if NULL then uniform spatial is chosen 
 ##' @param temporal.intensity the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk
-##' @param cellwidth width of cells
+##' @param cellwidth width of cells  in same units as observation window
 ##' @param model.parameters parameters of model, see ?lgcppars. 
 ##' @param spatial.covmodel spatial covariance function, default is exponential, see ?CovarianceFct
 ##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct

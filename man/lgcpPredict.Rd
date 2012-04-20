@@ -68,7 +68,7 @@ required.}
 \item{model.parameters}{values for parameters, see ?lgcppars}
 \item{spatial.covmodel}{correlation type see ?CovarianceFct}
 \item{covpars}{vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct}
-\item{cellwidth}{width of grid cells on which to do MALA (grid cells are square). Note EITHER gridsize OR cellwidth must be specified.}
+\item{cellwidth}{width of grid cells on which to do MALA (grid cells are square) in same units as observation window. Note EITHER gridsize OR cellwidth must be specified.}
 \item{gridsize}{size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.}
 \item{spatial.intensity}{the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk}
 \item{temporal.intensity}{the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk}

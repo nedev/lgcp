@@ -7,7 +7,7 @@
 
 Note that in the prediction routine, \link{lgcpPredict}, and the simulation routine, \link{lgcpSim}, time discretisation is achieved
 using \code{as.integer} on both observation times and time limits t_1 and t_2 (which may be stored as non-integer values). The
-functions that create temporalAtRisk objects therefore return piecewise cconstant step-functions. that can be evaluated for any real
+functions that create temporalAtRisk objects therefore return piecewise constant step-functions that can be evaluated for any real
 t in [t_1,t_2], but with the restriction that mu(t_i) = mu(t_j) whenever \code{as.integer(t_i)==as.integer(t_j)}.
 
 A temporalAtRisk object may be (1) 'assumed known', corresponding to the default argument \code{xyt=NULL}; or (2) scaled to a particular dataset

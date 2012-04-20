@@ -10,7 +10,7 @@
 \arguments{\item{owin}{observation window}
 \item{spatial.intensity}{an object that can be coerced to one of class spatialAtRisk}
 \item{expectednumcases}{the expected number of cases}
-\item{cellwidth}{width of cells}
+\item{cellwidth}{width of cells in same units as observation window}
 \item{model.parameters}{parameters of model, see ?lgcppars. Only set sigma and phi for spatial model.}
 \item{spatial.covmodel}{spatial covariance function, default is exponential, see ?CovarianceFct}
 \item{covpars}{vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct}

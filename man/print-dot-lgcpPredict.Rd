@@ -6,5 +6,5 @@
 \details{Print method for lgcpPredict objects.}
 \value{just prints information to the screen}
 \seealso{\link{lgcpPredict}}
-\arguments{\item{x}{an object of class dump2dir}
+\arguments{\item{x}{an object of class lgcpPredict}
 \item{...}{additional arguments}}

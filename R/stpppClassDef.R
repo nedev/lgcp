@@ -5,7 +5,7 @@
 ##' stppp function
 ##'
 ##' Generic function used in the construction of space-time planar point patterns. An stppp object is like a ppp object,
-##' but with extra 'slots' for (1) a vector giving the time at whcih the event occurred and (2) a time-window over which observations occurred.
+##' but with extra components for (1) a vector giving the time at whcih the event occurred and (2) a time-window over which observations occurred.
 ##' Observations are assumed to occur in the plane and the observation window is assumed not to change over time.
 ##'
 ##' @param P an object
@@ -176,3 +176,45 @@ rescale.stppp <- function(X,s){
 }
 
 
+
+##' integerise function
+##'
+##' Generic function for converting the time variable of an stppp object.
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method integerise
+##' @seealso \link{integerise.stppp}
+##' @export
+
+integerise <- function(obj,...){
+    UseMethod("integerise")
+}
+
+
+
+##' integerise.stppp function
+##'
+##' Function for converting the times and time limits of an stppp object into integer values. Do this before estimating mu(t), and hence
+##' before creating the temporalAtRisk object. Not taking this step is possible in lgcp, but can cause minor complications connected with the scaling of mu(t).
+##'
+##' @method integerise stppp
+##' @param obj an stppp object
+##' @param ... additional arguments
+##' @return The stppp object, but with integerised times.
+##' @export
+
+integerise.stppp <- function(obj,...){
+    attr(obj,"truetimes") <- obj$t # save previous values of time for possible use later
+    if(all(as.integer(obj$t)==obj$t)){
+        return(obj) # if times are already integer - valued, then assume everything is okay
+    }
+    else{
+        obj$t <- as.integer(obj$t)
+        if(as.integer(obj$tlim[2])==obj$tlim[2]){
+            obj$tlim[2] <- obj$tlim[2] - 1
+        }
+        obj$tlim <- as.integer(obj$tlim)
+        return(obj)        
+    }
+}
