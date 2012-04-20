@@ -4,7 +4,7 @@
 ###' 
 ###' \tabular{ll}{
 ###' Package: \tab lgcp\cr
-###' Version: \tab 0.9-4\cr
+###' Version: \tab 0.9-4-1\cr
 ###' Date: \tab 2012-17-04\cr
 ###' License: \tab GPL (>= 2) \cr
 ###' }

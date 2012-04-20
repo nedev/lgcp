@@ -34,6 +34,7 @@
 ##' @param cellwidth width of grid cells on which to do MALA (grid cells are square) in same units as observation window. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param gridsize size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.
 ##' @param spatial.intensity the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk
+##' @param spatial.offset Numeric of length 1. Optional offset parameter, corresponding to the expected number of cases. NULL by default, in which case, this is estimateed from teh data.
 ##' @param mcmc.control MCMC paramters, see ?mcmcpars
 ##' @param output.control output choice, see ?setoutput   
 ##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to Inf to disable gradient truncation.
@@ -61,7 +62,8 @@ lgcpPredictSpatial <- function( sd,
         					    covpars=c(),
         					    cellwidth=NULL,
         					    gridsize=NULL,
-        					    spatial.intensity,				
+        					    spatial.intensity,
+        					    spatial.offset=NULL,				
         					    mcmc.control,
         					    output.control=setoutput(),
         					    gradtrunc=NULL,
@@ -131,11 +133,11 @@ lgcpPredictSpatial <- function( sd,
 	phi <- model.parameters$phi
 	mu <- model.parameters$mu
 	theta <- model.parameters$theta
-	if(!GMRF){
-	    scaleconst <- sd$n/exp(mu+sigma^2/2)  # ML estimate of scaling constant
-    }
-    else{ # in this case, the data have been simulated from lgcpSimSpatialGMRF
-        scaleconst <- attr(sd,"expectednumcases")
+	if(!is.null(spatial.offset)){
+	    scaleconst <- spatial.offset 
+	}
+	else{
+	    scaleconst <- sd$n/exp(mu+sigma^2/2) # ML estimate of scaling constant
     }
 	
     ow <- selectObsWindow(sd,cellwidth) 
@@ -397,6 +399,8 @@ MALAlgcpSpatial <- function(mcmcloop,
     Gamma <- matrix(0,Mext,Next) # initialise with mean     
     oldtags <- target.and.grad.spatial(Gamma=Gamma,nis=nis,cellarea=cellarea,rootQeigs=rootQeigs,invrootQeigs=invrootQeigs,mu=mu,spatial=spatialvals,logspat=logspatial,scaleconst=scaleconst,gradtrunc=gradtrunc)
     
+    logtarget <- c()
+    
     while(nextStep(mcmcloop)){  
     
         propmeans <- Gamma + (h/2)*oldtags$grad
@@ -450,7 +454,8 @@ MALAlgcpSpatial <- function(mcmcloop,
     			EY.var <- ((nsamp-2)/(nsamp-1))*EY.var + (nsamp/(nsamp-1)^2)*(EY.mean-oldtags$expY[1:M,1:N])^2
     		}                 	               
 			GFupdate(gridfun)
-			GAupdate(gridav)		    
+			GAupdate(gridav)
+			logtarget <- c(logtarget,oldtags$logtarget)		    
 		}
     } 
 	
@@ -468,7 +473,8 @@ MALAlgcpSpatial <- function(mcmcloop,
     retlist$gridfunction <- GFreturnvalue(gridfun)
     retlist$gridaverage <- GAreturnvalue(gridav)
     retlist$mcmcinfo <- mcmcloop
-    retlist$gradtrunc <- gradtrunc	
+    retlist$gradtrunc <- gradtrunc
+    retlist$logtarget <- logtarget	
 	
 	return(retlist)                          
 }
