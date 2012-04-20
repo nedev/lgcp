@@ -21,7 +21,7 @@ expected number of cases during the unit time interval containnig t.}
 \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
 }}
 \seealso{\link{temporalAtRisk}, \link{spatialAtRisk}, \link{temporalAtRisk.numeric},  \link{constantInTime}, \link{constantInTime.numeric}, \link{constantInTime.stppp}, \link{print.temporalAtRisk}, \link{plot.temporalAtRisk}}
-\arguments{\item{obj}{a function accepting single argument, t, that returns the temporal intensity at time t}
+\arguments{\item{obj}{a function accepting single, scalar, numeric argument, t, that returns the temporal intensity for time t}
 \item{tlim}{an integer vector of length 2 giving the time limits of the observation window}
 \item{xyt}{an object of class stppp. If NULL (default) then the function returned is not scaled. Otherwise, the function is scaled so that f(t) = expected number of counts at time t.}
 \item{warn}{Issue a warning if the given temporal intensity treated is treated as 'known'?}

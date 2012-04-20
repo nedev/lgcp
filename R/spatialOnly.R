@@ -359,3 +359,37 @@ lgcpSimSpatial <- function( owin=NULL,
     return(xyt)
 }
 
+##' rgauss function
+##'
+##' A function to simulate a Gaussian field on a regular square lattice, the returned object is of class lgcpgrid.
+##'
+##' @param n the number of realisations to generate. Default is 1.
+##' @param range a vector of length 2, defining the left-most and right most cell centroids in the x-direction. Note that the centroids in the y-direction are the same as those in the x-direction.
+##' @param ncells the number of cells, typially a power of 2
+##' @param spatial.covmodel spatial covariance function, default is exponential, see ?CovarianceFct 
+##' @param model.parameters parameters of model, see ?lgcppars. Only set sigma and phi for spatial model.
+##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct
+##' @param ext how much to extend the parameter space by. Default is 2.
+##' @return an lgcp grid object containing the simulated field(s).
+##' @export
+
+rgauss <- function(n=1,range=c(0,1),ncells=128,spatial.covmodel="exponential",model.parameters=lgcppars(sigma=2,phi=0.1),covpars=c(),ext=2){    
+    
+    sigma <- model.parameters$sigma
+	phi <- model.parameters$phi
+	mu <- model.parameters$mu    
+    
+    mcens <- seq(range[1],range[1]+ext*diff(range)+(ext-1)*diff(range)/(ncells-1),length.out=ext*ncells)
+    ncens <- seq(range[1],range[1]+ext*diff(range)+(ext-1)*diff(range)/(ncells-1),length.out=ext*ncells)        
+    
+    bcb <- blockcircbase(x=mcens,y=ncens,sigma=sigma,phi=phi,model=spatial.covmodel,additionalparameters=covpars)    
+    Qeigs <- eigenfrombase(inversebase(bcb)) # eigenvalues of Q (the precision matrix)
+    rqe <- sqrt(Qeigs) # square root of the eigenvalues (used in computation)
+    irqe <- 1/rqe # reciprocal root (commputation)
+    slist <- list()
+    for(i in 1:n){
+        slist[[i]] <- YfromGamma(matrix(rnorm((ncells*ext)^2),ncells*ext,ncells*ext),invrootQeigs=irqe,mu=mu)[1:ncells,1:ncells]
+    }    
+    return(lgcpgrid(slist,xvals=mcens[1:ncells],yvals=ncens[1:ncells]))        
+}
+

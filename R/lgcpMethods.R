@@ -19,11 +19,12 @@ expectation <- function(obj,...){
 
 ##' extract function
 ##'
-##' Generic function for extracting information dumped to disk.
+##' Generic function for extracting information dumped to disk. See \link{extract.lgcpPredict} for further information.
 ##'
 ##' @param obj an object
 ##' @param ... additional arguments
 ##' @return method extract
+##' @seealso \link{extract.lgcpPredict}
 ##' @export
 
 extract <- function(obj,...){
@@ -36,11 +37,21 @@ extract <- function(obj,...){
 ##'
 ##' Generic function for the hadling of list objects where each element of the list is
 ##' a matrix. Each matrix is assumed to have the same dimension. Such objects arise from the 
-##' various routines in the package lgcp. 
+##' various routines in the package lgcp.
+##'
+##' lgcpgrid objects are list objects with names len, nrow, ncol, grid, xvals, yvals, zvals. The first three elements of the list
+##' store the dimension of the object, the fourth element, grid, is itself a list object consisting of matrices in which the 
+##' data is stored. The last three arguments can be used to give what is effectively a 3 dimensional array a physical reference.
+##'
+##' For example, the mean of Y from a call to lgcpPredict, obj$y.mean for example, is stored in an lgcpgrid object. If several time points have been
+##' stored in the call to lgcpPredict, then the grid element of the lgcpgrid object contains the output for each of the time points in succession. So 
+##' the first element, obj$y.mean$grid[[1]],contains the output from the first time point and so on.
+##'
 ##'
 ##' @param grid a list object with each member of the list being a numeric matrix, each matrix having the same dimension
 ##' @param ... other arguments     
 ##' @return method lgcpgrid
+##' @seealso \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{lgcpgrid.matrix}
 ##' @export
 
 lgcpgrid <- function(grid,...){
@@ -57,18 +68,21 @@ lgcpgrid <- function(grid,...){
 
 ##' lgcpgrid.list function
 ##'
-##' Creates an lgcpgrid object from a list object. Note that each element of the list should be a matrix,
+##' Creates an lgcpgrid object from a list object plus some optional coordinates. Note that each element of the list should be a matrix,
 ##' and that each matrix should have the same dimension.
 ##'
 ##' @method lgcpgrid list
 ##' @param grid a list object with each member of the list being a numeric matrix, each matrix having the same dimension
+##' @param xvals optional vector of x-coordinates associated to grid. By default, this is the cell index in the x direction.
+##' @param yvals optional vector of y-coordinates associated to grid. By default, this is the cell index in the y direction.
+##' @param zvals optional vector of z-coordinates (time) associated to grid. By default, this is the cell index in the z direction.
 ##' @param ... other arguments      
 ##' @return an object of class lgcpgrid
 ##' @seealso \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
 ##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
 ##' @export
 
-lgcpgrid.list <- function(grid,...){
+lgcpgrid.list <- function(grid,xvals=1:dim(grid)[[1]][1],yvals=1:dim(grid)[[1]][2],zvals=1:length(grid),...){
     obj <- list()
     obj$grid <- grid
     obj$len <- length(grid)
@@ -81,6 +95,9 @@ lgcpgrid.list <- function(grid,...){
     }
     obj$nrow <- nrow(grid[[1]])
     obj$ncol <- ncol(grid[[1]])
+    obj$xvals <- xvals
+    obj$yvals <- yvals
+    obj$zvals <- zvals
     class(obj) <- c("lgcpgrid","lgcpobject")
     return(obj)
 }
@@ -93,13 +110,16 @@ lgcpgrid.list <- function(grid,...){
 ##'
 ##' @method lgcpgrid array
 ##' @param grid a three dimensional array object
+##' @param xvals optional vector of x-coordinates associated to grid. By default, this is the cell index in the x direction.
+##' @param yvals optional vector of y-coordinates associated to grid. By default, this is the cell index in the y direction.
+##' @param zvals optional vector of z-coordinates (time) associated to grid. By default, this is the cell index in the z direction.
 ##' @param ... other arguments      
 ##' @return an object of class lgcpgrid
 ##' @seealso \link{lgcpgrid.list}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
 ##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
 ##' @export
 
-lgcpgrid.array <- function(grid,...){
+lgcpgrid.array <- function(grid,xvals=1:dim(grid)[1],yvals=1:dim(grid)[2],zvals=1:dim(grid)[3],...){
     if(length(dim(grid))!=3){
         stop("Array object must have 3 dimensions.")
     }
@@ -109,6 +129,9 @@ lgcpgrid.array <- function(grid,...){
     obj$nrow <- d[1]
     obj$ncol <- d[2]
     obj$grid <- unlist(apply(grid,3,function(x){return(list(x))}),recursive=FALSE)
+    obj$xvals <- xvals
+    obj$yvals <- yvals
+    obj$zvals <- zvals
     class(obj) <- c("lgcpgrid","lgcpobject")
     return(obj)
 }
@@ -119,16 +142,18 @@ lgcpgrid.array <- function(grid,...){
 ##'
 ##' @method lgcpgrid matrix
 ##' @param grid a three dimensional array object
+##' @param xvals optional vector of x-coordinates associated to grid. By default, this is the cell index in the x direction.
+##' @param yvals optional vector of y-coordinates associated to grid. By default, this is the cell index in the y direction.
 ##' @param ... other arguments      
 ##' @return an object of class lgcpgrid
 ##' @seealso \link{lgcpgrid.list}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
 ##' \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid} 
 ##' @export
 
-lgcpgrid.matrix <- function(grid,...){
+lgcpgrid.matrix <- function(grid,xvals=1:nrow(grid),yvals=1:ncol(grid),...){
     arr <- array(dim=c(dim(grid),1))
     arr[,,1] <- grid
-    return(lgcpgrid.array(arr))
+    return(lgcpgrid.array(arr,xvals=xvals,yvals=yvals,zvals=1))
 }
 
 
@@ -167,6 +192,93 @@ as.array.lgcpgrid <- function(x,...){
     }
     return(arr)
 } 
+
+##' raster.lgcpgrid function
+##'
+##' A function to convert lgcpgrid objects into either a raster object, or a RasterBrick object.
+##'
+##' @method raster lgcpgrid
+##' @param x an lgcpgrid object
+##' @param crs PROJ4 type description of a map projection (optional). See ?raster
+##' @param transpose Logical. Transpose the data? See ?brick method for array 
+##' @param ... additional arguments
+##' @return ...
+##' @export
+
+raster.lgcpgrid <- function(x,crs=NA,transpose=FALSE,...){
+    if (is.null(x$xvals)|is.null(x$yvals)){ # for backwards compatibility 
+        x$xvals <- 1:nrow(x$grid[[1]])
+        x$yvals <- 1:ncol(x$grid[[1]])
+        x$zvals <- 1:length(x$grid)
+    }
+    M <- length(x$xvals)
+    N <- length(x$yvals)
+    dx <- diff(x$xvals[1:2])
+    dy <- diff(x$yvals[1:2])
+    if (length(x$zvals)==1){    
+        return(raster(x$grid[[1]], xmn=x$xvals[1]-dx/2, xmx=x$xvals[M]+dx/2, ymn=x$yvals[1]-dy/2, ymx=x$yvals[N]+dy/2, crs=crs))
+    }
+    else{
+        ar <- as.array(x)
+        br <- brick(ar, xmn=x$xvals[1]-dx/2, xmx=x$xvals[M]+dx/2, ymn=x$yvals[1]-dy/2, ymx=x$yvals[N]+dy/2, crs=crs,transpose=transpose)
+        layerNames(br) <- paste("Time",x$zvals,sep="")
+        return(br)
+    }
+}
+
+suppressWarnings(setMethod("raster","lgcpgrid",raster.lgcpgrid))
+
+##' as.SpatialPixelsDataFrame function
+##'
+##' Generic function for conversion to SpatialPixels objects. 
+##'
+##' @param obj an object
+##' @param ... additional arguments
+##' @return method as.SpatialPixels
+##' @seealso \link{as.SpatialPixelsDataFrame.lgcpgrid}
+##' @export
+
+as.SpatialPixelsDataFrame <- function(obj,...){
+    UseMethod("as.SpatialPixelsDataFrame")
+}
+
+
+
+##' as.SpatialPixelsDataFrame.lgcpgrid function
+##'
+##' Method to convert lgcpgrid objects to SpatialPixelsDataFrame objects.
+##' 
+##'
+##' @method as.SpatialPixelsDataFrame lgcpgrid
+##' @param obj an lgcpgrid object
+##' @param ... additional arguments to be passed to SpatialPoints, eg a proj4string
+##' @return Either a SpatialPixelsDataFrame, or a list consisting of SpatialPixelsDataFrame objects.
+##' @export
+
+as.SpatialPixelsDataFrame.lgcpgrid <- function(obj,...){
+    if (is.null(obj$xvals)|is.null(obj$yvals)){ # for backwards compatibility 
+        obj$xvals <- 1:nrow(obj$grid[[1]])
+        obj$yvals <- 1:ncol(obj$grid[[1]])
+        obj$zvals <- 1:length(obj$grid)
+    }
+    spts <- SpatialPoints(expand.grid(obj$xvals,obj$yvals),...)
+    dat <- list()
+    for(i in 1:length(obj$grid)){
+        dat[[i]] <- as.vector(obj$grid[[i]])
+    }
+    
+    if(length(obj$grid)==1){
+        names(dat) <- "out"
+    }
+    else{    
+        names(dat) <- paste("outTime",obj$zvals,sep="")
+    }
+    dat <- as.data.frame(dat)
+        
+    return(SpatialPixelsDataFrame(spts,data=dat))
+}
+
+
 
 
 
@@ -256,7 +368,12 @@ image.lgcpgrid <- function(x,sel=1:x$len,ask=TRUE,...){
         on.exit(devAskNewPage(oask))
     }
     for(i in sel){
-        image.plot(1:x$nrow,1:x$ncol,x$grid[[i]],...)
+        if(is.null(x$xvals)|is.null(x$yvals)){
+            image.plot(1:x$nrow,1:x$ncol,x$grid[[i]],...)
+        }
+        else{
+            image.plot(x$xvals,x$yvals,x$grid[[i]],...)
+        }
     }    
 } 
 
@@ -314,7 +431,7 @@ print.lgcpPredict <- function(x,...){
     }
     
     if(!flag){ # is.null(x$spatialonly) for backwards compatibility
-        cat(paste("      FFT Gridsize: [ ",2*x$M," , ",2*x$N," ]\n",sep=""))
+        cat(paste("      FFT Gridsize: [ ",x$ext*x$M," , ",x$ext*x$N," ]\n",sep=""))
         cat("\n")
     
         cat(paste("              Data:\n",sep=""))
@@ -468,7 +585,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub=paste("S.E. Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*list(x$grid)[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'") 
@@ -611,7 +728,7 @@ serr <- function(obj,...){
 
 serr.lgcpPredict <- function(obj,...){
     se <- lapply(obj$EY.var$grid,sqrt)
-    return(lgcpgrid(se))
+    return(lgcpgrid(se,xvals=obj$mcens,yvals=obj$ncens,zvals=obj$aggtimes))
 }
 
 
@@ -645,11 +762,12 @@ intens <- function(obj,...){
 intens.lgcpPredict <- function(obj,...){
     intens <- list()
     MN <- dim(obj$EY.mean$grid[[1]])
+    print(MN)
     cellarea <- diff(obj$mcens[1:2])*diff(obj$ncens[1:2]) 
     for(i in 1:obj$EY.mean$len){
-        intens[[i]] <- cellarea*obj$temporal[i]*list(obj$grid)[[i]][1:MN[1],1:MN[2]]*obj$EY.mean$grid[[i]]
+        intens[[i]] <- cellarea*obj$temporal[i]*obj$grid[[i]][1:MN[1],1:MN[2]]*obj$EY.mean$grid[[i]]
     }
-    return(lgcpgrid(intens))
+    return(lgcpgrid(intens,xvals=obj$mcens,yvals=obj$ncens,zvals=obj$aggtimes))
 }
 
 
@@ -688,7 +806,7 @@ seintens.lgcpPredict <- function(obj,...){
     for(i in 1:obj$EY.var$len){
         seintens[[i]] <- cellarea*obj$temporal[i]*obj$grid[[i]][1:MN[1],1:MN[2]] * sqrt(obj$EY.var$grid[[i]])
     }
-    return(lgcpgrid(seintens))
+    return(lgcpgrid(seintens,xvals=obj$mcens,yvals=obj$ncens,zvals=obj$aggtimes))
 }
 
 
@@ -958,6 +1076,7 @@ plot.mcmcdiag <- function(x,idx=1:dim(x$trace)[2],...){
 ##' @param obj an object
 ##' @param ... additional arguments
 ##' @return generic function returning method plotExceed
+##' @seealso \link{plotExceed.lgcpPredict}, \link{plotExceed.array}
 ##' @export
 
 plotExceed <- function(obj,...){
@@ -1220,7 +1339,7 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
 ##' Plots \code{lgcpQuantiles} objects: output from \code{quantiles.lgcpPredict}
 ##'
 ##' @method plot lgcpQuantiles
-##' @param x an object of class lgcpgrid
+##' @param x an object of class lgcpQuantiles
 ##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
 ##' @param ask logical; if TRUE the user is asked before each plot  
 ##' @param crop whether or not to crop to bounding box of observation window
@@ -1651,3 +1770,130 @@ showGrid.stppp <- function(x,...){
     yv <- attr(x,"yvals")
     points(cbind(rep(xv,length(yv)),rep(yv,each=length(xv))),...)
 }
+
+
+##' autocorr function
+##'
+##' \bold{This function requires data to have been dumped to disk}: see \code{?dump2dir} and \code{?setoutput}. The routine \code{autocorr.lgcpPredict} 
+##' computes cellwise selected autocorrelations of Y.
+##' Since computing the quantiles is an expensive operation, the option to output the quantiles on a subregion of interest is also provided (by
+##' setting the argument \code{inWindow}, which has a sensible default).
+##'
+##' @param x an object of class lgcpPredict
+##' @param lags a vector of the required lags
+##' @param tidx the index number of the the time interval of interest, default is the last time point.
+##' @param inWindow an observation owin window on which to compute the autocorrelations, can speed up calculation. Default is x$xyt$window, set to NULL for full grid.
+##' @param crop2parentwindow logical: whether to only compute autocorrelations for cells inside x$xyt$window (the 'parent window')
+##' @param ... additional arguments
+##' @return an array, the [,,i]th slice being the grid of cell-wise autocorrelations.
+##' @seealso \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpAutocorr}
+##' @export
+
+autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TRUE,...){
+    if (is.null(x$gridfunction$dirname)){
+        stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function. See ?dump2dir.")
+    }
+    if (length(tidx)>1){
+        stop("tidx should either be NULL, or a vector of length 1")
+    }
+    fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
+    ncdata <- open.ncdf(fn)
+    datadim <- ncdata$var$simrun$varsize
+    if (is.null(tidx)){
+        tidx <- datadim[3]
+    }
+    if(!is.null(inWindow)){
+        if (crop2parentwindow){
+            grinw <- matrix(as.logical(gridInWindow(x$mcens,x$ncens,inWindow) * gridInWindow(x$mcens,x$ncens,x$xyt$window)),length(xvals(x)),length(yvals(x)))
+        }
+        else{
+            grinw <- gridInWindow(x$mcens,x$ncens,inWindow)
+        }
+    }
+    result <- array(dim=c(datadim[1],datadim[2],length(lags)))
+    sampcount <- datadim[4]
+    pb <- txtProgressBar(min=1,max=datadim[1]*datadim[2],style=3)
+    trigger <- TRUE
+    for (i in 1:datadim[1]){
+        for(j in 1:datadim[2]){
+            setTxtProgressBar(pb,j+(i-1)*datadim[2])
+            if(!is.null(inWindow)){
+                if (isTRUE(grinw[i,j])){
+                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                    result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
+                }
+                else{
+                    result[i,j,] <- NA
+                }
+            }
+            else{
+                tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
+            }
+            
+            if(trigger){
+                ltst <- length(acf(tr,plot=FALSE)$acf)
+                tst <- (lags+1)>ltst
+                if(any(tst)){
+                    stop(paste("Cannot return lag",ltst,"or above."))
+                }
+                trigger <- FALSE
+            }
+        }
+    }
+    close(pb)
+    close.ncdf(ncdata)
+    attr(result,"lags") <- lags
+    attr(result,"xcoords") <- x$mcens
+    attr(result,"ycoords") <- x$ncens
+    attr(result,"window") <- NULL
+    if(!is.null(inWindow)){
+        attr(result,"window") <- inWindow
+    }
+    attr(result,"ParentWindow") <- x$xyt$window
+    class(result) <- c("lgcpAutocorr","array")
+    return(result)   
+}
+
+##' plot.lgcpAutocorr function
+##'
+##' Plots \code{lgcpAutocorr} objects: output from \code{autocorr}
+##'
+##' @method plot lgcpAutocorr
+##' @param x an object of class lgcpAutocorr
+##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
+##' @param ask logical; if TRUE the user is asked before each plot  
+##' @param crop whether or not to crop to bounding box of observation window
+##' @param plotwin logical whether to plot the window attr(x,"window"), default is FALSE
+##' @param ... other arguments  passed to image.plot  
+##' @return a plot
+##' @seealso \link{autocorr}
+##' @examples
+##' \dontrun{ac <- autocorr(lg,qt=c(1,2,3))} 
+##'                           # assumes that lg has class lgcpPredict
+##' \dontrun{plot(ac)}
+##' @export
+
+plot.lgcpAutocorr <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALSE,...){
+    if (ask) {
+        oask <- devAskNewPage(TRUE)
+        on.exit(devAskNewPage(oask))
+    }
+    for (i in sel){
+        if(crop & !is.null(attr(x,"window"))){
+            image.plot(attr(x,"xcoords"),attr(x,"ycoords"),x[,,i],xlim=attr(x,"window")$xrange,ylim=attr(x,"window")$yrange,sub=paste("lag:",attr(x,"lags")[i]),...)
+        }
+        else{
+            image.plot(attr(x,"xcoords"),attr(x,"ycoords"),x[,,i],xlim=attr(x,"ParentWindow")$xrange,ylim=attr(x,"ParentWindow")$yrange,sub=paste("lag:",attr(x,"lags")[i]),...)
+        }
+        
+        if (plotwin){
+            if(!is.null(attr(x,"window"))){
+                plot(attr(x,"window"),add=TRUE)
+            }
+        }
+        plot(attr(x,"ParentWindow"),add=TRUE)    
+    }
+} 
+
+

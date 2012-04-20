@@ -291,7 +291,9 @@ lgcpPredictSpatial <- function( sd,
                             MCMCdiag=mcmc.control$MCMCdiag,
                             gradtrunc=gradtrunc,
                             gridfun=gridfun,
-                            gridav=gridav)
+                            gridav=gridav,
+                            mcens=mcens,
+                            ncens=ncens)
                                                   
 	
 	endtime <- Sys.time()
@@ -305,8 +307,8 @@ lgcpPredictSpatial <- function( sd,
 	lg$vars <- NA
 	lg$spatial <- spatial
 	lg$temporal <- scaleconst
-	lg$grid <- spatialvals
-	lg$nis <- nis
+	lg$grid <- list(spatialvals)
+	lg$nis <- lgcpgrid(nis,xvals=mcens[1:M],yvals=ncens[1:N])
 	lg$mcens <- mcens[1:M]
 	lg$ncens <- ncens[1:N]
 	lg$sigma <- sigma
@@ -351,6 +353,8 @@ lgcpPredictSpatial <- function( sd,
 ##' @param gradtrunc gradient truncation parameter
 ##' @param gridfun grid functions
 ##' @param gridav grid average functions
+##' @param mcens x-coordinates of cell centroids 
+##' @param ncens y-coordinates of cell centroids
 ##' @return object passed back to lgcpPredictSpatial
 ##' @export
 MALAlgcpSpatial <- function(mcmcloop,
@@ -373,7 +377,9 @@ MALAlgcpSpatial <- function(mcmcloop,
                             MCMCdiag,
                             gradtrunc,
                             gridfun,
-                            gridav){
+                            gridav,
+                            mcens,
+                            ncens){
                             
     SpatialOnlyMode <- TRUE
     ##ImprovedAlgorithm <- TRUE
@@ -466,10 +472,10 @@ MALAlgcpSpatial <- function(mcmcloop,
 	
 	retlist$mcmcacc <- MCMCacc
 	retlist$hrec <- hrec
-    retlist$y.mean <- lgcpgrid(list(y.mean))
-    retlist$y.var <- lgcpgrid(list(y.var))
-    retlist$EY.mean <- lgcpgrid(list(EY.mean))
-    retlist$EY.var <- lgcpgrid(list(EY.var))
+    retlist$y.mean <- lgcpgrid(list(y.mean),xvals=mcens[1:M],yvals=ncens[1:N])
+    retlist$y.var <- lgcpgrid(list(y.var),xvals=mcens[1:M],yvals=ncens[1:N])
+    retlist$EY.mean <- lgcpgrid(list(EY.mean),xvals=mcens[1:M],yvals=ncens[1:N])
+    retlist$EY.var <- lgcpgrid(list(EY.var),xvals=mcens[1:M],yvals=ncens[1:N])
     retlist$gridfunction <- GFreturnvalue(gridfun)
     retlist$gridaverage <- GAreturnvalue(gridav)
     retlist$mcmcinfo <- mcmcloop

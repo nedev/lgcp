@@ -268,7 +268,7 @@ lgcpPredict <- function(xyt,
 	    cat("\n")
 	}  
 	
-	cat(paste("FFT Grid size: [",2*M," , ",2*N,"]\n",sep=""))
+	cat(paste("FFT Grid size: [",ext*M," , ",ext*N,"]\n",sep=""))
 	Sys.sleep(1)
     rm(ow)
     
@@ -442,7 +442,10 @@ lgcpPredict <- function(xyt,
                     MCMCdiag=mcmc.control$MCMCdiag,
                     gradtrunc=gradtrunc,
                     gridfun=gridfun,
-                    gridav=gridav)
+                    gridav=gridav,
+                    mcens=mcens,
+                    ncens=ncens,
+                    aggtimes=aggtimes)
                                                      
 	
 	endtime <- Sys.time()
@@ -457,7 +460,7 @@ lgcpPredict <- function(xyt,
 	lg$spatial <- spatial
 	lg$temporal <- temporalfit
 	lg$grid <- spatialvals
-	lg$nis <- lgcpgrid(nis)
+	lg$nis <- lgcpgrid(nis,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes)
 	lg$mcens <- mcens[1:M]
 	lg$ncens <- ncens[1:N]
 	lg$cellarea <- diff(mcens[1:2]) * diff(ncens[1:2]) 
@@ -509,6 +512,9 @@ lgcpPredict <- function(xyt,
 ##' @param gradtrunc gradient truncation parameter
 ##' @param gridfun grid functions
 ##' @param gridav grid average functions
+##' @param mcens x-coordinates of cell centroids 
+##' @param ncens y-coordinates of cell centroids
+##' @param aggtimes z-coordinates of cell centroids (ie time)
 ##' @return object passed back to lgcpPredictSpatial
 ##' @export
 MALAlgcp <- function(mcmcloop,
@@ -534,7 +540,10 @@ MALAlgcp <- function(mcmcloop,
                             MCMCdiag,
                             gradtrunc,
                             gridfun,
-                            gridav){
+                            gridav,
+                            mcens,
+                            ncens,
+                            aggtimes){
                             
     SpatialOnlyMode <- FALSE
     ##ImprovedAlgorithm <- TRUE
@@ -630,17 +639,17 @@ MALAlgcp <- function(mcmcloop,
 		}
     } 
 	
-	retlist <- list(lasth=h,lastGAM=lgcpgrid(Gamma))
+	retlist <- list(lasth=h,lastGAM=lgcpgrid(Gamma,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes))
 	
 	GFfinalise(gridfun) # these two lines must appear after retlist has been initialised
 	GAfinalise(gridav)  #	
 	
 	retlist$mcmcacc <- MCMCacc
 	retlist$hrec <- hrec
-    retlist$y.mean <- lgcpgrid(y.mean)
-    retlist$y.var <- lgcpgrid(y.var)
-    retlist$EY.mean <- lgcpgrid(EY.mean)
-    retlist$EY.var <- lgcpgrid(EY.var)
+    retlist$y.mean <- lgcpgrid(y.mean,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes)
+    retlist$y.var <- lgcpgrid(y.var,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes)
+    retlist$EY.mean <- lgcpgrid(EY.mean,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes)
+    retlist$EY.var <- lgcpgrid(EY.var,xvals=mcens[1:M],yvals=ncens[1:N],zvals=aggtimes)
     retlist$gridfunction <- GFreturnvalue(gridfun)
     retlist$gridaverage <- GAreturnvalue(gridav)
     retlist$mcmcinfo <- mcmcloop

@@ -48,3 +48,35 @@ getCounts <- function(xyt,subset=rep(TRUE,xyt$n),M,N,ext){
  
     return(nis)
 }
+
+
+##' getCellCounts function
+##'
+##' This function is used to count the number of observations falling inside grid cells.
+##'
+##' @param x x-coordinates of events
+##' @param y y-coordinates of events
+##' @param xgrid x-coordinates of grid centroids
+##' @param ygrid y-coordinates of grid centroids
+##' @return The number of observations in each grid cell.
+##' @export
+getCellCounts <- function(x,y,xgrid,ygrid){
+	
+	M <- length(xgrid)
+	N <- length(ygrid)
+	xwd <- diff(xgrid[1:2])
+    ywd <- diff(ygrid[1:2])
+	sg <- SpatialGrid(GridTopology(c(xgrid[1],ygrid[1]),c(xwd,ywd),c(M,N)))
+	sp <- SpatialPoints(cbind(x,y))
+	ol <- overlay(sg,sp)
+	tol <- table(ol)
+	idx <- as.numeric(rownames(tol))	
+	smat <- matrix(0,M,N)
+	smat[idx] <- tol
+	smat <- smat[,N:1] # change orientation 
+	
+	nis <- matrix(0,M,N)
+	nis[1:M,1:N] <- smat 
+ 
+    return(nis)
+}

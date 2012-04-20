@@ -4,7 +4,7 @@
 \usage{MALAlgcp(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi,
     theta, mu, nis, cellarea, spatialvals, temporal.fitted, tdiff,
     scaleconst, rootQeigs, invrootQeigs, cellInside, MCMCdiag,
-    gradtrunc, gridfun, gridav)}
+    gradtrunc, gridfun, gridav, mcens, ncens, aggtimes)}
 \description{MALAlgcp function}
 \details{ADVANCED USE ONLY A function to perform MALA for the spatial only case}
 \value{object passed back to lgcpPredictSpatial}
@@ -31,4 +31,7 @@
 \item{MCMCdiag}{defunct}
 \item{gradtrunc}{gradient truncation parameter}
 \item{gridfun}{grid functions}
-\item{gridav}{grid average functions}}
+\item{gridav}{grid average functions}
+\item{mcens}{x-coordinates of cell centroids}
+\item{ncens}{y-coordinates of cell centroids}
+\item{aggtimes}{z-coordinates of cell centroids (ie time)}}

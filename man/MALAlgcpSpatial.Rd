@@ -3,7 +3,8 @@
 \title{MALAlgcpSpatial function...}
 \usage{MALAlgcpSpatial(mcmcloop, inits, adaptivescheme, M, N, Mext, Next,
     sigma, phi, mu, nis, cellarea, spatialvals, scaleconst, rootQeigs,
-    invrootQeigs, cellInside, MCMCdiag, gradtrunc, gridfun, gridav)}
+    invrootQeigs, cellInside, MCMCdiag, gradtrunc, gridfun, gridav,
+    mcens, ncens)}
 \description{MALAlgcpSpatial function}
 \details{ADVANCED USE ONLY A function to perform MALA for the spatial only case}
 \value{object passed back to lgcpPredictSpatial}
@@ -27,4 +28,6 @@
 \item{MCMCdiag}{defunct}
 \item{gradtrunc}{gradient truncation parameter}
 \item{gridfun}{grid functions}
-\item{gridav}{grid average functions}}
+\item{gridav}{grid average functions}
+\item{mcens}{x-coordinates of cell centroids}
+\item{ncens}{y-coordinates of cell centroids}}

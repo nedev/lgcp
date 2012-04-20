@@ -2,10 +2,13 @@
 \alias{spatialparsEst}
 \title{spatialparsEst function...}
 \usage{spatialparsEst(gk, sigma.range, phi.range, spatial.covmodel,
-    covpars=c(), guess=TRUE)}
+    covpars=c(), guess=FALSE)}
 \description{spatialparsEst function}
 \details{Having estimated either the pair correlation or K functions using respectively \link{ginhomAverage} or \link{KinhomAverage}, the spatial 
-parameters sigma and phi can be estimated. This function provides a visual tool for this estimation procedure.}
+parameters sigma and phi can be estimated. This function provides a visual tool for this estimation procedure.
+
+To get a good choice of parameters, it is likely that the routine will have to be called several times in order to refine 
+the choice of sigma.range and phi.range.}
 \value{rpanel function to help choose sigma nad phi by eye}
 \references{\enumerate{
 \item Baddeley AJ, Moller J, Waagepetersen R (2000). Non-and semi-parametric estimation of interaction in inhomogeneous point patterns. Statistica Neerlandica, 54, 329-350.
@@ -18,4 +21,4 @@ parameters sigma and phi can be estimated. This function provides a visual tool 
 \item{phi.range}{range of phi values to consider}
 \item{spatial.covmodel}{correlation type see ?CovarianceFct}
 \item{covpars}{vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct}
-\item{guess}{logical. Perform an initial guess at paramters (default)? Alternative sets initial values in the middle of sigma.range and phi.range.}}
+\item{guess}{logical. Perform an initial guess at paramters? Alternative (the default) sets initial values in the middle of sigma.range and phi.range. NOTE: automatic parameter estimation can be can be unreliable.}}
