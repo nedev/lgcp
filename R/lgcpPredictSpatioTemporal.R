@@ -186,7 +186,7 @@ lgcpPredict <- function(xyt,
 	aggtimes <- T - laglength:0
 	nobser <- 0
 	for (i in 1:(laglength+1)){
-	    nobser <- nobser + sum(xyt$t==i)
+	    nobser <- nobser + sum(xyt$t==aggtimes(i))
 	}
 	if(nobser==0){
 	    cat("NOTE: time data should be integer-valued.\n")
@@ -581,7 +581,8 @@ MALAlgcp <- function(mcmcloop,
         
         ###if(iteration(mcmcloop)==5000){browser()}
         ###cat("\n",h,"\n")
-        ###browser()        
+        ###browser() 
+             
         
         trigger <- FALSE
 		if (proptags$logtarget==-Inf | is.na(ac) | is.nan(ac)){ # gradient truncation insufficient, so reduce

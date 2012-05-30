@@ -2,96 +2,1518 @@
 %\VignetteKeyword{Langevin algorithm, log-Gaussian Cox Process, MCMC, spatiotemporal prediction}
 %\VignetteIndexEntry{lgcp} 
 
-\documentclass[a4paper, 10pt]{article}
+\documentclass[nojss]{jss}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{epsfig}
 \usepackage{amsmath}
 \usepackage{amssymb}
-%\usepackage{enumerate}
-\usepackage[authoryear]{natbib}
-%\usepackage{parskip}
-%\usepackage{hyperref}
-%\usepackage{mathrsfs}
-%\usepackage{calligra}
-\usepackage[amsmath,thmmarks]{ntheorem}
-%\usepackage{array}
 \usepackage{url}
+\usepackage[authoryear]{natbib}
 
-%\theorembodyfont{\rm}
-\theorembodyfont{\slshape}
-\newtheorem{Thm}{Theorem}[section]
-\newtheorem{Def}{Definition}[section]
-\newtheorem{Lem}{Lemma}[section]
-\newtheorem{Propn}{Proposition}[section]
-\newtheorem{Cor}{Corollary}[section]
-\newtheorem{Ass}{Assumption}[section]
-
-\usepackage{setspace}
-%\usepackage{ifthen}
-%\usepackage{multicol}
-%\usepackage[compact]{titlesec}
-%\usepackage{amscd}
-%\usepackage{pb-diagram,pb-xy}
-\usepackage{algorithm,algorithmic}
-
-\topmargin-1cm \footskip1cm \oddsidemargin0.5cm \evensidemargin0.5cm \textwidth15cm \textheight23.2cm
-\vfuzz1pc\hfuzz1pc
-
-\setlength{\parskip}{1em}
-\setlength{\parindent}{0cm}
-
-\setstretch{1.25}
-
-\newcommand{\interior}{\mathrm{int}}
-\newcommand{\eqdef}{\triangleq}
-\newcommand{\T}{\textstyle}
-\newcommand{\D}{\displaystyle}
-\newcommand{\inv}{^{-1}}
-\newcommand{\N}{\mathcal{N}}
-\newcommand{\nat}{\mathbb{N}}
-\newcommand{\hopt}{h_{\text{opt}}}
-\newcommand{\Kopt}{K_{\text{opt}}}
-\newcommand{\simiid}{\stackrel{\text{iid}}{\sim}}
-\newcommand{\tendD}{\stackrel{\mathcal{D}}{\rightarrow}}
-\newcommand{\mcK}{\mathcal{K}}
-\newcommand{\rmd}{\mathrm{d}}
-\newcommand{\mb}{\boldsymbol}
-\newcommand{\med}{\mathrm{med}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\V}{\mathbb{V}}
 \newcommand{\real}{\mathbb{R}}
-\newcommand{\cov}{\mathrm{cov}}
-\newcommand{\corr}{\mathrm{corr}}
-\newcommand{\prob}{\mathbb{P}}
-\renewcommand{\P}{\mathbb{P}}
 \newcommand{\I}{\mathbb{I}}
-\renewcommand{\qed}{\hfill\ensuremath{\Box}}
+\newcommand{\rmd}{\mathrm{d}}
+\newcommand{\N}{\mathrm{N}}
+\newcommand{\cov}{\mathrm{cov}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% almost as usual
+\author{Benjamin M. Taylor\\Lancaster University, UK \And 
+      Tilman M. Davies\\University of Otago, NZ \AND 
+      Barry S. Rowlingson \\Lancaster University, UK \And 
+      Peter J. Diggle \\Lancaster University, UK}
+\title{\pkg{lgcp} -- An \proglang{R} Package for Inference with Spatial and Spatio-Temporal
+Log-Gaussian Cox Processes}
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J.
+Diggle} %% comma-separated
+\Plaintitle{lgcp -- An R Package for Inference with Spatial and Spatio-Temporal Log-Gaussian
+Cox Processes} %% without formatting
+\Shorttitle{lgcp R package} %% a short title (if necessary)
+
+%% an abstract and keywords
+\Abstract{
+This paper introduces an \proglang{R} package for spatial and spatio-temporal prediction and forecasting for log-Gaussian Cox processes. The main computational tool for
+these models is Markov chain Monte Carlo and the new package, \pkg{lgcp},
+therefore also
+   provides an extensible suite of functions for implementing MCMC 
+   algorithms for processes of this type. 
+   The modelling framework and details of inferential procedures are first
+presented before a tour of \pkg{lgcp} functionality is given via a walk-through
+data-analysis. Topics covered include reading in and converting data, estimation
+of the key components and parameters of the model, specifying output and
+simulation quantities, computation of Monte Carlo expectations, 
+   post-processing and simulation of data sets.
+}
+\Keywords{Cox process; \proglang{R}; spatio-temporal point process}
+\Plainkeywords{spatio-temporal point processes, R} %% without formatting
+%% at least one keyword must be supplied
+
+%% publication information
+%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
+%% \Volume{13}
+%% \Issue{9}
+%% \Month{September}
+%% \Year{2004}
+%% \Submitdate{2004-09-29}
+%% \Acceptdate{2004-09-29}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+   \textbf{Benjamin M. Taylor}\\
+   Division of Medicine,\\
+   Lancaster University,\\
+   Lancaster,\\
+   LA1 4YF,\\
+   UK\\
+   E-mail: \email{b.taylor1@lancaster.ac.uk}\\
+   URL: \url{http://www.maths.lancs.ac.uk/~taylorb1/}
+
+   \textbf{Tilman M. Davies}\\
+   Department of Mathematics and Statistics\\
+   University of Otago\\
+   Science III\\
+   PO Box 56\\
+   Dunedin 9054\\
+   New Zealand\\
+   E-mail: \email{tdavies@maths.otago.ac.nz}\\
+   URL: \url{http://www.maths.otago.ac.nz/home/department/staff/_staffscript.php?s=tilman_davies}
+
+   \textbf{Barry Rowlingson}\\
+   Division of Medicine,\\
+   Lancaster University,\\
+   Lancaster,\\
+   LA1 4YF,\\
+   UK\\
+   E-mail: \email{b.rowlingson@lancaster.ac.uk}\\
+   URL: \url{http://www.maths.lancs.ac.uk/~rowlings/}
+
+   \textbf{Professor Peter J. Diggle}\\
+   Division of Medicine,\\
+   Lancaster University,\\
+   Lancaster,\\
+   LA1 4YF,\\
+   UK\\
+   E-mail: \email{p.diggle@lancaster.ac.uk}\\
+   URL: \url{http://www.lancs.ac.uk/~diggle/}
+}
+%% It is also possible to add a telephone and fax number
+%% before the e-mail in the following format:
+%% Telephone: +43/1/31336-5053
+%% Fax: +43/1/31336-734
+
+%% for those who use Sweave please include the following line (with % symbols):
+%% need no \usepackage{Sweave.sty}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \begin{document}
 
-\title{\textbf{lgcp} Package Vignette: Spatiotemporal Prediction in Log-Gaussian Cox Processes}
-\author{B. Taylor, T. Davies, B. Rowlingson, P.Diggle}
-\maketitle
-
 \tableofcontents
 
+%% include your article here, just as usual
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+%%
+%%\section[About Java]{About \proglang{Java}}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
 \section{Introduction}
+\label{sect:intro}
 
-This vignette provides an introduction to \textbf{lgcp} by means of a walk-through example; the theory necessary to understand the model is covered in the appendices and \cite{taylor2011}.
+This article introduces a new \proglang {R} \citep{Rpackage} package,
+\pkg{lgcp}, 
+for inference with spatial and spatio-temporal log-Gaussian Cox processes. The work was
+motivated by applications in disease surveillance, where the major focus of
+scientific interest is
+on whether, and if so where and when, 
+cases form unexplained clusters within a spatial region $W$
+and time-interval $(0,T)$
+of interest. 
+It will be assumed that both the location and time of each case is known, at
+least to a sufficiently fine resolution that a point process
+modelling framework is natural. In general, the aims of
+statistical analysis include model formulation,
+parameter estimation and spatio-temporal
+prediction. The \pkg{lgcp} package includes some functionality
+for parameter estimation and diagnostic checking, mostly by linkages
+with other \proglang {R} packages for spatial statistics. However, and
+consistent with the scientific focus being on 
+disease surveillance, the current version of the  package 
+places particular emphasis on real-time predictive inference. Specifically,
+using the modelling framework of a Cox process 
+with stochastic intensity $R(s,t) = \lambda(s)\mu(t)\exp\{{\mathcal Y}(s,t)\}$, where
+${\mathcal Y}(s,t)$ is a Gaussian process and $\lambda$ and $\mu$ are offset terms supplied by the user. The package enables
+the user to draw samples from the joint predictive distribution of $R(s,[t_1,t_2])$ for some time interval $[t_1,t_2]$ as well as forecast beyond the last observation at time $T$, i.e., $R(s,T+k)$ given data between times $T-l$ and $T$, where $l$ is a user-specified lag time for any set of locations $s \in W$ and forecast lead time $k \geq 0$.
+In the surveillance setting, these samples would typically be used to 
+evaluate the predictive probability that the intensity at a
+particular location and time exceeds a specified intervention
+threshold; see, for example, \cite{diggle2005}. 
 
-The \textbf{lgcp} package makes extensive use of \textbf{spatstat} 
- functions and data structures \citep{baddeley2005}.
- Other  important dependencies are:
-  the \textbf{sp} library, which also supplies some data structures and functions \citep{bivand2008}; the suite of covariance functions 
-provided by the \textbf{RandomFields} package \citep{schlather2001}; the \textbf{rpanel} package to
- facilitate  minimum-contrast parameter estimation 
- routines \citep{bowman2007}; and 
- the \textbf{ncdf} package for rapid access to massive 
- datasets for post-processing  \cite{pierce2011}.
+
+The \pkg{lgcp} package makes extensive use of \pkg{spatstat} 
+functions and data structures \citep{baddeley2005}.
+Other  important dependencies are:
+the \pkg{sp} package, which also supplies some data structures and functions
+\citep{pebesma2005,bivand2008}; the suite of covariance functions 
+provided by the \pkg{RandomFields} package \citep{schlather2001}; the
+\pkg{rpanel} package to
+facilitate  minimum-contrast parameter estimation 
+routines \citep{bowman2007,bowman2010}; and 
+the \pkg{ncdf} package for rapid access to massive 
+datasets for post-processing  \citep{pierce2011}.
 
 
-\section{Walk-through Example, Wales}
+In Section \ref{sect:stlgcp} the log-Gaussian Cox process is introduced.
+Section \ref{sect:inference} gives a review on methods
+of inference for log-Gaussian Cox processes.
+Section \ref{sect:packageintro} is an overview of the
+package by way of a walk-through example,
+covering: reading in data (Section \ref{sect:readdata}); 
+estimating components of the model and associated parameters (Sections
+\ref{sect:lambdaandmu} and \ref{sect:parest});
+setting up and running the model (Sections \ref{sect:lgcppredict} and
+\ref{sect:running}); and post-processing of command outputs (Section
+\ref{sect:postprocessing}).
+Some possible extensions of the package are given in Section
+\ref{sect:extensions}. The appendices give
+further information on the rotation of observation windows (Appendix
+\ref{sect:rotation}), simulation of data (Appendix \ref{sect:simulation}) and
+information about the \code{spatialAtRisk} class of objects (Appendix
+\ref{sect:spatialAtRisk}), which may be useful for reference purposes.
 
-Boundary files for Wales can be obtained from the Great Britain data files from the GADM (\url{http://www.gadm.org/country}) website. The following script will download the level 1 (England, Scotland, Wales, Northern Ireland) and level 2 (counties and regions) data in .RData format, and put them in a temporary directory:
+
+
+\section[Spatio-Temporal log-Gaussian Cox processes]{Spatio-Temporal log-Gaussian Cox processes}
+\label{sect:stlgcp}
+
+A purely spatial intensity function provides the expected number of points per unit area across a given spatial region $W$ when situated at $x\in W$. This becomes a \emph{spatio-temporal} intensity when the observations are time-dependent, such that we now seek to capture the expected number of points per unit area when situated at location $x \in W$, and time $t\in T$. The spatio-temporal LGCP is extremely flexible in that it enables the presence of both fixed and random effects in capturing this space-time behaviour. Here, we describe some fundamental technical details of this modelling framework.
+
+Let $W\subset\real^2$ be an observation window in space and
+$T\subset\real_{\geq 0}$ be an interval of time of interest. Cases 
+occur at spatio-temporal positions $(x,t) \in W \times T$ 
+according to an inhomogeneous spatio-temporal Cox process,
+i.e., a Poisson process with a stochastic intensity $R(x,t)$.
+The number of cases, $X_{S,[t_1,t_2]}$, arising in 
+any $S \subseteq W$ during the interval $[t_1,t_2]\subseteq T$ is 
+then Poisson distributed conditional on $R$,
+\begin{equation}\label{eqn:themodel}
+   X_{S,[t_1,t_2]} \sim \text{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)\rmd
+s\rmd t\right\}.
+\end{equation}
+Following \cite{diggle2005}, the intensity is decomposed multiplicatively as,
+\begin{equation}
+   R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.
+\label{eq:multiplicative}
+\end{equation}
+In Equation~\ref{eq:multiplicative}, the
+\emph{fixed spatial component}, $\lambda:\real^2\mapsto\real_{\geq 0}$, is a
+user-supplied function, proportional to the population at risk at each point in space
+and scaled so that,
+\begin{equation}\label{eqn:intlambdas}
+   \int_W\lambda(s)\rmd s=1,
+\end{equation}
+whilst the
+\emph{fixed temporal component}, 
+$\mu:\real_{\geq 0}\mapsto\real_{\geq 0}$, is also a user-supplied function 
+such that,
+\begin{equation}\label{eqn:mutdef}
+   \mu(t) = \lim_{\delta t \rightarrow 0}
+   \left\{\frac{\E[X_{W,\delta t}]}{ |\delta t|}\right\}.
+\end{equation}
+
+
+The function $\mathcal Y$ is a Gaussian process, continuous in both space and
+time. In the nomenclature of epidemiology, the components $\lambda$ and $\mu$
+determine the \emph{endemic} spatial and temporal component of the population at
+risk; whereas $\mathcal Y$ captures the residual variation, or the
+\emph{epidemic} component. 
+
+The Gaussian process, $\mathcal Y$, is second order stationary with
+minimally-parametrised covariance function,
+\begin{equation}
+\cov[\mathcal Y(s_1,t_1),\mathcal Y(s_2,t_2)] =
+\sigma^2r(||s_2-s_1||;\phi)\exp\{-\theta(t_2-t_1)\},
+\label{eq:cov}
+\end{equation}
+where $||\,\cdot\,||$ is a suitable norm on $\real^2$, for instance the
+Euclidean norm, and $\sigma,\phi,\theta>0$ are known parameters. In the
+\pkg{lgcp} package, the isotropic spatial correlation function, $r$, may take
+one of several forms and possibly require additional parameters (in \pkg{lgcp}, this can be selected from any of the compatible models in the function \code{CovarianceFct} from the \pkg{RandomFields} package). The parameter $\sigma$ scales the log-intensity, 
+whilst the parameters $\phi$ and $\theta$  govern the rates 
+at which the correlation function decreases in space and in time,
+respectively. The mean of the process $\mathcal Y$ is set equal to $-\sigma^2/2$
+so as to give $\E[\exp\{\mathcal Y\}]=1$, hence the endemic/epidemic analogy above.
+
+\section{Inference}
+\label{sect:inference}
+
+As in \cite{moller1998}, \cite{brix2001} and \cite{diggle2005}, a discretised version of the above model will be considered, defined on a regular grid
+over space and time. Observations, $X$, are then
+treated as cell counts on this grid. 
+The discrete version of $\mathcal Y$ will be denoted $Y$; since $Y$ is a
+finite collection of random variables, the properties of $\mathcal Y$ imply that
+$Y$ has a multivariate Gaussian density with 
+approximate covariance matrix $\Sigma$,
+whose elements are calculated by
+evaluating
+Equation~\ref{eq:cov} at the centroids of the spatio-temporal
+grid cells. Without loss of generality, unit time-increments are assumed
+and events can be thought of as occurring ``at'' integer times $t$.
+Let $X_t$ denote an observation over the spatial grid at time $t$,
+and  $X_{t_1:t_2}$ denote the observations at times $t_1,t_1+1,\ldots,t_2$. 
+For predictive
+inference about $Y$,
+samples from the conditional distribution
+of the latent field, $Y_t$, given the 
+observations to date, $X_{1:t}$ would be drawn,  but this is infeasible
+because the dimensionality of the required 
+integration increases without limit as time progresses.
+An alternative, as suggested by \cite{brix2001}, is to sample from $Y_{t_1:t_2}$ given $X_{t_1:t_2}$,
+\begin{equation}\label{eqn:jointdens}
+   \pi(Y_{t_1:t_2}|X_{t_1:t_2}) \propto
+\pi(X_{t_1:t_2}|Y_{t_1:t_2})\pi(Y_{t_1:t_2}),
+\end{equation}
+   where
+$t_1 = t_2 - p$ for some small positive integer $p$. 
+The justification for this approach is 
+that observations from the remote past have a negligible
+effect on inference for the current state, $Y_t$. 
+
+In order to evaluate $\pi(Y_{t_1:t_2})$ in Equation~\ref{eqn:jointdens},
+the parameters of the process $Y$ must either be known or estimated from the
+data. Estimation of $\sigma$, $\phi$ and $\theta$ may be achieved either in a
+Bayesian framework, or by 
+one of a number of more {\it ad hoc} methods. 
+The methods implemented in 
+the current version of the \pkg{lgcp} package 
+fall into the latter category and 
+are described in \cite{brix2001} and \cite{diggle2005}. Briefly, this
+involves matching empirical and theoretical estimates of the 
+second-moment properties 
+of the model. For the
+spatial covariance parameters
+$\sigma$ and $\phi$,
+the inhomogeneous $K$-function, or $g$ function are used \citep{baddeley2000}. 
+The autocorrelation function of the total 
+event-counts per unit time-interval is used for  estimating the 
+temporal correlation parameter $\theta$. The estimated parameter values can then be used 
+to implement plug-in-prediction for the latent field $Y_t$.
+
+\pkg{lgcp} provides only very basic tools for the estimation of $\lambda(s)$ and $\mu(t)$, as described in Section \ref{sect:lambdaandmu}. The rationale for this is that there are many possible parametric and non-parametric choices implemented in other \pkg{R} packages that could be used to infer the fixed spatial or temporal components of the model: for example in \cite{diggle2005}, the authors use a generalised linear model for $\mu(t)$. What \pkg{lgcp} \emph{does provide} is a flexible framework to allow interface with other packages: $\mu(t)$ can be defined as an arbitrary function, for example the fitted values from the output of a statistical model e.g., \code{glm()} or \code{gam()}; and $\lambda(s)$ can either be defined as a continuous function of two variables, or as the output of a model onto a fine grid. The in-package estimation routines for $\lambda(s)$ and $\mu(t)$ are both non-parametric, respectively a simple bivariate kernel density estimate and a lowess smoother, and not intended to provide a rigorous solution to the needs of all users. Use of these automatic/interactive procedures is subjective and application specific. Generally speaking, under the `global' treatment of the fixed components $\lambda$ and $\mu$, we would intuitively err on the side of over-smoothing rather than under-smoothing these trends. Some numerical evidence in \cite{davies2012} supports this notion in terms of the subsequent performance of the minimum contrast parameter estimation techniques (see Section \ref{sect:parest}).
+
+\subsection[Discretising and the fast-Fourier transform]{Discretising and the
+fast-Fourier transform}
+\label{sect:fft}
+
+The first barrier to inference is computation of the covariance matrix,
+$\Sigma$, which even for relatively coarse grids is very large. Fortunately, for stationary covariance functions defined on
+regular spatial grids of size $2^m\times2^n$, there exist fast methods for
+computing this based on the discrete Fourier transform \citep{wood1994}. The
+general idea is to embed $\Sigma$ in a symmetric circulant matrix, $C=Q\Lambda
+Q^*$, where $\Lambda$ is a diagonal matrix of eigenvalues of $C$, $Q$ is a
+unitary matrix and
+$^*$ denotes the Hermitian transpose. The entries of $Q$ are given by the
+discrete Fourier transform. Computation of $C^{1/2}$, which is useful for both
+simulation and evaluation of the density of $Y$, is then straightforward 
+using the fact that $ C^{1/2} = Q\Lambda^{1/2} Q^*$.
+
+
+\subsection[The Metropolis-adjusted Langevin algorithm]{The Metropolis-adjusted
+Langevin algorithm}
+\label{sect:mala}
+
+Monte Carlo simulation from $\pi(Y_{t_1:t_2}|X_{t_1:t_2})$
+is made more efficient
+by working with a linear transformation of $Y$, partially determined by the
+matrix $C$ as described below.
+The  \pkg{lgcp} package
+returns results
+pertaining to $Y$
+on a grid of size $M\times N\equiv 2^m\times2^n$ for positive integers 
+$m$ and $n$,
+which is extended to a grid of size $2M\times 2N$ for computation \citep{moller1998}.
+Writing $\Gamma_t=\Lambda^{-1/2}Q(Y_t-\mu)$, the target of interest is given by
+\begin{equation}\label{eqn:target}
+   \pi(\Gamma_{t_1:t_2}|X_{t_1:t_2}) \propto
+\left[\prod_{t=t_1}^{t_2}\pi(X_t|Y_t)\right]\left[\pi(\Gamma_{t_1})\prod_{
+t=t_1+1}^{t_2}\pi(\Gamma_{t}|\Gamma_{t-1})\right]
+\end{equation}
+where the first term on the right hand side of Equation~\ref{eqn:target} corresponds to
+the first bracketed term on the right hand side of Equation~\ref{eqn:jointdens} and the
+second bracketed term is the joint density, $\pi(\Gamma_{t_1:t_2})$, which so-factorises due to the Markov property.
+Since $Y$, and hence $\Gamma$, is
+an Ornstein-Uhlenbeck process in time, the transition density,
+$\pi(\Gamma_{t}|\Gamma_{t-1})$,
+has an explicit expression as a Gaussian density; see \cite{brix2001}.
+
+Since the gradient of the transition density
+can also be written down explicitly, 
+a natural and efficient MCMC method for sampling from the
+predictive 
+density of interest (Equation~\ref{eqn:target}),
+is a Metropolis-Hastings algorithm with a Langevin-type proposal \citep{roberts1996},
+\[
+   q(\Gamma,\Gamma') = \N\left(\Gamma';\Gamma +
+\frac12\nabla\log\{\pi(\Gamma|X)\},h^2\I\right)
+\]
+where $\N(y;m,v)$ denotes a Gaussian density with mean $m$ and variance $v$
+evaluated at $y$,
+$\I$ is the identity matrix and $h>0$ is a scaling parameter
+\citep{metropolis1953,hastings1970}. 
+
+Various theoretical results exist concerning the optimal acceptance probability
+of the MALA (Metropolis-Adjusted Langevin Algorithm) -- see \cite{roberts1998}
+and \cite{roberts2001} for example. In practical applications, the target
+acceptance probability is often set to 0.574, which would be approximately
+optimal for a Gaussian target as the dimension of the problem tends to infinity.
+An algorithm of \cite{andrieu2008} for the automatic choice of $h$, so that this acceptance
+probability is achieved without disturbing the ergodic property of the chain is implemented in \pkg{lgcp}.
+
+\section[Introducing the lgcp package]{Introducing the \pkg{lgcp} package}
+\label{sect:packageintro}
+
+\subsection{An overview of this section}
+\label{sect:packageoverview}
+
+In this section, we present a brief tour of package functionality by means of a walk-through spatio-temporal example. In Section \ref{sect:readdata}, reading in and converting data into the required format for inference is discussed. Section \ref{sect:lambdaandmu} addresses the issue of estimating $\lambda(s)$ and $\mu(t)$ using \pkg{lgcp}'s built in capabilities; the reader should note at the outset that these two quantities would normally be estimated via some other means, as will be discussed. In Section \ref{sect:parest}, we discuss parameter estimation: \pkg{lgcp} provides simple minimum-contrast procedures for this task. Then in Section \ref{sect:lgcppredict} and \ref{sect:running}, we detail respectively the setting up and running of the MCMC algorithm, including: specifying the model, adaptive MCMC, computation of Monte Carlo expectations `on-line' and possible rotation of the observation window. Lastly, in Section \ref{sect:postprocessing}, we show how to: extract information from a finished MCMC run; plot the results; forecast into the future; handle data dumped to disk; MCMC diagnostics and plotting exceedance probabilities.
+
+
+\subsection{Reading-in and converting data}
+\label{sect:readdata}
+
+The generic data-format of interest is  $(x_i,y_i,t_i): i=1,...,n$, 
+where the $(x_i,y_i)$ are the locations and 
+$t_i$ the times of occurrence of  events  in $W \times (A,B)$, where
+W is a polygonal observation window and $(A,B)$ the
+time-interval within which events are observed. In the following
+example \code{x}, \code{y} and \code{t} are \proglang{R} objects giving the
+location and time of events and \code{win} is a \pkg{spatstat} object of class
+\code{owin} specifying the polygonal observation window \citep{baddeley2005}. An example of constructing an appropriate \code{owin} object from ESRI shapefiles is given in the package vignette (type \code{vignette("lgcp")}).
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> data <- cbind(x,y,t)
+R> tlim <- c(0,100)
+R> win
+\end{CodeInput}
+\begin{CodeOutput}
+window: polygonal boundary
+enclosing rectangle: [381.7342, 509.7342] x [64.14505, 192.14505] units
+\end{CodeOutput}
+\end{CodeChunk}
+
+The first task for the user is to convert this into a space-time planar point
+pattern object i.e., one of class \code{stppp}, provided by \pkg{lgcp}. An object
+of class \code{stppp} is easily created:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> xyt <- stppp(list(data=data,tlim=tlim,window=win))
+\end{CodeInput}
+\end{CodeChunk}
+
+The second task is to choose a time-scale, and to convert the real-valued times into integer-valued times. These steps are important, as they can affect our ability to estimate the temporal correlation parameter $\theta$, and hence to borrow strength from observations over time: too coarse a discretisation means that data from successive aggregated time points is effectively independent, and the estimation of $\theta$ is not possible using the simple methods we suggest in this article. Rescaling time is a simple operation involving multiplying the real-valued \code{xyt$t} by another real number. Since \pkg{lgcp} uses \code{as.integer} to convert to integer values, these real-valued times will be rounded-down to the integer below. The function \code{integerise.stppp} takes care of this rounding process, and also amends \code{xyt$tlim}, if necessary.
+\begin{CodeChunk}
+\begin{CodeInput}
+R> xyt <- integerise(xyt)
+R> xyt
+\end{CodeInput}
+\begin{CodeOutput}
+Space-time point pattern
+ planar point pattern: 10069 points 
+window: polygonal boundary
+enclosing rectangle: [381.7342, 509.7342] x [64.14505, 192.14505] units  
+   Time Window : [ 0 , 99 ]
+\end{CodeOutput}
+\end{CodeChunk}
+Since in this example, the data were simulated on a continuous time-line from time 0 up to 100, \code{integerise.stppp} has rounded the upper limit (\code{xyt$tlim[2]}) down: both \code{xyt$t} and \code{xyt$tlim} are now \code{integer} vector objects. This ensures that subsequent estimates of $\mu(t)$ will be correctly scaled.
+
+
+\subsection{Estimating the spatial and temporal component}
+\label{sect:lambdaandmu}
+
+There are many ways to estimate the fixed
+spatial and temporal components of the log-Gaussian Cox process. The fixed
+spatial component, $\lambda(s)$,
+represents the spatial intensity of events,
+averaged over time and scaled to integrate to 1 over the observation
+window $W$. In epidemiological settings, this typically corresponds to
+the spatial distribution of the population at risk, although
+this information may not be directly available. 
+The fixed temporal component, $\mu(t)$, is 
+the mean number of events in $W$ per unit time.
+Where the relevant demographic information is unavailable to
+specify $\lambda(s)$ and $\mu(t)$ directly, 
+\pkg{lgcp} provides basic functionality to estimate
+them from the data.
+
+A user may wish to specify parametric models for $\lambda$ and $\mu$, perhaps estimating them by using spatially and temporally referenced covariates. By outputting the results of such parametric models onto a grid in space, which is the easiest way to handle the fixed spatial component (by creating a \code{spatialAtRisk} object directly, see \code{?spatialAtRisk.fromXYZ}), or as a function on the real line, in the case of the fixed temporal component, the user is able to utilise a wide variety of other statistical models in other \proglang{R} packages to estimate $\lambda$ and $\mu$. The function $\lambda$ in particular will frequently have the interpretation of something proportional to population density, and hence may not have been estimated by a formal statistical procedure. The authors envisage such an object as being stored directly in \proglang{R} as a \pkg{spatstat} \code{im} object.
+
+\pkg{lgcp} uses bilinear interpolation (via the \pkg{spatstat} function \code{interp.im}) to transfer a user supplied $\lambda(s)$ onto the FFT grid ready for analysis. Therefore, for best results, the user should output their estimate of $\lambda$ onto the grid that will be used in the algorithm, as we will be using a 2km grid in the example, this can be computed with,
+\begin{CodeChunk}
+\begin{CodeInput}
+R> OW <- selectObsWindow(xyt,cellwidth=2)
+\end{CodeInput}
+\end{CodeChunk}
+the objects \code{OW$xvals} and \code{OW$yvals} now contain the grid on which the fitting of $\lambda$ should be projected for best results.
+
+The function \code{lambdaEst} is an interactive implementation of a kernel method for estimating $\lambda(s)$ from the data
+as in the following example:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> den <- lambdaEst(xyt,axes=TRUE)
+R> plot(den)
+\end{CodeInput}
+\end{CodeChunk}
+This calls an \pkg{rpanel} tool \citep{bowman2007} for estimating $\lambda$ (see Figure~\ref{lambdaEst}); once the user is happy
+with the result, clicking on ``OK'' closes the panel and the kernel density estimate is stored
+in the \proglang{R} object \code{den} of class \code{im} (a \pkg{spatstat} pixel image object). The estimate of
+$\lambda$ can
+then  be plotted in the usual way. The parameters \code{bandwidth} and \code{adjust} in this GUI relate to the arguments from the
+\pkg{spatstat} function \code{density.ppp}; the former corresponds to the argument \code{sigma} and the latter to the argument of the same name.
+
+The function \code{lambdaEst} is built directly on the \code{density.ppp} function and as such, implements a bivariate Gaussian smoothing kernel. The bandwidth is initially that which is automatically chosen by the default method of \code{density.ppp}. Since \verb=image= plots of these kernel density estimates may not have appropriate colour scales, the ability to adjust this is given with the slider `colour adjustment'. With colour adjustment set to 1, the default \verb=image.plot= for the equivalent pixel image object is shown and for values less than 1, the colour scheme is more spread out, allowing the user to get a better feel for the density that is being fitted. The colour adjustment parameter raises each cell-wise entry to that power. NOTE: colour adjustment does not affect the returned density and the user should be aware that the returned density will visually appear exactly as displayed when colour adjustment is set equal to 1. \code{lambdaEst} \emph{does not} output to the FFT grid used in the MALA algorithm.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.5\textwidth,height=0.4\textwidth]{png/lambdaEst1.png}
+   \caption{\label{lambdaEst} Choosing a kernel density estimate of
+$\lambda(s)$.}
+\end{figure}
+
+The \pkg{lgcp} package
+provides methods for coercing pixel-images like \code{den} to objects of class
+\code{spatialAtRisk}, which can then
+be used in parameter estimation and in the MALA algorithm to be discussed later; further useful information
+on the \code{spatialAtRisk} class is provided in Appendix
+\ref{sect:spatialAtRisk}.
+\begin{CodeChunk}
+\begin{CodeInput}
+R> sar <- spatialAtRisk(den)
+\end{CodeInput}
+\begin{CodeOutput}
+SpatialAtRisk object
+   X range : [382.3742066569,509.094206656898]
+   Y range : [64.785045372051,191.505045372051]
+   dim     : 100 x 100
+\end{CodeOutput}
+\end{CodeChunk}
+For the temporal component, $\mu(t)$, the user must provide an object that can
+be coerced into one of class \code{temporalAtRisk}. 
+
+Objects of class \code{temporalAtRisk} are non-negative functions of time over an observation time-window of interest, which must be the same as the time-window of the \code{stppp} data object, \code{xyt}. In some applications \citep{diggle2005}, $\mu(t)$  might represent the fitted values of a parametric model for the case counts over time. As it is not possible to provide generic functionality for parametric $\mu(t)$, a simple non-parametric estimate of  $\mu$ can be generated using the function
+\code{muEst}:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> mut1 <- muEst(xyt)
+R> mut1
+\end{CodeInput}
+\begin{CodeOutput}
+temporalAtRisk object
+function(t){
+        if (!any(as.integer(t)==tvec)){
+            return(NA)
+        }
+        return(obj[which(as.integer(t)==tvec)] * scale)
+    }
+<environment: 0xbb68b08>
+attr(,"tlim")
+[1]  0 99
+attr(,"class")
+[1] "temporalAtRisk" "function"      
+   Time Window : [ 0 , 99 ]
+\end{CodeOutput}
+\end{CodeChunk}
+In order to retain positivity, \code{muEst} fits a locally-weighted polynomial regression estimate (the \proglang{R} function \code{lowess}) to the square root of the interval counts and returns the square of this smoothed estimate (see Figure~\ref{muEst}). The amount of smoothing is controlled by the \code{lowess} argument \code{f} which specifies the proportion of points in the plot which influence the smoothed estimate at each value (see \code{?lowess}), for example \code{muEst(xyt,f=0.1)}. If 
+the user wishes to specify a constant time-trend, $\mu(t)=\mu$,
+the command
+\begin{CodeChunk}
+\begin{CodeInput}
+R> mut <- constantInTime(xyt)
+\end{CodeInput}
+\end{CodeChunk}
+returns the 
+appropriate \code{temporalAtRisk} object, correctly scaled as in Equation~\ref{eqn:mutdef}.
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{pdf/mut1.pdf}
+   \caption{\label{muEst} Estimating $\mu(t)$: the output from
+\code{plot(mut1)}.}
+\end{figure}
+The fixed temporal component can be also be supplied either as a vector or as a
+function that is automatically coerced to a \code{temporalAtRisk} object and scaled
+to achieve the condition in Equation~\ref{eqn:mutdef}.
+
+
+
+\subsection{Estimating parameters}
+\label{sect:parest}
+
+After estimating $\lambda(s)$ and $\mu(t)$, the 
+next step in the analysis is to estimate the 
+covariance parameters of the process $\mathcal Y$. 
+\pkg{lgcp} provides basic moment-based methods for this in the form of
+\pkg{rpanel} GUIs that allow the user to choose $\sigma$,
+$\phi$ and $\theta$ by eye \citep{bowman2007}. Parameter estimation by eye is both fast and reasonably robust and moreover emphasizes the fact that the underlying methods are \emph{ad hoc}. As mentioned above, it is possible to implement principled Bayesian parameter estimation for this model by integrating over the discretised latent-field, $Y$; this is a planned extension to the package (see Section \ref{sect:extensions}). 
+
+The spatial correlation parameters $\sigma$ and $\phi$ can be estimated
+either from the inhomogeneous pair correlation function, $g$, or the inhomogeneous $K$ function
+\citep{baddeley2000}. 
+Following \cite{brix2001} and \cite{diggle2005}, the
+corresponding functions in \pkg{lgcp} estimate versions of
+these two functions by averaging temporally localised
+versions. The respective commands for doing so are:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> gin <- ginhomAverage(xyt,spatial.intensity=sar,temporal.intensity=mut)
+R> kin <- KinhomAverage(xyt,spatial.intensity=sar,temporal.intensity=mut)
+\end{CodeInput}
+\end{CodeChunk}
+The parameters are then estimated using either of the following:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> sigmaphi1 <- spatialparsEst(gin,sigma.range=c(0,10),phi.range=c(0,10),
+      spatial.covmodel="exponential")
+R> sigmaphi2 <- spatialparsEst(kin,sigma.range=c(0,10),phi.range=c(0,10),
+      spatial.covmodel="exponential")
+\end{CodeInput}
+\end{CodeChunk}
+These invoke another call to 
+\pkg{rpanel}, which
+produces the plots in Figure~\ref{spatialparsEst}.
+The user's task is to match the orange 
+theoretical function with the black
+empirical counterpart.
+\begin{figure}[htbp]
+   \centering
+   \begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\textwidth,height=0.8\textwidth]{png/gin.png}
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\textwidth,height=0.8\textwidth]{png/kin.png}
+   \end{minipage}
+   \caption{\label{spatialparsEst} Estimating $\sigma$ and $\phi$: left via the
+pair correlation function and right via the inhomogeneous $K$ function.}
+\end{figure}
+The list of correlation functions available to the user is given under the help file for the function \code{CovarianceFct} from the
+\pkg{RandomFields} package. For certain classes of covariance function, for example the 
+Mat\'ern or Whittle 
+families, additional parameters are specified by the user via the \code{covpars} argument and supplied to \code{spatialParsEst} in the same order as they appear in the help file for \code{CovarianceFct}.
+These additional parameters are treated as known constants, and not estimated via a formal nor informal procedure. One reason for this is because
+some of these parameters are notoriously difficult to estimate, for example, the parameter $\nu$ in the Mat\'ern family. A recommended
+strategy in these cases is to choose between a discrete set of candidate values for the parameter of interest. For example, in the Mat\'ern family the integer part of $\nu$ gives the number of times the underlying Gaussian process is mean-square
+differentiable. The resulting estimated parameters are returned in list objects (e.g., \code{sigmaphi1} or \code{sigmaphi2}) with \code{sigmaphi1$sigma} and \code{sigmaphi1$phi} returning the required values of $\sigma$ and $\phi$. In the code below, these values have been input as respectively $1.6$ and $1.9$ as was estimated above. The user has additional control over the  minimum contrast estimation, for example the range of evaluation, though sensible defaults are provided automatically by the embedded \pkg{spatstat} functions. The initial parameter values appearing in the GUIs are obtained through a simple weighted least-squares optimization procedure, but note that this is not robust, and the user has the option to turn this functionality off via \code{guess=FALSE} in the argument list to \code{spatialParsEst}.
+
+The temporal correlation parameter, $\theta$, 
+can be
+estimated using the function \code{thetaEst}; this requires $\sigma$, $\phi$ and $\mu(t)$
+to have been estimated beforehand. For example, the call
+\begin{CodeChunk}
+\begin{CodeInput}
+R> theta <- thetaEst(xyt,spatial.intensity=sar,
+                        temporal.intensity=mut,sigma=1.6,phi=1.9)
+\end{CodeInput}
+\end{CodeChunk}
+gives the GUI shown in Figure~\ref{thetaEst}. Note that again, in the code below the estimated value of $1.4$ has been input manually.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.5\textwidth,height=0.4\textwidth]{png/thetaEst.png}
+   \caption{\label{thetaEst} Estimating $\theta$.}
+\end{figure}
+
+
+\subsection[The commands lgcpPredict and lgcpPredictSpatial]{The commands \code{lgcpPredict} and \code{lgcpPredictSpatial}}
+\label{sect:lgcppredict}
+
+The main functions in the \pkg{lgcp} package are \code{lgcpPredict} and \code{lgcpPredictSpatial}. In this article, we focus on \pkg{lgcp}'s spatio-temporal functionality and hence \code{lgcpPredict}, the rationale being that the `purely spatial' provided by \code{lgcpPredictSpatial} is straightforward to understand once familiar with the former. A comparative evaluation of \pkg{lgcp}'s spatial capabilities, together with a definition of the statistical model in this case is given in \cite{taylor2012}.
+
+
+This uses an
+MCMC method to produce samples and
+summary statistics from the predictive
+distribution of the discretised
+process $Y$, treating
+previously obtained estimates
+of $\lambda(s)$, $\mu(t)$, and the covariance
+parameters as known quantities.
+The MCMC algorithm
+is invoked by the command \code{lgcpPredict}, 
+whose arguments are as follows:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(lgcpPredict)
+\end{CodeInput}
+\begin{CodeOutput}
+function (xyt, T, laglength, model.parameters = lgcppars(), 
+    spatial.covmodel = "exponential", 
+    covpars = c(), cellwidth = NULL, gridsize = NULL, spatial.intensity, 
+    temporal.intensity, mcmc.control, output.control = setoutput(), 
+    missing.data.areas = NULL, autorotate = FALSE, gradtrunc = NULL, 
+    ext = 2) 
+\end{CodeOutput}
+\end{CodeChunk}
+
+\subsubsection{A pre-emptive note on computation times}
+
+With the options set as below: working on a $128\times128$ FFT grid with six time-points worth of data, and with 120,000 iterations of the MCMC algorithm, the total computation time is around $2\frac34$ hours on a 3.2GHz Intel(R) Core(TM) i5 desktop PC with 4Gb RAM. Computation times increase approximately linearly with the addition of additional time-points.
+
+In \cite{taylor2012}, using the same PC, the authors compare computation times for the function \code{lgcpPredictSpatial} with a computationally equivalent implementation from the \pkg{INLA} package, and they found that 100,000 iterations on a $128\times128$ grid (which gave good predictive performance) ran in around 20 minutes, similar to a call to \code{inla} with the option \code{strategy="laplace"} outputting results on the same predictive grid as MCMC. The results presented in \cite{taylor2012} question the commonly held notion that MCMC is slow, hard to tune and mixes poorly.
+
+\subsubsection{Data and model specification}
+
+The argument \code{xyt} is the \code{stppp} object that contains the data,
+\code{T} is the time-point of interest for prediction
+(c.f., the time $t_2$ in Section \ref{sect:inference})
+and \code{laglength} tells the algorithm the number of previous time-points 
+whose data should be included, that is the time-interval $[$\code{T-laglength},\code{T}$]$.
+
+Model parameters are set using the
+\code{model.parameters} 
+argument; for example,
+\begin{CodeChunk}
+\begin{CodeInput}
+R> lgcppars(sigma=1.6,phi=1.9,theta=1.4)
+\end{CodeInput}
+\end{CodeChunk}
+has the obvious interpretation. The mean of the latent field $Y$ is set to $-\sigma^2/2$ by default.
+The spatial covariance model and
+any additional parameters
+are specified using the \code{spatial.covmodel} 
+and \code{covpars} arguments; these may come from any of the compatible
+covariance functions detailed in \code{?CovarianceFct} from the \pkg{RandomFields} package. The physical dimensions
+of the grid cells can be set using either
+the \code{cellwidth} or \code{gridsize} arguments,
+the second of which
+gives the number of cells in the $x$ and $y$ directions (these numbers are automatically extended to be a power of two for the fast-Fourier transform). 
+The  \code{spatial.intensity} and \code{temporal.intensity} arguments
+specify the previously obtained
+estimates of $\lambda(s)$ and $\mu(t)$, respectively. 
+
+It remains to set the MCMC parameters and output controls; these will now be
+discussed.
+
+\subsubsection{Controlling MALA and performing adaptive MCMC}
+
+
+The \code{mcmc.control} argument of \code{lgcpPredict}
+specifies the MCMC implementation and
+is set using the \code{mcmcpars} function:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(mcmcpars)
+\end{CodeInput}
+\begin{CodeOutput}
+function (mala.length, burnin, retain, inits = NULL, adaptivescheme)
+\end{CodeOutput}
+\end{CodeChunk}
+Here, \code{mala.length} is the number of iterations to perform,
+\code{burnin} is the number of iterations to throw away at the start
+and
+\code{retain} is the frequency at which to store or perform computations; 
+for example, \code{retain=10} performs an action every 10th iteration. The
+optional
+argument \code{inits} can be used
+to set initial values of $\Gamma$ for the algorithm,
+and is intended for advanced use. The initial values are stored in a list object of length \code{laglength}$ + 1$, each element being a matrix of
+dimension $2M\times2N$. For MCMC diagnostics, discussed in the sequel, the user must dump information from the chain to disk using the \code{dump2dir}, discussed below.
+
+The MALA proposal tuning parameter $h$ in Section \ref{sect:mala} must also be
+chosen. The most straightforward way to do this is to set
+\code{adaptivescheme=constanth(0.001)}, 
+which gives $h=0.001$. Without a lengthy
+tuning process, the value of $h$ that optimizes
+the mixing of the algorithm
+is not known. One solution to the problem of having to choose a scaling
+parameter from pilot runs is to use adaptive MCMC \citep{roberts2009,andrieu2008}. Adaptive MCMC algorithms
+use information from the realisation of an MCMC chain to make adjustments
+to the proposal kernel. The Markov property is therefore
+no longer satisfied and some care must be taken to ensure that the correct
+ergodic distribution is preserved.
+An elegant method, introduced by \cite{andrieu2008} uses a Robbins-Munro
+stochastic approximation update to adapt the tuning parameter of the proposal
+kernel \citep{robbins1951}; see below for suggested parameter values for this scheme. The idea is to update the tuning parameter at each
+iteration of the sampler according to the iterative scheme,
+\begin{equation}
+   h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_\text{opt}),
+\end{equation}
+where $h{(i)}$ and $\alpha^{(i)}$ are the tuning parameter and acceptance
+probability at iteration $i$ and $\alpha_\text{opt}$ is
+the target
+acceptance probability. For Gaussian targets, and in the limit as the dimension
+of the problem tends to infinity, an appropriate target acceptance probability
+for MALA algorithms is 
+$\alpha_\text{opt}=0.574$ \citep{roberts2001}. 
+The sequence $\{\eta^{(i)}\}$ is chosen so that $\sum_{i=1}^\infty\eta^{(i)}$ is
+infinite 
+but for some $\epsilon>0$,
+$\sum_{i=1}^\infty\left(\eta^{(i)}\right)^{1+\epsilon}$ is finite. 
+These two conditions ensure that any value of $h$ can be reached, but in a way
+that maintains the ergodic behaviour of the chain. One class of sequences with
+this property is,
+\begin{equation}
+   \eta^{(i)} = \frac{C}{i^\zeta},
+\end{equation}
+where $\zeta\in(0,1]$ and $C>0$ \citep{andrieu2008}.
+
+The tuning constants for this algorithm are set with the function
+\code{andrieuthomsh}.
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(andrieuthomsh)
+\end{CodeInput}
+\begin{CodeOutput}
+function (inith, alpha, C, targetacceptance = 0.574)
+\end{CodeOutput}
+\end{CodeChunk}
+In the above, \code{inith} is the initial value of $h$
+and the remaining arguments correspond to their counterparts in 
+the text above. In our experience of using this algorithm, we have found it to be very robust, and have used the values \code{inith=1}, \code{alpha=0.5} and \code{C=1} successfully across a variety of scenarios without any difficulty.
+
+The advanced user can also write their own adaptive scheme, detailed examples of which are provided in the package vignette. Briefly, writing an adaptive MCMC scheme involves writing two functions to tell \proglang{R} how to initialise and update the values of $h$. This may sound simple, but it is crucial that these functions preserve the correct ergodic distribution of the MCMC chain, an appreciation of these subtleties is \textbf{essential} before any attempt is made to code such schemes.
+
+
+
+
+\subsubsection{Specifying output}
+\label{sect:outputspec}
+
+By default,
+\code{lgcpPredict} computes the Monte Carlo mean and variance of $Y$ and the mean and variance of $\exp\{Y\}$ (the relative risk) for each of the grid
+cells and time intervals of interest. 
+Additional storage and online computations are specified by the
+\code{output.control} argument and the \code{setoutput} function:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(setoutput)
+\end{CodeInput}
+\begin{CodeOutput}
+function (gridfunction = NULL, gridmeans = NULL) 
+\end{CodeOutput}
+\end{CodeChunk}
+The option \code{gridfunction} is used to declare general operations to be performed during simulation (for example, dumping the simulated $Y$s to disk), whilst user-defined Monte Carlo averages are computed using \code{gridmeans}. A
+complete run of the MALA chain can be saved using the \code{dump2dir} function:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(dump2dir)
+\end{CodeInput}
+\begin{CodeOutput}
+function (dirname, lastonly = TRUE, forceSave = FALSE) 
+\end{CodeOutput}
+\end{CodeChunk}
+The user supplies a character string, \code{dirname}, 
+giving the name of a directory in which the results are to be saved. 
+The other arguments to \code{dump2dir} are, respectively, an option to
+save only the last grid (i.e., the time \code{T} grid) and to bypass a safety
+message that would otherwise be
+displayed when \code{dump2dir} is invoked. The safety message 
+warns the user of disk space requirements for saving.
+For example, on a $128\times128$ output grid using 5 days of data, 
+1000 simulations from the MALA will take up approximately 625 megabytes.
+
+The option \code{lastonly} in the functions \code{dump2dir} and \code{MonteCarloAverage} (see below) is set to \code{TRUE} by default, this means that only information from the last time point is saved or manipulated. The main reason for doing this is that by definition of the model, statistical interest is focussed on inference for the last time point, \code{T}. It is assumed that the information from lagged time points contributes to predicitons at time \code{T}, but that information from further in the past has only negligible effect. Setting \code{lastonly=TRUE} also has the advantage that the algorithm runs faster, but should it be of interest to examine predictions at lagged time points, the option should be set to \code{FALSE}.
+
+Another option is to compute Monte Carlo expectations,
+\begin{eqnarray}
+   \E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] &=& \int_W
+g(Y_{t_1:t_2})\pi(Y_{t_1:t_2}|X_{t_1:t_2})\rmd Y_{t_1:t_2},\\
+   &\approx& \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})
+\end{eqnarray}
+where $g$ is a function of interest, $Y_{t_1:t_2}^{(i)}$ is the $i$th retained
+sample from the target and $n$ is the total number of retained iterations. For
+example, to compute the mean of $Y_{t_1:t_2}$, set
+$g(Y_{t_1:t_2}) = Y_{t_1:t_2}$.
+The output from such a Monte Carlo average would 
+then
+be a set of $t_2-t_1$ grids, each cell of which 
+is equal to the mean over all retained iterations of the algorithm. In the
+context of setting up the \code{gridmeans} option to compute the Monte Carlo mean, the user would 
+define a function \code{g} as
+\begin{CodeChunk}
+\begin{CodeInput}
+R> gfun <- function(Y){
+       return(Y)
+   }
+\end{CodeInput}
+\end{CodeChunk}
+and input this to the MALA run
+using the function \code{MonteCarloAverage},
+\begin{CodeChunk}
+\begin{CodeInput}
+R> args(MonteCarloAverage)
+\end{CodeInput}
+\begin{CodeOutput}
+function (funlist, lastonly = TRUE) 
+\end{CodeOutput}
+\end{CodeChunk}
+
+Here, \code{funlist}
+is either a list or a character vector giving 
+the names of the function(s) $g$. The specific syntax for the example above
+would be a call of the form \code{MonteCarloAverage("gfun")}. The functions of interest (e.g., \code{gfun} above) are assumed to act on each of the individual grids, $Y_{t_i}$, and return a grid of the same dimension.
+
+A second example arises in
+epidemiological studies where it is
+of clinical interest to know 
+whether,
+at any location
+$s$, the ratio of current to expected
+risk exceeded a pre-specified intervention threshold; 
+see, for example,  \cite{diggle2005}, where real-time
+predictions of relative risk are presented as
+maps of exceedance probabilities,
+${\rm P}\{\exp(Y_t)>k|{X_{1:t}}\}$ for a pre-specified
+   threshold $k$. Any such exceedance probability can 
+   be expressed as an expectation,   
+\[
+\Prob[\exp(Y_{t_1:t_2})>k]=\E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}\{\I[\exp(Y_{t_1:t_2})>k]\}
+= \frac1n\sum_{i=1}^n\I[\exp(Y_{t_1:t_2}^{(i)})>k],
+\]
+where $\I$ is the indicator function, and a Monte Carlo
+approximation can
+   therefore be computed on-line using \code{MonteCarloAverage}.
+
+The corresponding function $g$ is 
+\[
+   g(Y_{t_1:t_2}) = \I[\exp(Y_{t_1:t_2})>k].
+\]
+Exceedance probabilities are made available directly within
+\pkg{lgcp} by the function \code{exceedProbs}.
+
+To make use of this facility, 
+the user specifies the thresholds of interest,
+for example 1.5, 2 and 3,
+then creates a function to compute the required exceedances:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> exceed <- exceedProbs(c(1.5,2,3))
+\end{CodeInput}
+\end{CodeChunk}
+The object \code{exceed} is now a function that returns the exceedance
+probabilities as an array object of dimension $M\times N\times3$.
+This function can be passed through to the \code{gridmeans} option,
+together with the previously defined \code{gfun}, via
+\code{gridmeans=MonteCarloAverage(c("gfun","exceed")}. The
+\code{lgcpPredict} function then returns point-wise 
+predictive means and three sets of exceedance probabilities.
+Note that, the example function \code{gfun} is included for illustrative purposes only and is in fact redundant,
+as \code{lgcpPredict} automatically returns the predictive mean (as well as the variance) of $Y$.
+
+\subsubsection{Rotation}
+\label{sect:rotatingstppp}
+
+Testing whether estimation can proceed more efficiently in 
+a rotated space is described
+in detail in Appendix \ref{sect:rotation}. Note that if the data and
+observation window are rotated, then $\lambda$ must also be rotated
+to retain compatibility. If $\lambda$ 
+was estimated in the original frame of reference 
+and \code{autorotate=TRUE}, then \code{lgcpPredict} 
+will automatically rotate $\lambda$ if 
+it is computationally worthwhile to do so. 
+For $\lambda$ specified as a grid,
+either directly or via an object of class \code{im}, 
+then a small amount of information loss occurs in the rotation
+because the square cells in the original orientation become misaligned with the axes in the rotated space and vice-versa. If $\lambda$ is specified
+by a continuous function, then no such loss occurs.
+
+\subsubsection{Gradient truncation}
+
+One undesirable
+property of the Metropolis-adjusted Langevin algorithm is that the chain is
+prone to taking very long excursions from the mode of the target; this behaviour
+can have a detrimental effect on the mixing of the chain and consequently on any
+results. The tendency to make long excursions is caused by instability in the
+computation of the gradient vector, but the issue is relatively straightforward
+to rectify without affecting convergence properties \citep{moller1998}. The key
+is to truncate the gradient vector if it becomes too large. If
+\code{gradtrunc=NULL}, then an appropriate truncation is automatically selected
+by the code. With \code{gradtrunc=Inf}, no gradient truncation occurs.
+
+As far as the authors are aware, there are no 
+published guidelines for selecting this truncation parameter.
+The current version of the 
+\code{lgcp}
+package uses the maximum achieved gradient over a set of 100 independent
+realisations of $\Gamma_{t_1:t_2}$.
+
+\subsection{Running}
+\label{sect:running}
+
+When all of the above options have been specified, the MALA 
+algorithm can be called as follows:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> lg <- lgcpPredict(xyt=xyt,
+		     T=50,
+		     laglength=5,
+		     model.parameters=lgcppars(sigma=1.6,phi=1.9,theta=1.4),
+		     cellwidth=2,
+		     spatial.intensity=sar,
+		     temporal.intensity=mut,
+		     mcmc.control=mcmcpars(mala.length=120000,burnin=20000,
+			retain=100,
+			adaptivescheme=andrieuthomsh(inith=1,alpha=0.5,C=1,
+			targetacceptance=0.574)),
+		     output.control=setoutput(gridfunction=
+			dump2dir(dirname="C:/MyDirectory/"),
+			gridmeans=MonteCarloAverage("exceed")))
+\end{CodeInput}
+\end{CodeChunk}
+
+The above call assumes that the spatial covariance model 
+is exponential, that no rotation is to be performed 
+and that the user wishes to have \code{lgcpPredict} compute 
+an appropriate gradient truncation automatically. The arguments
+\code{spatial.intensity} and \code{temporal.intensity} relate to the spatial and temporal intensities, estimated in Section \ref{sect:lambdaandmu}; note that the chosen temporal model is constant in time. Recall that the option \code{lastonly} is by default set to \code{TRUE} in both \code{MonteCarloAverage} and \code{dump2dir}.
+
+The simulated example uses data from times 45 to 50 inclusive, 
+120,000 iterations, of which the first
+20,000 are treated as burn-in,
+and retains every 100th sample.
+For diagnostic checking,
+a sample of MCMC $\Gamma$-chains is also saved for each of five 
+randomly selected grid-cells.
+The observation window is approximately 100km square, 
+so the specified cell width of 2km (given in the same units as used in the object \code{xyt})
+gives an output grid of size $64\times64$, 
+i.e., computation is carried out on a $128\times128$ grid. 
+The complete run is saved to disk and 
+exceedance probabilities are computed for the last time-point only. 
+
+During simulation, a progress bar is displayed giving the percentage of
+iterations completed.
+
+%An alternative to specifying \code{cellwidth} is to use \code{gridsize} instead: the user provides a number, which is a power of 2, and \code{lgcpPredict} computes an appropriate grid size on which to perform the analysis.
+
+It is possible at the start of a run that the user may be confronted by a warning message like \code{Time 48: 5 data points lost due to discretisation}. This means that there are points close to the edge of the polygonal observation window that lie outside the computational grid. Critical information is only lost in any subsequent conditional predictions if we were specifically interested in behaviour close to these areas, in which case there are two options. The easiest solution assuming that prediction in these areas is important, but bears additional computational expense and may not fix the warnings, is to use a finer grid resolution. The alternative, and more rigorous approach is to extend the true observation window by surrounding it with a buffer, pre-compute the FFT grid on the buffered window via \code{selectObsWindow} as discussed earlier and then tailor a \code{spatialAtRisk} object onto the buffered window to adjust for these edge effects on the true observation window.
+
+
+
+
+
+
+
+\subsection{Post-processing}
+\label{sect:postprocessing}
+
+The stored output \code{lg} is an object of 
+class \code{lgcpPredict}. Typing \code{lg} into the console prints out
+information about the run:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> lg
+\end{CodeInput}
+\begin{CodeOutput}
+lgcpPredict object.
+
+  General Information
+  -------------------
+      FFT Gridsize: [ 128 , 128 ]
+
+              Data:
+       Time |       45       46       47       48       49       50
+     Counts |       98      345      106      100       73       67
+
+        Parameters: sigma=1.6, phi=1.9, theta=1.4
+    Dump Directory: C:/MyDirectory/
+
+     Grid Averages:
+         Function Output Class
+           exceed        array
+
+        Time taken: 2.77 hours
+
+  MCMC Information
+  ----------------
+    Number Iterations: 120000
+              Burn-in: 20000
+             Thinning: 100
+      Mean Acceptance: 0.574
+      Adaptive Scheme: andrieuthomsh
+               Last h: 0.00904236148499419
+\end{CodeOutput}
+\end{CodeChunk}
+Information returned includes the FFT grid size used in computation; the count
+data for each day; the parameters used; the directory,
+if specified,
+to which the simulation was dumped; 
+a list of \code{MonteCarloAverage} functions together with the \proglang{R}
+class of their returned values; the time taken to do the simulation; and
+information on the MCMC run.
+
+\subsubsection{Extracting information}
+
+The cell-wise mean and variance of $Y$ computed via Monte Carlo can 
+always be extracted using \code{meanfield(lg)} and \code{varfield(lg)},
+respectively. The calls \code{rr(lg)}, \code{serr(lg)}, \code{intens(lg)} and \code{seintens(lg)} return respectively the Monte Carlo mean relative risk (the mean of $\exp\{Y\}$), the standard error of the relative risk, the estimated cell-wise mean Poisson intensity and the standard error of the Poisson intensity. The $x$ and $y$ coordinates for the grid output are obtained via \code{xvals(lg)} and \code{yvals(lg)}. The returned object from calls like \code{meanfield}, \code{varfield} or \code{intens} are objects of class \code{lgcpgrid}, so the command,
+\begin{CodeChunk}
+\begin{CodeInput}
+R> intensity <- intens(lg)
+\end{CodeInput}
+\end{CodeChunk}
+creates an \code{lgcpgrid} object containing the mean Poisson intensities. Then, for example \code{intensity$grid[[1]]} returns the Poisson intensities relating to the first time aggregated point, with an appropriate $(x,y)$ grid available using \code{xvals(lg)} and \code{yvals(lg)}. Similarly, \code{intensity$grid[[2]]} returns the intensities from the second aggregated time point. \code{lgcpPredict} not only produces predictions for grid locations inside the observation window, but also it produces predictions for cells outside the observation window too. This is because we define $\lambda(s)=0$ for $s\notin W$: we expect no counts, and observe no counts in these cells. The values returned by \code{intensity$grid[[1]]} are therefore stored in a rectangular matrix. To see which of these cells lies inside the observation window, use the following command,
+\begin{CodeChunk}
+\begin{CodeInput}
+R> fftgr <- discreteWindow(lg)
+\end{CodeInput}
+\end{CodeChunk}
+which returns a logical matrix of the same dimension as \code{intensity$grid[[1]]}. These commands give the user the freedom to manipulate the outputs from an MCMC run and produce their own plots, for example. Should the user prefer \code{list} or \code{array} versions of the \code{lgcpgrid} objects, conversion is possible via the functions \code{as.list} and \code{as.array}.
+
+If invoked, the commands
+\code{gridfun(lg)} and \code{gridav(lg)} return respectively the
+\code{gridfunction} and \code{gridmeans} options of the \code{setoutput}
+argument of the \code{lgcpPredict} function,
+whilst \code{window(lg)} returns the observation window.
+
+Note that the structure produced by \code{gav <- gridav(lg)} is a \code{list} of
+length 2. The first element of \code{gav}, retrieved with \code{gav$names}, is a
+list of the function names given in the call to \code{MonteCarloAverage}. The
+second element, \code{gav$output}, is a list of the function outputs; the $i$th
+element in the list being the output from the
+function corresponding to the $i$th element of \code{gav$names}. To return the output for a specific function, use the syntax \code{gridav(lg,fun="exceed")}, which in this case returns the exceedance probabilities, for example.
+
+\subsubsection{Plotting}
+
+Plots of the Monte Carlo mean relative risk and standard errors can be obtained with the commands:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plot(lg,xlab="x coordinate",ylab="y coordinate")
+R> plot(lg,type="serr",xlab="x coordinate",ylab="y coordinate")
+\end{CodeInput}
+\end{CodeChunk}
+These commands produce a series of plots corresponding to each time step under
+consideration; the plots shown in Figure~\ref{plotlg} are from the last time step,
+time 50. 
+
+To plot the mean Poisson intensity instead of the relative risk, the optional argument \code{type} can be set in the above: 
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plot(lg,type="intensity",xlab="x coordinate",ylab="y coordinate")
+\end{CodeInput}
+\end{CodeChunk}
+The cases for each time step are also plotted by default.
+\begin{figure}[htbp]
+   \centering
+   \begin{minipage}{0.05\textwidth}
+   \hfill
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/plotlg.pdf}
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/plotserr.pdf}
+   \end{minipage}
+   \caption{\label{plotlg} Plots of the Monte Carlo mean relative risk (left) and associated standard errors (right).}
+\end{figure}
+
+
+It was also suggested by an anonymous referee, that a user could make use of the \pkg{spacetime} and \pkg{xts} packages for plotting and manipulating data and model outputs from \pkg{lgcp} \citep{pebesma2012,ryan2012}.
+
+\subsubsection{Forecasting}
+
+It is of statistical and epidemiological interest to be able to forecast beyond the time frame of an analysis, that is to be able to forecast the Poisson intensity,
+\begin{equation*}
+   A\lambda(s)\mu(T+k)\exp\{Y(s,T+k)\}\,
+\end{equation*}
+where $A$ is the cell area. \pkg{lgcp} provides functionality to be able to construct estimates of this together with its approximate variance via the function \code{lgcpForecast}.
+\begin{CodeChunk}
+\begin{CodeInput}
+R> fcast <- lgcpForecast(lg,c(51,53,55,60),spatial.intensity=sar,
+			      temporal.intensity=function(x){return(100)})
+\end{CodeInput}
+\end{CodeChunk}
+The object \code{fcast} now contains the predicted means and variance of $Y$, the relative risk and Poisson intensities for times 51, 53, 55 and 60. The approximate variances are computed ignoring spatial correlation. We note that should information have been dumped to disk, then it would possible to produce a Monte Carlo estimate of the forecast distribution of $Y$, the relative risk and Poisson intensities, which would be exact but computationally intensive to compute. Note that a \code{temporal.intensity} object must be provided as the \code{temporalAtRisk} object used in the MCMC step may not be valid for time points beyond time \code{T}. In the above example, we assume that for the forecast time-frame there will be 100 cases per time point on average.
+
+%fcast <- lgcpForecast(lg,c(51,53,55,60),spatial.intensity=sar,temporal.intensity=function(x){return(100)})
+
+
+\subsubsection{NetCDF}
+\label{sect:netcdf}
+
+The \pkg{lgcp} package
+provides functions for accessing and performing computations on MCMC runs dumped
+to disk. Because this can generate very large files, 
+\pkg{lgcp} uses the cross-platform \code{NetCDF} file format for 
+storage and rapid data access, as
+provided by the package \pkg{ncdf} \citep{pierce2011}.
+Access to subsets of these stored
+data is via a file indexing system, which removes the need to load the complete
+data into memory.
+
+Subsets of data dumped to disk can be accessed with the \code{extract} function:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> subsamp <- extract(lg,x=c(4,10),y=c(32,35),t=1,s=-1)
+\end{CodeInput}
+\end{CodeChunk}
+which returns an array of dimension $7\times4\times1\times1000$ (recall there were 1000 retained iterations). The arguments
+\code{x} and \code{y} refer to the range of $x$ and $y$ \emph{indices} of the
+grid of interest whilst \code{t} 
+specifies the time points of interest. Note, however,
+that in this example times 45 through 50 were used for prediction, 
+and \code{t=1} here in fact refers to the sixth of these time-points,
+i.e., time 50, since the option \code{lastonly} was set to \code{TRUE} by default. Finally,
+\code{s=-1} stipulates that all simulations are to be returned. 
+More generally, each argument of
+\code{extract}
+can be specified either
+as a range or set equal to $-1$, in which case all of the data in that
+dimension are returned. 
+The \code{extract}
+   function can also extract MCMC traces from individual cells using,
+   for example,
+   \code{extract(lg,x=37,y=12,t=1)}.
+
+Should the user wish to extract data from a polygonal subregion of the
+observation window, this can be achieved with the command
+\begin{CodeChunk}
+\begin{CodeInput}
+R> subsamp2 <- extract(lg,inWindow=win2,t=1)
+\end{CodeInput}
+\end{CodeChunk}
+where \code{win2} is a polygonal observation window defined below. 
+Here, \code{win2} had been selected using the following commands:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plot(window(lg))
+R> win2 <- clickpoly(add=TRUE)
+\end{CodeInput}
+\end{CodeChunk}
+The first of the above commands plots the observation window,
+whilst the second is a \pkg{spatstat} function for drawing polygonal \code{owin} objects manually. The user could also 
+specify the \code{extract} argument \code{inWindow} directly using a \pkg{spatstat} \code{owin} object.
+
+If the user decides that some other summary 
+than those specified by the 
+\code{gridmeans} option is of interest, 
+this can easily be computed
+from the stored data (c.f., Section \ref{sect:outputspec})
+The syntax is then slightly different,
+as in the following example that
+computes the same exceedances in Section \ref{sect:outputspec}:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> ex <- expectation(obj=lg,fun=exceed)
+\end{CodeInput}
+\end{CodeChunk}
+
+
+Alternatively, cell-wise quantiles of \emph{functions} 
+of the stored data can also be retrieved and plotted:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> qt <- quantile(lg,c(0.5,0.75,0.9),fun=exp)
+R> plot(qt,xlab="X coords",ylab="y coords")
+\end{CodeInput}
+\end{CodeChunk}
+As for the extract function above, quantiles can also 
+be computed for smaller spatial observation windows. The indices of any cells of
+interest in these plots can be retrieved by typing \code{identify(lg)}.
+Cells are then selected via left mouse clicks in the graphics device, selection
+being terminated by a right click.
+
+\begin{figure}[htbp]
+   \centering
+   \begin{minipage}{0.05\textwidth}\hfill    
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/qtile.pdf}
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/qtile2.pdf}
+   \end{minipage}
+   \caption{\label{qtile} Plot showing the median 
+   of relative risk (obtained using \code{fun=exp} as in the text) computed from
+the simulation. Left: quantiles computed for whole window. Right: 
+   zooming in on the lower area of the map, representing the
+   cities of Southampton and Portsmouth. Greater detail is available by
+initially performing the simulation on a finer grid.}
+\end{figure}
+
+Lastly, Linux users can benefit from the software \proglang{Ncview}, available
+from \url{http://meteora.ucsd.edu/~pierce/ncview_home_page.html},
+which provides fast visualisation of NetCDF files. 
+Figure~\ref{netview} shows a screen-shot, with the control panel (left), an
+image of one of the sampled grids (top right) and several MCMC chains (bottom right),
+which are obtained by clicking on the sampled grids; up to five
+chains can be displayed at a time. 
+There are equivalent tools for Windows users e.g., Intel\textregistered\ Array Visualizer (\url{http://www.intel.com/cd/software/products/asmo-na/eng/compilers/226277.htm}).
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=\textwidth,height=0.573\textwidth]{png/ncview.png}
+\caption{\label{netview} Viewing a MALA run with software \code{netview}.}
+\end{figure}
+
+\subsubsection{MCMC diagnostics}
+
+MCMC diagnostics for the chain are based on the full output from data dumped to disk (see
+Section \ref{sect:netcdf}). The \code{hvals} command returns the value of $h$
+used at each iteration in the algorithm, the left hand plot in Figure~\ref{mcmcdiagnostics} shows the values of $h$ for the non-burn-in period of the
+chain; the adaptive algorithm was initialised with $h=1$,
+which very quickly converged to around $h=0.009$.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plot(hvals(lg)[20000:120000],type="l",xlab="Iteration",ylab="h")
+R> tr <- t(extract(lg,x=c(6,10),y=32,t=1,s=-1)) # a 1000 by 5 matrix, 
+						# with some attributes.
+R> matplot(tr,type="l",xlab="Iteration",ylab="Y")
+\end{CodeInput}
+\end{CodeChunk}
+
+Trace plots are shown in the right-hand panel of Figure~\ref{mcmcdiagnostics}. Note that these are the trace plots for $Y$, as opposed to $\Gamma$
+To plot the autocorrelation function, the standard \proglang{R} function can be used.
+For example, \code{acf(tr[,1])} gives the acf of the first extracted chain.
+
+
+\begin{figure}[htbp]
+   \centering
+   \begin{minipage}{0.05\textwidth}
+   \hfill
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/hvals.pdf}
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/trace.pdf}
+   \end{minipage}
+   \caption{\label{mcmcdiagnostics}MCMC diagnostic plots. Left: plot of values
+of $h$ taken by the adaptive algorithm. Right: trace plots of the saved chains
+from five grid cells.}
+\end{figure}
+
+There are a number of \proglang{R} packages for handling MCMC output, for example \pkg{coda} \citep{plummer2006}. \pkg{lgcp} does not provide an interface for working with these packages because the size of the output dumped to disk is potentially so large. It is possible to interface with these packages manually by extracting smaller subsets of data, and converting them to the appropriate format, but this is not dealt with here.
+
+\subsubsection{Plotting exceedance probabilities}
+
+Recall that
+the object \code{exceed}, defined above,
+was a function with an attribute giving a vector of thresholds to compute
+cell-wise exceedance probabilities at each threshold. 
+A plot can be produced either directly from the \code{lgcpPredict} 
+object,
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotExceed(lg, fun = "exceed")
+\end{CodeInput}
+\end{CodeChunk}
+or, equivalently, from 
+the output of an \code{expectation} on an object dumped to disk:
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotExceed(ex[[1]], fun = "exceed",lgcppredict=lg)
+\end{CodeInput}
+\end{CodeChunk}
+Recall also
+that the option \code{lastonly=TRUE} was selected for \code{MonteCarloAverage}, 
+hence \code{ex[[1]]} in the second example above 
+corresponds to the same set of plots as for the first example. The advantage of
+computing
+expectations from files dumped to 
+disk is flexibility. For example,
+if the user now wanted to plot the exceedances for day 49, 
+this is simply achieved by replacing \code{ex[[6]]} with \code{ex[[5]]}. 
+Also, 
+exceedances for a  new set of thresholds can be computed 
+by creating,
+for example, a new function by the command
+\code{exceed2 <- exceedProbs(c(2.3,4))}. 
+An example of the resulting
+output is given in Figure~\ref{exceedance}.
+
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.5\textwidth,height=0.5\textwidth]{pdf/exceedance.pdf}
+   \caption{\label{exceedance} Plot showing the cellwise probability (colour coded) that the relative risk is greater than 3.}
+\end{figure}
+
+\section{Future extensions}
+\label{sect:extensions}
+
+This article has described how \pkg{lgcp} may be used to fully specify, fit, and simulate from, i.e., predict conditional on observed data, a spatio-temporal log-Gaussian Cox process on $\mathbb{R}^2$. A substantial volume of novel code, such as access to fast-Fourier transform methods needed in simulation and the first open-source \proglang{R} implementation of the Metropolis-adjusted Langevin algorithm for this target, has been instrumental in the development of this package. \pkg{lgcp} also has functionality not discussed in this article including methods for handling missing spatial data over time, the approximation of Gaussian fields by Gaussian Markov random fields and prediction for `spatial-only' log Gaussian Cox processes \citep{taylor2012}.
+
+The initial motivation for this work was disease surveillance as performed by \cite{diggle2005}, and it is this application which has driven the core functionality for initial release (at the time of writing, \pkg{lgcp} is at version 0.9-4). A list of possible extensions to \pkg{lgcp} includes: the ability to include spatial and temporally referenced covariates into the MCMC scheme; to perform principled Bayesian parameter inference (both currently under development); and to handle applications where covariate information is available at differing spatial resolutions. Finally, in the spatio-temporal setting, it is of further interest to include the ability to handle non-separable correlation structures; see for example \cite{gneiting2002,rodrigues2010}. 
+
+\section{Acknowledgements}
+
+The population data used in this article was based on real data from project AEGISS \citep{diggle2005}. AEGISS was supported by a grant from the Food Standards Agency, U.K., and from the National Health Service Executive Research and Knowledge Management Directorate.
+
+
+\appendix
+
+\section{Rotation}
+\label{sect:rotation}
+
+The MALA algorithm works on a regular square grid 
+placed over the observation window. The user is
+responsible for providing a physical grid size 
+on which to perform estimation/prediction.
+The gridded observation window is then extended automatically to obtain a $2^m\times2^n$ grid on which 
+the simulation is performed. 
+By default, the orientation of this extended grid is 
+the same as the object \code{win}. If the observation window is elongated and
+set at a diagonal, then some loss of efficiency 
+that would occur as a consequence
+of
+redundant computation at irrelevant locations can be recovered 
+by rotating
+the coordinate axes and performing the computations 
+in the rotated space.
+
+To illustrate this, suppose \code{xyt2} is an \code{stppp} object with such an
+elongated and diagonally oriented
+window (see Figure~\ref{roteffgain}). The function \code{roteffgain} displays 
+whether any efficiency can be gained by rotation; clearly this not only depends
+on the observation window, but also on the size of the square cells on which the
+analysis will be performed. In the example below, the user wishes to perform the
+analysis using a cell width of 25km 
+(corresponding to \code{cellwidth=25000} in the code below):
+\begin{CodeChunk}
+\begin{CodeInput}
+R> roteffgain(xyt2,cellwidth=25000)
+\end{CodeInput}
+\begin{CodeOutput}
+By rotating the observation window, the efficiency gain would be: 200%, 
+   see ?getRotation.stppp
+NOTE: efficiency gain is measured as the percentage increase in FFT 
+   grid cells from not rotating compared with rotating
+[1] TRUE
+\end{CodeOutput}
+\end{CodeChunk}
+The routine returns
+\code{FALSE} if there is no `efficiency gain'. Note that the efficiency gain is
+not a reflection on computational speed, but rather a measure of how many fewer
+cells the MALA is required to use; this is illustrated in Figure~\ref{roteffgain}. As a technical aside, a better measure would be a ratio of
+mixing times for the MCMC chains based on unrotated and rotated windows;
+however, as the mixing time depends on how well the MALA has been tuned, it is
+not clear how this can be estimated accurately.
+
+Having ascertained whether rotation is advantageous, the optimally rotated data,
+observation window and rotation matrix 
+can be retrieved using the function \code{getRotation}. For
+prediction
+using \code{lgcpPredict}, there is also an \code{autorotate} option: this
+allows the user to perform MALA on a rotated grid with minimal input so long as
+rotation leads to a gain in efficiency. If the model is fitted using a rotated
+frame, then the predictions will also be returned in this frame: this means that
+in the original orientation the output will be on a grid misaligned to the original axes. 
+The \pkg{lgcp} package
+provides methods for the generic function \code{affine} so that \code{stppp}
+and \code{spatialAtRisk} objects can be rotated manually.
+
+\begin{figure}[htbp]
+   \centering
+   \begin{minipage}{0.05\textwidth}
+   \hfill
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/notrot.pdf}
+   \end{minipage}\begin{minipage}{0.5\textwidth}
+      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{pdf/rot.pdf}
+   \end{minipage}
+   \caption{\label{roteffgain} Illustrating the potential gain in efficiency by
+rotating the observation window. Left plot: the selected grid without rotation.
+Right plot: the optimally rotated grid.}
+\end{figure}
+
+\section{Simulating data}
+\label{sect:simulation}
+
+The \pkg{lgcp} package
+also provides an approximate simulation tool for drawing samples from the model in Equation~\ref{eqn:themodel}. Simulation minimally requires an observation window, a
+range of times over which to simulate data, spatial and temporal intensity
+functions $\lambda$ and $\mu$, a cell width for the discretisation  and a set of
+spatial/temporal model parameters together with a choice of spatial covariance
+model.
+
+The code below simulates data from a log-Gaussian Cox process on the observation
+window from the example in the text above. The function \code{tempfun} is coerced into a \code{temporalAtRisk} object and defines
+the temporal trend. 
+Any appropriately defined \code{temporalAtRisk} object can be used here.
+Similarly, \code{spatial.intensity} can either be an object of class
+\code{spatialAtRisk} or one that can be coerced to one.
+\begin{CodeChunk}
+\begin{CodeInput}
+R> W <- xyt$window
+R> tempfun <- function(t){return(100)}
+R> sim <- lgcpSim(owin=W,
+	       tlim=c(0,100), 
+	       spatial.intensity=den,
+	       temporal.intensity=tempfun,
+	       cellwidth = 0.5,
+	       model.parameters=lgcppars(sigma=2,phi=5,theta=2))
+\end{CodeInput}
+\end{CodeChunk}
+Note that
+the finer the grid resolution, the more accurately will
+the process  be simulated, and that smaller values of $\phi$
+require a finer
+discretisation. A warning is issued if the algorithm 
+thinks the chosen cell width is too large. 
+The discretisation in time is chosen automatically by the algorithm. 
+
+\section[Handling the SpatialAtRisk class]{Handling the \code{SpatialAtRisk}
+class}
+\label{sect:spatialAtRisk}
+
+This section illustrates the available commands for converting between different
+types of \proglang{R} objects that can be used to describe $\lambda(s)$.
+Conversion methods are provided for objects from the packages \pkg{spatstat}
+\citep{baddeley2005}, \pkg{sp} \citep{bivand2008} and \pkg{sparr}
+\citep{davies2011}.
+These are illustrated in Figure~\ref{conversion1}. For the purposes of parameter
+estimation, Figure~\ref{conversion2} shows the different \code{spatialAtRisk}
+objects that can be converted into 
+an appropriate format (i.e., a \pkg{spatstat} \code{im} object).
+
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.8\textwidth,height=0.6\textwidth]{pdf/conversion1.pdf}
+   \caption{\label{conversion1}Conversion to \code{spatialAtRisk} objects. By
+default, \code{SpatialAtRisk} looks for a \code{list}-type object, but other
+objects that can be coerced include \pkg{spatstat} \code{im} objects,
+\code{function} objects, \pkg{sp} \code{SpatialGridDataFrame} and
+\code{SpatialPolygonsDataFrame} objects and \pkg{sparr} \code{bivden} objects.
+The text in red gives the type of \code{spatialAtRisk} object created.}
+\end{figure}
+
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.6\textwidth,height=0.4\textwidth]{pdf/conversion2.pdf}
+   \caption{\label{conversion2}Conversion to \pkg{spatstat} objects of class
+\code{im}; these are useful for parameter estimation, in each case a call to the
+function \code{as.im(obj,...)} will perform the coercion.}
+\end{figure}
+
+There is also a function to convert from \code{fromXYZ}-type
+\code{spatialAtRisk} objects to \pkg{sp} objects of class \code{SpatialGridDataFrame}:
+\code{as.SpatialGridDataFrame(obj,...)}. Lastly, \code{fromFunction}-type can be
+converted to \code{fromXYZ}-type \code{spatialAtRisk} objects using the
+\code{as.fromXYZ} function. Note that if a \code{spatialAtRisk} object is
+specified via a function, then it is the user's responsibility to ensure that
+the function integrates to 1 over the observation window; one way to bypass this
+problem is to convert the function to an \code{spatialAtRisk} object of
+\code{fromXYZ}-type.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% now include material from the old vignette
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Additional Material for Vignette}
+
+\subsection{Handling Shapefiles}
+
+Here we show how to read in and convert shapefiles for use in \pkg{lgcp}. Boundary files for Wales can be obtained from the Great Britain data files from the GADM (\url{http://www.gadm.org/country}) website. The following script will download the level 1 (England, Scotland, Wales, Northern Ireland) and level 2 (counties and regions) data in .RData format, and put them in a temporary directory:
 
 \begin{verbatim}
 td = tempdir()
@@ -139,144 +1561,11 @@ idx <- match(wpopdata$ID,cymru$ID_2)
 cymru$atrisk <- wpopdata$Mid.2010[idx]
 \end{verbatim}
 
-\section{Reading In and Converting Data}
+\subsection{More Complex Temporal-At-Risk Models}
 
-In the following
-example \verb=x=, \verb=y= and \verb=t= are vector R objects giving the
-location and time of events, \verb=tlim= is the time window, and \verb=win= is a \textbf{spatstat} object of class
-\verb=owin= specifying the polygonal observation window, in this case, a $10\times10$ square.
+This section gives an example of a more complex \code{temporalAtRisk} model.
 
-\begin{verbatim}
-> data <- cbind(x,y,t)
-> tlim <- c(0,100)
-> win <- owin(poly=list(x=c(0,10,10,0),y=c(0,0,10,10)))
-> win
-
-window: polygonal boundary
-enclosing rectangle: [0, 10] x [0, 10] units
-\end{verbatim}
-
-For the purposes of parameter estimation and spatio-temporal prediction, the first task for the user is to convert this into a space-time planar point
-pattern object ie.\! one of class \verb=stppp=, provided by \textbf{lgcp}. An object
-of class \verb=stppp= is easily created:
-\begin{verbatim}
-> xyt <- stppp(list(data=data,tlim=tlim,window=win))
-> xyt
-
-Space-time point pattern
- planar point pattern: 1000 points 
-window: polygonal boundary
-enclosing rectangle: [0, 10] x [0, 10] units  
-   Time Window : [ 0 , 100 ]
-\end{verbatim}
-
-In the next section, it is discussed how to simulate data on the Wales observation window.
-
-\subsection{Simulation of Data}
-\label{sect:simdata}
-
-In this section it is demonstrated how to simulate data based on two different assumptions about the population at risk - first by using county-level populations and then by a kernel-density estimate from the town population counts.
-
-In both cases, it will be assumed that the temporal trend $\mu(t)$ (see appendix for details) is constant in time, with the expected number of cases per day being 100.
-
-\subsubsection{Simulation of Data with District-level \texttt{spatialAtRisk}}
-
-To run the simulation a time-range (\verb=tlim=) and parameter values (\verb=sigma=, \verb=phi= and \verb=theta=) are required. Also, the simulation routine needs to know the quantities $\lambda(s)$ and  $\mu(t)$ (see the appendices for further details of the parameters and these two functions). 
-
-In this example the \verb=spatialAtRisk= object \verb=sar1= (specifying $\lambda(s)$) describes the case where inhomogeneity in the at-risk population is aggregated to district level.
-
-The grid size used for simulation is printed, this is the size on
-which the simulated data was generated; the fast Fourier transform (FFT, used in computation --
-see appendices) takes place on a grid four times the area of the
-printed grid. A progress bar is displayed during simulation and a
-warning message issued. The warning message is issued because the
-user-defined \verb=mut= is not `scaled', thus the literal interpretation of
-$\mu(t)$ is the expected number of cases in the unit time interval
-containing $t$. The warning can be disabled, see
-\verb=?constantInTime= for example.
-
-\begin{verbatim}
-tlim <- c(1,100) 
-sigma <- 4
-phi <- 7000 # distance in metres
-theta <- 0.3
-
-sar1 <- spatialAtRisk(cymru)
-mut <- constantInTime(100,tlim=c(1,100))
-
-xyt1 <- lgcpSim(owin=W,
-	        tlim=tlim, 
-	        spatial.intensity=sar1,
-	        temporal.intensity=mut, # constant in time
-	        cellwidth = 3000, # gives a 128x128 simulation grid
-	        model.parameters=lgcppars(sigma=sigma,phi=phi,theta=theta),
-	        plot=FALSE)
-\end{verbatim}
-
-To plot the \verb=spatialAtRisk= object, use the following:
-\begin{verbatim}
-spplot(sar1,"atrisk")
-\end{verbatim}
-This produces Figure \ref{xyt1} (note that the colour scheme on this plot can be user-defined via the \verb=sp.theme= command). A corresponding plot of the data can be produced with
-\begin{verbatim}
-plot(xyt1,axes=TRUE,main="xyt1")
-\end{verbatim}
-
-\begin{figure}[htbp]
-   \caption{\label{xyt1}. Plot of \texttt{sar1} -- population density Funiform over districts.}
-   \centering
-   \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{sar1.png}
-\end{figure}
-
-
-
-
-\subsubsection{Simulation of Data with \texttt{spatialAtRisk} described by a Kernel Density Estimate of Population}
-
-In this second example, a continuous $\lambda(s)$ specifies the at-risk population. This is estimated from a kernel density estimate of population data. To load the town population data, type:
-\begin{verbatim}
-data(wtowns) # details of 199 welsh towns
-data(wtowncoords) # coordinates of the 199 welsh towns
-\end{verbatim}
-
-To get the kernel density estimate of the population, convert to a \verb=ppp= object and then use
-the \verb=density= function with the population as weights:
-\begin{verbatim}
-   cymruppp <- ppp(wtowncoords[,1],wtowncoords[,2],
-		     marks=as.data.frame(wtowns[,2:3]),window=W)
-   den <- density(cymruppp,sigma=10000,weights=cymruppp$marks$Population.2001.)
-\end{verbatim}
-The object \verb=den= can now be converted into a \verb=spatialAtRisk= object, and the simulation
-can be run:
-
-\begin{verbatim}
-sar2 <- spatialAtRisk(den)
-
-xyt2 <- lgcpSim(owin=W,
-	        tlim=tlim, 
-	        spatial.intensity=sar2,
-	        temporal.intensity=mut, # constant in time
-	        cellwidth = 3000, # gives a 128x128 simulation grid
-	        model.parameters=lgcppars(sigma=sigma,phi=phi,theta=theta),
-	        plot=FALSE)
-\end{verbatim}
-
-To plot the \verb=spatialAtRisk= object, use the following:
-\begin{verbatim}
-image.plot(sar2$X,sar2$Y,sar2$Zm,xlab="Eastings (m)",
-                  ylab="Northings (m)",axes=TRUE)
-\end{verbatim}
-This produces Figure \ref{xyt2}.
-
-\begin{figure}[htbp]
-   \caption{\label{xyt2}. Plot of \texttt{sar2} -- population density described by a kernel density estimate.}
-   \centering
-   \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{sar2.png}
-\end{figure}
-
-\subsubsection{More Complex Temporal-At-Risk Models}
-
-In the previous simulations the temporal trend was set to a constant 100 cases per day. In \cite{diggle2005} a more complex model is used which incorporates a linear increasing trend, a seasonal pattern, and a day-of-the-week effect. This can be replicated here by passing an appropriate function to the \verb=temporalAtRisk= function:
+In the previous simulations the temporal trend was set to a constant over time. In \cite{diggle2005} a more complex model is used which incorporates a linear increasing trend, a seasonal pattern, and a day-of-the-week effect. This can be replicated here by passing an appropriate function to the \verb=temporalAtRisk= function:
 
 \begin{verbatim}
 mutfun <- function(t){
@@ -296,313 +1585,14 @@ mut <- temporalAtRisk(mutfun,tlim=c(1,365*2))
 
 where the various constants come from fitting a GLM to the calibration data. 
 
-\subsection{Analysis of a Dataset}
-
-In this section a walk-through analysis of the simulated data \verb=xyt2= is given. The outline procedure is:
-\begin{enumerate}
-\item\label{itm:fixed} estimate the fixed spatial and temporal components ($\lambda(s)$ and $\mu(t)$); 
-\item\label{itm:pcf} estimate the pair correlation function (or equivalent); 
-\item\label{itm:sigphi} using \ref{itm:pcf}, compute estimates of the spatial parameters ($\sigma$ and $\phi$); 
-\item using \ref{itm:sigphi}, compute an estimate of the temporal parameter, $\theta$; 
-\item produce predictions using \verb=lgcpPredict=.
-\end{enumerate}
-
-For the analysis of the data, the units of distance were converted to km instead of metres:
-\begin{verbatim}
-xyt2 <- rescale(xyt2,1000)
-\end{verbatim}
-This is just to improve the look of axis-division labels.
-
-\subsection{Estimating the Spatial/Temporal Component}
-
-To estimate $\lambda(s)$ from the data, use for example,
-\begin{verbatim}
-lambdaest <- lambdaEst(xyt2)
-\end{verbatim}
-This brings up an \textbf{rpanel} interface like the one shown in Figure \ref{lambdaest}. When the function is first called, an appropriate bandwidth is selected using the default method for \verb=density.ppp=. Should the user wish to have this selected in a statistically principled manner, then simply clicking the 'OK' button will save the resulting density estimate. Now convert this kernel density estimate to a \verb=spatialAtRisk= object:
-\begin{verbatim}
-sarest <- spatialAtRisk(lambdaest)
-\end{verbatim}
-
-Alternatively, if the user is not happy with the density estimate selected with the default methods, then the bandwidth may be adjusted by eye. Since \verb=image= plots of these kernel density estimates may not have appropriate colour scales, the ability to adjust this is given with the slider `colour adjustment'. With colour adjustment set to 1, the default \verb=image.plot= for the equivalent pixel image object is shown and for values less than 1, the colour scheme is more spread out, allowing the user to get a better feel for the density that is being fitted. NOTE: colour adjustment does not affect the returned density and the user should be aware that the returned density will `look like' that displayed when colour adjustment is set equal to 1.
-
-\begin{figure}[htbp]
-   \caption{\label{lambdaest} Choosing a kernel density estimate of $\lambda(s)$}
-   \centering
-   \includegraphics[width=0.5\textwidth,height=0.4\textwidth]{lambdaest.png}
-\end{figure}
-
-In fitting this model, a `constant-in-time' $\mu(t)$ will be used, that is $\mu(t)=k$ for some $k$. To calibrate this $k$ to the dataset at hand, use:
-\begin{verbatim}
-mutest <- constantInTime(xyt2)
-\end{verbatim}
-An alternative, for a more complex $\mu(t)$ might be: 
-\begin{verbatim}
-temporalAtRisk(mutfun,xyt=xyt2,tlim=xyt2$tlim)
-\end{verbatim}
-which would return the GLM fitted values function presented in Section \ref{sect:simdata}.
-
-\subsection{Estimating the Parameters}
-
-Parameter estimation by the \textbf{lgcp} minimum contrast methods must be done in a certain order, as outlined at the start of the section.
-
-To estimate the spatial correlation parameters $\sigma$ and $\phi$, either the pair correlation function or the inhomogeneous $K$ function must first be obtained \citep{baddeley1998}. Following \cite{brix2001} and \cite{diggle2005}, these two functions are averaged over time instances. For the pair correlation function, the command is:
-\begin{verbatim}
-gin <- ginhomAverage(xyt2,spatial.intensity=sarest,temporal.intensity=mutest)
-\end{verbatim}
-(for the inhomogeneous $K$ function, the equivalent command is \verb=KinhomAverage=). The parameters are then estimated using:
-\begin{verbatim}
-sigmaphi <- spatialparsEst(gin,sigma.range=c(0,10),phi.range=c(0,20))
-sigma <- sigmaphi$sigma
-phi <- sigmaphi$phi
-\end{verbatim}
-which produces the interactive plot in Figure \ref{spatialparsest}, the task is to match the orange theoretical function with the empirical equivalent as would normally be obtained from the functions \verb/pcfinhom/ for \textbf{spatstat} \verb/ppp/ objects (for example). The user can choose between the exponential, Mat\'ern or Whittle correlation shapes, see \verb/?CovarianceFct/ from the \textbf{RandomFields} package; for the latter two forms, the additional parameter $\nu$ can be also be set by the user and is returned as \verb=sigmaphi$nu= for example.
-
-\begin{figure}[htbp]
-   \caption{\label{spatialparsest} Estimating $\sigma$ and $\phi$}
-   \centering
-   \includegraphics[width=0.5\textwidth,height=0.4\textwidth]{spatialparsest.png}
-\end{figure}
-
-The temporal correlation parameter, $\theta$, is estimated using the function \verb=thetaEst=; this requires $\sigma$ and $\phi$ to have been estimated first.
-\begin{verbatim}
-theta <- thetaEst(xyt2,spatial.intensity=lambdaest,temporal.intensity=mutest,
-                       sigma=sigma,phi=phi,theta.range=c(0,5))
-\end{verbatim}
-this brings up the interactive plot shown in Figure \ref{thetaest}.
-
-\begin{figure}[htbp]
-   \caption{\label{thetaest} Estimating $\theta$}
-   \centering
-   \includegraphics[width=0.5\textwidth,height=0.4\textwidth]{thetaest.png}
-\end{figure}
-
-Note that the parameter estimates obtained here were not particularly close to the values used to simulate the data: this is because the amount of data generated was relatively small and the time interval over which observations took place was relatively short. With more data and a longer observation window, the estimates of the parameters improve. Furthermore, minimum contrast methods are only approximate methods, one alternative would be a principled Bayesian approach, but this is computationally expensive.
-
-\subsection{Performing Predictive Inference}
-
-All of the necessary ingredients are now present in order to perform predictive inference, in this section prediction is considered for the time interval \verb/T=50/ using data from the previous 5 days (\verb/laglength=5/). A MALA run of length 50,000 with a burn-in of 10,000, retaining every 40th iteration is requested and adaptive MCMC is used to tune the algorithm (see Appendix \ref{sect:adaptiveMCMCappendix}). Also requested is a dump of the MCMC run to disk (set with \verb/dump2dir/) and an online computation of `exceedance probabilities' (see Appendix \ref{sect:exceedance}) -- the first line of code below sets up a function for exactly this purpose. Note that as data has been dumped to disk, the exceedance probabilities could have been computed after the run has finished (rather than online, which slows down the running time).
-
-\begin{verbatim}
-exceedfunc <- exceedProbs(c(1.5,2,3))
-
-lg <- lgcpPredict(xyt=xyt2,
-		  T=50,
-		  laglength=5,
-		  model.parameters=lgcppars(sigma=sigma,phi=phi,theta=theta),
-		  cellwidth=6,
-		  spatial.intensity=lambdaest,
-		  temporal.intensity=mutest,					
-		  mcmc.control=mcmcpars(mala.length=50000,burnin=10000,
-		  retain=40,MCMCdiag=5,
-		  adaptivescheme=andrieuthomsh(inith=1,alpha=0.5,C=1,
-		  targetacceptance=0.574)),
-		  output.control=setoutput(gridfunction=
-		  dump2dir(dirname="C:/My_MALA_runs/"),
-		  gridmeans=MonteCarloAverage("exceedfunc",lastonly=TRUE)))
-\end{verbatim}
-
-This initially produces the following output, an explanation of which follows:
-
-\begin{verbatim}
-FFT Grid size: [128 , 128]
-WARNING: disk space required for saving is approximately 187.61 Mb, continue? 
-
-1: yes
-2: no
-
-Selection: 1
-Note: to bypass this menu, set forceSave=TRUE in dump2dir
-Warning in lgcpPredict(xyt = xyt2, T = 50, laglength = 5, model.parameters = lgcppars(sigma = sigma,  :
-  Time 45: 5 data points lost due to discretisation.
-Computing gradient truncation ...
-Using gradient truncation of 722369
-Netcdf file: C:/My_MALA_runs/simout.nc created
-\end{verbatim}
-The size of the FFT grid used is displayed (though if it is computationally advantageous to rotate the observation window, a message is displayed, giving the user the option to set \verb/autorotate=TRUE/ in \verb/lgcpPredict/, see Appendix \ref{sect:rotation} for further details on rotation). The FFT grid size of $128\times128$ gives an output grid size of $64\times64$. As a dump to disk of (a subset of) grids of this size was requested, the user is prompted in case the dump is too large, the option to bypass the message is also possible. A warning message is issued to inform the user that 5 observations from one of the time points have been dropped, this is due to the choice of spatial discretisation used: the coarser the grid the more likely it is for points near the edges to be excluded from the analysis. The user is then informed that the gradient truncation parameter has been computed (see Appendix \ref{sect:gradienttruncation}) and also a netCDF file for dumping the data.
-
-Whilst the MCMC algorithm is running, a progress bar is displayed.
-
-\subsection{Post-processing}
-\label{sect:postprocessing}
-
-Having run the MALA, the stored output \verb/lg/ is an object of class \verb/lgcpPredict/. Typing \verb/lg/ into the console prints out information about the run:
-\begin{verbatim}
-> lg
-
-lgcpPredict object.
-
-  General Information
-  -------------------
-      FFT Gridsize: [ 128 , 128 ]
-
-              Data:
-       Time |       45       46       47       48       49       50
-     Counts |       57       15       23       56       37       87
-
-        Parameters: sigma=2.6, phi=2.7, theta=0.68
-    Dump Directory: C:/My_MALA_runs/
-
-     Grid Averages:
-         Function Output Class
-       exceedfunc        array
-
-        Time taken: 3.959 hours
-
-  MCMC Information
-  ----------------
-    Number Iterations: 50000
-              Burn-in: 10000
-             Thinning: 40
-      Mean Acceptance: 0.587
-      Adaptive Scheme: andrieuthomsh
-               Last h: 1.67430730310916e-05
-
-\end{verbatim}
-Information returned includes the FFT grid size used in computation; the count data for each day; the parameters used; the directory the simulation was dumped to, if this was specified; a list of \verb/MonteCarloAverage/ functions together with the \textbf{R} class of their returned values; the time taken to do the simulation; and finally, information on the MCMC run.
-
-\subsubsection{Extracting Information}
-
-The cell-wise mean and variance of $Y$ computed via Monte Carlo can 
-always be extracted using \verb/meanfield(lg)/ and \verb/varfield(lg)/,
-respectively. The calls \verb/rr(lg)/, \verb/serr(lg)/ and \verb/intens(lg)/ return respectively the Monte Carlo mean relative risk (the mean of $\exp\{Y\}$), the standard error of the relative risk and the estimated cell-wise mean Poisson intensity. The $x$ and $y$ coordinates for the grid output are obtained via
-\verb/xvals(lg)/ and \verb/yvals(lg)/. If invoked, the commands
-\verb/gridfun(lg)/ and \verb/gridav(lg)/ return respectively the
-\verb/gridfunction/ and \verb/gridmeans/ options of the \verb/setoutput/
-argument of the \verb/lgcpPredict/ function,
-whilst \verb/window(lg)/ returns the observation window.
-
-Note that the structure produced by \verb/gav <- gridav(lg)/ is a \verb/list/ of
-length 2. The first element of \verb/gav/, retrieved with \verb/gav$names/, is a
-list of the function names given in the call to \verb/MonteCarloAverage/. The
-second element, \verb/gav$output/, is a list of the function outputs; the $i$th
-element in the list being the output from the
-function corresponding to the $i$th element of \verb/gav$names/. To return the output for a specific function, use the syntax \verb/gridav(lg,fun="exceed")/, which in this case returns the exceedance probabilities, for example.
-
-\subsubsection{Plotting}
-
-A plot of the Monte Carlo mean relative risk ($\exp\{Y\}$) can be obtained with the command
-\begin{verbatim}
-plot(lg,xlab="Eastings (km)",ylab="Northings (km)")
-\end{verbatim}
-this produces a series of plots corresponding to each time step under consideration; the plot shown in Figure \ref{plotlg} is from the last time step, time 50. The cases for each time step are also plotted by default.
-\begin{figure}[htbp]
-   \caption{\label{plotlg} Plot of the relative risk.}
-   \centering
-      \includegraphics[width=0.5\textwidth,height=0.5\textwidth]{plotlg.png}
-\end{figure}
-
-\subsubsection{MCMC diagnostics}
-
-MCMC diagnostics for the chain can either be based on a small sample of cells, specified by the \verb/MCMCdiag/ argument of the \verb/mcmcpars/ function, or via the full output from data dumped to disk; the latter is dealt with in Section \ref{sect:netcdf}. The \verb/hvals/ command returns the value of $h$ used at each iteration in the algorithm, the left hand plot in Figure \ref{mcmcdiagnostics} shows the values of $h$ for the non-burnin period of the chain, note that the adaptive algorithm was started with $h=1$, it very quickly converged to around $0.000015$.
-\begin{verbatim}
-> plot(hvals(lg)[10000:50000],type="l",xlab="Iteration",ylab="h")
-> tr <- mcmctrace(lg)
-> plot(tr,idx=1:5)
-\end{verbatim}
-Trace plots (the right hand plot of Figure \ref{mcmcdiagnostics}) are also available using the function \verb/mcmctrace.lgcpPredict/ as in the above code; note that this function returns the trace for $\Gamma$. To plot the autocorrelation function, the standard \textbf{R} function can be used eg \verb/acf(tr$trace[,1])/ gives the acf of the first saved chain.
-
-
-\begin{figure}[htbp]
-   \caption{\label{mcmcdiagnostics}MCMC diagnostic plots. Left: plot of values of $h$ taken by the adaptive algorithm. Right: trace plots of the 5 saved chains.}
-   \centering
-   \begin{minipage}{0.05\textwidth}
-   \hfill
-   \end{minipage}\begin{minipage}{0.5\textwidth}
-      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{hvals.png}
-   \end{minipage}\begin{minipage}{0.5\textwidth}
-      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{trace.png}
-   \end{minipage}
-\end{figure}
-
-
-
-
-\subsubsection{NetCDF}
-\label{sect:netcdf}
-
-\textbf{lgcp} provides functions for accessing and performing computations on MCMC runs dumped to disk. Due to the possibility of the resulting dataset being very large, \textbf{lgcp} uses the cross-platform \verb/NetCDF/ file format for storage and rapid data access provided by the package \textbf{ncdf} \citep{pierce2011}. Access to subsets of data is via a file indexing system, which removes the need to load the complete data into memory.
-
-Subsets of data dumped to disk can be accessed with the \verb/extract/ function:
-\begin{verbatim}
-> subsamp <- extract(lg,x=c(4,10),y=c(32,35),t=6,s=-1)
-\end{verbatim}
-which returns an array of dimension $7\times4\times1\times1000$. The arguments \verb/x/ and \verb/y/ refer to the range of $x$ and $y$ \emph{indices} of the grid of interest, \verb/t/ are the time points of interest (times 45 through 50 were used for prediction, so in this case \verb/t=6/ refers to the sixth time point ie.\! time 50) and \verb/s=-1/ stipulates that all simulations are to be returned. Arguments are given as a range or set equal to $-1$, in which case all of the data in that dimension is returned. This function can also extract MCMC traces from individual cells using \verb/extract(lg,x=37,y=12,t=6)/, for example.
-
-Should the user wish to extract data from a polygonal subregion of the observation window, then this can be achieved with the command
-\begin{verbatim}
-> subsamp2 <- extract(lg,inWindow=win2,t=6)
-\end{verbatim}
-where \verb/win2/ is a polygonal observation window. Here, \verb/win2/ had been selected using the following commands:
-\begin{verbatim}
-> plot(window(lg))
-> win2 <- loc2poly()
-\end{verbatim}
-the first command plots the observation window and the second command is a wrapper function for the \textbf{R} function \verb/locator/. When invoked, \verb/loc2poly()/ allows the user to select areas of the observation window manually from the graphics device opened by the first command: the user simply makes a series of left clicks, traversing the required window in a single direction (ie.\!clockwise \emph{or} anticlockwise) finishing the polygon with a right click: the resulting selection is converted into a \textbf{spatstat} polygonal \verb/owin/ object. Obviously, the user could specify the \verb/extract/ argument \verb/inWindow/ in a formal manner too.
-
-It is also possible to compute expectations over the target using the stored data (cf.\! Section \ref{sect:exceedance}): thus if the user decides that some other summary is of interest than those specified by the option \verb/gridmeans/, then this can easily be computed. The syntax is slightly different, in this case, one would call:
-
-\begin{verbatim}
-> ex <- expectation(obj=lg,fun=exceed)
-\end{verbatim}
-to compute the same exceedances in Section \ref{sect:exceedance}.
-
-Alternatively, cell-wise quantiles of \emph{functions} of the stored data can also be retrieved and plotted:
-\begin{verbatim}
-qt <- quantile(lg,c(0.5,0.75,0.9),fun=exp)
-plot(qt,xlab="X coords",ylab="y coords")
-
-qt2 <- quantile(lg,c(0.5,0.75,0.9),fun=exp,inWindow=win2)
-plot(qt2,xlab="Longitude",ylab="Latitude")
-\end{verbatim}
-As for the extract function above, quantiles may also be computed for smaller observation windows. The indices of any cells of interest in these plots can be retrieved by typing \verb/identify(lg)/; cells are then selected via left mouse clicks in the graphics device, selection being terminated on a right click.
-
-\begin{figure}[htbp]
-   \caption{\label{qtile} Plot showing the median (0.5 quantile) of relative risk (obtained using \texttt{fun=exp} as in the text) computed from the simulation. Left: Quantiles computed for whole window. Right: Zooming in on the upper left area of the map, representing the areas of Anglesey and the Ll\^yn Peninsula. Greater detail is available by initially performing the simulation on a finer grid.}
-   \centering
-   \begin{minipage}{0.5\textwidth}
-      \includegraphics[width=\textwidth,height=0.9\textwidth]{qtile.png}
-   \end{minipage}\begin{minipage}{0.5\textwidth}
-      \includegraphics[width=\textwidth,height=0.9\textwidth]{qtile2.png}
-   \end{minipage}
-\end{figure}
-
-Lastly, Linux users can benefit from the software \textbf{Ncview}, available from \url{http://meteora.ucsd.edu/~pierce/ncview_home_page.html}, which provides fast visualisation of NetCDF files. Figure \ref{netview} shows a screenshot, with the control panel (left), an image of one of the sampled grids (middle) and several MCMC chains (right), which are obtained by clicking on the sampled grids; up to 5 chains can be displayed at once. There are equivalent tools for Windows users.
-
-\begin{figure}[htbp]
-   \caption{\label{netview} Viewing a MALA run with software \texttt{netview}.}
-   \centering
-   \includegraphics[width=0.286\textwidth,height=0.225\textwidth]{ncview1.png}
-   \includegraphics[width=0.164\textwidth,height=0.173\textwidth]{ncview2.png}
-   \includegraphics[width=0.334\textwidth,height=0.196\textwidth]{ncview3.png}
-\end{figure}
-
-\subsubsection{Plotting Exceedance Probabilities}
-
-Recall the object \verb/exceed/ defined above, this was a function with an attribute giving a vector of thresholds to compute cell-wise probabilities that the relative risk is greater than each of those thresholds. A figure can be produced either directly from the \verb/lgcpPredict/ object,
-\begin{verbatim}
-> plotExceed(lg, fun = "exceed")
-\end{verbatim}
-or equivalently, from the output of an \verb/expectation/ on an object dumped to disk:
-\begin{verbatim}
-> plotExceed(ex[[6]], fun = "exceed",lgcppredict=lg)
-\end{verbatim}
-Recall that the option \verb/lastonly=TRUE/ was selected for \verb/MonteCarloAverage/, so \verb/ex[[6]]/ in the second example above corresponds to the same set of plots as for the first example. The advantage of expectations computed from data dumped to disk is flexibility: if the user now wanted to plot the exceedances for day 6, then this is simply achieved by replacing \verb/ex[[6]]/ with \verb/ex[[5]]/ and furthermore, exceedances for a completely new set of thresholds can also be computed simply by creating \verb/exceed2 <- exceedProbs(c(2.3,4))/ for instance. An example of the output is given in Figure \ref{exceedance}.
-
-\begin{figure}[htbp]
-   \caption{\label{exceedance} Plot of exceedance probabilities.}
-   \centering
-   \includegraphics[width=0.5\textwidth,height=0.5\textwidth]{exceedance.png}
-\end{figure}
-
-\section{Advanced use of \textbf{lgcp}}
+\section[Advanced use of lgcp]{Advanced use of \pkg{lgcp}}
 
 \subsection{Writing Adaptive MCMC schemes}
 \label{sect:adaptiveMCMC}
 
 There are two generic functions to consider when writing adaptive MCMC routines: \verb=initialiseAMCMC= and \verb=updateAMCMC=, these respectively define the initialisation and the updating procedures for the adaptive scheme of interest. The task of the user is therefore to tell \verb=lgcpPredict= what value of $h$ to use at iteration 1, and how to update it. \textbf{lgcp} has two schemes built in: \verb=constanth= and \verb=andrieuthomsh= detailed below.
 
-\subsubsection{A `Simple' Example: \texttt{constanth}}
+\subsubsection[A `Simple' Example: constanth]{A `Simple' Example: \code{constanth}}
 
 This example shows how the scheme \verb=constanth= was implemented. This is not really an adaptive MCMC scheme and just returns the (fixed) value of $h$ set by the user. In \verb=lgcpPredict=, this `adaptive' scheme would be specified using \verb/adaptivescheme=constanth(0.01)/ in the \verb=mcmc.control= argument and would have the effect of returning $h=0.01$ at each iteration of the MCMC. 
 
@@ -626,7 +1616,7 @@ updateAMCMC.constanth <- function(obj,...){
 
 When called, the first of these functions creates an object of super-class \verb=constanth=, this is just a numeric with a class attribute attached. The other two functions simply return the value of $h$ specified by the user at appropriate positions in the code \verb=MALAlgcp=.
 
-\subsubsection{A More Complex Example: \texttt{andrieuthomsh}}
+\subsubsection[A More Complex Example: andrieuthomsh]{A More Complex Example: \code{andrieuthomsh}}
 
 The second example shows how to implement a rather neat method of \cite{andrieu2008}. A Robbins-Munro stochastic approximation update is used to adapt the tuning parameter of the proposal kernel \citep{robbins1951}. The idea is to update the tuning parameter at each iteration of the sampler:
 \begin{equation*}
@@ -711,208 +1701,12 @@ updateAMCMC.andrieuthomsh <- function(obj,...){
 }
 \end{verbatim}
 
-\appendix
-\section[Spatio-temporal Log Gaussian Cox Processes]{Spatio-temporal Log Gaussian Cox Processes}
-\label{sect:stlgcp}
 
- Let $W\subset\real^2$ be an observation window in space and $T\subset\real_{\geq 0}$ be an interval of time of interest. Cases 
- occur at spatio-temporal positions $(x,t) \in W \times T$ 
- according to an inhomogeneous spatio-temporal Cox process,
- i.e. a Poisson process with a stochastic intensity $R(x,t)$,
-  The number of cases, $X_{S,[t_1,t_2]}$, arising in 
-  any $S \subseteq W$ during the interval $[t_1,t_2]\subseteq T$ is 
-  then Poisson distributed conditional on $R(\cdot)$,
-\begin{equation}\label{eqn:themodel}
-   X_{S,[t_1,t_2]} \sim \text{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)\rmd s\rmd t\right\}.
-\end{equation}
-Following \cite{diggle2005}, the intensity is decomposed multiplicatively as
-\begin{equation}
-   R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.
-\label{eq:multiplicative}
-\end{equation}
-In (\ref{eq:multiplicative}),the
- \emph{fixed spatial component}, $\lambda:\real^2\mapsto\real_{\geq 0}$, is a known function, proportional to the population at risk at each point in space and scaled so that
-\begin{equation}\label{eqn:intlambdas}
-   \int_W\lambda(s)\rmd s=1,
-\end{equation}
-whilst the
- \emph{fixed temporal component}, 
- $\mu:\real_{\geq 0}\mapsto\real_{\geq 0}$, is also a known function with,
-\begin{equation}\label{eqn:mutdef}
-   \mu(t) = \lim_{\delta t \rightarrow 0}
-   \left\{\frac{\E[X_{W,\delta t}]}{ |\delta t|}\right\}.
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The function $\mathcal Y$ is a Gaussian process, continuous in both space and time. In the nomenclature of epidemiology, the components $\lambda$ and $\mu$ determine the \emph{endemic} spatial and temporal component of the population at risk; whereas $\mathcal Y$ captures the residual variation, or the \emph{epidemic} component. 
+\newpage
+%%\bibliographystyle{plain}
+\bibliography{LGCP_bibliography}
 
-The Gaussian process, $\mathcal Y$, is second order stationary with minimally-parametrised covariance function,
-\[
-   \cov[\mathcal Y(s_1,t_1),\mathcal Y(s_2,t_2)] = \sigma^2r(||s_2-s_1||;\phi)\exp\{-\beta(t_2-t_1)\},
-\]
-where $||\,\cdot\,||$ is a suitable norm on $\real^2$, for instance the Euclidean norm, and $\sigma,\phi,\beta>0$ are known parameters. In the \textbf{lgcp} package, the isotropic spatial correlation function, $r$, may take one of several forms and possibly require additional parameters. The parameter $\sigma$ scales the log-intensity, 
-whilst the parameters $\phi$ and $\beta$  govern the rates 
-at which the correlation function decreases in space and in time,
-respectively. The mean of the process $\mathcal Y$ is set equal to $-\sigma^2/2$ so as to give $\E[\exp\{Y\}]=1$, hence the endemic/epidemic analogy above.
-
-\section{Inference}
-\label{sect:inference}
-
-As in \cite{moller1998}, \cite{brix2001} and \cite{diggle2005}, this article considers a discretised version of the above model defined on a regular grid over space and time. Observations, $X$ are therefore treated as cell counts on this grid, instead of point-instances. The discrete version of $\mathcal Y$ on this grid will be denoted $Y$; since $Y$ is a finite collection of random variables, the properties of $\mathcal Y$ imply that $Y$ has a multivariate Gaussian density with covariance matrix $\Sigma=\sigma^2r(||\,\cdot\,||;\phi)\exp\{-\beta\Delta t\}$. The correlation function $r$ is evaluated on the centroids of the grid cells and $\Delta t$ denotes the time over which the observation occurred.
-
-Let $X_t$ denote an observation over the spatial grid at time $t$ and $X_{t_1:t_2}$ denote the observations at times $t_1,t_1+1,\ldots,t_2$. Ideally, inference would concern the 		`current' latent field, $Y_t$, given the observations to date, $X_{1:t}$, but unfortunately, due to a high-dimensional integral, the density of $\pi(Y_t|X_{1:t})$ is not available analytically. It \emph{is} however possible to infer the joint density of a collection, $Y_{1:t}$ given $X_{1:t}$ for instance. Since simulation from $\pi(Y_{1:t}|X_{1:t})$ is generally computationally very intensive, if interest is in the state of the system at time $t_2$, an alternative is to sample from $Y_{t_1:t_2}$ given $X_{t_1:t_2}$ for some suitable $t_1>1$ and fairly close to $t_2$. This approach is justified in \cite{brix2001}, the argument being that observations from a certain distance in the past do not affect inference for the present. The aim in this article is therefore infer the state of the underlying field given the observations of interest,
-\begin{equation}\label{eqn:jointdens}
-   \pi(Y_{t_1:t_2}|X_{t_1:t_2}) \propto \pi(X_{t_1:t_2}|Y_{t_1:t_2})\pi(Y_{t_1:t_2}).
-\end{equation}
-
-In order to evaluate $\pi(Y_{t_1:t_2})$ in the above, the parameters of the process $Y$ must either be known or estimated from the data. Estimation of $\sigma$, $\phi$ and $\theta$ may be achieved either in a full Bayesian framework, or by approximate methods. The methods implemeted in current version of the \textbf{lgcp} package fall into the latter category and a detailed description of these is given in \cite{brix2001} and \cite{diggle2005}. Briefly, approximate estimation of the spatial parameters $\sigma$ and $\phi$ involves matching empirical and theoretical estimates of the inhomogeneous $K$-function, or $g$ function, as in \cite{baddeley1998}. For the parameter $\theta$, the idea is to match the theoretical and empirical autocovariance function of the total case-counts per time interval. Having estimated the parameters of the process $Y$, the investigator can now proceed to plug-in-prediction.
-
-\subsection[Discretising and the Fast-Fourier Transform]{Discretising and the Fast-Fourier Transform}
-\label{sect:fft}
-
-The first barrier to inference is computation of the covariance matrix, $\Sigma$, which even for relatively coarse grids is very large. Fortunately, for regular spatial grids of size $2^m\times2^n$, there exist fast methods for computing this based on the discrete fast Fourier transform (FFT), see \cite{wood1994}. The general idea is to embed $\Sigma$ in a symmetric circulant matrix, $C=Q\Lambda Q^*$, where $\Lambda$ is a diagonal matrix of eigenvalues of $C$ and $Q$ is a unitary matrix ($^*$ denotes the Hermitian transpose). The entries of $Q$ are given by the discrete Fourier transform. Computation of $C^{1/2}$, which is useful for both simulation and evaluation of the density of $Y$, is then straightforward for the properties of $Q$ imply,
-\[
-   C^{1/2} = Q\Lambda^{1/2} Q^*.
-\]
-In fact, Monte Carlo simulation from $\pi(Y_{t_1:t_2}|X_{t_1:t_2})$, which is to be discussed in the next section is greatly improved by working with a linear transformation of $Y$, partially determined by the matrix $C$. \textbf{lgcp} returns results on a grid of size $M\times N\equiv 2^m\times2^n$ for some positive integers $m$ and $n$; this is extended to a grid of size $2M\times 2N$ for computation.
-
-\subsection[The Metropolis-Adjusted Langevin Algorithm]{The Metropolis-Adjusted Langevin Algorithm}
-\label{sect:mala}
-
-Writing $\Gamma_t=\Lambda^{-1/2}Q(Y_t-\mu)$, the target of interest is given by,
-\begin{equation}\label{eqn:target}
-   \pi(\Gamma_{t_1:t_2}|X_{t_1:t_2}) \propto \left[\prod_{t=t_1}^{t_2}\pi(X_t|Y_t)\right]\left[\pi(\Gamma_{t_1})\prod_{t=t_1+1}^{t_2}\pi(\Gamma_{t}|\Gamma_{t-1})\right],
-\end{equation}
-where the first term on the right hand side of (\ref{eqn:target}) corresponds to the first bracketed term on the right hand side of (\ref{eqn:jointdens}) and the second bracketed term is the joint density, $\log\{\pi(\Gamma_{t_1:t_2})\}$. Being an Ornstein-Uhlenbeck process in time, the transition density of $\pi(\Gamma_{t}|\Gamma_{t-1})$ admits an exact solution and is just a normal density, see \cite{brix2001}.
-
-Since the gradient of the above can also be written down, a natural and efficient method for simulating from this density is via Metropolis-Hastings with a Langevin-type proposal,
-\[
-   q(\Gamma,\Gamma') = \N\left[\Gamma';\Gamma + \frac12\nabla\log\{\pi(\Gamma|X)\},h^2\I\right],
-\]
-where $\N(y;m,v)$ is a Gaussian density evaluated at $y$ with mean $m$ and variance $v$, $\I$ is the identity matrix and $h>0$ is a scaling parameter \cite{metropolis1953,hastings1970}. 
-
-Various theoretical results exist concerning the optimal acceptance probability of the MALA (Metropolis-Adjusted Langevin Algorithm) -- see \cite{roberts1998} and \cite{roberts2001} for example. In practical applications, the target acceptance probability is often set to 0.574, which would be approximately optimal for a Gaussian target as the dimension of the problem tends to infinity. An algorithm for the automatic choice of $h$, so that this acceptance probability is achieved without disturbing the ergodic property of the chain, is also straightforward to implement, see \cite{andrieu2008}.
-
-\section{Adaptive MCMC}
-\label{sect:adaptiveMCMCappendix}
-
-The MALA proposal tuning parameter $h$ in Appendix \ref{sect:mala} must also be chosen. The most straightforward way to do this is to set \verb/adaptivescheme=constanth(0.001)/, this gives $h=0.001$ for example. Without a \emph{lengthy} tuning process, the `best $h$' (ie.\! the $h$ that leads to the best mixing of the algorithm) is not known. One solution to the problem of having to choose a scaling parameter via pilot runs is to use adaptive MCMC (AMCMC - see \cite{roberts2009} and \cite{andrieu2008}). The main idea of adaptive algorithms is to use information from the MCMC chain to help choose tuning parameters for the proposal kernel. However, since the proposal kernel then depends on the history of the chain, the Markov property is no longer satisfied and some care must be taken to ensure that the correct ergodic distribution is preserved.
-
-An elegant method, introduced by \cite{andrieu2008} uses a Robbins-Munro stochastic approximation update to adapt the tuning parameter of the proposal kernel \citep{robbins1951}. The idea is to update the tuning parameter at each iteration of the sampler:
-\begin{equation*}
-   h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_\text{opt}),
-\end{equation*}
-where $h{(i)}$ and $\alpha^{(i)}$ are the tuning parameter and acceptance probability at iteration $i$ and $\alpha_\text{opt}$ is a target acceptance probability. For Gaussian targets, and in the limit as the dimension of the problem tends to infinity, an appropriate target acceptance probability for MALA algorithms is 0.574 \citep{roberts2001}. The sequence $\{\eta^{(i)}\}$ is chosen so that $\sum_{i=0}^\infty\eta^{(i)}$ is infinite whilst $\sum_{i=0}^\infty\left(\eta^{(i)}\right)^{1+\epsilon}$ is finite for $\epsilon>0$. These two conditions ensure that any value of $h$ can be reached, but in a way that maintains the ergodic behaviour of the chain. One class of sequences with this property is,
-\begin{equation*}
-   \eta^{(i)} = \frac{C}{i^\alpha},
-\end{equation*}
-where $\alpha\in(0,1]$ and $C>0$ \citep{andrieu2008}.
-
-The tuning constants for this algorithm are set with the function \verb=andrieuthomsh=.
-\begin{verbatim}
-> args(andrieuthomsh)
-function (inith, alpha, C, targetacceptance = 0.574)
-\end{verbatim}
-In the above, \verb/inith/ is the initial value of $h$ to start out from; the remaining arguments correspond to their counterparts in the text above. It is also possible for the advanced user to write their own adaptive scheme (see Section \ref{sect:adaptiveMCMC}).
-
-\section{Monte Carlo Averaging and Exceedance Probabilities}
-\label{sect:exceedance}
-
-It is also of interest to be able to compute Monte Carlo expectations,
-\begin{eqnarray*}
-   \E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] &=& \int_W g(Y_{t_1:t_2})\pi(Y_{t_1:t_2}|X_{t_1:t_2})\rmd Y_{t_1:t_2},\\
-   &\approx& \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})
-\end{eqnarray*}
-where $g$ is a function of interest, $Y_{t_1:t_2}^{(i)}$ is the $i$th retained sample from the target  and $n$ is the total number of retained iterations. For example, to compute the mean of $Y_{t_1:t_2}$ set,
-\[
-   g(Y_{t_1:t_2}) = Y_{t_1:t_2},
-\]
-the output from such a Monte Carlo average would be a set of $t_2-t_1$ grids, each cell of which being equal to the mean over all retained iterations of the algorithm.
-
-An example in epidemiological studies are exceedance probabilities, see \cite{diggle2005}. These give the cell-wise probability of the relative risk exceeding certain thresholds, for example, it may be of clinical interest to know if any of the relative risk has exceeded 2 at any location in $W$. In mathematics, this is $\P[\exp(Y)>k]$ for some threshold $k$; it turns out that such quantities can also be expressed as Monte Carlo expectations, hence the user may also compute these online using \verb/MonteCarloAverages/. The probability is written,
-\[
-   \P[\exp(Y_{t_1:t_2})>k]=\E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[\I(Y_{t_1:t_2}>k)] = \frac1n\sum_{i=1}^n\I(Y_{t_1:t_2}^{(i)}>k),
-\]
-where $\I$ is the indicator function. In the notation above, this amounts to,
-\[
-   g(Y_{t_1:t_2}) = \I(Y_{t_1:t_2}>k).
-\]
-Exceedance probabilities are provided as part of \textbf{lgcp} in the function \verb/exceedProbs/.
-\begin{verbatim}
-> exceedProbs
-
-function(threshold){
-    fun <- function(Y){
-        EY <- exp(Y)
-        d <- dim(Y)
-        len <- length(threshold)
-        if(len==1){
-            return(matrix(as.numeric(EY>threshold),d[1],d[2]))
-        }
-        else{
-            A <- array(dim=c(d[1],d[2],len))
-            
-            for(i in 1:len){
-                A[,,i] <- matrix(as.numeric(EY>threshold[i]),d[1],d[2])
-            }
-            return(A)
-        }
-    }
-    attr(fun,"threshold") <- threshold
-    return(fun)
-}
-\end{verbatim}
-The user must first decide on the thresholds of interest (eg 1.5, 2 and 3 say) and then create a function to compute the required exceedances:
-\begin{verbatim}
-exceedfunc <- exceedProbs(c(1.5,2,3))
-\end{verbatim}
-the object \verb/exceed/ is now a function that returns the exceedance probabilities as an array object of dimension $M\times N\times3$, where the output grid is of size $M\times N$ (ie.\! on an FFT grid of size $2M\times 2N$). This function can be passed through to the \verb/gridmeans/ option via \verb/MonteCarloAverage(c("gfun","exceed")/, so that alongside the mean, the exceedance probabilities are also returned. 
-
-\section{Rotation}
-\label{sect:rotation}
-
-As mentioned above, the MALA algorithm works on a regular square grid placed over the observation window. In model fitting, the user will be responsible for providing a physical grid size on which to perform estimation/prediction; the gridded observation window is then extended or shrunk automatically to obtain a $2^M\times2^N$ grid on which the simulation happens. By default, the orientation of this `extended' grid is the same as the object \verb/win/. If the observation window is elongated and set at a diagonal, then some loss of efficiency occurs as the size of the extended grid is larger than it would be if the polygonal window was first rotated in line with the axes, the estimation then taking place in the rotated space.
-
-To illustrate this point, suppose \verb/xyt3/ is an \verb/stppp/ object with such an elongated and diagonal window. The function \verb/roteffgain/ displays whether any efficiency can be gained by rotation; clearly this not only depends on the observation window, but also on the size of the square cells on which the analysis will be performed. In the example below, the user wishes to perform the analysis using a cell width of 25km (corresponding to \verb/gridsize=25000/ in the code below):
-\begin{verbatim}
-> roteffgain(xyt3,gridsize=25000)
-By rotating observation window, the efficiency gain would be: 200%, 
-   see ?getRotation.stppp
-NOTE: efficiency gain is measured as the percentage increase in FFT 
-   grid cells from not rotating compared with rotating
-[1] TRUE
-\end{verbatim}
-The routine simply return \verb/FALSE/ if there is no `efficiency gain'. Note that the efficiency gain is \emph{not} a reflection on computational speed, but rather a measure of how many fewer cells the MALA is required to estimate; this is illustrated in Figure \ref{roteffgain}. As a technical aside, a better measure would be a ratio of mixing times for the MCMC chains based on un-rotated and rotated windows; however, as the mixing time depends on how well the MALA has been tuned, it is not clear how this can be accurately estimated in a straightforward manner. 
-
-Having ascertained whether rotation is advantageous, the optimally rotated data, observation window and rotation matrix may be obtained using the function \verb/getRotation/. For the purposes of fitting the model using \verb/lgcpPredict/, there is also an \verb/autorotate/ option: this allows the user to perform MALA on a rotated grid with minimal input so long as rotation leads to a gain in efficiency. If the model is fitted using a rotated frame, then the predictions will also be returned in this frame: this means that in the original orientation the output will be on a grid of diamond-shaped cells, rather than on a grid of square cells. \textbf{lgcp} provides methods for the generic function \verb/affine/ so that \verb/stppp/ and \verb/spatialAtRisk/ objects can be rotated manually.
-
-\begin{figure}[htbp]
-   \caption{\label{roteffgain} Illustrating the potential gain in efficiency by rotating the observation window. Left plot: the selected grid without rotation. Right plot: the optimal rotated grid.}
-   \centering
-   \begin{minipage}{0.05\textwidth}
-   \hfill
-   \end{minipage}\begin{minipage}{0.5\textwidth}
-      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{notrot.pdf}
-   \end{minipage}\begin{minipage}{0.5\textwidth}
-      \includegraphics[width=0.8\textwidth,height=0.8\textwidth]{rot.pdf}
-   \end{minipage}
-\end{figure}
-
-\section{Gradient Truncation}
-\label{sect:gradienttruncation}
-
-One unfortunate property of the Metropolis adjusted Langevin algorithm is that the chain is prone to taking very long excursions from the mode of the target; this behaviour can have a detrimental effect on the mixing of the chain and consequently on any results. The tendency to make long excursions is caused by instability in the computation of the gradient vector, but the issue is relatively straightforward to rectify without affecting convergence properties \citep{moller1998}. The key is to truncate the gradient vector if it becomes too large. If \verb/gradtrunc=NULL/, then an appropriate truncation is automatically selected by the code. 
-
-As far as the authors are aware, there are no guidelines for selecting this truncation parameter in the literature, but the method employed in this version of the package takes the maximum achieved gradient over a set of 100 independent realisations of $\Gamma_{t_1:t_2}$.
-
-
-
-%\begin{singlespace}
-  \bibliographystyle{plain}
-  %included for gather purposes only:-
-  %input "../bibliography.bib"
-  \bibliography{bibliography}
-%\end{singlespace}
-
-
-
-\end{document} 
+\end{document}

@@ -3,8 +3,8 @@
 \title{lgcpPredictSpatial function...}
 \usage{lgcpPredictSpatial(sd, model.parameters=lgcppars(),
     spatial.covmodel="exponential", covpars=c(), cellwidth, gridsize,
-    spatial.intensity, mcmc.control, output.control=setoutput(),
-    gradtrunc, ext=2)}
+    spatial.intensity, spatial.offset, mcmc.control,
+    output.control=setoutput(), gradtrunc, ext=2)}
 \description{lgcpPredictSpatial function}
 \details{The function \code{lgcpPredictSpatial} performs spatial prediction for log-Gaussian Cox Processes
 
@@ -53,6 +53,7 @@ required. Note there is no autorotate option for this function.}
 \item{cellwidth}{width of grid cells on which to do MALA (grid cells are square) in same units as observation window. Note EITHER gridsize OR cellwidthe must be specified.}
 \item{gridsize}{size of output grid required. Note EITHER gridsize OR cellwidthe must be specified.}
 \item{spatial.intensity}{the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk}
+\item{spatial.offset}{Numeric of length 1. Optional offset parameter, corresponding to the expected number of cases. NULL by default, in which case, this is estimateed from teh data.}
 \item{mcmc.control}{MCMC paramters, see ?mcmcpars}
 \item{output.control}{output choice, see ?setoutput}
 \item{gradtrunc}{truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to Inf to disable gradient truncation.}
