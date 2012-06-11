@@ -432,7 +432,7 @@ yvals.lgcpPredict <- function(obj,...){
 ##' @param ask logical; if TRUE the user is asked before each plot
 ##' @param clipWindow whether to plot grid cells outside the observation window  
 ##' @param ... additional arguments passed to image.plot
-##' @return plots the Monte Carlo mean of Y obtained via simulation
+##' @return plots the Monte Carlo mean of quantities obtained via simulation. By default the mean relative risk is plotted.
 ##' @seealso \link{lgcpPredict}
 ##' @export
 
@@ -468,7 +468,7 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
                 image.plot(x$mcens,x$ncens,grinw*serr[[i]],sub=paste("S.E. Relative Risk, time",x$aggtimes[i]),...)
             }
             else if (type=="intensity"){
-                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*x$grid[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
+                image.plot(x$mcens,x$ncens,grinw*x$temporal[i]*list(x$grid)[[i]][1:x$M,1:x$N]*x$EY.mean$grid[[i]],sub=paste("Poisson Intensity, time",x$aggtimes[i]),...)
             }
             else{
                 stop("type must be 'relrisk', 'serr' or 'intensity'") 
@@ -647,7 +647,7 @@ intens.lgcpPredict <- function(obj,...){
     MN <- dim(obj$EY.mean$grid[[1]])
     cellarea <- diff(obj$mcens[1:2])*diff(obj$ncens[1:2]) 
     for(i in 1:obj$EY.mean$len){
-        intens[[i]] <- cellarea*obj$temporal[i]*obj$grid[[i]][1:MN[1],1:MN[2]]*obj$EY.mean$grid[[i]]
+        intens[[i]] <- cellarea*obj$temporal[i]*list(obj$grid)[[i]][1:MN[1],1:MN[2]]*obj$EY.mean$grid[[i]]
     }
     return(lgcpgrid(intens))
 }
@@ -980,12 +980,14 @@ plotExceed <- function(obj,...){
 ##' @param cases optional xy (n x 2) matrix of locations of cases to plot 
 ##' @param nlevel number of colour levels to use in plot, default is 64
 ##' @param ask whether or not to ask for a new plot between plotting exceedances at different thresholds.
+##' @param mapunderlay optional underlay to plot underneath maps of exceedance probabilities. Use in conjunction with rainbow parameter 'alpha' (eg alpha=0.3) to set transparency of exceedance layer.
+##' @param alpha graphical parameter takign values in [0,1] controlling transparency of exceedance layer. Default is 1.
 ##' @param ... additional arguments passed to image.plot
 ##' @return generic function returning method plotExceed
 ##' @seealso \link{plotExceed.lgcpPredict}
 ##' @export
 
-plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,window=NULL,cases=NULL,nlevel=64,ask=TRUE,...){
+plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,window=NULL,cases=NULL,nlevel=64,ask=TRUE,mapunderlay=NULL,alpha=1,...){
     if (!is.null(lgcppredict)){
         xvals <- lgcppredict$mcens
         yvals <- lgcppredict$ncens
@@ -1013,7 +1015,14 @@ plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,wind
     }
     
     for (i in 1:length(relrisks)){
-        image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),...)
+        if(is.null(mapunderlay)){
+            image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),...)
+        }
+        else{
+            plot(mapunderlay)
+            image.plot(xvals,yvals,grinw*obj[,,i],nlevel=nlevel,col=rainbow(3*nlevel,alpha)[nlevel:1],sub=paste("Prob(Relative Risk)>",relrisks[i]),add=TRUE,...)        
+        }        
+        
         if (!is.null(window)){
             plot(window,lwd=2,add=TRUE)
         }
@@ -1052,6 +1061,8 @@ is.pow2 <- function(num){
 ##' @param nlevel number of colour levels to use in plot, default is 64
 ##' @param ask whether or not to ask for a new plot between plotting exceedances at different thresholds.
 ##' @param plotcases whether or not to plot the cases on the map
+##' @param mapunderlay optional underlay to plot underneath maps of exceedance probabilities. Use in conjunction with rainbow parameter 'alpha' (eg alpha=0.3) to set transparency of exceedance layer.
+##' @param alpha graphical parameter takign values in [0,1] controlling transparency of exceedance layer. Default is 1.
 ##' @param ... additional arguments passed to image.plot
 ##' @return plot of exceedances
 ##' @seealso \link{lgcpPredict}, \link{MonteCarloAverage}, \link{setoutput}
@@ -1065,7 +1076,7 @@ is.pow2 <- function(num){
 ##' }
 ##' @export
 
-plotExceed.lgcpPredict <- function(obj,fun,nlevel=64,ask=TRUE,plotcases=FALSE,...){
+plotExceed.lgcpPredict <- function(obj,fun,nlevel=64,ask=TRUE,plotcases=FALSE,mapunderlay=NULL,alpha=1,...){
     if(!inherits(get(fun),"function")){
         stop("Argument fun should be the name of a function in memory")
     }
@@ -1078,20 +1089,20 @@ plotExceed.lgcpPredict <- function(obj,fun,nlevel=64,ask=TRUE,plotcases=FALSE,..
         len <- length(obj$gridaverage[[2]][[funidx]])
         for (i in 1:len){
             if(plotcases){
-                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==obj$aggtimes[i]],nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),...)
+                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==obj$aggtimes[i]],nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),mapunderlay=mapunderlay,alpha=alpha,...)
             }
             else{
-                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),...)
+                plotExceed.array(obj$gridaverage[[2]][[funidx]][[i]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",obj$aggtimes[i]),mapunderlay=mapunderlay,alpha=alpha,...)
             }
         }
     }
     else if (inherits(obj$gridaverage[[2]][[funidx]],"array")){
         warning("Labels on plot assume that this is the last time point",immediate.=TRUE)
         if(plotcases){
-            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==rev(obj$aggtimes)[1]],nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),...)
+            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,cases=obj$xyt[obj$xyt$t==rev(obj$aggtimes)[1]],nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),mapunderlay=mapunderlay,alpha=alpha,...)
         }
         else{
-            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),...)
+            plotExceed.array(obj$gridaverage[[2]][[funidx]],fun=fun,xvals=obj$mcens,yvals=obj$ncens,window=obj$xyt$window,nlevel=nlevel,ask=ask,main=paste("Time:",rev(obj$aggtimes)[1]),mapunderlay=mapunderlay,alpha=alpha,...)
         }
     }
     else{

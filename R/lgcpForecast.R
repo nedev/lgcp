@@ -38,7 +38,7 @@ lgcpForecast <- function(lg,ptimes,spatial.intensity,temporal.intensity){
     if(!inherits(spatial.intensity,"spatialAtRisk")){
         spatial <- spatialAtRisk(spatial.intensity)
     }    
-    spatialvals <- fftinterpolate(spatial,c(lg$mcens,lg$mcens[length(lg$mcens)]+diff(lg$mcens[1:2])+lg$mcens-lg$mcens[1]),c(lg$ncens,lg$ncens[length(lg$ncens)]+diff(lg$ncens[1:2])+lg$ncens-lg$ncens[1]))[1:lg$M,1:lg$N]   
+    spatialvals <- fftinterpolate(spatial,c(lg$mcens,lg$mcens[length(lg$mcens)]+diff(lg$mcens[1:2])+lg$mcens-lg$mcens[1]),c(lg$ncens,lg$ncens[length(lg$ncens)]+diff(lg$ncens[1:2])+lg$ncens-lg$ncens[1]),ext=lg$ext)[1:lg$M,1:lg$N]   
     cellInside <- matrix(as.numeric(inside.owin(x=sort(rep(lg$mcens,lg$N)),y=rep(lg$ncens,lg$M),w=lg$xyt$window)),lg$M,lg$N,byrow=TRUE)
     spatialvals <- spatialvals*cellInside
     spatialvals <- spatialvals / (cellarea*sum(spatialvals)) 
