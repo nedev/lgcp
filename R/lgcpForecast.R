@@ -58,6 +58,13 @@ lgcpForecast <- function(lg,ptimes,spatial.intensity,temporal.intensity){
         intens.var[[j]] <- (cellarea*temporalfit[j]*spatialvals)^2*rr.var[[j]]
     }
     
-    return(list(relrisk=lgcpgrid(rr),relrisk.var=lgcpgrid(rr.var),intensity=lgcpgrid(intens),intensity.var=lgcpgrid(intens.var),y.mean=lgcpgrid(ymats),y.var=lgcpgrid(yvars),mcens=lg$mcens,ncens=lg$ncens))
+    return(list(relrisk=lgcpgrid(rr,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                relrisk.var=lgcpgrid(rr.var,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                intensity=lgcpgrid(intens,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                intensity.var=lgcpgrid(intens.var,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                y.mean=lgcpgrid(ymats,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                y.var=lgcpgrid(yvars,xvals=lg$mcens,yvals=lg$ncens,zvals=lg$aggtimes),
+                mcens=lg$mcens,
+                ncens=lg$ncens))
     
 }

@@ -8,7 +8,7 @@
 \value{grid plotting
 This is a wrapper function for image.lgcpgrid}
 \seealso{\link{quantile.lgcpPredict}}
-\arguments{\item{x}{an object of class lgcpgrid}
+\arguments{\item{x}{an object of class lgcpQuantiles}
 \item{sel}{vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.}
 \item{ask}{logical; if TRUE the user is asked before each plot}
 \item{crop}{whether or not to crop to bounding box of observation window}

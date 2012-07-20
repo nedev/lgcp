@@ -195,14 +195,17 @@ KinhomAverage <- function(xyt,spatial.intensity,temporal.intensity,time.window=x
 ##' spatialparsEst function
 ##'
 ##' Having estimated either the pair correlation or K functions using respectively \link{ginhomAverage} or \link{KinhomAverage}, the spatial 
-##' parameters sigma and phi can be estimated. This function provides a visual tool for this estimation procedure. 
+##' parameters sigma and phi can be estimated. This function provides a visual tool for this estimation procedure.
+##'
+##' To get a good choice of parameters, it is likely that the routine will have to be called several times in order to refine 
+##' the choice of sigma.range and phi.range. 
 ##'
 ##' @param gk an R object; output from the function KinhomAverage or ginhomAverage
 ##' @param sigma.range range of sigma values to consider
 ##' @param phi.range range of phi values to consider
 ##' @param spatial.covmodel correlation type see ?CovarianceFct 
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
-##' @param guess logical. Perform an initial guess at paramters (default)? Alternative sets initial values in the middle of sigma.range and phi.range.
+##' @param guess logical. Perform an initial guess at paramters? Alternative (the default) sets initial values in the middle of sigma.range and phi.range. NOTE: automatic parameter estimation can be can be unreliable.
 ##' @return rpanel function to help choose sigma nad phi by eye
 ##' @references 
 ##' \enumerate{
@@ -213,7 +216,7 @@ KinhomAverage <- function(xyt,spatial.intensity,temporal.intensity,time.window=x
 ##' @seealso \link{ginhomAverage}, \link{KinhomAverage}, \link{thetaEst}, \link{lambdaEst}, \link{muEst}
 ##' @export
 
-spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c(),guess=TRUE){
+spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c(),guess=FALSE){
 
     ## dummy function callback needed for OK button:
     ok <- function(panel){
@@ -339,6 +342,13 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     rp.slider(pancontrol,var=phi,from=phimin,to=phimax,initval=phiinit,action=panfun,showvalue=TRUE)
     ## add our OK button. Make it a quitbutton:
     rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
+    
+    # construct a geometry string with the current height and new width:
+    hhh = as.numeric(tkwinfo("height",pancontrol$window))+50
+    www = 300
+    ggg = sprintf("%dx%d",www,hhh)
+    # resize
+    tkwm.geometry(pancontrol$window,ggg)
     
     ## now wait until our panel quits.
     rp.block(pancontrol)

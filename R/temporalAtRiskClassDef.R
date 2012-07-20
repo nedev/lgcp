@@ -107,6 +107,9 @@ temporalAtRisk.numeric <- function(obj,tlim,xyt=NULL,warn=TRUE,...){
         }
     }
     ft <- function(t){
+        if(length(t)>1){
+            stop("Function only works for scalar numeric objects, ie a vector of length 1.")
+        }
         if (!any(as.integer(t)==tvec)){
             return(NA)
         }
@@ -136,7 +139,7 @@ temporalAtRisk.numeric <- function(obj,tlim,xyt=NULL,warn=TRUE,...){
 ##' expected number of cases during the unit time interval containnig t.
 ##'
 ##' @method temporalAtRisk function
-##' @param obj a function accepting single argument, t, that returns the temporal intensity at time t
+##' @param obj a function accepting single, scalar, numeric argument, t, that returns the temporal intensity for time t
 ##' @param tlim an integer vector of length 2 giving the time limits of the observation window
 ##' @param xyt an object of class stppp. If NULL (default) then the function returned is not scaled. Otherwise, the function is scaled so that f(t) = expected number of counts at time t.
 ##' @param warn Issue a warning if the given temporal intensity treated is treated as 'known'?
@@ -165,6 +168,9 @@ temporalAtRisk.function <- function(obj,tlim,xyt=NULL,warn=TRUE,...){
         }
     }
     ft <- function(t){
+        if(length(t)>1){
+            stop("obj must be a function of a numeric scalar.")
+        }
         if (as.integer(t)<tlim[1] | as.integer(t)>tlim[2]){
             return(NA)
         }
