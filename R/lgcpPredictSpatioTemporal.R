@@ -546,7 +546,11 @@ MALAlgcp <- function(mcmcloop,
                             aggtimes){
                             
     SpatialOnlyMode <- FALSE
-    ##ImprovedAlgorithm <- TRUE
+    ##ImprovedAlgorithm <- TRUE 
+    SpatialPlusParameters <- FALSE   
+    MultiTypeMode <- FALSE
+    
+    nlevs <- NULL # note this line is here for gridFunction and gridAverage methods and is not used otherwise
     
     n <- length(temporal.fitted)
     gt <- 1-exp(-2*theta*tdiff) # note tdiff[1] defined as Inf, for psimplifying code

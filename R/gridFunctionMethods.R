@@ -196,6 +196,8 @@ GFinitialise.dump2dir <- function(F,...){
     M <-get("M",envir=parent.frame())
     N <-get("N",envir=parent.frame())
     tlen <- length(get("temporal.fitted",envir=parent.frame()))
+    nlevs <- get("nlevs",envir=parent.frame())
+    MTmode <- get("MultiTypeMode",envir=parent.frame())
     fn <- paste(F$dirname,"simout.nc",sep="")  
     x <- dim.def.ncdf( "X", "x coordinates", 1:M) 
     y <- dim.def.ncdf( "Y", "y coordinates", 1:N)
@@ -205,8 +207,14 @@ GFinitialise.dump2dir <- function(F,...){
     else{
         t <- dim.def.ncdf( "T", "time index", 1:tlen) 
     }   
-    iter <- dim.def.ncdf( "iter", "iteration", 1:nsamp) 
-    sout <- var.def.ncdf("simrun","none", list(x,y,t,iter), missval=1.e30,prec="double")
+    iter <- dim.def.ncdf( "iter", "iteration", 1:nsamp)
+    if(MTmode){
+        proc <- dim.def.ncdf( "P", "processes", 1:(nlevs+1)) # gives space for one common field and 'nlevs' other fields
+        sout <- var.def.ncdf("simrun","none", list(x,y,t,proc,iter), missval=1.e30,prec="double")
+    }
+    else{ 
+        sout <- var.def.ncdf("simrun","none", list(x,y,t,iter), missval=1.e30,prec="double")
+    }
     ncdata <- create.ncdf(fn,sout) # allocates the disk space to be written
     close.ncdf(ncdata)
     cat(paste("Netcdf file: ",fn," created\n",sep=""))
@@ -254,15 +262,34 @@ GFupdate.dump2dir <- function(F,...){
     ncdata <- open.ncdf(paste(F$dirname,"simout.nc",sep=""),write=TRUE)
     
     if(get("SpatialOnlyMode",envir=parent.frame())){
-        Y <- list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])
+        if(!get("SpatialPlusParameters",envir=parent.frame())){
+            Y <- list(get("oldtags",envir=parent.frame())$Y[1:M,1:N])
+        }
+        else{
+            if(get("SpatialPlusParameters",envir=parent.frame())&!get("MultiTypeMode",envir=parent.frame())){
+                Y <- list(get("GP",envir=parent.frame())$Y[1:M,1:N])
+            }
+            else if(get("SpatialPlusParameters",envir=parent.frame())&get("MultiTypeMode",envir=parent.frame())){
+                Y <- list(get("Y",envir=parent.frame())[1:M,1:N,])
+                nfields <- dim(Y[[length(Y)]])[3]
+            }
+            else{
+                stop("unidentified MCMC method in GFupdate.dump2dir")            
+            }
+        }
     }
-    else{
+    else{ # in spatiotemporal mode
         Y <- get("oldtags",envir=parent.frame())$Y
         Y <- lapply(Y,function(x){x[1:M,1:N]})
     }
 
-    if (F$lastonly){       
-        put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M,N,1,1))
+    if (F$lastonly){
+        if(get("SpatialPlusParameters",envir=parent.frame())&get("MultiTypeMode",envir=parent.frame())){
+            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,1,F$ret()),count=c(M,N,1,nfields,1))
+        }
+        else{       
+            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M,N,1,1))
+        }
     }
     else{
         for (i in 1:tlen){ 

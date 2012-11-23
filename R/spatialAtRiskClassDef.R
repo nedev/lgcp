@@ -266,6 +266,26 @@ spatialAtRisk.bivden <- function(X,...){
     return(spatialAtRisk.fromXYZ(X=xvals(X),Y=yvals(X),Zm=zvals(X)))
 }
 
+##' spatialAtRisk.lgcpgrid function
+##'
+##' Creates a spatialAtRisk object from an lgcpgrid object
+##'
+##' @method spatialAtRisk lgcpgrid
+##' @param X an lgcpgrid object
+##' @param idx in the case that X$grid is a list of length > 1, this argument specifies which element of the list to convert. By default, it is the last.
+##' @param ... additional arguments
+##' @return object of class spatialAtRisk
+##' \enumerate{
+##'     \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
+##'     \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
+##' }
+##' @seealso \link{lgcpPredict}, link{lgcpSim}, \link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, \link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.SpatialPolygonsDataFrame}
+##' @export 
+
+spatialAtRisk.lgcpgrid <- function(X,idx=length(X$grid),...){
+    return(spatialAtRisk.fromXYZ(X=X$xvals,Y=X$yvals,Zm=X$grid[[idx]]))
+}
+
 
 
 ###

@@ -383,12 +383,15 @@ MALAlgcpSpatial <- function(mcmcloop,
                             
     SpatialOnlyMode <- TRUE
     ##ImprovedAlgorithm <- TRUE
+    SpatialPlusParameters <- FALSE
+    MultiTypeMode <- FALSE
 
     cellOutside <- !as.logical(cellInside)
     logspatial <- log(scaleconst*spatialvals)
     logspatial[cellOutside|spatialvals==0] <- 0 # NOTE THIS IS FOR SIMPLIFYING THE COMPUTATION OF THE TARGET!!
                                   
-    temporal.fitted <- Inf # note this line is here for gridFunction and gridAverage methods and is not used otherwise                            
+    temporal.fitted <- Inf # note this line is here for gridFunction and gridAverage methods and is not used otherwise
+    nlevs <- NULL # note this line is here for gridFunction and gridAverage methods and is not used otherwise                            
     GFinitialise(gridfun) # note these two lines must come after M and N have been computed or defined
 	GAinitialise(gridav) # note these two lines must come after M and N have been computed or defined
     
