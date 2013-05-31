@@ -1,9 +1,19 @@
 \name{mcmctrace}
 \alias{mcmctrace}
-\title{mcmctrace function...}
-\usage{mcmctrace(obj, ...)}
-\description{mcmctrace function}
-\details{Generic function to extract the information required to produce MCMC trace plots.}
-\value{method mcmctrace}
-\arguments{\item{obj}{an object}
-\item{...}{additional arguments}}
+\title{mcmctrace function}
+\usage{
+  mcmctrace(obj, ...)
+}
+\arguments{
+  \item{obj}{an object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  method mcmctrace
+}
+\description{
+  Generic function to extract the information required to
+  produce MCMC trace plots.
+}
+

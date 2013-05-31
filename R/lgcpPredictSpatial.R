@@ -12,15 +12,12 @@
 ##'   The number of cases, \eqn{X_{S}}{X_{S}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}}{%
-##'    X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}.}
+##' \deqn{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}}{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005) (but ignoring temporal variation), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1.}{%
-##'    \int_W\lambda(s)d s=1.}
+##' \deqn{\int_W\lambda(s)d s=1.}{\int_W\lambda(s)d s=1.}
 ##'
 ##'
 ##' Before calling this function, the user must decide on the parameters, spatial covariance model, spatial discretisation,
@@ -37,8 +34,9 @@
 ##' @param spatial.offset Numeric of length 1. Optional offset parameter, corresponding to the expected number of cases. NULL by default, in which case, this is estimateed from teh data.
 ##' @param mcmc.control MCMC paramters, see ?mcmcpars
 ##' @param output.control output choice, see ?setoutput   
-##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to Inf to disable gradient truncation.
-##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays slowly, increasing 'ext' may be necessary. 
+##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Default is Inf, which means no gradient truncation. Set to NULL to estimate this automatically (though note that this may not necessarily be a good choice). The default seems to work in most settings.
+##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays slowly, increasing 'ext' may be necessary.
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former, the default, includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window. 
 ##' @return the results of fitting the model in an object of class \code{lgcpPredict}
 ##' @references 
 ##' \enumerate{
@@ -67,8 +65,9 @@ lgcpPredictSpatial <- function( sd,
         					    spatial.offset=NULL,				
         					    mcmc.control,
         					    output.control=setoutput(),
-        					    gradtrunc=NULL,
-        					    ext=2){
+        					    gradtrunc=Inf,
+        					    ext=2,
+        					    inclusion="touching"){
     
     starttime <- Sys.time()
     
@@ -187,8 +186,16 @@ lgcpPredictSpatial <- function( sd,
 	
 	cellarea <- del1*del2
 	
-	cellInside <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region)
-	cellInside <- matrix(as.numeric(cellInside),Mext,Next,byrow=TRUE)
+	if(inclusion=="centroid"){
+        cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
+    }    
+    else if(inclusion=="touching"){
+        cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
+	cellInside <- matrix(as.numeric(cellInside),Mext,Next)
 	
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
@@ -321,6 +328,7 @@ lgcpPredictSpatial <- function( sd,
 	lg$spatialonly <- TRUE
 	lg$ext <- ext
 	lg$cellInside <- cellInside[1:M,1:N]
+	lg$inclusion <- inclusion
 	
 	class(lg) <- c("lgcpPredict","lgcpobject")	
 	
@@ -385,7 +393,9 @@ MALAlgcpSpatial <- function(mcmcloop,
     SpatialOnlyMode <- TRUE
     ##ImprovedAlgorithm <- TRUE
     SpatialPlusParameters <- FALSE
+    SpatioTemporalPlusParameters <- FALSE
     MultiTypeMode <- FALSE
+
 
     cellOutside <- !as.logical(cellInside)
     logspatial <- log(scaleconst*spatialvals)

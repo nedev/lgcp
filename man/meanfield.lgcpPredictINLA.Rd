@@ -1,0 +1,19 @@
+\name{meanfield.lgcpPredictINLA}
+\alias{meanfield.lgcpPredictINLA}
+\title{meanfield.lgcpPredictINLA function}
+\usage{
+  \method{meanfield}{lgcpPredictINLA} (obj, ...)
+}
+\arguments{
+  \item{obj}{an object of class lgcpPredictINLA}
+
+  \item{...}{other arguments}
+}
+\value{
+  the mean of the latent field
+}
+\description{
+  A function to return the mean of the latent field from a
+  call to lgcpPredictINLA output.
+}
+

@@ -1,0 +1,22 @@
+\name{rr.lgcpPredict}
+\alias{rr.lgcpPredict}
+\title{rr.lgcpPredict function}
+\usage{
+  \method{rr}{lgcpPredict} (obj, ...)
+}
+\arguments{
+  \item{obj}{an lgcpPredict object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  the relative risk as computed my MCMC
+}
+\description{
+  Accessor function returning the relative risk = exp(Y) as
+  an lgcpgrid object.
+}
+\seealso{
+  \link{lgcpPredict}
+}
+

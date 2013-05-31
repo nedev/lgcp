@@ -1,0 +1,28 @@
+\name{plot.lgcpZmat}
+\alias{plot.lgcpZmat}
+\title{plot.lgcpZmat function}
+\usage{
+  \method{plot}{lgcpZmat} (x, ask = TRUE, pow = 1,
+    main = NULL, ...)
+}
+\arguments{
+  \item{x}{an lgcpZmat object, see ?getZmat}
+
+  \item{ask}{graphical parameter ask, see ?par}
+
+  \item{pow}{power parameter, raises the image values to
+  this power (helps with visualisation, default is 1.)}
+
+  \item{main}{title for plot, default is null which gives
+  an automatic title to the plot (the name of the
+  covariate)}
+
+  \item{...}{other paramters}
+}
+\value{
+  a sequence of plots of the interpolated covariate values
+}
+\description{
+  A function to plot lgcpZmat objects
+}
+

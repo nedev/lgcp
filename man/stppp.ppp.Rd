@@ -1,0 +1,27 @@
+\name{stppp.ppp}
+\alias{stppp.ppp}
+\title{stppp.ppp function}
+\usage{
+  \method{stppp}{ppp} (P, t, tlim, ...)
+}
+\arguments{
+  \item{P}{a spatstat ppp object}
+
+  \item{t}{a vector of length P$n}
+
+  \item{tlim}{a vector of length 2 specifying the
+  observation time window}
+
+  \item{...}{additional arguments}
+}
+\value{
+  an object of class stppp
+}
+\description{
+  Construct a space-time planar point pattern from a ppp
+  object
+}
+\seealso{
+  \link{stppp}, \link{stppp.list}
+}
+

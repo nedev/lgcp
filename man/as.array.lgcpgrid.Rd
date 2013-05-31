@@ -1,0 +1,18 @@
+\name{as.array.lgcpgrid}
+\alias{as.array.lgcpgrid}
+\title{as.array.lgcpgrid function}
+\usage{
+  \method{as.array}{lgcpgrid} (x, ...)
+}
+\arguments{
+  \item{x}{an object of class lgcpgrid}
+
+  \item{...}{other arguments}
+}
+\value{
+  conversion from lgcpgrid to array
+}
+\description{
+  Method to convert an lgcpgrid object into an array.
+}
+

@@ -279,8 +279,14 @@ GFupdate.dump2dir <- function(F,...){
         }
     }
     else{ # in spatiotemporal mode
-        Y <- get("oldtags",envir=parent.frame())$Y
-        Y <- lapply(Y,function(x){x[1:M,1:N]})
+        if(get("SpatioTemporalPlusParameters",envir=parent.frame())){
+            Y <- get("GP",envir=parent.frame())$Y
+            Y <- lapply(Y,function(x){x[1:M,1:N]})
+        }
+        else{
+            Y <- get("oldtags",envir=parent.frame())$Y
+            Y <- lapply(Y,function(x){x[1:M,1:N]})
+        }
     }
 
     if (F$lastonly){

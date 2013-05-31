@@ -75,15 +75,12 @@ gu <- function(u,sigma,phi,model,additionalparameters){
 ##'   The number of cases, \eqn{X_{S}}{X_{S}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}}{%
-##'    X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}.}
+##' \deqn{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}}{X_{S} \sim \mbox{Poisson}\left\{\int_S R(s)ds\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005) (but ignoring temporal variation), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1.}{%
-##'    \int_W\lambda(s)d s=1.}
+##' \deqn{\int_W\lambda(s)d s=1.}{\int_W\lambda(s)d s=1.}
 ##'
 ##'
 ##' Before calling this function, the user must decide on the parameters, spatial covariance model, spatial discretisation,

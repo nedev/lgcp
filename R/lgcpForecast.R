@@ -7,12 +7,13 @@
 ##' @param ptimes vector of time points for prediction. Must start strictly after last inferred time point.
 ##' @param spatial.intensity the fixed spatial component: an object of that can be coerced to one of class spatialAtRisk
 ##' @param temporal.intensity the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return forcasted relative risk, Poisson intensities and Y values over grid, together with approximate variance.
 ##' @references Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
 ##' @seealso \link{lgcpPredict}
 ##' @export 
 
-lgcpForecast <- function(lg,ptimes,spatial.intensity,temporal.intensity){
+lgcpForecast <- function(lg,ptimes,spatial.intensity,temporal.intensity,inclusion="touching"){
 
     verifyclass(lg,"lgcpPredict")
     
@@ -39,7 +40,15 @@ lgcpForecast <- function(lg,ptimes,spatial.intensity,temporal.intensity){
         spatial <- spatialAtRisk(spatial.intensity)
     }    
     spatialvals <- fftinterpolate(spatial,c(lg$mcens,lg$mcens[length(lg$mcens)]+diff(lg$mcens[1:2])+lg$mcens-lg$mcens[1]),c(lg$ncens,lg$ncens[length(lg$ncens)]+diff(lg$ncens[1:2])+lg$ncens-lg$ncens[1]),ext=lg$ext)[1:lg$M,1:lg$N]   
-    cellInside <- matrix(as.numeric(inside.owin(x=sort(rep(lg$mcens,lg$N)),y=rep(lg$ncens,lg$M),w=lg$xyt$window)),lg$M,lg$N,byrow=TRUE)
+    if(inclusion=="centroid"){
+        cellInside <- matrix(as.numeric(inside.owin(x=rep(lg$mcens,lg$N),y=rep(lg$ncens,each=lg$M),w=lg$xyt$window)),lg$M,lg$N)
+    }    
+    else if(inclusion=="touching"){
+        cellInside <- matrix(as.numeric(touchingowin(x=lg$mcens,y=lg$ncens,w=lg$xyt$window)),lg$M,lg$N)
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }    
     spatialvals <- spatialvals*cellInside
     spatialvals <- spatialvals / (cellarea*sum(spatialvals)) 
     

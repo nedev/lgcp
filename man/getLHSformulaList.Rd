@@ -1,0 +1,17 @@
+\name{getLHSformulaList}
+\alias{getLHSformulaList}
+\title{getLHSformulaList function}
+\usage{
+  getLHSformulaList(fl)
+}
+\arguments{
+  \item{fl}{an object of class "formulaList"}
+}
+\value{
+  the indepentdent variables
+}
+\description{
+  A function to retrieve the dependent variables from a
+  formulaList object. Not intended for general use.
+}
+

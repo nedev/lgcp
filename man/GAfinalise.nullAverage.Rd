@@ -1,0 +1,23 @@
+\name{GAfinalise.nullAverage}
+\alias{GAfinalise.nullAverage}
+\title{GAfinalise.nullAverage function}
+\usage{
+  \method{GAfinalise}{nullAverage} (F, ...)
+}
+\arguments{
+  \item{F}{an object of class nullAverage}
+
+  \item{...}{additional arguments}
+}
+\value{
+  nothing
+}
+\description{
+  This is a null function and performs no action.
+}
+\seealso{
+  \link{nullAverage}, \link{setoutput},
+  \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
+  \link{GAreturnvalue}
+}
+

@@ -12,19 +12,15 @@
 ##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{%
-##'    X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
+##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1,}{%
-##'    \int_W\lambda(s)d s=1,}
+##' \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
 ##' whilst the fixed temporal component, 
 ##'  \eqn{\mu:R_{\geq 0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known function with
-##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{%
-##'    \mu(t) \delta t = E[X_{W,\delta t}],}
+##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
 ##' for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.
 ##'
 ##' \bold{
@@ -56,8 +52,9 @@
 ##' @param output.control output choice, see ?setoutput
 ##' @param missing.data.areas a list of owin objects (of length laglength+1) which has xyt$window as a base window, but with polygonal holes specifying spatial areas where there is missing data.
 ##' @param autorotate logical: whether or not to automatically do MCMC on optimised, rotated grid.   
-##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Set to NULL to estimate this automatically (default). Set to zero for no gradient truncation.
+##' @param gradtrunc truncation for gradient vector equal to H parameter Moller et al 1998 pp 473. Default is Inf, which means no gradient truncation. Set to NULL to estimate this automatically (though note that this may not necessarily be a good choice). The default seems to work in most settings.
 ##' @param ext integer multiple by which grid should be extended, default is 2. Generally this will not need to be altered, but if the spatial correlation decays very slowly (compared withe the size of hte observation window), increasing 'ext' may be necessary.
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' further notes on autorotate argument: If set to TRUE, and the argument spatial is not NULL, then the argument spatial must be computed in the original frame of reference (ie NOT in the rotated frame). 
 ##' Autorotate performs bilinear interpolation (via interp.im) on an inverse transformed grid; if there is no computational advantage in doing this, a warning message will be issued. Note that best accuracy 
 ##' is achieved by manually rotating xyt and then computing spatial on the transformed xyt and finally feeding these in as arguments to the function lgcpPredict. By default autorotate is set to FALSE.
@@ -93,8 +90,9 @@ lgcpPredict <- function(xyt,
 					    output.control=setoutput(),
 					    missing.data.areas=NULL,
 					    autorotate=FALSE,
-					    gradtrunc=NULL,
-					    ext=2){
+					    gradtrunc=Inf,
+					    ext=2,
+					    inclusion="touching"){
 
     
     starttime <- Sys.time()
@@ -252,7 +250,8 @@ lgcpPredict <- function(xyt,
         xls <- rep(mcens,N)
         yls <- rep(ncens,each=M)	    
 	    spdf <- get("app",envir=parent.frame())$spdf
-	    olay <- overlay(SpatialPoints(cbind(xls,yls)),spdf)
+	    #EJP: olay <- overlay(SpatialPoints(cbind(xls,yls)),spdf)
+	    olay <- over(SpatialPoints(cbind(xls,yls)), geometry(spdf))
 	    if(length(table(olay))!=length(spdf)){
 	        cat("\n")
 	        warning("With chosen cell width, will not be able to generate aggregated inference for all regions.",.immediate=TRUE)
@@ -310,15 +309,33 @@ lgcpPredict <- function(xyt,
 	cellarea <- del1*del2
 	
 	if(is.null(missing.data.areas)){
-    	cellInside <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region)
-    	cellInside <- matrix(as.numeric(cellInside),Mext,Next,byrow=TRUE)
+    	if(inclusion=="centroid"){
+            cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
+        }        
+        else if(inclusion=="touching"){
+            cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
+        }
+        else{
+            stop("Invlaid choice for argument 'inclusion'.")
+        }
+    	cellInside <- matrix(as.numeric(cellInside),Mext,Next)
     	cellInside <- rep(list(cellInside),numt)
 	}
 	else{
 	    cellInside <- list()
 	    for (i in 1:numt){
-	        cellInside[[i]] <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=missing.data.areas[[i]])
-    	    cellInside[[i]] <- matrix(as.numeric(cellInside[[i]]),Mext,Next,byrow=TRUE)
+	        #
+	        
+	        if(inclusion=="centroid"){
+                cellInside[[i]] <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=missing.data.areas[[i]])
+            }            
+            else if(inclusion=="touching"){
+                cellInside[[i]] <- touchingowin(x=mcens,y=ncens,w=missing.data.areas[[i]])
+            }
+            else{
+                stop("Invlaid choice for argument 'inclusion'.")
+            }
+    	    cellInside[[i]] <- matrix(as.numeric(cellInside[[i]]),Mext,Next)
 	    }
 	}
 	
@@ -331,8 +348,16 @@ lgcpPredict <- function(xyt,
     	spatialvals <- rep(list(spatialvals),numt)
 	}
 	else{
-	    cellIns <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region) # for purposes of computing normalising constant of lambda
-    	cellIns <- matrix(as.numeric(cellIns),Mext,Next,byrow=TRUE)
+        if(inclusion=="centroid"){
+            cellIns <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region) # for purposes of computing normalising constant of lambda
+        }        
+        else if(inclusion=="touching"){
+            cellIns <- touchingowin(x=mcens,y=ncens,w=study.region)
+        }
+        else{
+            stop("Invlaid choice for argument 'inclusion'.")
+        }
+    	cellIns <- matrix(as.numeric(cellIns),Mext,Next)
 	    spatialinterp <- fftinterpolate(spatial,mcens,ncens,ext=ext)
 	    tempinterp <- spatialinterp*cellIns
 	    NC <- cellarea*sum(tempinterp) # gives normalising constant for lambda over the whole observation window, with no missing areas (compare with the version where missing.data.area is null above)
@@ -473,7 +498,8 @@ lgcpPredict <- function(xyt,
 	lg$timetaken <- timetaken
 	lg$ext <- ext
 	lg$cellInside <- lapply(cellInside,function(x){x[1:M,1:N]})
-	lg$spatialonly <- FALSE	
+	lg$spatialonly <- FALSE
+	lg$inclusion <- inclusion	
 	if (tst){
 	    lg$overlay <- olay
 	}
@@ -548,7 +574,8 @@ MALAlgcp <- function(mcmcloop,
                             
     SpatialOnlyMode <- FALSE
     ##ImprovedAlgorithm <- TRUE 
-    SpatialPlusParameters <- FALSE   
+    SpatialPlusParameters <- FALSE
+    SpatioTemporalPlusParameters <- FALSE   
     MultiTypeMode <- FALSE
     
     nlevs <- NULL # note this line is here for gridFunction and gridAverage methods and is not used otherwise
@@ -736,19 +763,15 @@ target.and.grad.spatiotemporal <- function(Gamma,nis,cellarea,rootQeigs,invrootQ
 ##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{%
-##'    X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
+##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1,}{%
-##'    \int_W\lambda(s)d s=1,}
+##' \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
 ##' whilst the fixed temporal component, 
 ##'  \eqn{\mu:R_{\geq 0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known function with
-##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{%
-##'    \mu(t) \delta t = E[X_{W,\delta t}],}
+##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
 ##' for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.
 ##'
 ##' \bold{

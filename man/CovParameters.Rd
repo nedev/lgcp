@@ -1,0 +1,17 @@
+\name{CovParameters}
+\alias{CovParameters}
+\title{CovParameters function}
+\usage{
+  CovParameters(list)
+}
+\arguments{
+  \item{list}{a list}
+}
+\value{
+  an object used in the MCMC routine.
+}
+\description{
+  A function to provide a structure for the parameters of
+  the latent field. Not intended for general use.
+}
+

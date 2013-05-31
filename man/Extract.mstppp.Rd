@@ -1,0 +1,19 @@
+\name{Extract.mstppp}
+\alias{Extract.mstppp}
+\alias{"[.mstppp"}
+\title{Extract.mstppp function}
+\usage{
+  "x[subset]"
+}
+\arguments{
+  \item{x}{an object of class mstppp}
+
+  \item{subset}{subsetto extract}
+}
+\value{
+  extracts subset of an mstppp object
+}
+\description{
+  extracting subsets of an mstppp object.
+}
+

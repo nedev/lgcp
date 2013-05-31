@@ -1,0 +1,26 @@
+\name{d.func}
+\alias{d.func}
+\title{d.func function}
+\usage{
+  d.func(mat1il, mat2jk, i, j, l, k)
+}
+\arguments{
+  \item{mat1il}{matrix 1}
+
+  \item{mat2jk}{matrix 2}
+
+  \item{i}{index matrix 1 number 1}
+
+  \item{j}{index matrix 2 number 1}
+
+  \item{l}{index matrix 1 number 2}
+
+  \item{k}{index matrix 2 number 2}
+}
+\value{
+  ...
+}
+\description{
+  d.func function
+}
+

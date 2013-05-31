@@ -17,11 +17,12 @@
 ##' @param phi scaling paramter for spatial covariance function, see Brix and Diggle (2001)
 ##' @param model correlation type see ?CovarianceFct
 ##' @param covpars vector of additional parameters for certain classes of covariance function (eg Matern), these must be supplied in the order given in ?CovarianceFct
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return fft objects for use in MALA
 ##' @export
 
 
-fftgrid <- function(xyt,M,N,spatial,sigma,phi,model,covpars){
+fftgrid <- function(xyt,M,N,spatial,sigma,phi,model,covpars,inclusion="touching"){
 
     verifyclass(xyt,"stppp")
     verifyclass(spatial,"spatialAtRisk")
@@ -44,7 +45,15 @@ fftgrid <- function(xyt,M,N,spatial,sigma,phi,model,covpars){
 	cellArea.mat <- matrix(0,M.ext,N.ext)
 	cellArea.mat[1:M,1:N] <- del1*del2
 	
-	cellInside <- inside.owin(x=sort(rep(mcens,N.ext)),y=rep(ncens,M.ext),w=study.region)
+	if(inclusion=="centroid"){
+        cellInside <- inside.owin(x=sort(rep(mcens,N.ext)),y=rep(ncens,M.ext),w=study.region)
+    }
+    else if(inclusion=="touching"){
+        cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
 	cellInside <- matrix(as.logical(cellInside),M.ext,N.ext,byrow=T)[1:M,1:N]
 	cellInsideBIG <- matrix(0,M.ext,N.ext)
 	cellInsideBIG[1:M,1:N][cellInside] <- 1
@@ -77,6 +86,40 @@ fftgrid <- function(xyt,M,N,spatial,sigma,phi,model,covpars){
 
 
 
+##' extendspatialAtRisk function
+##'
+##' A function to extend a spatialAtRisk object, used in interpolating the fft grid NOTE THIS DOES NOT RETURN A PROPER spatialAtRisk OBJECT SINCE THE 
+##' NORMALISING CONSTANT IS PUT BACK IN.
+##'
+##' @param spatial a spatialAtRisk object inheriting class 'fromXYZ'
+##' @return the spatialAtRisk object on a slightly larger grid, with zeros appearing outside the original extent.
+##' @export
+
+extendspatialAtRisk <- function(spatial){
+    if(!inherits(spatial,"fromXYZ")){
+        stop("spatial must inherit class 'fromXYZ'")
+    }
+    NC <- attr(spatial,"NC")
+    x <- xvals(spatial)
+    y <- yvals(spatial)
+    z <- zvals(spatial)
+    
+    dx <- diff(x[1:2])
+    dy <- diff(y[1:2])
+    nx <- length(x)
+    ny <- length(y)
+    
+    newx <- c(x[1]-dx*(1:nx),x,rev(x)[1]+dx*(1:nx))
+    newy <- c(y[1]-dy*(1:ny),y,rev(y)[1]+dy*(1:ny))
+    newz <- matrix(0,3*nx,3*ny)
+    newz[(nx+1):(2*nx),(ny+1):(2*ny)] <- z
+    sar <- spatialAtRisk(list(X=newx,Y=newy,Zm=newz))
+    sar$Zm <- sar$Zm * attr(sar,"NC")
+    return(sar)
+}
+    
+    
+
 ##' fftinterpolate function
 ##'
 ##' Generic function used for computing interpolations used in the function \link{fftgrid}.
@@ -107,20 +150,60 @@ fftinterpolate <- function(spatial,...){
 ##' @seealso \link{fftgrid}, \link{spatialAtRisk.fromXYZ}
 ##' @export
 
-fftinterpolate.fromXYZ <- function(spatial,mcens,ncens,ext,...){
+#fftinterpolate.fromXYZ <- function(spatial,mcens,ncens,ext,...){
+#    spatial <- extendspatialAtRisk(spatial)
+#    M.ext <- length(mcens)
+#    N.ext <- length(ncens)
+#    M <- M.ext/ext
+#    N <- N.ext/ext
+#	
+#	spatialvals <- matrix(0,M.ext,N.ext)
+#    spatialextend <- spatial$Zm
+#	spatialextend[is.na(spatialextend)] <- 0
+#	sv <- interp.im(im(t(spatialextend),xcol=spatial$X,yrow=spatial$Y),rep(mcens[1:M],N),rep(ncens[1:N],each=M))
+#	sv[is.na(sv)] <- 0
+#	spatialvals[1:M,1:N] <- matrix(sv,M,N)
+#	return(spatialvals)
+#}
+
+fftinterpolate.fromXYZ  <- function(spatial,mcens,ncens,ext,...){
+
+    spatial <- extendspatialAtRisk(spatial)
+    spatial$Zm[is.na(spatial$Zm)] <- 0
+    xv <- xvals(spatial)
+    yv <- yvals(spatial)
+    dx1 <- diff(xv[1:2])
+    dy1 <- diff(yv[1:2])
+    
+    rasterspatial <- raster(t(spatial$Zm[,length(yv):1]),xmn=xv[1]-dx1/2,xmx=rev(xv)[1]+dx1/2,ymn=yv[1]-dy1/2,ymx=rev(yv)[1]+dy1/2)
+    
     M.ext <- length(mcens)
     N.ext <- length(ncens)
     M <- M.ext/ext
     N <- N.ext/ext
+    
+    dx <- diff(mcens[1:2])
+    dy <- diff(ncens[1:2])
+    
+    if(dx>dx1){
+        rasterspatial <- aggregate(rasterspatial,fact=ceiling(dx/dx1))
+    }
+    else{
+        rasterspatial <- disaggregate(rasterspatial,fact=ceiling(dx1/dx))
+    }
+    
+    tempraster <- raster(nrows=N,ncols=M,xmn=mcens[1]-dx/2,xmx=mcens[M]+dx/2,ymn=ncens[1]-dy/2,ymx=ncens[N]+dy/2)
+    
+    pro <- resample(rasterspatial,tempraster)
+    
+    zv <- t(raster:::as.matrix(pro))[,N:1] # raster::: necessary here, else package will not check
 	
 	spatialvals <- matrix(0,M.ext,N.ext)
-    spatialextend <- spatial$Zm
-	spatialextend[is.na(spatialextend)] <- 0
-	sv <- interp.im(im(t(spatialextend),xcol=spatial$X,yrow=spatial$Y),rep(mcens[1:M],N),rep(ncens[1:N],each=M))
-	sv[is.na(sv)] <- 0
-	spatialvals[1:M,1:N] <- matrix(sv,M,N)
+	spatialvals[1:M,1:N] <- zv
+    
 	return(spatialvals)
 }
+
 
 
 
@@ -172,7 +255,8 @@ fftinterpolate.fromSPDF<- function(spatial,mcens,ncens,ext,...){
     N <- N.ext/ext
     spatialvals <- matrix(0,M.ext,N.ext)
     xyvals <- SpatialPoints(matrix(cbind(rep(mcens[1:M],N),rep(ncens[1:N],each=M)),M*N,2))
-    interp <- overlay(spatial$spdf,xyvals)$atrisk    
+    #EJP: interp <- overlay(spatial$spdf,xyvals)$atrisk    
+    interp <- over(xyvals, spatial$spdf)$atrisk   
     spatialvals[1:M,1:N] <- matrix(interp,M,N)
     spatialvals[is.na(spatialvals)] <- 0
     return(spatialvals)

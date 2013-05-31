@@ -1,0 +1,21 @@
+\name{initialiseAMCMC.constanth}
+\alias{initialiseAMCMC.constanth}
+\title{initaliseAMCMC.constanth function}
+\usage{
+  \method{initialiseAMCMC}{constanth} (obj, ...)
+}
+\arguments{
+  \item{obj}{an object}
+
+  \item{...}{additional arguments}
+}
+\value{
+  initial h for scheme
+}
+\description{
+  Initialises the \link{constanth} adaptive scheme.
+}
+\seealso{
+  \link{constanth}
+}
+

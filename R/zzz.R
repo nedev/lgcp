@@ -9,6 +9,10 @@
 
 .onAttach <- function(libname, pkgname)
 {
-	packageStartupMessage("\n Welcome to 'lgcp': Log-Gaussian Cox Process\n B. Taylor & T.M. Davies & B. Rowlingson & P. Diggle\ntype '?lgcp' for details, or 'vignette(\"lgcp\")' to view the package vignette. Type 'citation(\"lgcp\")' to view the citation for this package.)", appendLF=T)
+	packageStartupMessage("\n Welcome to 'lgcp': Log-Gaussian Cox Process\n B. M. Taylor & T. M. Davies & B. S. Rowlingson & P. J. Diggle.\n
+Type '?lgcp' for details, or 'vignette(\"lgcp\")' to view the basic package vignette.\n
+Type 'vignette(\"Bayesian_lgcp\")' to view the Bayesian package vignette.\n
+Type 'citation(\"lgcp\")' to view the citation for this package.\n
+Please see the lgcp package NEWS file for latest additions, changes and bug fixes.)", appendLF=T)
 }
 

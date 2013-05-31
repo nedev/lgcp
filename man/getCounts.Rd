@@ -1,18 +1,38 @@
 \name{getCounts}
 \alias{getCounts}
-\title{getCounts function...}
-\usage{getCounts(xyt, subset=rep(TRUE, xyt$n), M, N, ext)}
-\description{getCounts function}
-\details{This function is used to count the number of observations falling inside grid cells, the output
-is used in the function \link{lgcpPredict}.}
-\value{The number of observations in each grid cell returned on a grid suitable for use in the extended FFT space.}
-\seealso{\link{lgcpPredict}}
-\arguments{\item{xyt}{stppp or ppp data object}
-\item{subset}{Logical vector. Subset of data of interest, by default this is all data.}
-\item{M}{number of centroids in x-direction}
-\item{N}{number of cnetroids in y-direction}
-\item{ext}{how far to extend the grid eg (M,N) to (ext*M,ext*N)}}
-\examples{xyt <- stppp(ppp(runif(100),runif(100)),t=1:100,tlim=c(1,100))
+\title{getCounts function}
+\usage{
+  getCounts(xyt, subset = rep(TRUE, xyt$n), M, N, ext)
+}
+\arguments{
+  \item{xyt}{stppp or ppp data object}
+
+  \item{subset}{Logical vector. Subset of data of interest,
+  by default this is all data.}
+
+  \item{M}{number of centroids in x-direction}
+
+  \item{N}{number of cnetroids in y-direction}
+
+  \item{ext}{how far to extend the grid eg (M,N) to
+  (ext*M,ext*N)}
+}
+\value{
+  The number of observations in each grid cell returned on
+  a grid suitable for use in the extended FFT space.
+}
+\description{
+  This function is used to count the number of observations
+  falling inside grid cells, the output is used in the
+  function \link{lgcpPredict}.
+}
+\examples{
+xyt <- stppp(ppp(runif(100),runif(100)),t=1:100,tlim=c(1,100))
 cts <- getCounts(xyt,M=64,N=64,ext=2) # gives an output grid of size 128 by 128
 ctssub <- cts[1:64,1:64] # returns the cell counts in the observation
-# window of interest}
+                         # window of interest
+}
+\seealso{
+  \link{lgcpPredict}
+}
+

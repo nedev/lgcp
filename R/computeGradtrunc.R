@@ -4,7 +4,7 @@
 ##' requires an FFT 'grid' to be pre-computed, see \link{fftgrid}.
 ##'
 ##' @param nsims The number of simulations to use in computation of gradient truncation.
-##' @param scale multiplicative scaling constant, returned value is scale*max(gradient over simulations). Default scale is 1.
+##' @param scale multiplicative scaling constant, returned value is scale (times) max(gradient over simulations). Default scale is 1.
 ##' @param nis cell counts on the extended grid
 ##' @param mu parameter of latent field, mu 
 ##' @param rootQeigs root of eigenvalues of precision matrix of latent field 
@@ -54,14 +54,14 @@ computeGradtruncSpatial <- function(nsims=100,
 ##' requires an FFT 'grid' to be pre-computed, see \link{fftgrid}.
 ##'
 ##' @param nsims The number of simulations to use in computation of gradient truncation.
-##' @param scale multiplicative scaling constant, returned value is scale*max(gradient over simulations). Default scale is 1.
+##' @param scale multiplicative scaling constant, returned value is scale (times) max(gradient over simulations). Default scale is 1.
 ##' @param nis cell counts on the extended grid
 ##' @param mu parameter of latent field, mu 
 ##' @param rootQeigs root of eigenvalues of precision matrix of latent field 
 ##' @param invrootQeigs reciprocal root of eigenvalues of precision matrix of latent field
 ##' @param spatial spatial at risk interpolated onto grid of requisite size
 ##' @param temporal fitted temporal values
-##' @param bt vectoer of variances b(delta t) in Brix and Diggls 2001
+##' @param bt vectoer of variances b(delta t) in Brix and Diggle 2001
 ##' @param cellarea cell area
 ##' @return gradient truncation parameter
 ##' @seealso \link{fftgrid}

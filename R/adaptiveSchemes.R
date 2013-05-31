@@ -70,8 +70,7 @@ constanth <- function(h){
 ##'
 ##' A Robbins-Munro stochastic approximation update is used to adapt the tuning parameter of the proposal kernel. 
 ##' The idea is to update the tuning parameter at each iteration of the sampler:
-##' \deqn{h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_{opt}),}{%
-##'       h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_{opt}),}
+##' \deqn{h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_{opt}),}{h^{(i+1)} = h^{(i)} + \eta^{(i+1)}(\alpha^{(i)} - \alpha_{opt}),}
 ##' where \eqn{h^{(i)}}{h^{(i)}} and \eqn{\alpha^{(i)}}{\alpha^{(i)}} are the tuning parameter and acceptance probability at iteration 
 ##' \eqn{i}{i} and \eqn{\alpha_{opt}}{\alpha_{opt}} is a target acceptance probability. For Gaussian targets, and in the limit 
 ##' as the dimension of the problem tends to infinity, an appropriate target acceptance probability for 
@@ -79,8 +78,7 @@ constanth <- function(h){
 ##' \eqn{\sum_{i=0}^\infty\eta^{(i)}}{\sum_{i=0}^\infty\eta^{(i)}} is infinite whilst \eqn{\sum_{i=0}^\infty\left(\eta^{(i)}\right)^{1+\epsilon}}{\sum_{i=0}^\infty\left(\eta^{(i)}\right)^{1+\epsilon}} is 
 ##' finite for \eqn{\epsilon>0}{\epsilon>0}. These two conditions ensure that any value of \eqn{h}{h} can be reached, but in a way that 
 ##' maintains the ergodic behaviour of the chain. One class of sequences with this property is,
-##' \deqn{\eta^{(i)} = \frac{C}{i^\alpha},}{%
-##'       \eta^{(i)} = \frac{C}{i^\alpha},}
+##' \deqn{\eta^{(i)} = \frac{C}{i^\alpha},}{\eta^{(i)} = \frac{C}{i^\alpha},}
 ##' where \eqn{\alpha\in(0,1]}{\alpha\in(0,1]} and \eqn{C>0}{C>0}.The scheme is set via
 ##' the \code{mcmcpars} function.
 ##'

@@ -1,0 +1,33 @@
+\name{as.owinlist.SpatialPolygonsDataFrame}
+\alias{as.owinlist.SpatialPolygonsDataFrame}
+\title{as.owinlist.SpatialPolygonsDataFrame function}
+\usage{
+  \method{as.owinlist}{SpatialPolygonsDataFrame} (obj,
+    dmin = 0, check = TRUE,
+    subset = rep(TRUE, length(obj)), ...)
+}
+\arguments{
+  \item{obj}{a SpatialPolygonsDataFrame object}
+
+  \item{dmin}{purpose is to simplify the SpatialPolygons. A
+  numeric value giving the smallest permissible length of
+  an edge. See ? simplify.owin}
+
+  \item{check}{whether or not to use spatstat functions to
+  check the validity of SpatialPolygons objects}
+
+  \item{subset}{logical vector. Subset of regions to
+  extract and conver to owin objects. By default, all
+  regions are extracted.}
+
+  \item{...}{additional arguments}
+}
+\value{
+  a list of owin objects corresponding to the constituent
+  Polygons objects
+}
+\description{
+  A function to create a list of owin objects from a
+  SpatialPolygonsDataFrame
+}
+

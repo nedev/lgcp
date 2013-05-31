@@ -286,10 +286,10 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     ##rp.radiogroup(pancontrol,var=corchoice,values=c("exponential","matern","whittle"),action=panfun,initval="exponential")
     
     if (attr(gk,"fname") == "g[inhom]"){ 
-        rp.radiogroup(pancontrol,var=transform,values=c("none","log"),action=panfun,initval="none")
+        rp.radiogroup(pancontrol,variable=transform,vals=c("none","log"),action=panfun,initval="none")
     }    
     else if (attr(gk,"fname") == "K[inhom]"){
-        rp.radiogroup(pancontrol,var=transform,values=c("none","^1/4"),action=panfun,initval="^1/4")
+        rp.radiogroup(pancontrol,variable=transform,vals=c("none","^1/4"),action=panfun,initval="^1/4")
     }
 
     # "quick" optimiser to get poor initial values for sigma and phi
@@ -341,8 +341,8 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
         phiinit <- phimin + (phimax-phimin)/2
     }
     
-    rp.slider(pancontrol,var=sigma,from=sigmamin,to=sigmamax,initval=sigmainit,action=panfun,showvalue=TRUE)
-    rp.slider(pancontrol,var=phi,from=phimin,to=phimax,initval=phiinit,action=panfun,showvalue=TRUE)
+    rp.slider(pancontrol,variable=sigma,from=sigmamin,to=sigmamax,initval=sigmainit,action=panfun,showvalue=TRUE)
+    rp.slider(pancontrol,variable=phi,from=phimin,to=phimax,initval=phiinit,action=panfun,showvalue=TRUE)
     ## add our OK button. Make it a quitbutton:
     rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
     
@@ -485,9 +485,9 @@ thetaEst <- function(xyt,spatial.intensity=NULL,temporal.intensity=NULL,sigma,ph
     }    
     
     pancontrol <- rp.control("Parameter Estimation",aschar=FALSE)
-    rp.textentry(pancontrol,var=sigma,initval=sigma,action=panfun)
-    rp.textentry(pancontrol,var=phi,initval=phi,action=panfun)   
-    rp.slider(pancontrol,var=theta,from=thetamin,to=thetamax,initval=(thetamax-thetamin)/2,action=panfun,showvalue=TRUE)
+    rp.textentry(pancontrol,variable=sigma,initval=sigma,action=panfun)
+    rp.textentry(pancontrol,variable=phi,initval=phi,action=panfun)   
+    rp.slider(pancontrol,variable=theta,from=thetamin,to=thetamax,initval=(thetamax-thetamin)/2,action=panfun,showvalue=TRUE)
     ## add our OK button. Make it a quitbutton:
     rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
     
@@ -583,14 +583,15 @@ lambdaEst.stppp <- function(xyt,weights=c(),edge=TRUE,bw=NULL,...){
     }
     panfun(varlist)
     pancontrol <- rp.control("Density Estimation")
-    rp.textentry(pancontrol,var=bw,initval=bw,action=panfun,title="bandwidth")
-    rp.checkbox(pancontrol,var=plotdata,action=panfun,labels = "Plot Data",initval = TRUE)
-    rp.slider(pancontrol,var=pow,from=0,to=1,initval=1,action=panfun,showvalue=TRUE,title="colour adjustment")
+    rp.textentry(pancontrol,variable=bw,initval=bw,action=panfun,title="bandwidth")
+    rp.checkbox(pancontrol,variable=plotdata,action=panfun,labels = "Plot Data",initval = TRUE)
+    rp.slider(pancontrol,variable=pow,from=0,to=1,initval=1,action=panfun,showvalue=TRUE,title="colour adjustment")
     ## add our OK button. Make it a quitbutton:
-    rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
-
+    rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE) 
+    
     ## now wait until our panel quits.
     rp.block(pancontrol)
+    
     dev.off()    
 
     return(get("d",envir=env))
@@ -665,9 +666,9 @@ lambdaEst.ppp <- function(xyt,weights=c(),edge=TRUE,bw=NULL,...){
     }
     panfun(varlist)
     pancontrol <- rp.control("Density Estimation")
-    rp.textentry(pancontrol,var=bw,initval=bw,action=panfun,title="bandwidth")
-    rp.checkbox(pancontrol,var=plotdata,action=panfun,labels = "Plot Data",initval = TRUE)
-    rp.slider(pancontrol,var=pow,from=0,to=1,initval=1,action=panfun,showvalue=TRUE,title="colour adjustment")
+    rp.textentry(pancontrol,variable=bw,initval=bw,action=panfun,title="bandwidth")
+    rp.checkbox(pancontrol,variable=plotdata,action=panfun,labels = "Plot Data",initval = TRUE)
+    rp.slider(pancontrol,variable=pow,from=0,to=1,initval=1,action=panfun,showvalue=TRUE,title="colour adjustment")
     ## add our OK button. Make it a quitbutton:
     rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
 
@@ -713,6 +714,7 @@ muEst <- function(xyt,...){
 ##'
 ##' A wrapper function for \link{density.ppp}.
 ##'
+##' @importFrom stats density
 ##' @method density stppp
 ##' @param x an stppp object
 ##' @param bandwidth 'bandwidth' parameter, equivanent to parameter sigma in ?density.ppp ie standard deviation of isotropic Gaussian smoothing kernel.
@@ -724,3 +726,4 @@ muEst <- function(xyt,...){
 density.stppp <- function(x,bandwidth=NULL,...){
     density.ppp(x,...,sigma=bandwidth)
 }
+

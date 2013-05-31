@@ -1,0 +1,22 @@
+\name{xvals.lgcpPredict}
+\alias{xvals.lgcpPredict}
+\title{xvals.lgcpPredict function}
+\usage{
+  \method{xvals}{lgcpPredict} (obj, ...)
+}
+\arguments{
+  \item{obj}{an object of class lgcpPredict}
+
+  \item{...}{additional arguments}
+}
+\value{
+  the x coordinates of the centroids of the grid
+}
+\description{
+  Gets the x-coordinates of the centroids of the prediction
+  grid.
+}
+\seealso{
+  \link{lgcpPredict}
+}
+

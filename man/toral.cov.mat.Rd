@@ -1,0 +1,29 @@
+\name{toral.cov.mat}
+\alias{toral.cov.mat}
+\title{toral.cov.mat function}
+\usage{
+  toral.cov.mat(xg, yg, sigma, phi, model,
+    additionalparameters)
+}
+\arguments{
+  \item{xg}{x grid}
+
+  \item{yg}{y grid}
+
+  \item{sigma}{spatial variability parameter}
+
+  \item{phi}{spatial decay parameter}
+
+  \item{model}{model for covariance, see ?CovarianceFct}
+
+  \item{additionalparameters}{additional parameters for
+  covariance structure}
+}
+\value{
+  circulant covariacne matrix
+}
+\description{
+  A function to compute the covariance matrix of a
+  stationary process on a torus.
+}
+

@@ -12,19 +12,15 @@
 ##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in 
 ##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is 
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
-##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{%
-##'    X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
+##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005), the intensity is decomposed multiplicatively as
-##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{%
-##'    R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
+##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
 ##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
-##' \deqn{\int_W\lambda(s)d s=1,}{%
-##'    \int_W\lambda(s)d s=1,}
+##' \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
 ##' whilst the fixed temporal component, 
 ##'  \eqn{\mu:R_{\geq 0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known function with
-##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{%
-##'    \mu(t) \delta t = E[X_{W,\delta t}],}
+##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
 ##' for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.
 ##'
 ##' @param owin polygonal observation window
@@ -41,6 +37,7 @@
 ##' @param plot logical, whether to plot intensities.
 ##' @param ratepow power that intensity is raised to for plotting purposes (makes the plot more pleasign to the eye), defaul 0.25
 ##' @param sleeptime time in seconds to sleep between plots
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return an stppp object containing the data
 ##' @references 
 ##' \enumerate{
@@ -67,7 +64,8 @@ lgcpSim <- function(owin=NULL,
                     ext=2,
                     plot=FALSE,
                     ratepow=0.25,
-                    sleeptime=0){
+                    sleeptime=0,
+                    inclusion="touching"){
                                     
     if (!inherits(tlim,"integer")){
 	    warning("Converting tlim into integer values, see ?as.integer")
@@ -125,6 +123,7 @@ lgcpSim <- function(owin=NULL,
 	M <- ow$M
 	N <- ow$N
 	cat(paste("FFT Grid size: [",ext*M," , ",ext*N,"]\n",sep=""))
+
 	if(is.null(spatial.intensity)){
         spatial <- spatialAtRisk(list(X=seq(xyt$window$xrange[1],xyt$window$xrange[2],length.out=M),Y=seq(xyt$window$yrange[1],xyt$window$yrange[2],length.out=N),Zm=matrix(1/(M*N),M,N)))
     }
@@ -136,7 +135,7 @@ lgcpSim <- function(owin=NULL,
             spatial <- spatial.intensity
         }
     }
-    
+   
     ################################################################
     # Create grid and FFT objects
     ################################################################
@@ -159,8 +158,16 @@ lgcpSim <- function(owin=NULL,
 	
 	cellarea <- del1*del2
 	
-	cellInside <- inside.owin(x=sort(rep(mcens,Next)),y=rep(ncens,Mext),w=study.region)
-	cellInside <- as.numeric(matrix(as.logical(cellInside),Mext,Next,byrow=TRUE)[1:M,1:N])
+	if(inclusion=="centroid"){
+        cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
+    }    
+    else if(inclusion=="touching"){
+        cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
+    }
+    else{
+        stop("Invlaid choice for argument 'inclusion'.")
+    }
+	cellInside <- as.numeric(matrix(as.logical(cellInside),Mext,Next)[1:M,1:N])
 	
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
 	
@@ -271,6 +278,7 @@ lgcpSim <- function(owin=NULL,
     attr(xyt,"yvals") <- yg
     attr(xyt,"intensities") <- intensities
     attr(xyt,"truefield") <- truefield 
+    attr(xyt,"inclusion") <- inclusion  
     return(xyt)
 }
 

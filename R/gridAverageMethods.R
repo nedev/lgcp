@@ -104,18 +104,15 @@ nullAverage <- function(){
 ##'
 ##' 
 ##' A Monte Carlo Average is computed as:
-##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{%
-##'       E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
+##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_1:t_2})] \approx \frac1n\sum_{i=1}^n g(Y_{t_1:t_2}^{(i)})}
 ##' where \eqn{g}{g} is a function of interest, \eqn{Y_{t_1:t_2}^{(i)}}{Y_{t_1:t_2}^{(i)}} is the \eqn{i}{i}th retained sample from the target  
 ##' and \eqn{n}{n} is the total number of retained iterations. For example, to compute the mean of \eqn{Y_{t_1:t_2}}{Y_{t_1:t_2}} set,
-##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{%
-##'       g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
+##' \deqn{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}{g(Y_{t_1:t_2}) = Y_{t_1:t_2},}
 ##' the output from such a Monte Carlo average would be a set of \eqn{t_2-t_1}{t_2-t_1} grids, each cell of which 
 ##' being equal to the mean over all retained iterations of the algorithm (NOTE: this is just an example computation, in
 ##' practice, there is no need to compute the mean on line explicitly, as this is already done by defaul in \code{lgcpPredict}).
 ##' For further examples, see below. The option \code{last=TRUE} computes,
-##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_2})],}{%
-##'       E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_2})],}
+##' \deqn{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_2})],}{E_{\pi(Y_{t_1:t_2}|X_{t_1:t_2})}[g(Y_{t_2})],}
 ##' so in this case the expectation over the last time point only is computed. This can save computation time.
 ##'
 ##' @param funlist a character vector of names of functions, each accepting single argument Y
@@ -367,36 +364,47 @@ GAreturnvalue.MonteCarloAverage <- function(F,...){
 ##'
 ##' This function can be called using \code{MonteCarloAverage} (see \code{fun3} the examples in the help file for
 ##' \link{MonteCarloAverage}). It computes exceedance probabilities,
-##' \deqn{P[\exp(Y_{t_1:t_2})>k],}{%
-##'       P[\exp(Y_{t_1:t_2})>k],}
+##' \deqn{P[\exp(Y_{t_1:t_2})>k],}{P[\exp(Y_{t_1:t_2})>k],}
 ##' that is the probability that the relative reisk exceeds threshold \eqn{k}{k}. Note that it is possible
 ##' to pass vectors of tresholds to the function, and the exceedance probabilities will be computed for each
 ##' of these.
 ##'  
 ##' @param threshold vector of threshold levels for the indicator function
+##' @param direction default 'upper' giving exceedance probabilities, alternative is 'lower', which gives 'subordinate probabilities'
 ##' @return a function of Y that computes the indicator function I(exp(Y)>threshold) evaluated for each cell of a matrix Y
 ##' If several tresholds are specified an array is returned with the [,,i]th slice equal to I(exp(Y)>threshold[i])
 ##' @seealso \link{MonteCarloAverage}, \link{setoutput}
 ##' @export
 
-exceedProbs <- function(threshold){
+exceedProbs <- function(threshold,direction="upper"){
     fun <- function(Y){
         EY <- exp(Y)
         d <- dim(Y)
         len <- length(threshold)
         if(len==1){
-            return(matrix(as.numeric(EY>threshold),d[1],d[2]))
+            if(direction=="upper"){
+                return(matrix(as.numeric(EY>threshold),d[1],d[2]))
+            }
+            else{
+                return(matrix(as.numeric(EY<threshold),d[1],d[2]))
+            }            
         }
         else{
             A <- array(dim=c(d[1],d[2],len))
             
             for(i in 1:len){
-                A[,,i] <- matrix(as.numeric(EY>threshold[i]),d[1],d[2])
+                if(direction=="upper"){
+                    A[,,i] <- matrix(as.numeric(EY>threshold[i]),d[1],d[2])
+                }
+                else{
+                    A[,,i] <- matrix(as.numeric(EY<threshold[i]),d[1],d[2])
+                }
             }
             return(A)
         }
     }
     attr(fun,"threshold") <- threshold
+    attr(fun,"direction") <- direction
     return(fun)
 }
 
@@ -406,8 +414,7 @@ exceedProbs <- function(threshold){
 ##'
 ##' This function computes regional exceedance probabilities after MCMC has finished, it requires the information to have been dumped to disk, and
 ##' to have been computed using the function lgcpPredictAggregated
-##' \deqn{P[\exp(Y_{t_1:t_2})>k],}{%
-##'       P[\exp(Y_{t_1:t_2})>k],}
+##' \deqn{P[\exp(Y_{t_1:t_2})>k],}{P[\exp(Y_{t_1:t_2})>k],}
 ##' that is the probability that the relative risk exceeds threshold \eqn{k}{k}. Note that it is possible
 ##' to pass vectors of tresholds to the function, and the exceedance probabilities will be computed for each
 ##' of these.

@@ -1,19 +1,46 @@
 \name{computeGradtruncSpatial}
 \alias{computeGradtruncSpatial}
-\title{computeGradtruncSpatial function...}
-\usage{computeGradtruncSpatial(nsims=100, scale=1, nis, mu, rootQeigs,
-    invrootQeigs, scaleconst, spatial, cellarea)}
-\description{computeGradtruncSpatial function}
-\details{\bold{Advanced use only.} A function to compute a gradient truncation parameter for 'spatial only' MALA via simulation. The function
-requires an FFT 'grid' to be pre-computed, see \link{fftgrid}.}
-\value{gradient truncation parameter}
-\seealso{\link{fftgrid}}
-\arguments{\item{nsims}{The number of simulations to use in computation of gradient truncation.}
-\item{scale}{multiplicative scaling constant, returned value is scale*max(gradient over simulations). Default scale is 1.}
-\item{nis}{cell counts on the extended grid}
-\item{mu}{parameter of latent field, mu}
-\item{rootQeigs}{root of eigenvalues of precision matrix of latent field}
-\item{invrootQeigs}{reciprocal root of eigenvalues of precision matrix of latent field}
-\item{scaleconst}{expected number of cases, or ML estimate of this quantity}
-\item{spatial}{spatial at risk interpolated onto grid of requisite size}
-\item{cellarea}{cell area}}
+\title{computeGradtruncSpatial function}
+\usage{
+  computeGradtruncSpatial(nsims = 100, scale = 1, nis, mu,
+    rootQeigs, invrootQeigs, scaleconst, spatial, cellarea)
+}
+\arguments{
+  \item{nsims}{The number of simulations to use in
+  computation of gradient truncation.}
+
+  \item{scale}{multiplicative scaling constant, returned
+  value is scale (times) max(gradient over simulations).
+  Default scale is 1.}
+
+  \item{nis}{cell counts on the extended grid}
+
+  \item{mu}{parameter of latent field, mu}
+
+  \item{rootQeigs}{root of eigenvalues of precision matrix
+  of latent field}
+
+  \item{invrootQeigs}{reciprocal root of eigenvalues of
+  precision matrix of latent field}
+
+  \item{scaleconst}{expected number of cases, or ML
+  estimate of this quantity}
+
+  \item{spatial}{spatial at risk interpolated onto grid of
+  requisite size}
+
+  \item{cellarea}{cell area}
+}
+\value{
+  gradient truncation parameter
+}
+\description{
+  \bold{Advanced use only.} A function to compute a
+  gradient truncation parameter for 'spatial only' MALA via
+  simulation. The function requires an FFT 'grid' to be
+  pre-computed, see \link{fftgrid}.
+}
+\seealso{
+  \link{fftgrid}
+}
+
