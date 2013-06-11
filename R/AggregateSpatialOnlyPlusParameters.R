@@ -609,7 +609,6 @@ MALAlgcpAggregateSpatial.PlusPars <- function(   mcmcloop,
         }
         if(class(etaCovMat)=="try-error" | etaCovMattest2){
             warning("Cannot find good approximation of posterior variance w.r.to eta: using the following variance instead:",immediate.=TRUE)
-            warning("You should consider whether this is the correct model for the data.",immediate.=TRUE)
             etaCovMat <- (1/100)*model.priors$etaprior$variance
         }
         else{

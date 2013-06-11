@@ -2359,7 +2359,9 @@ addTemporalCovariates <- function(temporal.formula,T,laglength,tdata,Zmat){
         attr(zmtemp,"ncens") <- attr(Zmat,"ncens")
         attr(zmtemp,"polygonOverlay") <- attr(Zmat,"polygonOverlay")
         attr(zmtemp,"pixelOverlay") <- attr(Zmat,"pixelOverlay")
-        attr(zmtemp,"FORM") <- as.formula(paste("X ~ ",as.character(attr(Zmat,"FORM"))[3],paste("+",varn,collapse=" ")))  
+        attr(zmtemp,"FORM") <- as.formula(paste("X ~ ",as.character(attr(Zmat,"FORM"))[3],paste("+",varn,collapse=" ")))
+        attr(zmtemp,"gridobj") <- attr(Zmat,"gridobj")
+	    attr(zmtemp,"inclusion") <- attr(Zmat,"inclusion") 
               
         ZmatList[[i]] <- zmtemp
     }	

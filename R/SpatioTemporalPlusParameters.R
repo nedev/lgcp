@@ -268,7 +268,12 @@ lgcpPredictSpatioTemporalPlusPars <- function( formula,
 	
 	## DEFINE LATTICE & CENTROIDS ##
 	
-	gridobj <- genFFTgrid(study.region=study.region,M=M,N=N,ext=ext,inclusion=inclusion)
+	if(!is.null(attr(ZmatList[[1]],"gridobj"))){
+	    gridobj <- attr(ZmatList[[1]],"gridobj")
+	}
+	else{
+	    gridobj <- genFFTgrid(study.region=study.region,M=M,N=N,ext=ext,inclusion=inclusion)
+	}
 	del1 <- gridobj$del1
 	del2 <- gridobj$del2
 	Mext <- gridobj$Mext
@@ -604,14 +609,15 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
         }
     } 
     
+    
     glmfitted <- list()
     for(i in 1:numt){
         if(inherits(Z,"matrix")){
-            Zbeta <- matrix(as.vector(Z%*%betaval),Next,Mext)        
+            Zbeta <- matrix(as.vector(Z%*%betaval),Mext,Next)        
             glmfitted[[i]] <- spatialvals[[i]]*exp(Zbeta)
         }
         else{ 
-            Zbeta <- matrix(as.vector(Z[[i]]%*%betaval),Next,Mext)
+            Zbeta <- matrix(as.vector(Z[[i]]%*%betaval),Mext,Next)
             glmfitted[[i]] <- spatialvals[[i]]*exp(Zbeta[[i]])   
         }
         glmfitted[[i]] <- glmfitted[[i]][1:M,1:N]
@@ -742,7 +748,6 @@ MALAlgcpSpatioTemporal.PlusPars <- function(   mcmcloop,
     }
     if(class(etaCovMat)=="try-error" | etaCovMattest2){
         warning("Cannot find good approximation of posterior variance w.r.to eta: using the following variance instead:",immediate.=TRUE)
-        warning("You should consider whether this is the correct model for the data.",immediate.=TRUE)
         etaCovMat <- (1/100)*model.priors$etaprior$variance
     }
     else{
