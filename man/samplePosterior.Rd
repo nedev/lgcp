@@ -2,7 +2,7 @@
 \alias{samplePosterior}
 \title{samplePosterior function}
 \usage{
-  samplePosterior(x)
+samplePosterior(x)
 }
 \arguments{
   \item{x}{an object of class
@@ -10,13 +10,13 @@
   lgcpPredictAggregateSpatialPlusParameters}
 }
 \value{
-  a sample from the posterior named list object with names
-  elements "eta", "beta" and "Y".
+a sample from the posterior named list object with names
+elements "eta", "beta" and "Y".
 }
 \description{
-  A function to draw a sample from the posterior of a
-  spatial LGCP. Randomly selects an index i, and returns
-  the ith value of eta, the ith value of beta and the ith
-  value of Y as a named list.
+A function to draw a sample from the posterior of a spatial
+LGCP. Randomly selects an index i, and returns the ith
+value of eta, the ith value of beta and the ith value of Y
+as a named list.
 }
 

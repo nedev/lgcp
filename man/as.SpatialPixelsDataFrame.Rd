@@ -2,7 +2,7 @@
 \alias{as.SpatialPixelsDataFrame}
 \title{as.SpatialPixelsDataFrame function}
 \usage{
-  as.SpatialPixelsDataFrame(obj, ...)
+as.SpatialPixelsDataFrame(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method as.SpatialPixels
+method as.SpatialPixels
 }
 \description{
-  Generic function for conversion to SpatialPixels objects.
+Generic function for conversion to SpatialPixels objects.
 }
 \seealso{
-  \link{as.SpatialPixelsDataFrame.lgcpgrid}
+\link{as.SpatialPixelsDataFrame.lgcpgrid}
 }
 

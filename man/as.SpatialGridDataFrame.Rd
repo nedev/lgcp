@@ -2,7 +2,7 @@
 \alias{as.SpatialGridDataFrame}
 \title{as.SpatialGridDataFrame function}
 \usage{
-  as.SpatialGridDataFrame(obj, ...)
+as.SpatialGridDataFrame(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method as.SpatialGridDataFrame
+method as.SpatialGridDataFrame
 }
 \description{
-  Generic method for convertign to an object of class
-  SpatialGridDataFrame.
+Generic method for convertign to an object of class
+SpatialGridDataFrame.
 }
 \seealso{
-  \link{as.SpatialGridDataFrame.fromXYZ}
+\link{as.SpatialGridDataFrame.fromXYZ}
 }
 

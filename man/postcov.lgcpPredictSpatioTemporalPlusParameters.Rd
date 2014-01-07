@@ -2,7 +2,7 @@
 \alias{postcov.lgcpPredictSpatioTemporalPlusParameters}
 \title{postcov.lgcpPredictSpatioTemporalPlusParameters function}
 \usage{
-  "postcov(obj,qts=c(0.025,0.5,0.975),covmodel=NULL,ask=TRUE,...)"
+"postcov(obj,qts=c(0.025,0.5,0.975),covmodel=NULL,ask=TRUE,...)"
 }
 \arguments{
   \item{obj}{an lgcpPredictSpatioTemporalPlusParameters
@@ -20,21 +20,21 @@
   \item{...}{additional arguments}
 }
 \value{
-  a plot of the posterior spatial covariance function and
-  temporal correlation function.
+a plot of the posterior spatial covariance function and
+temporal correlation function.
 }
 \description{
-  A function for producing plots of the posterior
-  spatiotemporal covariance function.
+A function for producing plots of the posterior
+spatiotemporal covariance function.
 }
 \seealso{
-  \link{postcov.lgcpPredictSpatialOnlyPlusParameters},
-  \link{postcov.lgcpPredictAggregateSpatialPlusParameters},
-  \link{postcov.lgcpPredictSpatioTemporalPlusParameters},
-  \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{textsummary},
-  \link{priorpost}, \link{postcov}, \link{exceedProbs},
-  \link{betavals}, \link{etavals}
+\link{postcov.lgcpPredictSpatialOnlyPlusParameters},
+\link{postcov.lgcpPredictAggregateSpatialPlusParameters},
+\link{postcov.lgcpPredictSpatioTemporalPlusParameters},
+\link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{priorpost}, \link{postcov}, \link{exceedProbs},
+\link{betavals}, \link{etavals}
 }
 

@@ -2,7 +2,7 @@
 \alias{add.list}
 \title{add.list function}
 \usage{
-  add.list(list1, list2)
+add.list(list1, list2)
 }
 \arguments{
   \item{list1}{a list of objects that could be summed using
@@ -12,11 +12,10 @@
   "+"}
 }
 \value{
-  a list with ith entry the sum of list1[[i]] and
-  list2[[i]]
+a list with ith entry the sum of list1[[i]] and list2[[i]]
 }
 \description{
-  This function adds the elements of two list objects
-  together and returns the result in another list object.
+This function adds the elements of two list objects
+together and returns the result in another list object.
 }
 

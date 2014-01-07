@@ -2,7 +2,7 @@
 \alias{etavals}
 \title{etavals function}
 \usage{
-  etavals(lg)
+etavals(lg)
 }
 \arguments{
   \item{lg}{an object produced by a call to
@@ -12,19 +12,19 @@
   orlgcpPredictMultitypeSpatialPlusPars}
 }
 \value{
-  the posterior sampled eta
+the posterior sampled eta
 }
 \description{
-  A function to return the sampled eta from a call to the
-  function lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to return the sampled eta from a call to the
+function lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{textsummary},
-  \link{priorpost}, \link{postcov}, \link{exceedProbs},
-  \link{betavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{priorpost}, \link{postcov}, \link{exceedProbs},
+\link{betavals}
 }
 

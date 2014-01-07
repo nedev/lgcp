@@ -2,11 +2,10 @@
 \alias{MALAlgcp}
 \title{MALAlgcp function}
 \usage{
-  MALAlgcp(mcmcloop, inits, adaptivescheme, M, N, Mext,
-    Next, sigma, phi, theta, mu, nis, cellarea,
-    spatialvals, temporal.fitted, tdiff, scaleconst,
-    rootQeigs, invrootQeigs, cellInside, MCMCdiag,
-    gradtrunc, gridfun, gridav, mcens, ncens, aggtimes)
+MALAlgcp(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi, theta,
+  mu, nis, cellarea, spatialvals, temporal.fitted, tdiff, scaleconst, rootQeigs,
+  invrootQeigs, cellInside, MCMCdiag, gradtrunc, gridfun, gridav, mcens, ncens,
+  aggtimes)
 }
 \arguments{
   \item{mcmcloop}{an mcmcLoop object}
@@ -73,10 +72,10 @@
   time)}
 }
 \value{
-  object passed back to lgcpPredictSpatial
+object passed back to lgcpPredictSpatial
 }
 \description{
-  ADVANCED USE ONLY A function to perform MALA for the
-  spatial only case
+ADVANCED USE ONLY A function to perform MALA for the
+spatial only case
 }
 

@@ -2,8 +2,7 @@
 \alias{as.owinlist.stapp}
 \title{as.owinlist.stapp function}
 \usage{
-  \method{as.owinlist}{stapp} (obj, dmin = 0, check = TRUE,
-    ...)
+\method{as.owinlist}{stapp}(obj, dmin = 0, check = TRUE, ...)
 }
 \arguments{
   \item{obj}{an stapp object}
@@ -18,10 +17,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  a list of owin objects corresponding to the constituent
-  Polygons objects
+a list of owin objects corresponding to the constituent
+Polygons objects
 }
 \description{
-  A function to create a list of owin objects from a stapp
+A function to create a list of owin objects from a stapp
 }
 

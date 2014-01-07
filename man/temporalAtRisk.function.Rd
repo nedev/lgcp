@@ -2,8 +2,7 @@
 \alias{temporalAtRisk.function}
 \title{temporalAtRisk.function function}
 \usage{
-  \method{temporalAtRisk}{function} (obj, tlim, xyt = NULL,
-    warn = TRUE, ...)
+\method{temporalAtRisk}{function}(obj, tlim, xyt = NULL, warn = TRUE, ...)
 }
 \arguments{
   \item{obj}{a function accepting single, scalar, numeric
@@ -24,49 +23,45 @@
   \item{...}{additional arguments}
 }
 \value{
-  a function f(t) giving the temporal intensity at time t
-  for integer t in the interval [tlim[1],tlim[2]] of class
-  temporalAtRisk \enumerate{ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434. }
+a function f(t) giving the temporal intensity at time t for
+integer t in the interval [tlim[1],tlim[2]] of class
+temporalAtRisk \enumerate{ \item Brix A, Diggle PJ (2001).
+Spatiotemporal Prediction for log-Gaussian Cox processes.
+Journal of the Royal Statistical Society, Series B, 63(4),
+823-841.  \item Diggle P, Rowlingson B, Su T (2005). Point
+Process Methodology for On-line Spatio-temporal Disease
+Surveillance. Environmetrics, 16(5), 423-434. }
 }
 \description{
-  Create a temporalAtRisk object from a function.
+Create a temporalAtRisk object from a function.
 }
 \details{
-  Note that in the prediction routine, \link{lgcpPredict},
-  and the simulation routine, \link{lgcpSim}, time
-  discretisation is achieved using \code{as.integer} on
-  both observation times and time limits t_1 and t_2 (which
-  may be stored as non-integer values). The functions that
-  create temporalAtRisk objects therefore return piecewise
-  cconstant step-functions. that can be evaluated for any
-  real t in [t_1,t_2], but with the restriction that
-  mu(t_i) = mu(t_j) whenever
-  \code{as.integer(t_i)==as.integer(t_j)}.
+Note that in the prediction routine, \link{lgcpPredict},
+and the simulation routine, \link{lgcpSim}, time
+discretisation is achieved using \code{as.integer} on both
+observation times and time limits t_1 and t_2 (which may be
+stored as non-integer values). The functions that create
+temporalAtRisk objects therefore return piecewise cconstant
+step-functions. that can be evaluated for any real t in
+[t_1,t_2], but with the restriction that mu(t_i) = mu(t_j)
+whenever \code{as.integer(t_i)==as.integer(t_j)}.
 
-  A temporalAtRisk object may be (1) 'assumed known',
-  corresponding to the default argument \code{xyt=NULL}; or
-  (2) scaled to a particular dataset (argument xyt=[stppp
-  object of interest]). In the latter case, in the routines
-  available (\link{temporalAtRisk.numeric} and
-  \link{temporalAtRisk.function}), the dataset of interest
-  should be referenced, in which case the scaling of mu(t)
-  will be done automatically. Otherwise, for example for
-  simulation purposes, no scaling of mu(t) occurs, and it
-  is assumed that the mu(t) corresponds to the expected
-  number of cases during the unit time interval containnig
-  t.
+A temporalAtRisk object may be (1) 'assumed known',
+corresponding to the default argument \code{xyt=NULL}; or
+(2) scaled to a particular dataset (argument xyt=[stppp
+object of interest]). In the latter case, in the routines
+available (\link{temporalAtRisk.numeric} and
+\link{temporalAtRisk.function}), the dataset of interest
+should be referenced, in which case the scaling of mu(t)
+will be done automatically. Otherwise, for example for
+simulation purposes, no scaling of mu(t) occurs, and it is
+assumed that the mu(t) corresponds to the expected number
+of cases during the unit time interval containnig t.
 }
 \seealso{
-  \link{temporalAtRisk}, \link{spatialAtRisk},
-  \link{temporalAtRisk.numeric}, \link{constantInTime},
-  \link{constantInTime.numeric},
-  \link{constantInTime.stppp}, \link{print.temporalAtRisk},
-  \link{plot.temporalAtRisk}
+\link{temporalAtRisk}, \link{spatialAtRisk},
+\link{temporalAtRisk.numeric}, \link{constantInTime},
+\link{constantInTime.numeric}, \link{constantInTime.stppp},
+\link{print.temporalAtRisk}, \link{plot.temporalAtRisk}
 }
 

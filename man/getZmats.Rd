@@ -2,7 +2,7 @@
 \alias{getZmats}
 \title{getZmats function}
 \usage{
-  getZmats(Zmat, formulaList)
+getZmats(Zmat, formulaList)
 }
 \arguments{
   \item{Zmat}{an objecty of class "lgcpZmat"}
@@ -10,11 +10,11 @@
   \item{formulaList}{an object of class "formulaList"}
 }
 \value{
-  design matrices for each of the point types
+design matrices for each of the point types
 }
 \description{
-  An internal function to create Z_k from an lgcpZmat
-  object, for use in the multivariate MCMC algorithm. Not
-  intended for general use.
+An internal function to create Z_k from an lgcpZmat object,
+for use in the multivariate MCMC algorithm. Not intended
+for general use.
 }
 

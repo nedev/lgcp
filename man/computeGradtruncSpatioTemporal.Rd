@@ -2,9 +2,8 @@
 \alias{computeGradtruncSpatioTemporal}
 \title{computeGradtruncSpatioTemporal function}
 \usage{
-  computeGradtruncSpatioTemporal(nsims = 100, scale = 1,
-    nis, mu, rootQeigs, invrootQeigs, spatial, temporal,
-    bt, cellarea)
+computeGradtruncSpatioTemporal(nsims = 100, scale = 1, nis, mu, rootQeigs,
+  invrootQeigs, spatial, temporal, bt, cellarea)
 }
 \arguments{
   \item{nsims}{The number of simulations to use in
@@ -35,15 +34,15 @@
   \item{cellarea}{cell area}
 }
 \value{
-  gradient truncation parameter
+gradient truncation parameter
 }
 \description{
-  \bold{Advanced use only.} A function to compute a
-  gradient truncation parameter for 'spatial only' MALA via
-  simulation. The function requires an FFT 'grid' to be
-  pre-computed, see \link{fftgrid}.
+\bold{Advanced use only.} A function to compute a gradient
+truncation parameter for 'spatial only' MALA via
+simulation. The function requires an FFT 'grid' to be
+pre-computed, see \link{fftgrid}.
 }
 \seealso{
-  \link{fftgrid}
+\link{fftgrid}
 }
 

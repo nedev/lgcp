@@ -2,7 +2,7 @@
 \alias{intens}
 \title{intens function}
 \usage{
-  intens(obj, ...)
+intens(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method intens
+method intens
 }
 \description{
-  Generic function to return the Poisson Intensity.
+Generic function to return the Poisson Intensity.
 }
 \seealso{
-  \link{lgcpPredict}, \link{intens.lgcpPredict}
+\link{lgcpPredict}, \link{intens.lgcpPredict}
 }
 

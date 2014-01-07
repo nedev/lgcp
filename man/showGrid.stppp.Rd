@@ -2,7 +2,7 @@
 \alias{showGrid.stppp}
 \title{showGrid.stppp function}
 \usage{
-  \method{showGrid}{stppp} (x, ...)
+\method{showGrid}{stppp}(x, ...)
 }
 \arguments{
   \item{x}{an object of class stppp. Note this function oly
@@ -11,14 +11,13 @@
   \item{...}{additional arguments passed to points}
 }
 \value{
-  plots grid centroids on the current graphics device. FOR
-  SIMULATED DATA ONLY.
+plots grid centroids on the current graphics device. FOR
+SIMULATED DATA ONLY.
 }
 \description{
-  If an stppp object has been created via simulation, ie
-  using the function \code{lgcpSim}, then this function
-  will display the grid centroids that were used in the
-  simulation
+If an stppp object has been created via simulation, ie
+using the function \code{lgcpSim}, then this function will
+display the grid centroids that were used in the simulation
 }
 \examples{
 \dontrun{xyt <- lgcpSim()}
@@ -26,7 +25,7 @@
 \dontrun{showGrid(xyt,pch="+",cex=0.5)}
 }
 \seealso{
-  \link{lgcpSim}, \link{showGrid.default},
-  \link{showGrid.lgcpPredict}
+\link{lgcpSim}, \link{showGrid.default},
+\link{showGrid.lgcpPredict}
 }
 

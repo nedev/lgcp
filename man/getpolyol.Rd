@@ -2,9 +2,8 @@
 \alias{getpolyol}
 \title{getpolyol function}
 \usage{
-  getpolyol(data, regionalcovariates = NULL,
-    pixelcovariates = NULL, cellwidth, ext = 2,
-    inclusion = "touching")
+getpolyol(data, regionalcovariates = NULL, pixelcovariates = NULL,
+  cellwidth, ext = 2, inclusion = "touching")
 }
 \arguments{
   \item{data}{an object of class ppp or
@@ -33,25 +32,25 @@
   centroids are inside the observation window.}
 }
 \value{
-  an object of class lgcppolyol, which can then be fed into
-  the function getZmat.
+an object of class lgcppolyol, which can then be fed into
+the function getZmat.
 }
 \description{
-  A function to perform polygon/polygon overlay operations
-  and form the computational grid, on which inference will
-  eventually take place. For details and examples of using
-  this fucntion, please see the package vignette
-  "Bayesian_lgcp"
+A function to perform polygon/polygon overlay operations
+and form the computational grid, on which inference will
+eventually take place. For details and examples of using
+this fucntion, please see the package vignette
+"Bayesian_lgcp"
 }
 \seealso{
-  \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal},
-  \link{chooseCellwidth}, \link{guessinterp},
-  \link{getZmat}, \link{addTemporalCovariates},
-  \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal},
+\link{chooseCellwidth}, \link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

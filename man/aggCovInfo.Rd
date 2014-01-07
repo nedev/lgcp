@@ -2,7 +2,7 @@
 \alias{aggCovInfo}
 \title{aggCovInfo function}
 \usage{
-  aggCovInfo(obj, ...)
+aggCovInfo(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,10 +10,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  method aggCovInfo
+method aggCovInfo
 }
 \description{
-  Generic function for aggregation of covariate
-  information.
+Generic function for aggregation of covariate information.
 }
 

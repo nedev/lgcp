@@ -2,8 +2,8 @@
 \alias{lgcppars}
 \title{lgcppars function}
 \usage{
-  lgcppars(sigma = NULL, phi = NULL, theta = NULL,
-    mu = NULL, beta = NULL)
+lgcppars(sigma = NULL, phi = NULL, theta = NULL, mu = NULL,
+  beta = NULL)
 }
 \arguments{
   \item{sigma}{sigma parameter}
@@ -20,12 +20,12 @@
   information.}
 }
 \description{
-  A function for setting the parameters sigma, phi and
-  theta for \code{lgcpPredict}. Note that the returned set
-  of parameters also features mu=-0.5*sigma^2, gives
-  mean(exp(Y)) = 1.
+A function for setting the parameters sigma, phi and theta
+for \code{lgcpPredict}. Note that the returned set of
+parameters also features mu=-0.5*sigma^2, gives
+mean(exp(Y)) = 1.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

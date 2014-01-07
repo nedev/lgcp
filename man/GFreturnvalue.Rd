@@ -2,7 +2,7 @@
 \alias{GFreturnvalue}
 \title{GFreturnvalue function}
 \usage{
-  GFreturnvalue(F, ...)
+GFreturnvalue(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,16 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  method GFreturnvalue
+method GFreturnvalue
 }
 \description{
-  Generic function defining the the returned value for the
-  \code{gridFunction} class of objects. The function is
-  called invisibly within \code{MALAlgcp} and facilitates
-  the dumping of data to disk
+Generic function defining the the returned value for the
+\code{gridFunction} class of objects. The function is
+called invisibly within \code{MALAlgcp} and facilitates the
+dumping of data to disk
 }
 \seealso{
-  \link{setoutput}, \link{GFinitialise}, \link{GFupdate},
-  \link{GFfinalise}
+\link{setoutput}, \link{GFinitialise}, \link{GFupdate},
+\link{GFfinalise}
 }
 

@@ -2,8 +2,8 @@
 \alias{priorpost}
 \title{priorpost function}
 \usage{
-  priorpost(obj, breaks = 30, xlab = NULL,
-    ylab = "Density", main = "", ask = TRUE, ...)
+priorpost(obj, breaks = 30, xlab = NULL, ylab = "Density", main = "",
+  ask = TRUE, ...)
 }
 \arguments{
   \item{obj}{an object produced by a call to
@@ -28,18 +28,18 @@
   \item{...}{other arguments passed to the function "hist"}
 }
 \value{
-  plots of the prior and posterior of the model parameters
-  eta and beta.
+plots of the prior and posterior of the model parameters
+eta and beta.
 }
 \description{
-  A function to plot the prior and posterior densities of
-  the model parameters eta and beta. The prior appears as a
-  red line and the posterior appears as a histogram.
+A function to plot the prior and posterior densities of the
+model parameters eta and beta. The prior appears as a red
+line and the posterior appears as a histogram.
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{textsummary},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

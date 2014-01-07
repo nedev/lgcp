@@ -2,7 +2,7 @@
 \alias{circulant}
 \title{circulant function}
 \usage{
-  circulant(x, ...)
+circulant(x, ...)
 }
 \arguments{
   \item{x}{an object}
@@ -10,9 +10,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  method circulant
+method circulant
 }
 \description{
-  generic function for constructing circulant matrices
+generic function for constructing circulant matrices
 }
 

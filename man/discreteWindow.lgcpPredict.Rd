@@ -2,8 +2,7 @@
 \alias{discreteWindow.lgcpPredict}
 \title{discreteWindow.lgcpPredict function}
 \usage{
-  \method{discreteWindow}{lgcpPredict} (obj,
-    inclusion = "touching", ...)
+\method{discreteWindow}{lgcpPredict}(obj, inclusion = "touching", ...)
 }
 \arguments{
   \item{obj}{an lgcpPredict object}
@@ -17,10 +16,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  ...
+...
 }
 \description{
-  A function for extracting the FFT discrete window from an
-  lgcpPredict object.
+A function for extracting the FFT discrete window from an
+lgcpPredict object.
 }
 

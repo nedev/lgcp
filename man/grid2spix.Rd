@@ -2,8 +2,7 @@
 \alias{grid2spix}
 \title{grid2spix function}
 \usage{
-  grid2spix(xgrid, ygrid,
-    proj4string = CRS(as.character(NA)))
+grid2spix(xgrid, ygrid, proj4string = CRS(as.character(NA)))
 }
 \arguments{
   \item{xgrid}{vector of x centroids (equally spaced)}
@@ -14,10 +13,10 @@
   string for the grid, set using the function CRS}
 }
 \value{
-  a SpatialPixels object
+a SpatialPixels object
 }
 \description{
-  A function to convert a regular (x,y) grid of centroids
-  into a SpatialPixels object
+A function to convert a regular (x,y) grid of centroids
+into a SpatialPixels object
 }
 

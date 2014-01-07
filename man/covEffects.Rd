@@ -2,7 +2,7 @@
 \alias{covEffects}
 \title{covEffects function}
 \usage{
-  covEffects(Y, beta, eta, Z, otherargs)
+covEffects(Y, beta, eta, Z, otherargs)
 }
 \arguments{
   \item{Y}{the latent field}
@@ -17,21 +17,21 @@
   vignette "Bayesian_lgcp" for an explanation)}
 }
 \value{
-  the main effects
+the main effects
 }
 \description{
-  A function used in conjunction with the function
-  "expectation" to compute the main covariate effects,\cr
-  lambda(s) exp[Z(s)beta] \cr in each computational grid
-  cell. Currently only implemented for spatial processes
-  (lgcpPredictSpatialPlusPars and
-  lgcpPredictAggregateSpatialPlusPars).
+A function used in conjunction with the function
+"expectation" to compute the main covariate effects,\cr
+lambda(s) exp[Z(s)beta] \cr in each computational grid
+cell. Currently only implemented for spatial processes
+(lgcpPredictSpatialPlusPars and
+lgcpPredictAggregateSpatialPlusPars).
 }
 \examples{
 \dontrun{ex <- expectation(lg,covEffects)[[1]] # lg is output from spatial LGCP MCMC}
 }
 \seealso{
-  \link{expectation}, \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars}
+\link{expectation}, \link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars}
 }
 

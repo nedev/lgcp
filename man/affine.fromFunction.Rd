@@ -2,7 +2,7 @@
 \alias{affine.fromFunction}
 \title{affine.fromFunction function}
 \usage{
-  \method{affine}{fromFunction} (X, mat, ...)
+\method{affine}{fromFunction}(X, mat, ...)
 }
 \arguments{
   \item{X}{an object of class fromFunction}
@@ -12,10 +12,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  the object acted on by the transformation matrix
+the object acted on by the transformation matrix
 }
 \description{
-  An affine transformation of an object of class
-  \code{fromFunction}
+An affine transformation of an object of class
+\code{fromFunction}
 }
 

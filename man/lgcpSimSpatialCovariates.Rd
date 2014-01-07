@@ -2,12 +2,10 @@
 \alias{lgcpSimSpatialCovariates}
 \title{lgcpSimSpatialCovariates function}
 \usage{
-  lgcpSimSpatialCovariates(formula, owin,
-    regionalcovariates = NULL, pixelcovariates = NULL,
-    Zmat = NULL, beta, poisson.offset = NULL, cellwidth,
-    model.parameters, spatial.covmodel = "exponential",
-    covpars = c(), ext = 2, plot = FALSE,
-    inclusion = "touching")
+lgcpSimSpatialCovariates(formula, owin, regionalcovariates = NULL,
+  pixelcovariates = NULL, Zmat = NULL, beta, poisson.offset = NULL,
+  cellwidth, model.parameters, spatial.covmodel = "exponential",
+  covpars = c(), ext = 2, plot = FALSE, inclusion = "touching")
 }
 \arguments{
   \item{formula}{a formula of the form X ~ var1 + var2
@@ -55,9 +53,9 @@
   centroids are inside the observation window.}
 }
 \value{
-  a ppp onject containing the simulated data
+a ppp onject containing the simulated data
 }
 \description{
-  A function to simulate a spatial LGCP.
+A function to simulate a spatial LGCP.
 }
 

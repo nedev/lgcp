@@ -2,8 +2,7 @@
 \alias{g.diff.single}
 \title{g.diff.single function}
 \usage{
-  g.diff.single(ps, ghat, useq, model, transform, power,
-    ...)
+g.diff.single(ps, ghat, useq, model, transform, power, ...)
 }
 \arguments{
   \item{ps}{A numeric vector of length 2 giving the values
@@ -36,14 +35,13 @@
   See ?CovarianceFct (RandomFields).}
 }
 \value{
-  A single numeric value providing the minimum contrast
-  value for the specified value of the ps argument.
+A single numeric value providing the minimum contrast value
+for the specified value of the ps argument.
 }
 \description{
-  A function to find the minimum contrast (squared
-  discrepancy) value based on the pair correlation
-  function, for one specific value of phi (spatial scale)
-  and one specific value of sigma^2 (spatial variance) for
-  the LGCP.
+A function to find the minimum contrast (squared
+discrepancy) value based on the pair correlation function,
+for one specific value of phi (spatial scale) and one
+specific value of sigma^2 (spatial variance) for the LGCP.
 }
 

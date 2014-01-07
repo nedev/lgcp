@@ -2,10 +2,9 @@
 \alias{rgauss}
 \title{rgauss function}
 \usage{
-  rgauss(n = 1, range = c(0, 1), ncells = 128,
-    spatial.covmodel = "exponential",
-    model.parameters = lgcppars(sigma = 2, phi = 0.1),
-    covpars = c(), ext = 2)
+rgauss(n = 1, range = c(0, 1), ncells = 128,
+  spatial.covmodel = "exponential", model.parameters = lgcppars(sigma = 2,
+  phi = 0.1), covpars = c(), ext = 2)
 }
 \arguments{
   \item{n}{the number of realisations to generate. Default
@@ -32,10 +31,10 @@
   Default is 2.}
 }
 \value{
-  an lgcp grid object containing the simulated field(s).
+an lgcp grid object containing the simulated field(s).
 }
 \description{
-  A function to simulate a Gaussian field on a regular
-  square lattice, the returned object is of class lgcpgrid.
+A function to simulate a Gaussian field on a regular square
+lattice, the returned object is of class lgcpgrid.
 }
 

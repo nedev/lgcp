@@ -2,14 +2,11 @@
 \alias{lgcpPredictSpatialINLA}
 \title{lgcpPredictSpatialINLA function}
 \usage{
-  lgcpPredictSpatialINLA(sd, ns,
-    model.parameters = lgcppars(),
-    spatial.covmodel = "exponential", covpars = c(),
-    cellwidth = NULL, gridsize = NULL, spatial.intensity,
-    ext = 2, optimverbose = FALSE, inlaverbose = TRUE,
-    generic0hyper = list(theta = list(initial = 0, fixed = TRUE)),
-    strategy = "simplified.laplace",
-    method = "Nelder-Mead")
+lgcpPredictSpatialINLA(sd, ns, model.parameters = lgcppars(),
+  spatial.covmodel = "exponential", covpars = c(), cellwidth = NULL,
+  gridsize = NULL, spatial.intensity, ext = 2, optimverbose = FALSE,
+  inlaverbose = TRUE, generic0hyper = list(theta = list(initial = 0, fixed =
+  TRUE)), strategy = "simplified.laplace", method = "Nelder-Mead")
 }
 \arguments{
   \item{sd}{a spatial point pattern object, see ?ppp}
@@ -63,89 +60,88 @@
   ?matchcovariance}
 }
 \value{
-  the results of fitting the model in an object of class
-  \code{lgcpPredict}
+the results of fitting the model in an object of class
+\code{lgcpPredict}
 }
 \description{
-  -------------------------------------------------------
-  !IMPORTANT! after library(lgcp) this will be a dummy
-  function. In order to use, type
-  getlgcpPredictSpatialINLA() at the console. This will
-  download and install the true function.
-  -------------------------------------------------------
+-------------------------------------------------------
+!IMPORTANT! after library(lgcp) this will be a dummy
+function. In order to use, type getlgcpPredictSpatialINLA()
+at the console. This will download and install the true
+function.
+-------------------------------------------------------
 }
 \details{
-  The function \code{lgcpPredictSpatialINLA} performs
-  spatial prediction for log-Gaussian Cox Processes using
-  the integrated nested Laplace approximation.
+The function \code{lgcpPredictSpatialINLA} performs spatial
+prediction for log-Gaussian Cox Processes using the
+integrated nested Laplace approximation.
 
-  The following is a mathematical description of a
-  log-Gaussian Cox Process, it is best viewed in the pdf
-  version of the manual.
+The following is a mathematical description of a
+log-Gaussian Cox Process, it is best viewed in the pdf
+version of the manual.
 
-  Let \eqn{\mathcal Y(s)}{\mathcal Y(s)} be a spatial
-  Gaussian process and \eqn{W\subset R^2}{W\subset R^2} be
-  an observation window in space. Cases occur at spatial
-  positions \eqn{x \in W}{x \in W} according to an
-  inhomogeneous spatial Cox process, i.e. a Poisson process
-  with a stochastic intensity \eqn{R(x)}{R(x)}, The number
-  of cases, \eqn{X_{S}}{X_{S}}, arising in any \eqn{S
-  \subseteq W}{S \subseteq W} is then Poisson distributed
-  conditional on \eqn{R(\cdot)}{R(\cdot)}, \deqn{X_{S} \sim
-  \mbox{Poisson}\left\{\int_S R(s)ds\right\}}{X_{S} \sim
-  \mbox{Poisson}\left\{\int_S R(s)ds\right\}.} Following
-  Brix and Diggle (2001) and Diggle et al (2005) (but
-  ignoring temporal variation), the intensity is decomposed
-  multiplicatively as \deqn{R(s,t) =
-  \lambda(s)\exp\{\mathcal Y(s,t)\}.}{R(s,t) =
-  \lambda(s)Exp\{\mathcal Y(s,t)\}.} In the above, the
-  fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq
-  0}}{\lambda:R^2\mapsto R_{\geq 0}}, is a known function,
-  proportional to the population at risk at each point in
-  space and scaled so that \deqn{\int_W\lambda(s)d
-  s=1.}{\int_W\lambda(s)d s=1.}
+Let \eqn{\mathcal Y(s)}{\mathcal Y(s)} be a spatial
+Gaussian process and \eqn{W\subset R^2}{W\subset R^2} be an
+observation window in space. Cases occur at spatial
+positions \eqn{x \in W}{x \in W} according to an
+inhomogeneous spatial Cox process, i.e. a Poisson process
+with a stochastic intensity \eqn{R(x)}{R(x)}, The number of
+cases, \eqn{X_{S}}{X_{S}}, arising in any \eqn{S \subseteq
+W}{S \subseteq W} is then Poisson distributed conditional
+on \eqn{R(\cdot)}{R(\cdot)}, \deqn{X_{S} \sim
+\mbox{Poisson}\left\{\int_S R(s)ds\right\}}{X_{S} \sim
+\mbox{Poisson}\left\{\int_S R(s)ds\right\}.} Following Brix
+and Diggle (2001) and Diggle et al (2005) (but ignoring
+temporal variation), the intensity is decomposed
+multiplicatively as \deqn{R(s,t) = \lambda(s)\exp\{\mathcal
+Y(s,t)\}.}{R(s,t) = \lambda(s)Exp\{\mathcal Y(s,t)\}.} In
+the above, the fixed spatial component,
+\eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto
+R_{\geq 0}}, is a known function, proportional to the
+population at risk at each point in space and scaled so
+that \deqn{\int_W\lambda(s)d s=1.}{\int_W\lambda(s)d s=1.}
 
-  Before calling this function, the user must decide on the
-  parameters, spatial covariance model, spatial
-  discretisation, fixed spatial
-  (\eqn{\lambda(s)}{\lambda(s)}) component and whether or
-  not any output is required. Note there is no autorotate
-  option for this function.
+Before calling this function, the user must decide on the
+parameters, spatial covariance model, spatial
+discretisation, fixed spatial
+(\eqn{\lambda(s)}{\lambda(s)}) component and whether or not
+any output is required. Note there is no autorotate option
+for this function.
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434.  \item Wood ATA, Chan G (1994).
-  Simulation of Stationary Gaussian Processes in [0,1]d.
-  Journal of Computational and Graphical Statistics, 3(4),
-  409-432.  \item Moller J, Syversveen AR, Waagepetersen RP
-  (1998). Log Gaussian Cox Processes. Scandinavian Journal
-  of Statistics, 25(3), 451-482. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
+(2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434.  \item Wood ATA, Chan G (1994). Simulation
+of Stationary Gaussian Processes in [0,1]d. Journal of
+Computational and Graphical Statistics, 3(4), 409-432.
+\item Moller J, Syversveen AR, Waagepetersen RP (1998). Log
+Gaussian Cox Processes. Scandinavian Journal of Statistics,
+25(3), 451-482. }
 }
 \seealso{
-  \link{lgcpPredict} \link{KinhomAverage},
-  \link{ginhomAverage}, \link{lambdaEst}, \link{muEst},
-  \link{spatialparsEst}, \link{thetaEst},
-  \link{spatialAtRisk}, \link{temporalAtRisk},
-  \link{lgcppars}, \link{CovarianceFct}, \link{mcmcpars},
-  \link{setoutput} \link{print.lgcpPredict},
-  \link{xvals.lgcpPredict}, \link{yvals.lgcpPredict},
-  \link{plot.lgcpPredict}, \link{meanfield.lgcpPredict},
-  \link{rr.lgcpPredict}, \link{serr.lgcpPredict},
-  \link{intens.lgcpPredict}, \link{varfield.lgcpPredict},
-  \link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict},
-  \link{hvals.lgcpPredict}, \link{window.lgcpPredict},
-  \link{mcmctrace.lgcpPredict},
-  \link{plotExceed.lgcpPredict},
-  \link{quantile.lgcpPredict}, \link{identify.lgcpPredict},
-  \link{expectation.lgcpPredict},
-  \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict},
+\link{lgcpPredict} \link{KinhomAverage},
+\link{ginhomAverage}, \link{lambdaEst}, \link{muEst},
+\link{spatialparsEst}, \link{thetaEst},
+\link{spatialAtRisk}, \link{temporalAtRisk},
+\link{lgcppars}, \link{CovarianceFct}, \link{mcmcpars},
+\link{setoutput} \link{print.lgcpPredict},
+\link{xvals.lgcpPredict}, \link{yvals.lgcpPredict},
+\link{plot.lgcpPredict}, \link{meanfield.lgcpPredict},
+\link{rr.lgcpPredict}, \link{serr.lgcpPredict},
+\link{intens.lgcpPredict}, \link{varfield.lgcpPredict},
+\link{gridfun.lgcpPredict}, \link{gridav.lgcpPredict},
+\link{hvals.lgcpPredict}, \link{window.lgcpPredict},
+\link{mcmctrace.lgcpPredict},
+\link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict},
+\link{identify.lgcpPredict},
+\link{expectation.lgcpPredict}, \link{extract.lgcpPredict},
+\link{showGrid.lgcpPredict},
 }
 

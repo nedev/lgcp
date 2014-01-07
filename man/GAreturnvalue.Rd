@@ -2,7 +2,7 @@
 \alias{GAreturnvalue}
 \title{GAreturnvalue function}
 \usage{
-  GAreturnvalue(F, ...)
+GAreturnvalue(F, ...)
 }
 \arguments{
   \item{F}{an object}
@@ -10,16 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  method GAreturnvalue
+method GAreturnvalue
 }
 \description{
-  Generic function defining the the returned value for the
-  \code{gridAverage} class of functions. The function is
-  called invisibly within \code{MALAlgcp} and facilitates
-  the computation of Monte Carlo Averages online.
+Generic function defining the the returned value for the
+\code{gridAverage} class of functions. The function is
+called invisibly within \code{MALAlgcp} and facilitates the
+computation of Monte Carlo Averages online.
 }
 \seealso{
-  \link{setoutput}, \link{GAinitialise}, \link{GAupdate},
-  \link{GAfinalise}
+\link{setoutput}, \link{GAinitialise}, \link{GAupdate},
+\link{GAfinalise}
 }
 

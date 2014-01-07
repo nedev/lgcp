@@ -2,7 +2,7 @@
 \alias{setoutput}
 \title{setoutput function}
 \usage{
-  setoutput(gridfunction = NULL, gridmeans = NULL)
+setoutput(gridfunction = NULL, gridmeans = NULL)
 }
 \arguments{
   \item{gridfunction}{what to do with the latent field, but
@@ -13,17 +13,17 @@
   see ?MonteCarloAverage}
 }
 \value{
-  output parameters
+output parameters
 }
 \description{
-  Sets output functionality for \link{lgcpPredict} via the
-  main functions \link{dump2dir} and
-  \link{MonteCarloAverage}. Note that it is possible for
-  the user to create their own \code{gridfunction} and
-  \code{gridmeans} schemes.
+Sets output functionality for \link{lgcpPredict} via the
+main functions \link{dump2dir} and
+\link{MonteCarloAverage}. Note that it is possible for the
+user to create their own \code{gridfunction} and
+\code{gridmeans} schemes.
 }
 \seealso{
-  \link{lgcpPredict}, \link{dump2dir},
-  \link{MonteCarloAverage}
+\link{lgcpPredict}, \link{dump2dir},
+\link{MonteCarloAverage}
 }
 

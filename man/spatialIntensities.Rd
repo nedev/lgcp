@@ -2,7 +2,7 @@
 \alias{spatialIntensities}
 \title{spatialIntensities function}
 \usage{
-  spatialIntensities(X, ...)
+spatialIntensities(X, ...)
 }
 \arguments{
   \item{X}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method spatialintensities
+method spatialintensities
 }
 \description{
-  Generic method for extracting spatial intensities.
+Generic method for extracting spatial intensities.
 }
 \seealso{
-  \link{spatialIntensities.fromXYZ},
-  \link{spatialIntensities.fromSPDF}
+\link{spatialIntensities.fromXYZ},
+\link{spatialIntensities.fromSPDF}
 }
 

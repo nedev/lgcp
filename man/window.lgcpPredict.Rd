@@ -2,7 +2,7 @@
 \alias{window.lgcpPredict}
 \title{window.lgcpPredict function}
 \usage{
-  \method{window}{lgcpPredict} (x, ...)
+\method{window}{lgcpPredict}(x, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpPredict}
@@ -10,17 +10,17 @@
   \item{...}{additional arguments}
 }
 \value{
-  returns the observation window used durign computation
+returns the observation window used durign computation
 }
 \description{
-  Accessor function returning the observation window from
-  objects of class \code{lgcpPredict}. Note that for
-  computational purposes, the window of an \code{stppp}
-  object will be extended to accommodate the requirement
-  that the dimensions must be powers of 2. The function
-  \code{window.lgcpPredict} returns the extended window.
+Accessor function returning the observation window from
+objects of class \code{lgcpPredict}. Note that for
+computational purposes, the window of an \code{stppp}
+object will be extended to accommodate the requirement that
+the dimensions must be powers of 2. The function
+\code{window.lgcpPredict} returns the extended window.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

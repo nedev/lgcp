@@ -2,9 +2,8 @@
 \alias{matchcovariance}
 \title{matchcovariance function}
 \usage{
-  matchcovariance(xg, yg, ns, sigma, phi, model,
-    additionalparameters, verbose = TRUE, r = 1,
-    method = "Nelder-Mead")
+matchcovariance(xg, yg, ns, sigma, phi, model, additionalparameters,
+  verbose = TRUE, r = 1, method = "Nelder-Mead")
 }
 \arguments{
   \item{xg}{x grid must be equally spaced}
@@ -32,11 +31,10 @@
   either be 'Nelder-Mead' or 'BFGS'. see ?optim}
 }
 \value{
-  ...
+...
 }
 \description{
-  A function to match the covariance matrix of a Gaussian
-  Field with an approximate GMRF with neighbourhood size
-  ns.
+A function to match the covariance matrix of a Gaussian
+Field with an approximate GMRF with neighbourhood size ns.
 }
 

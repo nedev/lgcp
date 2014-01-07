@@ -236,9 +236,12 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     phimax <- phi.range[2]
     
     idx <- which(names(gk)==attr(gk,"correction"))
+    
+    env <- NULL
 
     if (attr(gk,"fname") == "g[inhom]"){ 
-        panfun <- function(p){            
+        panfun <- function(p){ 
+            env <<- environment()           
             r <- gk$r            
             egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars))-1)
             gvals <- gk[[idx]]
@@ -257,6 +260,7 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     }
     else if (attr(gk,"fname") == "K[inhom]"){
         panfun <- function(p){
+            env <<- environment()
             r <- gk$r
             egr <- suppressWarnings(exp(sapply(r,gu,sigma=p$sigma,phi=p$phi,model=spatial.covmodel,additionalparameters=covpars))-1)    
             rdiff <- diff(r[1:2]) # do the integral on the discrete partition of r given by Kinhom
@@ -347,18 +351,19 @@ spatialparsEst <- function(gk,sigma.range,phi.range,spatial.covmodel,covpars=c()
     rp.button(pancontrol,action=ok,title="OK",quitbutton=TRUE)
     
     # construct a geometry string with the current height and new width:
-    hhh = as.numeric(tkwinfo("height",pancontrol$window))+50
+    hhh = as.numeric(tkwinfo("height",pancontrol$.handle))+50
     www = 300
     ggg = sprintf("%dx%d",www,hhh)
     # resize
-    tkwm.geometry(pancontrol$window,ggg)
+    tkwm.geometry(pancontrol$.handle,ggg)
     
     ## now wait until our panel quits.
     rp.block(pancontrol)
     dev.off()    
     ## get the variables. Two points:
-    sigma <- as.numeric(tclvalue(pancontrol$sigma.tcl))
-    phi <- as.numeric(tclvalue(pancontrol$phi.tcl))
+    
+    sigma <- get("p",envir=env)$sigma #as.numeric(tclvalue(pancontrol$sigma.tcl))
+    phi <- get("p",envir=env)$phi #as.numeric(tclvalue(pancontrol$phi.tcl))
     return(list(sigma=sigma,phi=phi))
 }
 

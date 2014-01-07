@@ -2,8 +2,7 @@
 \alias{exceedProbsAggregated}
 \title{exceedProbsAggregated function}
 \usage{
-  exceedProbsAggregated(threshold, lg = NULL,
-    lastonly = TRUE)
+exceedProbsAggregated(threshold, lg = NULL, lastonly = TRUE)
 }
 \arguments{
   \item{threshold}{vector of threshold levels for the
@@ -15,27 +14,27 @@
   exceedances for the last time point. default is TRUE}
 }
 \value{
-  a function of Y that computes the indicator function
-  I(exp(Y)>threshold) evaluated for each cell of a matrix
-  Y, but with values aggregated to regions If several
-  tresholds are specified an array is returned with the
-  [,,i]th slice equal to I(exp(Y)>threshold[i])
+a function of Y that computes the indicator function
+I(exp(Y)>threshold) evaluated for each cell of a matrix Y,
+but with values aggregated to regions If several tresholds
+are specified an array is returned with the [,,i]th slice
+equal to I(exp(Y)>threshold[i])
 }
 \description{
-  NOTE THIS FUNCTION IS IN TESTING AT PRESENT
+NOTE THIS FUNCTION IS IN TESTING AT PRESENT
 }
 \details{
-  This function computes regional exceedance probabilities
-  after MCMC has finished, it requires the information to
-  have been dumped to disk, and to have been computed using
-  the function lgcpPredictAggregated
-  \deqn{P[\exp(Y_{t_1:t_2})>k],}{P[\exp(Y_{t_1:t_2})>k],}
-  that is the probability that the relative risk exceeds
-  threshold \eqn{k}{k}. Note that it is possible to pass
-  vectors of tresholds to the function, and the exceedance
-  probabilities will be computed for each of these.
+This function computes regional exceedance probabilities
+after MCMC has finished, it requires the information to
+have been dumped to disk, and to have been computed using
+the function lgcpPredictAggregated
+\deqn{P[\exp(Y_{t_1:t_2})>k],}{P[\exp(Y_{t_1:t_2})>k],}
+that is the probability that the relative risk exceeds
+threshold \eqn{k}{k}. Note that it is possible to pass
+vectors of tresholds to the function, and the exceedance
+probabilities will be computed for each of these.
 }
 \seealso{
-  \link{lgcpPredictAggregated}
+\link{lgcpPredictAggregated}
 }
 

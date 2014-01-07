@@ -2,7 +2,7 @@
 \alias{stapp.list}
 \title{stapp.list function}
 \usage{
-  \method{stapp}{list} (obj, ...)
+\method{stapp}{list}(obj, ...)
 }
 \arguments{
   \item{obj}{an list object as described above, see
@@ -12,19 +12,19 @@
   \item{...}{additional arguments}
 }
 \value{
-  an object of class stapp
+an object of class stapp
 }
 \description{
-  A wrapper function for stapp.SpatialPolygonsDataFrame
+A wrapper function for stapp.SpatialPolygonsDataFrame
 }
 \details{
-  Construct a space-time aggregated point-process (stapp)
-  object from a list object. The first element of the list
-  should be a SpatialPolygonsDataFrame, the second element
-  of the list a counts matrix, the third element of the
-  list a vector of times, the fourth element a vector
-  giving the bounds of the temporal observation window and
-  the fifth element a spatstat owin object giving the
-  spatial observation window.
+Construct a space-time aggregated point-process (stapp)
+object from a list object. The first element of the list
+should be a SpatialPolygonsDataFrame, the second element of
+the list a counts matrix, the third element of the list a
+vector of times, the fourth element a vector giving the
+bounds of the temporal observation window and the fifth
+element a spatstat owin object giving the spatial
+observation window.
 }
 

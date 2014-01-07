@@ -2,8 +2,8 @@
 \alias{spatialparsEst}
 \title{spatialparsEst function}
 \usage{
-  spatialparsEst(gk, sigma.range, phi.range,
-    spatial.covmodel, covpars = c(), guess = FALSE)
+spatialparsEst(gk, sigma.range, phi.range, spatial.covmodel, covpars = c(),
+  guess = FALSE)
 }
 \arguments{
   \item{gk}{an R object; output from the function
@@ -26,37 +26,37 @@
   automatic parameter estimation can be can be unreliable.}
 }
 \value{
-  rpanel function to help choose sigma nad phi by eye
+rpanel function to help choose sigma nad phi by eye
 }
 \description{
-  Having estimated either the pair correlation or K
-  functions using respectively \link{ginhomAverage} or
-  \link{KinhomAverage}, the spatial parameters sigma and
-  phi can be estimated. This function provides a visual
-  tool for this estimation procedure.
+Having estimated either the pair correlation or K functions
+using respectively \link{ginhomAverage} or
+\link{KinhomAverage}, the spatial parameters sigma and phi
+can be estimated. This function provides a visual tool for
+this estimation procedure.
 }
 \details{
-  To get a good choice of parameters, it is likely that the
-  routine will have to be called several times in order to
-  refine the choice of sigma.range and phi.range.
+To get a good choice of parameters, it is likely that the
+routine will have to be called several times in order to
+refine the choice of sigma.range and phi.range.
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Baddeley AJ,
-  Moller J, Waagepetersen R (2000). Non-and semi-parametric
-  estimation of interaction in inhomogeneous point
-  patterns. Statistica Neerlandica, 54, 329-350.  \item
-  Brix A, Diggle PJ (2001). Spatiotemporal Prediction for
-  log-Gaussian Cox processes. Journal of the Royal
-  Statistical Society, Series B, 63(4), 823-841.  \item
-  Diggle P, Rowlingson B, Su T (2005). Point Process
-  Methodology for On-line Spatio-temporal Disease
-  Surveillance. Environmetrics, 16(5), 423-434. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Baddeley AJ, Moller
+J, Waagepetersen R (2000). Non-and semi-parametric
+estimation of interaction in inhomogeneous point patterns.
+Statistica Neerlandica, 54, 329-350.  \item Brix A, Diggle
+PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434. }
 }
 \seealso{
-  \link{ginhomAverage}, \link{KinhomAverage},
-  \link{thetaEst}, \link{lambdaEst}, \link{muEst}
+\link{ginhomAverage}, \link{KinhomAverage},
+\link{thetaEst}, \link{lambdaEst}, \link{muEst}
 }
 

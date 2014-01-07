@@ -2,7 +2,7 @@
 \alias{xvals}
 \title{xvals function}
 \usage{
-  xvals(obj, ...)
+xvals(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class spatialAtRisk}
@@ -10,17 +10,17 @@
   \item{...}{additional arguments}
 }
 \value{
-  the xvals method
+the xvals method
 }
 \description{
-  Generic for extractign the 'x values' from an object.
+Generic for extractign the 'x values' from an object.
 }
 \seealso{
-  \link{yvals}, \link{zvals}, \link{xvals.default},
-  \link{yvals.default}, \link{zvals.default},
-  \link{xvals.fromXYZ}, \link{yvals.fromXYZ},
-  \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
-  \link{yvals.SpatialGridDataFrame},
-  \link{zvals.SpatialGridDataFrame}
+\link{yvals}, \link{zvals}, \link{xvals.default},
+\link{yvals.default}, \link{zvals.default},
+\link{xvals.fromXYZ}, \link{yvals.fromXYZ},
+\link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
+\link{yvals.SpatialGridDataFrame},
+\link{zvals.SpatialGridDataFrame}
 }
 

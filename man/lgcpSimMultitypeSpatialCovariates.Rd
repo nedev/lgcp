@@ -2,11 +2,10 @@
 \alias{lgcpSimMultitypeSpatialCovariates}
 \title{lgcpSimMultitypeSpatialCovariates function}
 \usage{
-  lgcpSimMultitypeSpatialCovariates(formulaList, owin,
-    regionalcovariates, pixelcovariates, betaList,
-    spatial.offsetList = NULL, cellwidth, model.parameters,
-    spatial.covmodel = "exponential", covpars = c(),
-    ext = 2, plot = FALSE, inclusion = "touching")
+lgcpSimMultitypeSpatialCovariates(formulaList, owin, regionalcovariates,
+  pixelcovariates, betaList, spatial.offsetList = NULL, cellwidth,
+  model.parameters, spatial.covmodel = "exponential", covpars = c(),
+  ext = 2, plot = FALSE, inclusion = "touching")
 }
 \arguments{
   \item{formulaList}{a list of formulae objetcs}
@@ -47,9 +46,9 @@
   centroids are inside the observation window.}
 }
 \value{
-  a marked ppp object, the simulated data
+a marked ppp object, the simulated data
 }
 \description{
-  A function to Simulate multivariate point process models
+A function to Simulate multivariate point process models
 }
 

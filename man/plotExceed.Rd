@@ -2,7 +2,7 @@
 \alias{plotExceed}
 \title{plotExceed function}
 \usage{
-  plotExceed(obj, ...)
+plotExceed(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  generic function returning method plotExceed
+generic function returning method plotExceed
 }
 \description{
-  A generic function for plotting exceedance probabilities.
+A generic function for plotting exceedance probabilities.
 }
 \seealso{
-  \link{plotExceed.lgcpPredict}, \link{plotExceed.array}
+\link{plotExceed.lgcpPredict}, \link{plotExceed.array}
 }
 

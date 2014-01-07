@@ -2,7 +2,7 @@
 \alias{aggCovInfo.Majority}
 \title{aggCovInfo.Majority function}
 \usage{
-  \method{aggCovInfo}{Majority} (obj, regwts, ...)
+\method{aggCovInfo}{Majority}(obj, regwts, ...)
 }
 \arguments{
   \item{obj}{an Majority object}
@@ -12,9 +12,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  The most popular cell type.
+The most popular cell type.
 }
 \description{
-  Aggregation via majority.
+Aggregation via majority.
 }
 

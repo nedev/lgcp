@@ -2,7 +2,7 @@
 \alias{aggCovInfo.ArealWeightedMean}
 \title{aggCovInfo.ArealWeightedMean function}
 \usage{
-  \method{aggCovInfo}{ArealWeightedMean} (obj, regwts, ...)
+\method{aggCovInfo}{ArealWeightedMean}(obj, regwts, ...)
 }
 \arguments{
   \item{obj}{an ArealWeightedMean object}
@@ -12,9 +12,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  Areal weighted mean.
+Areal weighted mean.
 }
 \description{
-  Aggregation via weighted mean.
+Aggregation via weighted mean.
 }
 

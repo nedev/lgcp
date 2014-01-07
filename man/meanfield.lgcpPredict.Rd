@@ -2,7 +2,7 @@
 \alias{meanfield.lgcpPredict}
 \title{meanfield.lgcpPredict function}
 \usage{
-  \method{meanfield}{lgcpPredict} (obj, ...)
+\method{meanfield}{lgcpPredict}(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class lgcpPredict}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  returns the cell-wise mean of Y computed via Monte Carlo.
+returns the cell-wise mean of Y computed via Monte Carlo.
 }
 \description{
-  This is an accessor function for objects of class
-  \code{lgcpPredict} and returns the mean of the field Y as
-  an lgcpgrid object.
+This is an accessor function for objects of class
+\code{lgcpPredict} and returns the mean of the field Y as
+an lgcpgrid object.
 }
 \seealso{
-  \link{lgcpPredict}, \link{lgcpgrid}
+\link{lgcpPredict}, \link{lgcpgrid}
 }
 

@@ -2,7 +2,7 @@
 \alias{getRotation.default}
 \title{getRotation.default function}
 \usage{
-  \method{getRotation}{default} (xyt, ...)
+\method{getRotation}{default}(xyt, ...)
 }
 \arguments{
   \item{xyt}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  currently no default implementation
+currently no default implementation
 }
 \description{
-  Presently there is no default method, see
-  ?getRotation.stppp
+Presently there is no default method, see
+?getRotation.stppp
 }
 \seealso{
-  \link{getRotation.stppp}
+\link{getRotation.stppp}
 }
 

@@ -2,7 +2,7 @@
 \alias{yvals.fromXYZ}
 \title{yvals.fromXYZ function}
 \usage{
-  \method{yvals}{fromXYZ} (obj, ...)
+\method{yvals}{fromXYZ}(obj, ...)
 }
 \arguments{
   \item{obj}{a spatialAtRisk object}
@@ -10,18 +10,18 @@
   \item{...}{additional arguments}
 }
 \value{
-  the y values
+the y values
 }
 \description{
-  Method for extracting 'y values' from an object of class
-  fromXYZ
+Method for extracting 'y values' from an object of class
+fromXYZ
 }
 \seealso{
-  \link{xvals}, \link{yvals}, \link{zvals},
-  \link{xvals.default}, \link{yvals.default},
-  \link{zvals.default}, \link{xvals.fromXYZ},
-  \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
-  \link{yvals.SpatialGridDataFrame},
-  \link{zvals.SpatialGridDataFrame}
+\link{xvals}, \link{yvals}, \link{zvals},
+\link{xvals.default}, \link{yvals.default},
+\link{zvals.default}, \link{xvals.fromXYZ},
+\link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame},
+\link{yvals.SpatialGridDataFrame},
+\link{zvals.SpatialGridDataFrame}
 }
 

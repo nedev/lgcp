@@ -2,16 +2,16 @@
 \alias{inversebase}
 \title{inversebase function}
 \usage{
-  inversebase(x)
+inversebase(x)
 }
 \arguments{
   \item{x}{the base matrix of a block circulant matrix}
 }
 \value{
-  the base matrix of the inverse of the circulant matrix
+the base matrix of the inverse of the circulant matrix
 }
 \description{
-  A function to compute the base of the inverse os a block
-  circulant matrix, given the base of the matrix
+A function to compute the base of the inverse os a block
+circulant matrix, given the base of the matrix
 }
 

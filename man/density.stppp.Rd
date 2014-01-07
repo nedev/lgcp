@@ -2,7 +2,7 @@
 \alias{density.stppp}
 \title{density.stppp function}
 \usage{
-  \method{density}{stppp} (x, bandwidth = NULL, ...)
+\method{density}{stppp}(x, bandwidth = NULL, ...)
 }
 \arguments{
   \item{x}{an stppp object}
@@ -15,13 +15,13 @@
   density.ppp}
 }
 \value{
-  bivariate density estimate of xyt; not this is a wrapper
-  function for density.ppp
+bivariate density estimate of xyt; not this is a wrapper
+function for density.ppp
 }
 \description{
-  A wrapper function for \link{density.ppp}.
+A wrapper function for \link{density.ppp}.
 }
 \seealso{
-  \link{density.ppp}
+\link{density.ppp}
 }
 

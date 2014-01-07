@@ -2,10 +2,9 @@
 \alias{my.ginhomAverage}
 \title{my.ginhomAverage function}
 \usage{
-  my.ginhomAverage(xyt, spatial.intensity,
-    temporal.intensity, time.window = xyt$tlim,
-    rvals = NULL, correction = "iso",
-    suppresswarnings = FALSE, verbose = TRUE, ...)
+my.ginhomAverage(xyt, spatial.intensity, temporal.intensity,
+  time.window = xyt$tlim, rvals = NULL, correction = "iso",
+  suppresswarnings = FALSE, verbose = TRUE, ...)
 }
 \arguments{
   \item{xyt}{an object of class stppp.}
@@ -40,15 +39,15 @@
   ?pcfinhom.}
 }
 \value{
-  A vector corresponding to the time-averaged PCF for
-  spatiotemporal data, evaluated at spatial lags defined by
-  'rvals'.
+A vector corresponding to the time-averaged PCF for
+spatiotemporal data, evaluated at spatial lags defined by
+'rvals'.
 }
 \description{
-  A carbon-copy of ginhomAverage from package 'lgcp', with
-  extra control over the printing of progress bars and
-  other output to the console during execution. Computes
-  the time-averaged version of the nonparametric PCF (for
-  use with spatiotemporal data).
+A carbon-copy of ginhomAverage from package 'lgcp', with
+extra control over the printing of progress bars and other
+output to the console during execution. Computes the
+time-averaged version of the nonparametric PCF (for use
+with spatiotemporal data).
 }
 

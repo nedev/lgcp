@@ -2,10 +2,9 @@
 \alias{thetaEst}
 \title{thetaEst function}
 \usage{
-  thetaEst(xyt, spatial.intensity = NULL,
-    temporal.intensity = NULL, sigma, phi,
-    theta.range = c(0, 10), N = 100,
-    spatial.covmodel = "exponential", covpars = c())
+thetaEst(xyt, spatial.intensity = NULL, temporal.intensity = NULL, sigma,
+  phi, theta.range = c(0, 10), N = 100, spatial.covmodel = "exponential",
+  covpars = c())
 }
 \arguments{
   \item{xyt}{object of class stppp}
@@ -34,30 +33,30 @@
   \item{covpars}{additional covariance parameters}
 }
 \value{
-  An r panel tool for visual estimation of temporal
-  parameter theta NOTE if lambdaEst has been invoked to
-  estimate lambda, then the returned density should be
-  passed to thetaEst as the argument spatial.intensity
+An r panel tool for visual estimation of temporal parameter
+theta NOTE if lambdaEst has been invoked to estimate
+lambda, then the returned density should be passed to
+thetaEst as the argument spatial.intensity
 }
 \description{
-  A tool to visually estimate the temporal correlation
-  parameter theta; note that sigma and phi must have first
-  been estiamted.
+A tool to visually estimate the temporal correlation
+parameter theta; note that sigma and phi must have first
+been estiamted.
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
+(2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434. }
 }
 \seealso{
-  \link{ginhomAverage}, \link{KinhomAverage},
-  \link{spatialparsEst}, \link{lambdaEst}, \link{muEst}
+\link{ginhomAverage}, \link{KinhomAverage},
+\link{spatialparsEst}, \link{lambdaEst}, \link{muEst}
 }
 

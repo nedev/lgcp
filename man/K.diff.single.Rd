@@ -2,8 +2,7 @@
 \alias{K.diff.single}
 \title{K.diff.single function}
 \usage{
-  K.diff.single(ps, khat, useq, model, transform, power,
-    ...)
+K.diff.single(ps, khat, useq, model, transform, power, ...)
 }
 \arguments{
   \item{ps}{A numeric vector of length 2 giving the values
@@ -37,13 +36,13 @@
   See ?CovarianceFct (RandomFields).}
 }
 \value{
-  A single numeric value providing the minimum contrast
-  value for the specified value of the ps argument.
+A single numeric value providing the minimum contrast value
+for the specified value of the ps argument.
 }
 \description{
-  A function to find the minimum contrast (squared
-  discrepancy) value based on the K function, for one
-  specific value of phi (spatial scale) and one specific
-  value of sigma^2 (spatial variance) for the LGCP.
+A function to find the minimum contrast (squared
+discrepancy) value based on the K function, for one
+specific value of phi (spatial scale) and one specific
+value of sigma^2 (spatial variance) for the LGCP.
 }
 

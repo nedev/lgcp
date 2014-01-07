@@ -2,7 +2,7 @@
 \alias{GAreturnvalue.MonteCarloAverage}
 \title{GAreturnvalue.MonteCarloAverage function}
 \usage{
-  \method{GAreturnvalue}{MonteCarloAverage} (F, ...)
+\method{GAreturnvalue}{MonteCarloAverage}(F, ...)
 }
 \arguments{
   \item{F}{an object of class MonteCarloAverage}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  results from MonteCarloAverage
+results from MonteCarloAverage
 }
 \description{
-  Returns the required Monte Carlo average.
+Returns the required Monte Carlo average.
 }
 \seealso{
-  \link{MonteCarloAverage}, \link{setoutput},
-  \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
-  \link{GAreturnvalue}
+\link{MonteCarloAverage}, \link{setoutput},
+\link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
+\link{GAreturnvalue}
 }
 

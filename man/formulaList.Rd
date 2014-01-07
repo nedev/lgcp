@@ -2,19 +2,19 @@
 \alias{formulaList}
 \title{formulaList function}
 \usage{
-  formulaList(X)
+formulaList(X)
 }
 \arguments{
   \item{X}{a list object, each element of which is a
   formula}
 }
 \value{
-  an object of class "formulaList"
+an object of class "formulaList"
 }
 \description{
-  A function to creat an object of class "formulaList" from
-  a list of "formula" objects; use to define the model for
-  the main effects prior to running the multivariate MCMC
-  algorithm.
+A function to creat an object of class "formulaList" from a
+list of "formula" objects; use to define the model for the
+main effects prior to running the multivariate MCMC
+algorithm.
 }
 

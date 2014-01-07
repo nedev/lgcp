@@ -2,8 +2,7 @@
 \alias{parautocorr}
 \title{parautocorr function}
 \usage{
-  parautocorr(obj, xlab = "Lag", ylab = NULL, main = "",
-    ask = TRUE, ...)
+parautocorr(obj, xlab = "Lag", ylab = NULL, main = "", ask = TRUE, ...)
 }
 \arguments{
   \item{obj}{an object produced by a call to
@@ -26,21 +25,21 @@
   \item{...}{other arguments passed to the function "hist"}
 }
 \value{
-  produces autocorrelation plots of the parameters beta and
-  eta
+produces autocorrelation plots of the parameters beta and
+eta
 }
 \description{
-  A function to produce autocorrelation plots for the
-  paramerers beta and eta from a call to the function
-  lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to produce autocorrelation plots for the
+paramerers beta and eta from a call to the function
+lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{traceplots},
-  \link{parsummary}, \link{textsummary}, \link{priorpost},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{traceplots},
+\link{parsummary}, \link{textsummary}, \link{priorpost},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

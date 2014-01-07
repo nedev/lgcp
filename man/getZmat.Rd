@@ -2,9 +2,8 @@
 \alias{getZmat}
 \title{getZmat function}
 \usage{
-  getZmat(formula, data, regionalcovariates = NULL,
-    pixelcovariates = NULL, cellwidth, ext = 2,
-    inclusion = "touching", overl = NULL)
+getZmat(formula, data, regionalcovariates = NULL, pixelcovariates = NULL,
+  cellwidth, ext = 2, inclusion = "touching", overl = NULL)
 }
 \arguments{
   \item{formula}{a formula object of the form X ~ var1 +
@@ -42,39 +41,39 @@
   computation massively.}
 }
 \value{
-  a design matrix for passing on to the Bayesian MCMC
-  functions
+a design matrix for passing on to the Bayesian MCMC
+functions
 }
 \description{
-  A function to construct a design matrix for use with the
-  Bayesian MCMC routines in lgcp. See the vignette
-  "Bayesian_lgcp" for further details on how to use this
-  function.\cr
+A function to construct a design matrix for use with the
+Bayesian MCMC routines in lgcp. See the vignette
+"Bayesian_lgcp" for further details on how to use this
+function.\cr
 }
 \details{
-  For example, a spatial LGCP model for the would have the
-  form:\cr \cr X(s) ~ Poisson[R(s)]\cr \cr R(s) = C_A
-  lambda(s) exp[Z(s)beta+Y(s)]\cr \cr
+For example, a spatial LGCP model for the would have the
+form:\cr \cr X(s) ~ Poisson[R(s)]\cr \cr R(s) = C_A
+lambda(s) exp[Z(s)beta+Y(s)]\cr \cr
 
-  The function getZmat helps create the matrix Z. The
-  returned object is passed onto an MCMC function, for
-  example lgcpPredictSpatialPlusPars or
-  lgcpPredictAggregateSpatialPlusPars. This function can
-  also be used to help construct Z for use with
-  lgcpPredictSpatioTemporalPlusPars and
-  lgcpPredictMultitypeSpatialPlusPars, but these functions
-  require a list of such objects: see the vignette
-  "Bayesian_lgcp" for examples.
+The function getZmat helps create the matrix Z. The
+returned object is passed onto an MCMC function, for
+example lgcpPredictSpatialPlusPars or
+lgcpPredictAggregateSpatialPlusPars. This function can also
+be used to help construct Z for use with
+lgcpPredictSpatioTemporalPlusPars and
+lgcpPredictMultitypeSpatialPlusPars, but these functions
+require a list of such objects: see the vignette
+"Bayesian_lgcp" for examples.
 }
 \seealso{
-  \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal},
-  \link{chooseCellwidth}, \link{getpolyol},
-  \link{guessinterp}, \link{addTemporalCovariates},
-  \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal},
+\link{chooseCellwidth}, \link{getpolyol},
+\link{guessinterp}, \link{addTemporalCovariates},
+\link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

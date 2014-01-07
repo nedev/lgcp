@@ -355,7 +355,7 @@ quantile.lgcpgrid <- function(x,...){
 ##'
 ##' Produce an image plot of an lgcpgrid object.
 ##'
-##' @importFrom graphics image
+## @importFrom graphics image
 ##' @method image lgcpgrid
 ##' @param x an object of class lgcpgrid
 ##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
@@ -580,12 +580,14 @@ plot.lgcpPredict <- function(x,type="relrisk",sel=1:x$EY.mean$len,plotdata=TRUE,
         }
         else{
             incl <- "centroid"
-            if(!inherits(try(x$inclusion),"try-error")){
-                if(!is.null(x$inclusion)){
-                    incl <- x$inclusion
-                }
+         
+            if(!is.null(x$cellInside)){
+                dm <- dim(x$cellInside)
+                grinw <- array(as.logical(x$cellInside),dim=dm)
             }
-            grinw <- gridInWindow(x$mcens,x$ncens,x$xyt$window,inclusion=incl)
+            else{
+                grinw <- gridInWindow(xvals,yvals,window,inclusion=incl)
+            }
             grinw[grinw==0] <- NA
             if (type=="relrisk"){
                 image.plot(x$mcens,x$ncens,grinw*x$EY.mean$grid[[i]],sub=paste("Relative Risk, time",x$aggtimes[i]),...)
@@ -1171,7 +1173,7 @@ plotExceed.array <- function(obj,fun,lgcppredict=NULL,xvals=NULL,yvals=NULL,wind
     for (i in 1:length(relrisks)){
         subt <- sub
         if(is.null(subt)){
-            subt <- paste("Prob(Relative Risk)>",relrisks[i])
+            subt <- paste("Threshold:",relrisks[i])
         }
         if(is.null(mapunderlay)){
             image.plot(xvals,yvals,grinw*obj[,,i],col=rev(heat.colors(nlevel)),sub=subt,...)
@@ -2069,14 +2071,15 @@ grid2spoly <- function(xgrid,ygrid,proj4string=CRS(as.character(NA))){
 ##' @param x an lgcpZmat object, see ?getZmat
 ##' @param ask graphical parameter ask, see ?par
 ##' @param pow power parameter, raises the image values to this power (helps with visualisation, default is 1.)
-##' @param main title for plot, default is null which gives an automatic title to the plot (the name of the covariate) 
+##' @param main title for plot, default is null which gives an automatic title to the plot (the name of the covariate)
+##' @param misscol colour to identify imputed grid cells, default is yellow
+##' @param obswin optional observation window to add to plot using plot(obswin).
 ##' @param ... other paramters 
 ##' @return a sequence of plots of the interpolated covariate values
 ##' @export
 
-plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,...){
+plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,misscol="black",obswin=NULL,...){
     MAIN <- main
-    par(ask=ask)
     mcens <- attr(x,"mcens")
     ncens <- attr(x,"ncens")
     M <- attr(x,"M")
@@ -2090,6 +2093,50 @@ plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,...){
         if(is.null(MAIN)){
             main <- parn[i]
         }
-        try(image.plot(mcens,ncens,(matrix(x[,i],M,N)*cellInside)^pow,main=main,...))
+        
+        blah <- try(image.plot(mcens,ncens,(matrix(x[,i],M,N)*cellInside)^pow,main=main,...))
+        
+        if(!inherits(blah,"try-error")){        
+            if(any(attr(x,"missingind")==1)|is.null(attr(x,"missingind"))){ # is.null(...) for backward compatibility
+                egr <- expand.grid(mcens,ncens)
+                idx <- which(attr(x,"missingind")==1)
+                points(egr[idx,],col=misscol,pch="+")
+            }
+        }
+        
+        if(!is.null(obswin)){
+            plot(obswin,add=TRUE)
+        }
+        
+        if(ask){
+            browser()
+        }
     }
+    
+    
+}
+
+
+
+##' lgcpvignette function
+##'
+##' Display the introductory vignette for the lgcp package. 
+##'
+##' @return displays the vignette by calling browseURL
+##' @export
+
+lgcpvignette <- function(){
+    browseURL("http://www.jstatsoft.org/v52/i04/paper") 
+}
+
+##' lgcpbayes function
+##'
+##' Display the introductory vignette for the lgcp package. 
+##'
+##' @return displays the vignette by calling browseURL
+##' @export
+
+lgcpbayes <- function(){
+    cat("This vignette is currently under review. Please contact the package author (b.taylor1-at-lancaster.ac.uk) to obtain a preprint.")
+    #browseURL("... blah ...") 
 }

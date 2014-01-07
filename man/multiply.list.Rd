@@ -2,7 +2,7 @@
 \alias{multiply.list}
 \title{multiply.list function}
 \usage{
-  multiply.list(list1, list2)
+multiply.list(list1, list2)
 }
 \arguments{
   \item{list1}{a list of objects that could be summed using
@@ -12,11 +12,10 @@
   "+"}
 }
 \value{
-  a list with ith entry the sum of list1[[i]] and
-  list2[[i]]
+a list with ith entry the sum of list1[[i]] and list2[[i]]
 }
 \description{
-  This function multiplies the elements of two list objects
-  together and returns the result in another list object.
+This function multiplies the elements of two list objects
+together and returns the result in another list object.
 }
 

@@ -2,16 +2,16 @@
 \alias{getLHSformulaList}
 \title{getLHSformulaList function}
 \usage{
-  getLHSformulaList(fl)
+getLHSformulaList(fl)
 }
 \arguments{
   \item{fl}{an object of class "formulaList"}
 }
 \value{
-  the indepentdent variables
+the indepentdent variables
 }
 \description{
-  A function to retrieve the dependent variables from a
-  formulaList object. Not intended for general use.
+A function to retrieve the dependent variables from a
+formulaList object. Not intended for general use.
 }
 

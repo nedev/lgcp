@@ -2,8 +2,7 @@
 \alias{C.diff.single.im}
 \title{C.diff.single.im function}
 \usage{
-  C.diff.single.im(theta, data, ps, Chat, vseq, spat,
-    model)
+C.diff.single.im(theta, data, ps, Chat, vseq, spat, model)
 }
 \arguments{
   \item{theta}{Single numeric value for the parameter
@@ -36,18 +35,17 @@
   packages).}
 }
 \value{
-  A single numeric value providing the minimum contrast
-  value for the specified value of the theta argument.
+A single numeric value providing the minimum contrast value
+for the specified value of the theta argument.
 }
 \description{
-  A function to find the minimum contrast (squared
-  discrepancy) value based on the the temporal
-  autocorrelation function, for one specific value of theta
-  (temporal scale) for the spatiotemporal LGCP. Only the
-  exponential form is considered for the theoretical
-  temporal correlation function. This also depends upon a
-  static pair of values for the spatial scale and spatial
-  variance of the latent Gaussian process (usually
-  estimated first).
+A function to find the minimum contrast (squared
+discrepancy) value based on the the temporal
+autocorrelation function, for one specific value of theta
+(temporal scale) for the spatiotemporal LGCP. Only the
+exponential form is considered for the theoretical temporal
+correlation function. This also depends upon a static pair
+of values for the spatial scale and spatial variance of the
+latent Gaussian process (usually estimated first).
 }
 

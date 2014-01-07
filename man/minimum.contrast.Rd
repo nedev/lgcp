@@ -2,9 +2,8 @@
 \alias{minimum.contrast}
 \title{minimum.contrast function}
 \usage{
-  minimum.contrast(data, model, method = "g",
-    intens = NULL, power = 1, transform = NULL,
-    startvals = NULL, verbose = TRUE, ...)
+minimum.contrast(data, model, method = "g", intens = NULL, power = 1,
+  transform = NULL, startvals = NULL, verbose = TRUE, ...)
 }
 \arguments{
   \item{data}{An object of class 'ppp' (package spatstat)
@@ -43,31 +42,31 @@
   'model').}
 }
 \value{
-  Returned values are the minimum contrast estimates of phi
-  and sigma^2, as well as the overall squared discrepancy
-  between the parametric and nonparametric forms of the
-  function used corresponding to these estimates. (This can
-  be useful in deciding between several different
-  theoretical forms of the correlation specified by
-  'model'). If the point pattern is multitype, each pair of
-  parameters is estimated independently for each marginal
-  (type-specific) data set.
+Returned values are the minimum contrast estimates of phi
+and sigma^2, as well as the overall squared discrepancy
+between the parametric and nonparametric forms of the
+function used corresponding to these estimates. (This can
+be useful in deciding between several different theoretical
+forms of the correlation specified by 'model'). If the
+point pattern is multitype, each pair of parameters is
+estimated independently for each marginal (type-specific)
+data set.
 }
 \description{
-  A function to provide minimum contrast (aka least
-  squares) estimates of the spatial scale (phi) and spatial
-  variance (sigma^2) assuming an LGCP modelling framework
-  for spatial data.
+A function to provide minimum contrast (aka least squares)
+estimates of the spatial scale (phi) and spatial variance
+(sigma^2) assuming an LGCP modelling framework for spatial
+data.
 }
 \seealso{
-  \link{minimum.contrast.spatiotemporal},
-  link{chooseCellWidth}, \link{getpolyol},
-  \link{guessinterp}, \link{getZmat},
-  \link{addTemporalCovariates}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast.spatiotemporal},
+link{chooseCellWidth}, \link{getpolyol},
+\link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

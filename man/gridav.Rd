@@ -2,7 +2,7 @@
 \alias{gridav}
 \title{gridav function}
 \usage{
-  gridav(obj, ...)
+gridav(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method gridav
+method gridav
 }
 \description{
-  A generic function for returning \code{gridmeans}
-  objects.
+A generic function for returning \code{gridmeans} objects.
 }
 \seealso{
-  \link{setoutput}, \link{lgcpgrid}
+\link{setoutput}, \link{lgcpgrid}
 }
 

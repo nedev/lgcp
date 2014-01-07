@@ -2,7 +2,7 @@
 \alias{as.owinlist}
 \title{as.owinlist function}
 \usage{
-  as.owinlist(obj, ...)
+as.owinlist(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,9 +10,9 @@
   \item{...}{additional arguments}
 }
 \value{
-  method as.owinlist
+method as.owinlist
 }
 \description{
-  Generic function for creating lists of owin objects
+Generic function for creating lists of owin objects
 }
 

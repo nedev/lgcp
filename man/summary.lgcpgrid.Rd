@@ -2,7 +2,7 @@
 \alias{summary.lgcpgrid}
 \title{summary.lgcpgrid function}
 \usage{
-  \method{summary}{lgcpgrid} (object, ...)
+\method{summary}{lgcpgrid}(object, ...)
 }
 \arguments{
   \item{object}{an object of class lgcpgrid}
@@ -10,16 +10,16 @@
   \item{...}{other arguments}
 }
 \value{
-  Summary per grid, see ?summary for further options
+Summary per grid, see ?summary for further options
 }
 \description{
-  Summary method for lgcp objects. This just applies the
-  summary function to each of the elements of object$grid.
+Summary method for lgcp objects. This just applies the
+summary function to each of the elements of object$grid.
 }
 \seealso{
-  \link{lgcpgrid.list}, \link{lgcpgrid.array},
-  \link{as.list.lgcpgrid}, \link{print.lgcpgrid},
-  \link{quantile.lgcpgrid}, \link{image.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.list}, \link{lgcpgrid.array},
+\link{as.list.lgcpgrid}, \link{print.lgcpgrid},
+\link{quantile.lgcpgrid}, \link{image.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 

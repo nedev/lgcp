@@ -2,8 +2,8 @@
 \alias{plot.lgcpAutocorr}
 \title{plot.lgcpAutocorr function}
 \usage{
-  \method{plot}{lgcpAutocorr} (x, sel = 1:dim(x)[3],
-    ask = TRUE, crop = TRUE, plotwin = FALSE, ...)
+\method{plot}{lgcpAutocorr}(x, sel = 1:dim(x)[3], ask = TRUE, crop = TRUE,
+  plotwin = FALSE, ...)
 }
 \arguments{
   \item{x}{an object of class lgcpAutocorr}
@@ -24,11 +24,11 @@
   \item{...}{other arguments passed to image.plot}
 }
 \value{
-  a plot
+a plot
 }
 \description{
-  Plots \code{lgcpAutocorr} objects: output from
-  \code{autocorr}
+Plots \code{lgcpAutocorr} objects: output from
+\code{autocorr}
 }
 \examples{
 \dontrun{ac <- autocorr(lg,qt=c(1,2,3))}
@@ -36,6 +36,6 @@
 \dontrun{plot(ac)}
 }
 \seealso{
-  \link{autocorr}
+\link{autocorr}
 }
 

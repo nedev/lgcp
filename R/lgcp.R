@@ -48,11 +48,23 @@
 ###' }
 ###' 
 ###' @docType package
+###' @name lgcp-package
 ###' @author Benjamin Taylor, Health and Medicine, Lancaster University,
 ###'  Tilman Davies, Institute of Fundamental Sciences - Statistics, Massey University, New Zealand., 
 ###'  Barry Rowlingson, Health and Medicine, Lancaster University
 ###'  Peter Diggle, Health and Medicine, Lancaster University
 ###' @keywords package
+###' @import Matrix 
+###' @importFrom RandomFields CovarianceFct 
+###' @import fields 
+###' @import iterators 
+###' @import maptools
+###' @import methods
+###' @import ncdf
+###' @import rgeos 
+###' @import rpanel
+###' @import sp
+
 
 `lgcp` = NA
 

@@ -2,7 +2,7 @@
 \alias{plot.mstppp}
 \title{plot.mstppp function}
 \usage{
-  \method{plot}{mstppp} (x, cols = "red", ...)
+\method{plot}{mstppp}(x, cols = "red", ...)
 }
 \arguments{
   \item{x}{an object of class mstppp}
@@ -13,9 +13,9 @@
   \item{...}{additional arguments passed to plot}
 }
 \value{
-  plots the mstppp object x
+plots the mstppp object x
 }
 \description{
-  Plot method for mstppp objects
+Plot method for mstppp objects
 }
 

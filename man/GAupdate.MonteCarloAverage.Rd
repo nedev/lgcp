@@ -2,7 +2,7 @@
 \alias{GAupdate.MonteCarloAverage}
 \title{GAupdate.MonteCarloAverage function}
 \usage{
-  \method{GAupdate}{MonteCarloAverage} (F, ...)
+\method{GAupdate}{MonteCarloAverage}(F, ...)
 }
 \arguments{
   \item{F}{an object of class MonteCarloAverage}
@@ -10,15 +10,15 @@
   \item{...}{additional arguments}
 }
 \value{
-  updates Monte Carlo sums
+updates Monte Carlo sums
 }
 \description{
-  Update a Monte Carlo averaging scheme. This function
-  performs the Monte Carlo sum online.
+Update a Monte Carlo averaging scheme. This function
+performs the Monte Carlo sum online.
 }
 \seealso{
-  \link{MonteCarloAverage}, \link{setoutput},
-  \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
-  \link{GAreturnvalue}
+\link{MonteCarloAverage}, \link{setoutput},
+\link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
+\link{GAreturnvalue}
 }
 

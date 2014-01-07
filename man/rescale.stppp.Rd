@@ -2,7 +2,7 @@
 \alias{rescale.stppp}
 \title{rescale.stppp function}
 \usage{
-  \method{rescale}{stppp} (X, s)
+\method{rescale}{stppp}(X, s)
 }
 \arguments{
   \item{X}{an object of class stppp}
@@ -11,9 +11,9 @@
   scaled by 1/s}
 }
 \value{
-  a ppp object without observation times
+a ppp object without observation times
 }
 \description{
-  Rescale an stppp object. Similar to rescale.ppp
+Rescale an stppp object. Similar to rescale.ppp
 }
 

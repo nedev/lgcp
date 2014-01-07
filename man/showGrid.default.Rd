@@ -2,7 +2,7 @@
 \alias{showGrid.default}
 \title{showGrid.default function}
 \usage{
-  \method{showGrid}{default} (x, y, ...)
+\method{showGrid}{default}(x, y, ...)
 }
 \arguments{
   \item{x}{an vector of grid values for the x coordinates}
@@ -12,14 +12,14 @@
   \item{...}{additional arguments passed to points}
 }
 \value{
-  plots grid centroids on the current graphics device
+plots grid centroids on the current graphics device
 }
 \description{
-  Default method for printing a grid to a screen. Arguments
-  are vectors giving the x any y coordinates of the
-  centroids.
+Default method for printing a grid to a screen. Arguments
+are vectors giving the x any y coordinates of the
+centroids.
 }
 \seealso{
-  \link{showGrid.lgcpPredict}, \link{showGrid.stppp}
+\link{showGrid.lgcpPredict}, \link{showGrid.stppp}
 }
 

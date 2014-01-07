@@ -2,7 +2,7 @@
 \alias{muEst}
 \title{muEst function}
 \usage{
-  muEst(xyt, ...)
+muEst(xyt, ...)
 }
 \arguments{
   \item{xyt}{an stppp object}
@@ -10,30 +10,30 @@
   \item{...}{additional arguments to be passed to lowess}
 }
 \value{
-  object of class temporalAtRisk giving the smoothed mut
-  using the lowess function
+object of class temporalAtRisk giving the smoothed mut
+using the lowess function
 }
 \description{
-  Computes a non-parametric estimate of mu(t). For the
-  purposes of performing prediction, the alternatives are:
-  (1) use a parameteric model as in Diggle P, Rowlingson B,
-  Su T (2005), or (2) a \link{constantInTime} model.
+Computes a non-parametric estimate of mu(t). For the
+purposes of performing prediction, the alternatives are:
+(1) use a parameteric model as in Diggle P, Rowlingson B,
+Su T (2005), or (2) a \link{constantInTime} model.
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
+(2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434. }
 }
 \seealso{
-  \link{temporalAtRisk}, \link{constantInTime},
-  \link{ginhomAverage}, \link{KinhomAverage},
-  \link{spatialparsEst}, \link{thetaEst}, \link{lambdaEst}
+\link{temporalAtRisk}, \link{constantInTime},
+\link{ginhomAverage}, \link{KinhomAverage},
+\link{spatialparsEst}, \link{thetaEst}, \link{lambdaEst}
 }
 

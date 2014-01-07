@@ -2,7 +2,7 @@
 \alias{rr}
 \title{rr function}
 \usage{
-  rr(obj, ...)
+rr(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method rr
+method rr
 }
 \description{
-  Generic function to return relative risk.
+Generic function to return relative risk.
 }
 \seealso{
-  \link{lgcpPredict}, \link{rr.lgcpPredict}
+\link{lgcpPredict}, \link{rr.lgcpPredict}
 }
 

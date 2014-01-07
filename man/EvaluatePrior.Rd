@@ -2,7 +2,7 @@
 \alias{EvaluatePrior}
 \title{EvaluatePrior function}
 \usage{
-  EvaluatePrior(etaParameters, betaParameters, prior)
+EvaluatePrior(etaParameters, betaParameters, prior)
 }
 \arguments{
   \item{etaParameters}{the paramter eta}
@@ -12,10 +12,10 @@
   \item{prior}{the prior}
 }
 \value{
-  the prior evaluated at the given values.
+the prior evaluated at the given values.
 }
 \description{
-  An internal function used in the MCMC routine to evaluate
-  the prior for a given set of parameters
+An internal function used in the MCMC routine to evaluate
+the prior for a given set of parameters
 }
 

@@ -2,7 +2,7 @@
 \alias{paramprec}
 \title{paramprec function}
 \usage{
-  paramprec(ns, M, N)
+paramprec(ns, M, N)
 }
 \arguments{
   \item{ns}{neighbourhood size}
@@ -12,14 +12,14 @@
   \item{N}{number of cells in y direction}
 }
 \value{
-  a function that returns the precision matrix given a
-  parameter vector.
+a function that returns the precision matrix given a
+parameter vector.
 }
 \description{
-  A function to compute the precision matrix of a GMRF on
-  an M x N toral grid with neighbourhood size ns. Note that
-  the precision matrix is block circulant. The returned
-  function operates on a parameter vector as in Rue and
-  Held (2005) pp 187.
+A function to compute the precision matrix of a GMRF on an
+M x N toral grid with neighbourhood size ns. Note that the
+precision matrix is block circulant. The returned function
+operates on a parameter vector as in Rue and Held (2005) pp
+187.
 }
 

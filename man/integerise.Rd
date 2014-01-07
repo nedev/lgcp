@@ -2,7 +2,7 @@
 \alias{integerise}
 \title{integerise function}
 \usage{
-  integerise(obj, ...)
+integerise(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method integerise
+method integerise
 }
 \description{
-  Generic function for converting the time variable of an
-  stppp object.
+Generic function for converting the time variable of an
+stppp object.
 }
 \seealso{
-  \link{integerise.stppp}
+\link{integerise.stppp}
 }
 

@@ -2,7 +2,7 @@
 \alias{GFinitialise.dump2dir}
 \title{GFinitialise.dump2dir function}
 \usage{
-  \method{GFinitialise}{dump2dir} (F, ...)
+\method{GFinitialise}{dump2dir}(F, ...)
 }
 \arguments{
   \item{F}{an object of class dump2dir}
@@ -10,14 +10,14 @@
   \item{...}{additional arguments}
 }
 \value{
-  creates initialisation file and folder
+creates initialisation file and folder
 }
 \description{
-  Creates a directory (if necessary) and allocates space
-  for a netCDF dump.
+Creates a directory (if necessary) and allocates space for
+a netCDF dump.
 }
 \seealso{
-  \link{dump2dir}, \link{setoutput}, \link{GFinitialise},
-  \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
+\link{dump2dir}, \link{setoutput}, \link{GFinitialise},
+\link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
 

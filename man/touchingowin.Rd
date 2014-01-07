@@ -2,7 +2,7 @@
 \alias{touchingowin}
 \title{touchingowin function}
 \usage{
-  touchingowin(x, y, w)
+touchingowin(x, y, w)
 }
 \arguments{
   \item{x}{grid centroids in x-direction note this will be
@@ -14,10 +14,10 @@
   \item{w}{an owin or SpatialPolygons object}
 }
 \value{
-  vector of TRUE or FALSE according to whether the cell
+vector of TRUE or FALSE according to whether the cell
 }
 \description{
-  A function to compute which cells are touching an owin or
-  spatial polygons object
+A function to compute which cells are touching an owin or
+spatial polygons object
 }
 

@@ -2,7 +2,7 @@
 \alias{GammafromY}
 \title{GammafromY function}
 \usage{
-  GammafromY(Y, rootQeigs, mu)
+GammafromY(Y, rootQeigs, mu)
 }
 \arguments{
   \item{Y}{Y matrix}
@@ -13,10 +13,10 @@
   \item{mu}{parameter of the latent Gaussian field}
 }
 \value{
-  Gamma
+Gamma
 }
 \description{
-  A function to change Ys (spatially correlated noise) into
-  Gammas (white noise). Used in the MALA algorithm.
+A function to change Ys (spatially correlated noise) into
+Gammas (white noise). Used in the MALA algorithm.
 }
 

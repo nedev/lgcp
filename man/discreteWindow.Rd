@@ -2,7 +2,7 @@
 \alias{discreteWindow}
 \title{discreteWindow function}
 \usage{
-  discreteWindow(obj, ...)
+discreteWindow(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,12 +10,12 @@
   \item{...}{additional arguments}
 }
 \value{
-  method discreteWindow
+method discreteWindow
 }
 \description{
-  Generic function for extracting the FFT discrete window.
+Generic function for extracting the FFT discrete window.
 }
 \seealso{
-  \link{discreteWindow.lgcpPredict}
+\link{discreteWindow.lgcpPredict}
 }
 

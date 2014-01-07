@@ -2,9 +2,8 @@
 \alias{cov.interp.fft}
 \title{cov.interp.fft function}
 \usage{
-  cov.interp.fft(formula, W, regionalcovariates = NULL,
-    pixelcovariates = NULL, mcens, ncens, cellInside,
-    overl = NULL)
+cov.interp.fft(formula, W, regionalcovariates = NULL,
+  pixelcovariates = NULL, mcens, ncens, cellInside, overl = NULL)
 }
 \arguments{
   \item{formula}{an object of class formula (or one that
@@ -33,10 +32,10 @@
   the SpatialPolygonsDataFrame or SpatialPixelsDataFrame.}
 }
 \value{
-  The interpolated design matrix, ready for analysis
+The interpolated design matrix, ready for analysis
 }
 \description{
-  A function to interpolate covariate values onto the fft
-  grid, ready for analysis
+A function to interpolate covariate values onto the fft
+grid, ready for analysis
 }
 

@@ -2,16 +2,16 @@
 \alias{is.pow2}
 \title{is.pow2 function}
 \usage{
-  is.pow2(num)
+is.pow2(num)
 }
 \arguments{
   \item{num}{a numeric}
 }
 \value{
-  logical: is num a power of 2?
+logical: is num a power of 2?
 }
 \description{
-  Tests whether a number id
+Tests whether a number id
 }
 \examples{
 is.pow2(128)  # TRUE

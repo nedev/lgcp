@@ -2,8 +2,8 @@
 \alias{autocorrMultitype}
 \title{autocorrMultitype function}
 \usage{
-  autocorrMultitype(x, lags, fieldno,
-    inWindow = x$xyt$window, crop2parentwindow = TRUE, ...)
+autocorrMultitype(x, lags, fieldno, inWindow = x$xyt$window,
+  crop2parentwindow = TRUE, ...)
 }
 \arguments{
   \item{x}{an object of class
@@ -29,11 +29,11 @@
   \item{...}{other arguments}
 }
 \value{
-  an array, the [,,i]th slice being the grid of cell-wise
-  autocorrelations.
+an array, the [,,i]th slice being the grid of cell-wise
+autocorrelations.
 }
 \description{
-  A function to compute cell-wise autocorrelation in the
-  latent field at specifiec lags
+A function to compute cell-wise autocorrelation in the
+latent field at specifiec lags
 }
 

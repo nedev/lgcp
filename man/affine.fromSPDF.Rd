@@ -2,7 +2,7 @@
 \alias{affine.fromSPDF}
 \title{affine.fromSPDF function}
 \usage{
-  \method{affine}{fromSPDF} (X, mat, ...)
+\method{affine}{fromSPDF}(X, mat, ...)
 }
 \arguments{
   \item{X}{an object of class fromSPDF}
@@ -12,10 +12,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  the object acted on by the transformation matrix
+the object acted on by the transformation matrix
 }
 \description{
-  An affine transformation of an object of class
-  \code{fromSPDF}
+An affine transformation of an object of class
+\code{fromSPDF}
 }
 

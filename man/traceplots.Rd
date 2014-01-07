@@ -2,8 +2,8 @@
 \alias{traceplots}
 \title{traceplots function}
 \usage{
-  traceplots(obj, xlab = "Sample No.", ylab = NULL,
-    main = "", ask = TRUE, ...)
+traceplots(obj, xlab = "Sample No.", ylab = NULL, main = "", ask = TRUE,
+  ...)
 }
 \arguments{
   \item{obj}{an object produced by a call to
@@ -26,20 +26,20 @@
   \item{...}{other arguments passed to the function "hist"}
 }
 \value{
-  produces MCMC trace plots of the parameters beta and eta
+produces MCMC trace plots of the parameters beta and eta
 }
 \description{
-  A function to produce trace plots for the paramerers beta
-  and eta from a call to the function
-  lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to produce trace plots for the paramerers beta
+and eta from a call to the function
+lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{parsummary}, \link{textsummary}, \link{priorpost},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{parsummary}, \link{textsummary}, \link{priorpost},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

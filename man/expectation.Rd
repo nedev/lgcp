@@ -2,7 +2,7 @@
 \alias{expectation}
 \title{expectation function}
 \usage{
-  expectation(obj, ...)
+expectation(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,10 +10,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  method expectation
+method expectation
 }
 \description{
-  Generic function used in the computation of Monte Carlo
-  expectations.
+Generic function used in the computation of Monte Carlo
+expectations.
 }
 

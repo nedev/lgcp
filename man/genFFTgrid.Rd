@@ -2,8 +2,7 @@
 \alias{genFFTgrid}
 \title{genFFTgrid function}
 \usage{
-  genFFTgrid(study.region, M, N, ext,
-    inclusion = "touching")
+genFFTgrid(study.region, M, N, ext, inclusion = "touching")
 }
 \arguments{
   \item{study.region}{an owin object}
@@ -22,13 +21,13 @@
   inside the observation window.}
 }
 \value{
-  a list
+a list
 }
 \description{
-  A function to generate an FFT grid and associated
-  quantities including cell dimensions, size of extended
-  grid, centroids, cell area, cellInside matrix (a 0/1
-  matrix: is the centroid of the cell inside the
-  observation window?)
+A function to generate an FFT grid and associated
+quantities including cell dimensions, size of extended
+grid, centroids, cell area, cellInside matrix (a 0/1
+matrix: is the centroid of the cell inside the observation
+window?)
 }
 

@@ -2,7 +2,7 @@
 \alias{getup}
 \title{getup function}
 \usage{
-  getup(n, lev = 1)
+getup(n, lev = 1)
 }
 \arguments{
   \item{n}{a character string, the name of the object}
@@ -12,9 +12,9 @@
   1.}
 }
 \value{
-  ...
+...
 }
 \description{
-  A function to get an object from a parent frame.
+A function to get an object from a parent frame.
 }
 

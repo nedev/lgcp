@@ -2,7 +2,7 @@
 \alias{GPlist2array}
 \title{GPlist2array function}
 \usage{
-  GPlist2array(GPlist, element)
+GPlist2array(GPlist, element)
 }
 \arguments{
   \item{GPlist}{an object of class GPrealisation}
@@ -11,11 +11,11 @@
   (for example) to extract, e.g. "Y"}
 }
 \value{
-  an array
+an array
 }
 \description{
-  An internal function for turning a list of GPrealisation
-  objects into an an array by a particular common element
-  of the GPrealisation object
+An internal function for turning a list of GPrealisation
+objects into an an array by a particular common element of
+the GPrealisation object
 }
 

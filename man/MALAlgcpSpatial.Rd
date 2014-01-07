@@ -2,10 +2,9 @@
 \alias{MALAlgcpSpatial}
 \title{MALAlgcpSpatial function}
 \usage{
-  MALAlgcpSpatial(mcmcloop, inits, adaptivescheme, M, N,
-    Mext, Next, sigma, phi, mu, nis, cellarea, spatialvals,
-    scaleconst, rootQeigs, invrootQeigs, cellInside,
-    MCMCdiag, gradtrunc, gridfun, gridav, mcens, ncens)
+MALAlgcpSpatial(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi,
+  mu, nis, cellarea, spatialvals, scaleconst, rootQeigs, invrootQeigs,
+  cellInside, MCMCdiag, gradtrunc, gridfun, gridav, mcens, ncens)
 }
 \arguments{
   \item{mcmcloop}{an mcmcLoop object}
@@ -61,10 +60,10 @@
   \item{ncens}{y-coordinates of cell centroids}
 }
 \value{
-  object passed back to lgcpPredictSpatial
+object passed back to lgcpPredictSpatial
 }
 \description{
-  ADVANCED USE ONLY A function to perform MALA for the
-  spatial only case
+ADVANCED USE ONLY A function to perform MALA for the
+spatial only case
 }
 

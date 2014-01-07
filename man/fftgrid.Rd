@@ -2,8 +2,8 @@
 \alias{fftgrid}
 \title{fftgrid function}
 \usage{
-  fftgrid(xyt, M, N, spatial, sigma, phi, model, covpars,
-    inclusion = "touching")
+fftgrid(xyt, M, N, spatial, sigma, phi, model, covpars,
+  inclusion = "touching")
 }
 \arguments{
   \item{xyt}{object of class stppp}
@@ -33,14 +33,14 @@
   inside the observation window.}
 }
 \value{
-  fft objects for use in MALA
+fft objects for use in MALA
 }
 \description{
-  ! As of lgcp version 0.9-5, this function is no longer
-  used !
+! As of lgcp version 0.9-5, this function is no longer used
+!
 }
 \details{
-  \bold{Advanced use only.} Computes various quantities for
-  use in \code{lgcpPredict}, \code{lgcpSim} .
+\bold{Advanced use only.} Computes various quantities for
+use in \code{lgcpPredict}, \code{lgcpSim} .
 }
 

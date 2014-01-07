@@ -2,8 +2,7 @@
 \alias{stGPrealisation}
 \title{stGPrealisation function}
 \usage{
-  stGPrealisation(gamma, fftgrid, covFunction,
-    covParameters, d, tdiff)
+stGPrealisation(gamma, fftgrid, covFunction, covParameters, d, tdiff)
 }
 \arguments{
   \item{gamma}{the transformed (white noise) realisation of
@@ -23,13 +22,13 @@
   \item{tdiff}{vector of time differences}
 }
 \value{
-  a realisation of a spatiotemporal Gaussian process on a
-  regular grid
+a realisation of a spatiotemporal Gaussian process on a
+regular grid
 }
 \description{
-  A function to store a realisation of a spatiotemporal
-  gaussian process for use in MCMC algorithms that include
-  Bayesian parameter estimation. Stores not only the
-  realisation, but also computational quantities.
+A function to store a realisation of a spatiotemporal
+gaussian process for use in MCMC algorithms that include
+Bayesian parameter estimation. Stores not only the
+realisation, but also computational quantities.
 }
 

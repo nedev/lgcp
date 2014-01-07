@@ -2,7 +2,7 @@
 \alias{aggCovInfo.ArealWeightedSum}
 \title{aggCovInfo.ArealWeightedSum function}
 \usage{
-  \method{aggCovInfo}{ArealWeightedSum} (obj, regwts, ...)
+\method{aggCovInfo}{ArealWeightedSum}(obj, regwts, ...)
 }
 \arguments{
   \item{obj}{an ArealWeightedSum object}
@@ -12,10 +12,10 @@
   \item{...}{additional arguments}
 }
 \value{
-  Areal weighted Sum.
+Areal weighted Sum.
 }
 \description{
-  Aggregation via weighted sum. Use to sum up population
-  counts in regions.
+Aggregation via weighted sum. Use to sum up population
+counts in regions.
 }
 

@@ -2,7 +2,7 @@
 \alias{gridfun.lgcpPredict}
 \title{gridfun.lgcpPredict function}
 \usage{
-  \method{gridfun}{lgcpPredict} (obj, ...)
+\method{gridfun}{lgcpPredict}(obj, ...)
 }
 \arguments{
   \item{obj}{an object of class lgcpPredict}
@@ -10,16 +10,16 @@
   \item{...}{additional arguments}
 }
 \value{
-  returns the output from the gridfunction option of the
-  setoutput argument of lgcpPredict
+returns the output from the gridfunction option of the
+setoutput argument of lgcpPredict
 }
 \description{
-  Accessor function for \code{lgcpPredict objects}: returns
-  the \code{gridfunction} argument set in the
-  \code{output.control} argument of the function
-  \code{lgcpPredict}.
+Accessor function for \code{lgcpPredict objects}: returns
+the \code{gridfunction} argument set in the
+\code{output.control} argument of the function
+\code{lgcpPredict}.
 }
 \seealso{
-  \link{setoutput}, \link{lgcpgrid}
+\link{setoutput}, \link{lgcpgrid}
 }
 

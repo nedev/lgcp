@@ -2,8 +2,7 @@
 \alias{constantInTime.numeric}
 \title{constantInTime.numeric function}
 \usage{
-  \method{constantInTime}{numeric} (obj, tlim, warn = TRUE,
-    ...)
+\method{constantInTime}{numeric}(obj, tlim, warn = TRUE, ...)
 }
 \arguments{
   \item{obj}{numeric constant}
@@ -16,26 +15,25 @@
   \item{...}{additional arguments}
 }
 \value{
-  a function f(t) giving the (constant) temporal intensity
-  at time t for integer t in the interval [tlim[1],tlim[2]]
-  of class temporalAtRisk
+a function f(t) giving the (constant) temporal intensity at
+time t for integer t in the interval [tlim[1],tlim[2]] of
+class temporalAtRisk
 }
 \description{
-  Create a constant-in-time temporalAtRisk object from a
-  numeric object of length 1. The returned temporalAtRisk
-  object is assumed to have been scaled correctly by the
-  user so that mu(t) = E(number of cases in a unit time
-  interval).
+Create a constant-in-time temporalAtRisk object from a
+numeric object of length 1. The returned temporalAtRisk
+object is assumed to have been scaled correctly by the user
+so that mu(t) = E(number of cases in a unit time interval).
 }
 \details{
-  For further details of temporalAtRisk objects, see
-  ?temporalAtRisk>
+For further details of temporalAtRisk objects, see
+?temporalAtRisk>
 }
 \seealso{
-  \link{temporalAtRisk}, \link{spatialAtRisk},
-  \link{temporalAtRisk.numeric},
-  \link{temporalAtRisk.function}, \link{constantInTime},
-  \link{constantInTime.stppp}, \link{print.temporalAtRisk},
-  \link{plot.temporalAtRisk},
+\link{temporalAtRisk}, \link{spatialAtRisk},
+\link{temporalAtRisk.numeric},
+\link{temporalAtRisk.function}, \link{constantInTime},
+\link{constantInTime.stppp}, \link{print.temporalAtRisk},
+\link{plot.temporalAtRisk},
 }
 

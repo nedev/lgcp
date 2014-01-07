@@ -2,7 +2,7 @@
 \alias{varfield}
 \title{varfield function}
 \usage{
-  varfield(obj, ...)
+varfield(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,13 +10,13 @@
   \item{...}{additional arguments}
 }
 \value{
-  method meanfield
+method meanfield
 }
 \description{
-  Generic function to extract the variance of the latent
-  field Y.
+Generic function to extract the variance of the latent
+field Y.
 }
 \seealso{
-  \link{lgcpPredict}
+\link{lgcpPredict}
 }
 

@@ -2,7 +2,7 @@
 \alias{betavals}
 \title{betavals function}
 \usage{
-  betavals(lg)
+betavals(lg)
 }
 \arguments{
   \item{lg}{an object produced by a call to
@@ -12,19 +12,19 @@
   orlgcpPredictMultitypeSpatialPlusPars}
 }
 \value{
-  the posterior sampled beta
+the posterior sampled beta
 }
 \description{
-  A function to return the sampled beta from a call to the
-  function lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to return the sampled beta from a call to the
+function lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{parsummary}, \link{textsummary},
-  \link{priorpost}, \link{postcov}, \link{exceedProbs},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{parsummary}, \link{textsummary},
+\link{priorpost}, \link{postcov}, \link{exceedProbs},
+\link{etavals}
 }
 

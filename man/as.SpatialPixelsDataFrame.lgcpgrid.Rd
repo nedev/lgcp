@@ -2,7 +2,7 @@
 \alias{as.SpatialPixelsDataFrame.lgcpgrid}
 \title{as.SpatialPixelsDataFrame.lgcpgrid function}
 \usage{
-  \method{as.SpatialPixelsDataFrame}{lgcpgrid} (obj, ...)
+\method{as.SpatialPixelsDataFrame}{lgcpgrid}(obj, ...)
 }
 \arguments{
   \item{obj}{an lgcpgrid object}
@@ -11,11 +11,11 @@
   SpatialPoints, eg a proj4string}
 }
 \value{
-  Either a SpatialPixelsDataFrame, or a list consisting of
-  SpatialPixelsDataFrame objects.
+Either a SpatialPixelsDataFrame, or a list consisting of
+SpatialPixelsDataFrame objects.
 }
 \description{
-  Method to convert lgcpgrid objects to
-  SpatialPixelsDataFrame objects.
+Method to convert lgcpgrid objects to
+SpatialPixelsDataFrame objects.
 }
 

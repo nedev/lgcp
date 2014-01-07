@@ -2,7 +2,7 @@
 \alias{mstppp}
 \title{mstppp function}
 \usage{
-  mstppp(P, ...)
+mstppp(P, ...)
 }
 \arguments{
   \item{P}{an object}
@@ -10,19 +10,19 @@
   \item{...}{additional arguments}
 }
 \value{
-  method mstppp
+method mstppp
 }
 \description{
-  Generic function used in the construction of marked
-  space-time planar point patterns. An mstppp object is
-  like an stppp object, but with an extra component
-  containing a data frame (the mark information).
+Generic function used in the construction of marked
+space-time planar point patterns. An mstppp object is like
+an stppp object, but with an extra component containing a
+data frame (the mark information).
 }
 \details{
-  Observations are assumed to occur in the plane and the
-  observation window is assumed not to change over time.
+Observations are assumed to occur in the plane and the
+observation window is assumed not to change over time.
 }
 \seealso{
-  \link{mstppp}, \link{mstppp.ppp}, \link{mstppp.list}
+\link{mstppp}, \link{mstppp.ppp}, \link{mstppp.list}
 }
 

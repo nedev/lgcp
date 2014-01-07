@@ -2,12 +2,11 @@
 \alias{lgcpPredictMultitypeSpatialPlusPars}
 \title{lgcpPredictMultitypeSpatialPlusPars function}
 \usage{
-  lgcpPredictMultitypeSpatialPlusPars(formulaList, sd,
-    typemark = NULL, Zmat = NULL, model.priorsList,
-    model.initsList = NULL, spatial.covmodelList,
-    cellwidth = NULL, poisson.offset = NULL, mcmc.control,
-    output.control = setoutput(), gradtrunc = Inf, ext = 2,
-    inclusion = "touching")
+lgcpPredictMultitypeSpatialPlusPars(formulaList, sd, typemark = NULL,
+  Zmat = NULL, model.priorsList, model.initsList = NULL,
+  spatial.covmodelList, cellwidth = NULL, poisson.offset = NULL,
+  mcmc.control, output.control = setoutput(), gradtrunc = Inf, ext = 2,
+  inclusion = "touching")
 }
 \arguments{
   \item{formulaList}{an object of class formulaList, see
@@ -68,114 +67,111 @@
   centroids are inside the observation window.}
 }
 \value{
-  an object of class
-  lgcpPredictMultitypeSpatialPlusParameters
+an object of class
+lgcpPredictMultitypeSpatialPlusParameters
 }
 \description{
-  A function to deliver fully Bayesian inference for a
-  multitype spatial log-Gaussian Cox process.\cr
+A function to deliver fully Bayesian inference for a
+multitype spatial log-Gaussian Cox process.\cr
 }
 \details{
-  See the vignette "Bayesian_lgcp" for examples of this
-  code in use.\cr
+See the vignette "Bayesian_lgcp" for examples of this code
+in use.\cr
 
-  We suppose there are K point types of interest. The model
-  for point-type k is as follows:\cr \cr X_k(s) ~
-  Poisson[R_k(s)]\cr \cr R_k(s) = C_A lambda_k(s)
-  exp[Z_k(s)beta_k+Y_k(s)]\cr \cr
+We suppose there are K point types of interest. The model
+for point-type k is as follows:\cr \cr X_k(s) ~
+Poisson[R_k(s)]\cr \cr R_k(s) = C_A lambda_k(s)
+exp[Z_k(s)beta_k+Y_k(s)]\cr \cr
 
-  Here X_k(s) is the number of events of type k in the
-  computational grid cell containing the point s, R_k(s) is
-  the Poisson rate, C_A is the cell area, lambda_k(s) is a
-  known offset, Z_k(s) is a vector of measured covariates
-  and Y_i(s) where i = 1,...,K+1 are latent Gaussian
-  processes on the computational grid. The other parameters
-  in the model are beta_k , the covariate effects for the
-  kth type; and eta_i = [log(sigma_i),log(phi_i)], the
-  parameters of the process Y_i for i = 1,...,K+1 on an
-  appropriately transformed (again, in this case log)
-  scale.
+Here X_k(s) is the number of events of type k in the
+computational grid cell containing the point s, R_k(s) is
+the Poisson rate, C_A is the cell area, lambda_k(s) is a
+known offset, Z_k(s) is a vector of measured covariates and
+Y_i(s) where i = 1,...,K+1 are latent Gaussian processes on
+the computational grid. The other parameters in the model
+are beta_k , the covariate effects for the kth type; and
+eta_i = [log(sigma_i),log(phi_i)], the parameters of the
+process Y_i for i = 1,...,K+1 on an appropriately
+transformed (again, in this case log) scale.
 
-  We recommend the user takes the following steps before
-  running this method:
+We recommend the user takes the following steps before
+running this method:
 
-  \enumerate{ \item Compute approximate values of the
-  parameters, eta, of the process Y using the function
-  minimum.contrast.  These approximate values are used for
-  two main reasons: (1) to help inform the size of the
-  computational grid, since we will need to use a cell
-  width that enables us to capture the dependence
-  properties of Y and (2) to help inform the proposal
-  kernel for the MCMC algorithm.  \item Choose an
-  appropriate grid on which to perform inference using the
-  function chooseCellwidth; this will partly be determined
-  by the results of the first stage and partly by the
-  available computational resource available to perform
-  inference.  \item Using the function getpolyol, construct
-  the computational grid and polygon overlays, as required.
-  As this can be an expensive step, we recommend that the
-  user saves this object after it has been constructed and
-  in future reference to the data, reloads this object,
-  rather than having to re-compute it (provided the
-  computational grid has not changed).  \item Decide on
-  which covariates are to play a part in the analysis and
-  use the lgcp function getZmat to interpolate these onto
-  the computational grid. Note that having saved the
-  results from the previous step, this is a relatively
-  quick operation, and allows the user to quickly construct
-  different design matrices, Z, from different candidate
-  models for the data \item If required, set up the
-  population offset using SpatialAtRisk functions (see the
-  vignette "Bayesian_lgcp"); specify the priors using
-  lgcpPrior; and if desired, the initial values for the
-  MCMC, using the function lgcpInits.  \item Run the MCMC
-  algorithm and save the output to disk. We recommend
-  dumping information to disk using the dump2dir function
-  in the output.control argument because it offers much
-  greater flexibility in terms of MCMC diagnosis and
-  post-processing.  \item Perform post-processing analyses
-  including MCMC diagnostic checks and produce summaries of
-  the posterior expectations we require for presentation.
-  (see the vignette "Bayesian_lgcp" for further details).
-  Functions of use in this step include traceplots,
-  autocorr, parautocorr, ltar, parsummary, priorpost,
-  postcov, textsummary, expectation, exceedProbs and
-  lgcp:::expectation.lgcpPredict }
+\enumerate{ \item Compute approximate values of the
+parameters, eta, of the process Y using the function
+minimum.contrast.  These approximate values are used for
+two main reasons: (1) to help inform the size of the
+computational grid, since we will need to use a cell width
+that enables us to capture the dependence properties of Y
+and (2) to help inform the proposal kernel for the MCMC
+algorithm.  \item Choose an appropriate grid on which to
+perform inference using the function chooseCellwidth; this
+will partly be determined by the results of the first stage
+and partly by the available computational resource
+available to perform inference.  \item Using the function
+getpolyol, construct the computational grid and polygon
+overlays, as required. As this can be an expensive step, we
+recommend that the user saves this object after it has been
+constructed and in future reference to the data, reloads
+this object, rather than having to re-compute it (provided
+the computational grid has not changed).  \item Decide on
+which covariates are to play a part in the analysis and use
+the lgcp function getZmat to interpolate these onto the
+computational grid. Note that having saved the results from
+the previous step, this is a relatively quick operation,
+and allows the user to quickly construct different design
+matrices, Z, from different candidate models for the data
+\item If required, set up the population offset using
+SpatialAtRisk functions (see the vignette "Bayesian_lgcp");
+specify the priors using lgcpPrior; and if desired, the
+initial values for the MCMC, using the function lgcpInits.
+\item Run the MCMC algorithm and save the output to disk.
+We recommend dumping information to disk using the dump2dir
+function in the output.control argument because it offers
+much greater flexibility in terms of MCMC diagnosis and
+post-processing.  \item Perform post-processing analyses
+including MCMC diagnostic checks and produce summaries of
+the posterior expectations we require for presentation.
+(see the vignette "Bayesian_lgcp" for further details).
+Functions of use in this step include traceplots, autocorr,
+parautocorr, ltar, parsummary, priorpost, postcov,
+textsummary, expectation, exceedProbs and
+lgcp:::expectation.lgcpPredict }
 }
 \references{
-  \enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle. Bayesian Inference
-  and Data Augmentation Schemes for Spatial, Spatiotemporal
-  and Multivariate Log-Gaussian Cox Processes in R.
-  Submitted.  \item Benjamin M. Taylor, Tilman M. Davies,
-  Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
-  Statistical Software, 52(4), 1-40. URL
-  http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
-  (2001). Spatiotemporal Prediction for log-Gaussian Cox
-  processes. Journal of the Royal Statistical Society,
-  Series B, 63(4), 823-841.  \item Diggle P, Rowlingson B,
-  Su T (2005). Point Process Methodology for On-line
-  Spatio-temporal Disease Surveillance. Environmetrics,
-  16(5), 423-434.  \item Wood ATA, Chan G (1994).
-  Simulation of Stationary Gaussian Processes in [0,1]d.
-  Journal of Computational and Graphical Statistics, 3(4),
-  409-432.  \item Moller J, Syversveen AR, Waagepetersen RP
-  (1998). Log Gaussian Cox Processes. Scandinavian Journal
-  of Statistics, 25(3), 451-482. }
+\enumerate{ \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle. Bayesian Inference
+and Data Augmentation Schemes for Spatial, Spatiotemporal
+and Multivariate Log-Gaussian Cox Processes in R.
+Submitted.  \item Benjamin M. Taylor, Tilman M. Davies,
+Barry S. Rowlingson, Peter J. Diggle (2013). Journal of
+Statistical Software, 52(4), 1-40. URL
+http://www.jstatsoft.org/v52/i04/ \item Brix A, Diggle PJ
+(2001). Spatiotemporal Prediction for log-Gaussian Cox
+processes. Journal of the Royal Statistical Society, Series
+B, 63(4), 823-841.  \item Diggle P, Rowlingson B, Su T
+(2005). Point Process Methodology for On-line
+Spatio-temporal Disease Surveillance. Environmetrics,
+16(5), 423-434.  \item Wood ATA, Chan G (1994). Simulation
+of Stationary Gaussian Processes in [0,1]d. Journal of
+Computational and Graphical Statistics, 3(4), 409-432.
+\item Moller J, Syversveen AR, Waagepetersen RP (1998). Log
+Gaussian Cox Processes. Scandinavian Journal of Statistics,
+25(3), 451-482. }
 }
 \seealso{
-  \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal},
-  link{chooseCellWidth}, \link{getpolyol},
-  \link{guessinterp}, \link{getZmat},
-  \link{addTemporalCovariates}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars}, \link{ltar},
-  \link{autocorr}, \link{parautocorr}, \link{traceplots},
-  \link{parsummary}, \link{textsummary}, \link{priorpost},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal},
+link{chooseCellWidth}, \link{getpolyol},
+\link{guessinterp}, \link{getZmat},
+\link{addTemporalCovariates}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars}, \link{ltar},
+\link{autocorr}, \link{parautocorr}, \link{traceplots},
+\link{parsummary}, \link{textsummary}, \link{priorpost},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

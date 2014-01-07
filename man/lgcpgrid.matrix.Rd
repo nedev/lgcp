@@ -2,8 +2,8 @@
 \alias{lgcpgrid.matrix}
 \title{lgcpgrid.matrix function}
 \usage{
-  \method{lgcpgrid}{matrix} (grid, xvals = 1:nrow(grid),
-    yvals = 1:ncol(grid), ...)
+\method{lgcpgrid}{matrix}(grid, xvals = 1:nrow(grid), yvals = 1:ncol(grid),
+  ...)
 }
 \arguments{
   \item{grid}{a three dimensional array object}
@@ -19,15 +19,15 @@
   \item{...}{other arguments}
 }
 \value{
-  an object of class lgcpgrid
+an object of class lgcpgrid
 }
 \description{
-  Creates an lgcp grid object from an 2-dimensional matrix.
+Creates an lgcp grid object from an 2-dimensional matrix.
 }
 \seealso{
-  \link{lgcpgrid.list}, \link{as.list.lgcpgrid},
-  \link{print.lgcpgrid}, \link{summary.lgcpgrid},
-  \link{quantile.lgcpgrid}, \link{image.lgcpgrid},
-  \link{plot.lgcpgrid}
+\link{lgcpgrid.list}, \link{as.list.lgcpgrid},
+\link{print.lgcpgrid}, \link{summary.lgcpgrid},
+\link{quantile.lgcpgrid}, \link{image.lgcpgrid},
+\link{plot.lgcpgrid}
 }
 

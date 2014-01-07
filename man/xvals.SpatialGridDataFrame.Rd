@@ -2,7 +2,7 @@
 \alias{xvals.SpatialGridDataFrame}
 \title{xvals.SpatialGridDataFrame function}
 \usage{
-  \method{xvals}{SpatialGridDataFrame} (obj, ...)
+\method{xvals}{SpatialGridDataFrame}(obj, ...)
 }
 \arguments{
   \item{obj}{an object}
@@ -10,18 +10,18 @@
   \item{...}{additional arguments}
 }
 \value{
-  the x values
+the x values
 }
 \description{
-  Method for extracting 'x values' from an object of class
-  spatialGridDataFrame
+Method for extracting 'x values' from an object of class
+spatialGridDataFrame
 }
 \seealso{
-  \link{xvals}, \link{yvals}, \link{zvals},
-  \link{xvals.default}, \link{yvals.default},
-  \link{zvals.default}, \link{xvals.fromXYZ},
-  \link{yvals.fromXYZ}, \link{zvals.fromXYZ},
-  \link{yvals.SpatialGridDataFrame},
-  \link{zvals.SpatialGridDataFrame}
+\link{xvals}, \link{yvals}, \link{zvals},
+\link{xvals.default}, \link{yvals.default},
+\link{zvals.default}, \link{xvals.fromXYZ},
+\link{yvals.fromXYZ}, \link{zvals.fromXYZ},
+\link{yvals.SpatialGridDataFrame},
+\link{zvals.SpatialGridDataFrame}
 }
 

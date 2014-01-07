@@ -2,7 +2,7 @@
 \alias{parsummary}
 \title{parsummary function}
 \usage{
-  parsummary(obj, expon = TRUE, LaTeX = FALSE, ...)
+parsummary(obj, expon = TRUE, LaTeX = FALSE, ...)
 }
 \arguments{
   \item{obj}{an object produced by a call to
@@ -22,21 +22,21 @@
   \item{...}{other arguments}
 }
 \value{
-  a data frame containing the median, 0.025 and 0.975
-  quantiles.
+a data frame containing the median, 0.025 and 0.975
+quantiles.
 }
 \description{
-  A function to produce a summary table for the parameters
-  beta and eta from a call to the function
-  lgcpPredictSpatialPlusPars,
-  lgcpPredictAggregateSpatialPlusPars,
-  lgcpPredictSpatioTemporalPlusPars or
-  lgcpPredictMultitypeSpatialPlusPars
+A function to produce a summary table for the parameters
+beta and eta from a call to the function
+lgcpPredictSpatialPlusPars,
+lgcpPredictAggregateSpatialPlusPars,
+lgcpPredictSpatioTemporalPlusPars or
+lgcpPredictMultitypeSpatialPlusPars
 }
 \seealso{
-  \link{ltar}, \link{autocorr}, \link{parautocorr},
-  \link{traceplots}, \link{textsummary}, \link{priorpost},
-  \link{postcov}, \link{exceedProbs}, \link{betavals},
-  \link{etavals}
+\link{ltar}, \link{autocorr}, \link{parautocorr},
+\link{traceplots}, \link{textsummary}, \link{priorpost},
+\link{postcov}, \link{exceedProbs}, \link{betavals},
+\link{etavals}
 }
 

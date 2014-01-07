@@ -2,24 +2,24 @@
 \alias{constanth}
 \title{constanth function}
 \usage{
-  constanth(h)
+constanth(h)
 }
 \arguments{
   \item{h}{an object}
 }
 \value{
-  object of class constanth
+object of class constanth
 }
 \description{
-  This function is used to set up a constant acceptance
-  scheme in the argument \code{mcmc.control} of the
-  function \code{lgcpPredict}. The scheme is set via the
-  \code{mcmcpars} function.
+This function is used to set up a constant acceptance
+scheme in the argument \code{mcmc.control} of the function
+\code{lgcpPredict}. The scheme is set via the
+\code{mcmcpars} function.
 }
 \examples{
 constanth(0.01)
 }
 \seealso{
-  \link{mcmcpars}, \link{lgcpPredict}
+\link{mcmcpars}, \link{lgcpPredict}
 }
 

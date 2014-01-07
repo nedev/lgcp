@@ -2,20 +2,18 @@
 \alias{nullAverage}
 \title{nullAverage function}
 \usage{
-  nullAverage()
+nullAverage()
 }
 \value{
-  object of class nullAverage
+object of class nullAverage
 }
 \description{
-  A null scheme, that does not perform any computation in
-  the running of \code{lgcpPredict}, it is the default
-  value of \code{gridmeans} in the argument
-  \code{output.control}.
+A null scheme, that does not perform any computation in the
+running of \code{lgcpPredict}, it is the default value of
+\code{gridmeans} in the argument \code{output.control}.
 }
 \seealso{
-  \link{setoutput}, \link{lgcpPredict},
-  \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise},
-  \link{GAreturnvalue}
+\link{setoutput}, \link{lgcpPredict}, \link{GAinitialise},
+\link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
 

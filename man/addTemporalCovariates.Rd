@@ -2,8 +2,7 @@
 \alias{addTemporalCovariates}
 \title{addTemporalCovariates function}
 \usage{
-  addTemporalCovariates(temporal.formula, T, laglength,
-    tdata, Zmat)
+addTemporalCovariates(temporal.formula, T, laglength, tdata, Zmat)
 }
 \arguments{
   \item{temporal.formula}{a formula of the form t ~ tvar1 +
@@ -23,42 +22,42 @@
   using the getZmat function.}
 }
 \value{
-  A list of design matrices, one for each time, Z(s,t) for
-  t in (T-laglength):T
+A list of design matrices, one for each time, Z(s,t) for t
+in (T-laglength):T
 }
 \description{
-  A function to 'bolt on' temporal data onto a spatial
-  covariate design matrix. The function takes a spatial
-  design matrix, Z(s) and converts it to a spatiotemporal
-  design matrix Z(s,t) when the effects can be separably
-  decomposed i.e.,\cr Z(s,t)beta = Z_1(s)beta_1 +
-  Z_2(t)beta_2\cr \cr An example of this function in action
-  is given in the vignette "Bayesian_lgcp", in the section
-  on spatiotemporal data.
+A function to 'bolt on' temporal data onto a spatial
+covariate design matrix. The function takes a spatial
+design matrix, Z(s) and converts it to a spatiotemporal
+design matrix Z(s,t) when the effects can be separably
+decomposed i.e.,\cr Z(s,t)beta = Z_1(s)beta_1 +
+Z_2(t)beta_2\cr \cr An example of this function in action
+is given in the vignette "Bayesian_lgcp", in the section on
+spatiotemporal data.
 }
 \details{
-  The main idea of this function is: having created a
-  spatial Z(s) using getZmat, to create a dummy dataset
-  tdata and temporal formula corresponding to the temporal
-  component of the separable effects. The entries in the
-  model matrix Z(s,t) corresponsing to the time covariates
-  are constant over the observation window in space, but in
-  general vary from time-point to time-point.
+The main idea of this function is: having created a spatial
+Z(s) using getZmat, to create a dummy dataset tdata and
+temporal formula corresponding to the temporal component of
+the separable effects. The entries in the model matrix
+Z(s,t) corresponsing to the time covariates are constant
+over the observation window in space, but in general vary
+from time-point to time-point.
 
-  Note that if there is an intercept in the spatial part of
-  the model e.g., X ~ var1 + var2, then in the temporal
-  model, the intercept should be removed i.e., t ~ tvar1 +
-  tvar2 - 1
+Note that if there is an intercept in the spatial part of
+the model e.g., X ~ var1 + var2, then in the temporal
+model, the intercept should be removed i.e., t ~ tvar1 +
+tvar2 - 1
 }
 \seealso{
-  \link{minimum.contrast},
-  \link{minimum.contrast.spatiotemporal},
-  \link{chooseCellwidth}, \link{getpolyol},
-  \link{guessinterp}, \link{getZmat}, \link{lgcpPrior},
-  \link{lgcpInits}, \link{CovFunction}
-  \link{lgcpPredictSpatialPlusPars},
-  \link{lgcpPredictAggregateSpatialPlusPars},
-  \link{lgcpPredictSpatioTemporalPlusPars},
-  \link{lgcpPredictMultitypeSpatialPlusPars}
+\link{minimum.contrast},
+\link{minimum.contrast.spatiotemporal},
+\link{chooseCellwidth}, \link{getpolyol},
+\link{guessinterp}, \link{getZmat}, \link{lgcpPrior},
+\link{lgcpInits}, \link{CovFunction}
+\link{lgcpPredictSpatialPlusPars},
+\link{lgcpPredictAggregateSpatialPlusPars},
+\link{lgcpPredictSpatioTemporalPlusPars},
+\link{lgcpPredictMultitypeSpatialPlusPars}
 }
 

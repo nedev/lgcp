@@ -2,11 +2,11 @@
 \alias{lgcpSimSpatial}
 \title{lgcpSimSpatial function}
 \usage{
-  lgcpSimSpatial(owin = NULL, spatial.intensity = NULL,
-    expectednumcases = 100, cellwidth = 0.05,
-    model.parameters = lgcppars(sigma = 2, phi = 0.2),
-    spatial.covmodel = "exponential", covpars = c(),
-    ext = 2, plot = FALSE, inclusion = "touching")
+lgcpSimSpatial(owin = NULL, spatial.intensity = NULL,
+  expectednumcases = 100, cellwidth = 0.05,
+  model.parameters = lgcppars(sigma = 2, phi = 0.2),
+  spatial.covmodel = "exponential", covpars = c(), ext = 2,
+  plot = FALSE, inclusion = "touching")
 }
 \arguments{
   \item{owin}{observation window}
@@ -41,9 +41,9 @@
   inside the observation window.}
 }
 \value{
-  a ppp object containing the data
+a ppp object containing the data
 }
 \description{
-  A function to simulate from a log gaussian process
+A function to simulate from a log gaussian process
 }
 

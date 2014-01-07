@@ -2,16 +2,16 @@
 \alias{eigenfrombase}
 \title{eigenfrombase function}
 \usage{
-  eigenfrombase(x)
+eigenfrombase(x)
 }
 \arguments{
   \item{x}{the base matrix}
 }
 \value{
-  the eigenvalues
+the eigenvalues
 }
 \description{
-  A function to compute the eigenvalues of an SPD block
-  circulant matrix given the base matrix.
+A function to compute the eigenvalues of an SPD block
+circulant matrix given the base matrix.
 }
 

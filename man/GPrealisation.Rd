@@ -2,8 +2,7 @@
 \alias{GPrealisation}
 \title{GPrealisation function}
 \usage{
-  GPrealisation(gamma, fftgrid, covFunction, covParameters,
-    d)
+GPrealisation(gamma, fftgrid, covFunction, covParameters, d)
 }
 \arguments{
   \item{gamma}{the transformed (white noise) realisation of
@@ -21,13 +20,13 @@
   \item{d}{matrix of grid distances}
 }
 \value{
-  a realisation of a spatial Gaussian process on a regular
-  grid
+a realisation of a spatial Gaussian process on a regular
+grid
 }
 \description{
-  A function to store a realisation of a spatial gaussian
-  process for use in MCMC algorithms that include Bayesian
-  parameter estimation. Stores not only the realisation,
-  but also computational quantities.
+A function to store a realisation of a spatial gaussian
+process for use in MCMC algorithms that include Bayesian
+parameter estimation. Stores not only the realisation, but
+also computational quantities.
 }
 
