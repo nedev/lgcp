@@ -166,13 +166,14 @@ as.ppp.stppp <- function(X,...,fatal=TRUE){
 ##' @method rescale stppp
 ##' @param X an object of class stppp
 ##' @param s scale as in rescale.ppp: x and y coordinaes are scaled by 1/s
+##' @param unitname parameter as defined in ?rescale
 ##' @return a ppp object without observation times
 ##' @export 
 
-rescale.stppp <- function(X,s){
+rescale.stppp <- function(X,s,unitname){
     t <- X$t
     tlim <- X$tlim
-    xnew <- rescale.ppp(X,s)
+    xnew <- rescale.ppp(X,s,unitname)
     xnew <- stppp(xnew,tlim=tlim,t=t)
     return(xnew) 
 }

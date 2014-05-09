@@ -2,13 +2,15 @@
 \alias{rescale.stppp}
 \title{rescale.stppp function}
 \usage{
-\method{rescale}{stppp}(X, s)
+\method{rescale}{stppp}(X, s, unitname)
 }
 \arguments{
   \item{X}{an object of class stppp}
 
   \item{s}{scale as in rescale.ppp: x and y coordinaes are
   scaled by 1/s}
+
+  \item{unitname}{parameter as defined in ?rescale}
 }
 \value{
 a ppp object without observation times

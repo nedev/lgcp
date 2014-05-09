@@ -1,6 +1,6 @@
-8f49aaa1c03a2ec0df664f1a209814e0 *DESCRIPTION
-22629ad64c0d69638303146aa343845b *NAMESPACE
-95a2c391b6c02bca5750a4902c64e6ee *NEWS
+8ee5f2643283af43350b8ca684aa7143 *DESCRIPTION
+b8282ce3bd1d9f16655d89c96738724b *NAMESPACE
+72ffdc51425c12e65e290bebdc9da735 *NEWS
 82e402500f5ec89f463ad80044da2b3c *R/AggregateSpatialOnlyPlusParameters.R
 693ee3d33c7398a4f2a296448223bfd4 *R/MultitypeSpatialOnlyPlusParameters.R
 d730585fbb0b531a29aacc913d15444b *R/SpatialOnlyPlusParameters.R
@@ -27,13 +27,13 @@ c354a7e492b662511dd19c8523db06f5 *R/lgcppars.R
 62c754d021937c9a7d89407a6c399597 *R/mcmcProgress.R
 360d43a97d209f16fc5a33ad5417ea80 *R/mcmcpars.R
 718d3757136256cd56768085eab9d822 *R/minimumContrast.R
-15335e35311066f0bf3f8e68651371b3 *R/mstpppClassDef.R
+591b14166cb19c42cfcce8e8a10eccb6 *R/mstpppClassDef.R
 539e9dbbe1f5aa772c0d1d3321f07b1c *R/parameterEstimation.R
 3dd9b8eae90f1fe9f74c7fe2b9c2dbe5 *R/selectObsWindow.R
 2cda0507bfe855be44e6b166369ed299 *R/setoutput.R
 1fbf7f17ad4d8f16f1d1fce13c258c18 *R/spatialAtRiskClassDef.R
 d6ce0f100dae311a26e5bacd283b5702 *R/spatialOnly.R
-3573e6a3cfbbe6c6663f7183e5a805c6 *R/stpppClassDef.R
+41ed68876b17c2e356b526094b9eac71 *R/stpppClassDef.R
 25d7824a82676df2ea97943d10307321 *R/temporalAtRiskClassDef.R
 e65f69f2bb638bfdaf8c5166c7a7972a *R/txtProgressBar2.R
 2c31a371b895884467e9da4fd68249b1 *R/zzz.R
@@ -43,7 +43,7 @@ f9000c4bbbe6bf2b2d734c30a882fdcd *data/wtowncoords.rda
 abcd745da0e3e2823e1686b462bf05a4 *data/wtowns.rda
 5e00cbc916da753cac0163a2a1f9260e *inst/CITATION
 18e14512e2f5648df8581c1f76cfc672 *inst/doc/lgcp.Rnw
-2d2219fa52dfdf2f73c88e796ea4a618 *inst/doc/lgcp.pdf
+0beccb2332aabc9de02363f1ea3955b4 *inst/doc/lgcp.pdf
 91b5e084e3b640200a8c84ae312fe759 *man/BetaParameters.Rd
 db36064b13d1c3e30ca6b6f8635d1ece *man/C.diff.single.im.Rd
 22889a3b8e64f8c8076d426ea21e8b38 *man/CovFunction.Rd
@@ -334,8 +334,8 @@ f64323db2aa72424e7e1b3e7a39480cb *man/print.temporalAtRisk.Rd
 3c3b05a8cf4dd5bde9938862c4f4e8eb *man/quantile.lgcpPredict.Rd
 b529fcc22c0bce7d3a9d2d39f96d3e3e *man/quantile.lgcpgrid.Rd
 8fab4df1c3c52145f13d9ef6aab5bcb9 *man/raster.lgcpgrid.Rd
-289b5472c315ba5664afbfc4ac909469 *man/rescale.mstppp.Rd
-11a7236d205eea311292179e69d10673 *man/rescale.stppp.Rd
+1c0001992d7a735b4965c972305bb6fa *man/rescale.mstppp.Rd
+5ad2602e0ea2dca38381cf8c3a9d56d0 *man/rescale.stppp.Rd
 da29e572e47d6dae554fe81bccf4397f *man/resetLoop.Rd
 4f0a03de76abaa311cdf4a3a9e1e1caf *man/rgauss.Rd
 d2cf4486e5e75e22adb2aed455ec502c *man/roteffgain.Rd
