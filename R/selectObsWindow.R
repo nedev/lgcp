@@ -213,7 +213,6 @@ rotmat <- function(theta){
 ##'
 ##' An affine transformation of an object of class \code{stppp}
 ##'
-##' @importFrom spatstat affine
 ##' @method affine stppp
 ##' @param X an object of class stppp
 ##' @param mat matrix of affine transformation

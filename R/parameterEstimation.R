@@ -719,7 +719,6 @@ muEst <- function(xyt,...){
 ##'
 ##' A wrapper function for \link{density.ppp}.
 ##'
-##' @importFrom stats density
 ##' @method density stppp
 ##' @param x an stppp object
 ##' @param bandwidth 'bandwidth' parameter, equivanent to parameter sigma in ?density.ppp ie standard deviation of isotropic Gaussian smoothing kernel.

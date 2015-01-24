@@ -197,7 +197,6 @@ as.array.lgcpgrid <- function(x,...){
 ##'
 ##' A function to convert lgcpgrid objects into either a raster object, or a RasterBrick object.
 ##'
-##' @importFrom raster raster
 ##' @method raster lgcpgrid
 ##' @param x an lgcpgrid object
 ##' @param crs PROJ4 type description of a map projection (optional). See ?raster
@@ -332,7 +331,6 @@ summary.lgcpgrid <- function(object,...){
 ##' Quantile method for lgcp objects. This just applies the quantile function to each of
 ##' the elements of x$grid
 ##'
-##' @importFrom stats quantile
 ##' @method quantile lgcpgrid
 ##' @param x an object of class lgcpgrid  
 ##' @param ... other arguments   
@@ -355,7 +353,6 @@ quantile.lgcpgrid <- function(x,...){
 ##'
 ##' Produce an image plot of an lgcpgrid object.
 ##'
-## @importFrom graphics image
 ##' @method image lgcpgrid
 ##' @param x an object of class lgcpgrid
 ##' @param sel vector of integers between 1 and grid$len: which grids to plot. Default NULL, in which case all grids are plotted.
@@ -1015,7 +1012,6 @@ hvals.lgcpPredict <- function(obj,...){
 ##' computational purposes, the window of an \code{stppp} object will be extended to accommodate the requirement that 
 ##' the dimensions must be powers of 2. The function \code{window.lgcpPredict} returns the extended window.
 ##'
-##' @importFrom stats window
 ##' @method window lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param ... additional arguments
@@ -1305,7 +1301,6 @@ gridInWindow <- function(xvals,yvals,win,inclusion="touching"){
 ##' Since computign the quantiles is an expensive operation, the option to output the quantiles on a subregion of interest is also provided (by
 ##' setting the argument \code{inWindow}, which has a sensible default).
 ##'
-##' @importFrom stats quantile
 ##' @method quantile lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param qt a vector of the required quantiles
@@ -1442,7 +1437,6 @@ plot.lgcpQuantiles <- function(x,sel=1:dim(x)[3],ask=TRUE,crop=TRUE,plotwin=FALS
 ##' \code{identify(lg)} for example (see code below), the user can click multiply with the left mouse button on the graphics device; once
 ##' the user has selected all points of interest, the right button is pressed, which returns them.
 ##'
-##' @importFrom graphics identify
 ##' @method identify lgcpPredict
 ##' @param x an object of class lgcpPredict
 ##' @param ... additional arguments 

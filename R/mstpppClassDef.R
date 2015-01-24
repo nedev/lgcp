@@ -182,7 +182,6 @@ plot.mstppp <- function(x,cols="red",...){
 ##'
 ##' Convert from mstppp to ppp. Can be useful for data handling.
 ##'
-##' @importFrom spatstat as.ppp
 ##' @method as.ppp mstppp
 ##' @param X an object of class mstppp
 ##' @param ... additional arguments
@@ -198,7 +197,6 @@ as.ppp.mstppp <- function(X,...,fatal=TRUE){
 ##'
 ##' Rescale an mstppp object. Similar to rescale.ppp
 ##'
-##' @importFrom spatstat rescale
 ##' @method rescale mstppp
 ##' @param X an object of class mstppp
 ##' @param s scale as in rescale.ppp: x and y coordinaes are scaled by 1/s

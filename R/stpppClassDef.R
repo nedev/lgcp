@@ -146,7 +146,6 @@ plot.stppp <- function(x,...){
 ##'
 ##' Convert from stppp to ppp. Can be useful for data handling.
 ##'
-##' @importFrom spatstat as.ppp
 ##' @method as.ppp stppp
 ##' @param X an object of class stppp
 ##' @param ... additional arguments
@@ -162,7 +161,6 @@ as.ppp.stppp <- function(X,...,fatal=TRUE){
 ##'
 ##' Rescale an stppp object. Similar to rescale.ppp
 ##'
-##' @importFrom spatstat rescale
 ##' @method rescale stppp
 ##' @param X an object of class stppp
 ##' @param s scale as in rescale.ppp: x and y coordinaes are scaled by 1/s

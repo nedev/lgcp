@@ -1,4 +1,7 @@
 library(lgcp)
+library(spatstat)
+library(sp)
+library(raster)
 
 set.seed(1)
 

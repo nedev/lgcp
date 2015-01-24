@@ -122,7 +122,7 @@ print.stapp <- function(x,printhead=TRUE,...){
 ##'
 ##' A function to extract the SpatialPolygons part of W and return it as an owin object.
 ##'
-##' @importFrom spatstat as.owin
+
 ##' @method as.owin stapp
 ##' @param W see ?as.owin
 ##' @param ... see ?as.owin
@@ -240,7 +240,7 @@ as.stppp.stapp <- function(obj,popden=NULL,n=100,dmin=0,check=TRUE,...){
         ss <- apply(rcounts,1,function(x){any(is.na(x))})
         owlss <- as.owinlist(obj$spdf,dmin=dmin,check=check,subset=ss)
         owl <- rep(list(obj$window),dim(rcounts)[2])
-        if(require(gpclib,quietly=TRUE)){
+        if(requireNamespace("gpclib",quietly=TRUE)){
             spatstat.options(gpclib=TRUE)
         }
         else{

@@ -774,7 +774,7 @@ EvaluatePrior <- function(etaParameters,betaParameters,prior){
 ##' A secondary function of specifying initial values is to help design the MCMC proposal matrix, which is based on these initial estimates.
 ##'
 ##' @param etainit a vector, the initial value of eta to use
-##' @param betainit a vector, the initial value of beta to use
+##' @param betainit a vector, the initial value of beta to use, this vector must have names the same as the variable names in the formula in use, and in the same order.
 ##' @return an object of class lgcpInits used in the MCMC routine.
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{CovFunction},
@@ -2345,7 +2345,7 @@ addTemporalCovariates <- function(temporal.formula,T,laglength,tdata,Zmat){
     tdata <- tdata[idx,]	
 
     dmat <- tdata
-    modmat <- model.matrix(temporal.formula,data=tdata)[,-1] # now remove intercept term, see above	
+    modmat <- model.matrix(temporal.formula,data=tdata)[,-1,drop=FALSE] # now remove intercept term, see above	
     
     dmat <- dmat[,cidx,drop=FALSE]    
     

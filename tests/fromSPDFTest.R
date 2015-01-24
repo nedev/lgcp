@@ -1,4 +1,6 @@
 library(lgcp)
+library(spatstat)
+library(sp)
 
 polylist <- list()
 # a pentagon

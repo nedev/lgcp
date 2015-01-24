@@ -34,9 +34,7 @@
 ###' }
 ###' 
 ###' \section{Citation}{
-###' To cite use of \code{lgcp}, the user may refer to the following work:\cr
-###' lgcp -- An R package for Inference With Spatiotemporal Log-Gaussian Cox Processes. Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, 
-###' Peter J. Diggle. Submitted to The Journal Of Statistical Software.
+###' To see how to cite \code{lgcp}, type \code{citation("lgcp")} at the console.
 ###' }
 ###' 
 ###' \references{
@@ -54,16 +52,24 @@
 ###'  Barry Rowlingson, Health and Medicine, Lancaster University
 ###'  Peter Diggle, Health and Medicine, Lancaster University
 ###' @keywords package
-###' @import Matrix 
-###' @importFrom RandomFields CovarianceFct 
-###' @import fields 
-###' @import iterators 
-###' @import maptools
+
+
 ###' @import methods
-###' @import ncdf
-###' @import rgeos 
-###' @import rpanel
-###' @import sp
+###' @importFrom RandomFields CovarianceFct
+###' @importFrom Matrix sparseMatrix
+###' @importFrom rpanel rp.block rp.button rp.control rp.radiogroup rp.slider rp.textentry rp.checkbox
+###' @importFrom tcltk setTkProgressBar tclvalue tkProgressBar tkwinfo tkwm.geometry 
+###' @importFrom rgeos gDisjoint gIntersection gIntersects gTouches gUnaryUnion 
+###' @importFrom ncdf close.ncdf get.var.ncdf open.ncdf dim.def.ncdf var.def.ncdf create.ncdf put.var.ncdf sync.ncdf
+###' @importFrom maptools label
+###' @importFrom iterators icount iter nextElem 
+###' @importFrom fields image.plot  
+###' @importFrom tcltk setTkProgressBar tclvalue tkProgressBar tkwinfo tkwm.geometry 
+###' @importFrom raster raster disaggregate resample brick as.data.frame
+###' @importFrom sp proj4string<- proj4string SpatialPixelsDataFrame SpatialGridDataFrame Polygon Polygons SpatialPolygons coordinates CRS geometry GridTopology over overlay proj4string SpatialGrid SpatialPixels SpatialPoints SpatialPolygonsDataFrame split spTransform 
+###' @importFrom spatstat rescale.ppp resolve.2D.kernel convexhull density.ppp setminus.owin simplify.owin interp.im affine.ppp rescale as.ppp as.owin affine area area.owin as.im as.mask as.polygonal as.rectangle im inside.owin is.im is.multitype is.polygonal is.ppp is.rectangle Kest Kinhom marks nearest.raster.point owin pairdist pcf pcfinhom ppp rmax.rule spatstat.options termsinformula variablesinformula verifyclass 
+###' @importFrom stats acf approx as.formula C coefficients density deriv df dlnorm dnorm end fft formula Gamma glm lm lowess median model.matrix optim optimise quantile rnorm rpois runif sd start terms vcov window 
+###' @importFrom graphics abline grid hist identify image legend lines locator par plot points title
 
 
 `lgcp` = NA

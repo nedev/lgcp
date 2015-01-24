@@ -294,7 +294,6 @@ spatialAtRisk.lgcpgrid <- function(X,idx=length(X$grid),...){
 ##'
 ##' Convert an object of class fromXYZ (created by spatialAtRisk for example) into a spatstat im object.
 ##'
-##' @importFrom spatstat as.im
 ##' @method as.im fromXYZ
 ##' @param X object of class fromXYZ
 ##' @param ... additional arguments
@@ -313,7 +312,6 @@ as.im.fromXYZ <- function(X,...){
 ##'
 ##' Convert an object of class fromSPDF (created by spatialAtRisk for example) into a spatstat im object.
 ##'
-##' @importFrom spatstat as.im
 ##' @method as.im fromSPDF
 ##' @param X an object of class fromSPDF
 ##' @param ncells number of cells to divide range into; default 100
@@ -338,7 +336,6 @@ as.im.fromSPDF <- function(X,ncells=100,...){
 ##'
 ##' Convert an object of class fromFunction(created by spatialAtRisk for example) into a spatstat im object.
 ##'
-##' @importFrom spatstat as.im
 ##' @method as.im fromFunction
 ##' @param X an object of class fromSPDF
 ##' @param xyt and objects of class stppp
@@ -552,7 +549,6 @@ plot.fromSPDF <- function(x,...){
 ## @name spplot.fromSPDF
 ## @docType methods
 ## @rdname spplot.fromSPDF
-## @importFrom sp spplot
 ## method for spplot
 #suppressWarnings(setMethod("spplot","fromSPDF", function(obj,...){spplot(obj$spdf,...)}))
 
