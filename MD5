@@ -1,4 +1,4 @@
-427b4ccecbbac00696019b970f0c7b0a *DESCRIPTION
+e60f31264da23b048d61744a90e981f0 *DESCRIPTION
 c6cf4499d18435e80731e5fb6ed62925 *NAMESPACE
 72ffdc51425c12e65e290bebdc9da735 *NEWS
 82e402500f5ec89f463ad80044da2b3c *R/AggregateSpatialOnlyPlusParameters.R
@@ -37,13 +37,13 @@ d6ce0f100dae311a26e5bacd283b5702 *R/spatialOnly.R
 25d7824a82676df2ea97943d10307321 *R/temporalAtRiskClassDef.R
 e65f69f2bb638bfdaf8c5166c7a7972a *R/txtProgressBar2.R
 2c31a371b895884467e9da4fd68249b1 *R/zzz.R
-77eca2f0b8b7654b377ded97ae3ec24f *build/vignette.rds
+94468d9aff4131e4eca406c677d60b63 *build/vignette.rds
 d67cf2b44743e72328a8fe7c2331bf65 *data/wpopdata.rda
 f9000c4bbbe6bf2b2d734c30a882fdcd *data/wtowncoords.rda
 abcd745da0e3e2823e1686b462bf05a4 *data/wtowns.rda
 6d8605850b7a7e5f4f3d093864ea6012 *inst/CITATION
-18e14512e2f5648df8581c1f76cfc672 *inst/doc/lgcp.Rnw
-1122eeb4cf3ae942451d4a9d02f30793 *inst/doc/lgcp.pdf
+70a3e088b234a51eaccbd26e33c5e9a4 *inst/doc/lgcp.Rnw
+0295e36ab1288a8578cd63b0cc57bf20 *inst/doc/lgcp.pdf
 eb1267c8e3dfb49fff43f91312d6ffc1 *man/BetaParameters.Rd
 7195f453767f7653773d4b7031fdcd2b *man/C.diff.single.im.Rd
 6a3f2742e63c46d34f1710ffdf863267 *man/CovFunction.Rd
@@ -433,4 +433,4 @@ e0e9162569a6dd9c07dbaebd3834bd0f *tests/gridSummaryTest.R
 39db19f77152269ebf422e285b743878 *tests/lgcpMethodsTest.R
 b722f9bae996d109fb8001f2f88a6a96 *tests/mstpppClassTest.R
 5b7f7a42fc93ebc43168b11e453fb57a *tests/stpppClassTest.R
-18e14512e2f5648df8581c1f76cfc672 *vignettes/lgcp.Rnw
+70a3e088b234a51eaccbd26e33c5e9a4 *vignettes/lgcp.Rnw
