@@ -1,4 +1,4 @@
-e60f31264da23b048d61744a90e981f0 *DESCRIPTION
+794be1b58e35fda60b46c04044df4c0b *DESCRIPTION
 c6cf4499d18435e80731e5fb6ed62925 *NAMESPACE
 72ffdc51425c12e65e290bebdc9da735 *NEWS
 82e402500f5ec89f463ad80044da2b3c *R/AggregateSpatialOnlyPlusParameters.R
@@ -43,7 +43,7 @@ f9000c4bbbe6bf2b2d734c30a882fdcd *data/wtowncoords.rda
 abcd745da0e3e2823e1686b462bf05a4 *data/wtowns.rda
 6d8605850b7a7e5f4f3d093864ea6012 *inst/CITATION
 70a3e088b234a51eaccbd26e33c5e9a4 *inst/doc/lgcp.Rnw
-0295e36ab1288a8578cd63b0cc57bf20 *inst/doc/lgcp.pdf
+de776db4d513bca3fd0ca1ecf3e84268 *inst/doc/lgcp.pdf
 eb1267c8e3dfb49fff43f91312d6ffc1 *man/BetaParameters.Rd
 7195f453767f7653773d4b7031fdcd2b *man/C.diff.single.im.Rd
 6a3f2742e63c46d34f1710ffdf863267 *man/CovFunction.Rd
