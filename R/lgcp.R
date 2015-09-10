@@ -65,12 +65,13 @@
 ###' @importFrom iterators icount iter nextElem 
 ###' @importFrom fields image.plot  
 ###' @importFrom tcltk setTkProgressBar tclvalue tkProgressBar tkwinfo tkwm.geometry 
-###' @importFrom raster raster disaggregate resample brick as.data.frame
-###' @importFrom sp proj4string<- proj4string SpatialPixelsDataFrame SpatialGridDataFrame Polygon Polygons SpatialPolygons coordinates CRS geometry GridTopology over overlay proj4string SpatialGrid SpatialPixels SpatialPoints SpatialPolygonsDataFrame split spTransform 
+###' @importFrom raster raster disaggregate aggregate resample brick as.data.frame
+###' @importFrom sp proj4string<- proj4string SpatialPixelsDataFrame SpatialGridDataFrame Polygon Polygons SpatialPolygons coordinates CRS geometry GridTopology over proj4string SpatialGrid SpatialPixels SpatialPoints SpatialPolygonsDataFrame split spTransform 
 ###' @importFrom spatstat rescale.ppp resolve.2D.kernel convexhull density.ppp setminus.owin simplify.owin interp.im affine.ppp rescale as.ppp as.owin affine area area.owin as.im as.mask as.polygonal as.rectangle im inside.owin is.im is.multitype is.polygonal is.ppp is.rectangle Kest Kinhom marks nearest.raster.point owin pairdist pcf pcfinhom ppp rmax.rule spatstat.options termsinformula variablesinformula verifyclass 
-###' @importFrom stats acf approx as.formula C coefficients density deriv df dlnorm dnorm end fft formula Gamma glm lm lowess median model.matrix optim optimise quantile rnorm rpois runif sd start terms vcov window 
+###' @importFrom stats acf approx as.formula C coefficients density deriv df dlnorm dnorm end fft formula Gamma glm lm lowess median model.matrix optim optimise quantile rnorm rpois runif sd start terms vcov window quasipoisson
 ###' @importFrom graphics abline grid hist identify image legend lines locator par plot points title
-
+###' @importFrom grDevices dev.off devAskNewPage heat.colors rainbow rgb
+###' @importFrom utils assignInNamespace browseURL flush.console head menu object.size setTxtProgressBar tail txtProgressBar
 
 `lgcp` = NA
 
