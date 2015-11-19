@@ -2103,7 +2103,8 @@ plot.lgcpZmat <- function(x,ask=TRUE,pow=1,main=NULL,misscol="black",obswin=NULL
         }
         
         if(ask){
-            browser()
+            cat ("Press [enter] to continue")
+            line <- readline()
         }
     }
     

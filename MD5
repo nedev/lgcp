@@ -1,4 +1,4 @@
-25ded1fa640c6fe861b3dda49c08e12d *DESCRIPTION
+fdba29eb41cbc65da51436b41d376b82 *DESCRIPTION
 19ca5740422e92d5f5f885468df67236 *NAMESPACE
 72ffdc51425c12e65e290bebdc9da735 *NEWS
 82e402500f5ec89f463ad80044da2b3c *R/AggregateSpatialOnlyPlusParameters.R
@@ -17,7 +17,7 @@ cda3cac66cb068fe95a6742bbe4cfd52 *R/lgcp-INLA.R
 5c68d8f28139dadda36c3b15ea58e973 *R/lgcp.R
 8274d5452671aa64528b7ee2c898520c *R/lgcpForecast.R
 8240f9ce5ce6951426d6a70d716f0554 *R/lgcpInternals.R
-8c8255701e36129c18dd06f9e397af7f *R/lgcpMethods.R
+946cf002d6c40f29f7bc197e972e1703 *R/lgcpMethods.R
 5be1bd19c867d4c506fb25afac368708 *R/lgcpPredictSpatial.R
 4240f392e774c51b8e83394b166c3b6d *R/lgcpPredictSpatioTemporal.R
 0c2b388af26430557428fc2812cb8016 *R/lgcpSimSpatioTemporal.R
@@ -37,13 +37,14 @@ d6ce0f100dae311a26e5bacd283b5702 *R/spatialOnly.R
 25d7824a82676df2ea97943d10307321 *R/temporalAtRiskClassDef.R
 e65f69f2bb638bfdaf8c5166c7a7972a *R/txtProgressBar2.R
 2c31a371b895884467e9da4fd68249b1 *R/zzz.R
+1ad73fed44740d093c1ad6e18aece9ec *README.md
 929c1e8405fc29bc267280a597ef2467 *build/vignette.rds
-d67cf2b44743e72328a8fe7c2331bf65 *data/wpopdata.rda
-f9000c4bbbe6bf2b2d734c30a882fdcd *data/wtowncoords.rda
-abcd745da0e3e2823e1686b462bf05a4 *data/wtowns.rda
+b5b084246eb4f7545f0c2d18b3a3ed56 *data/wpopdata.rda
+be837abf3598909737b1fa36c60b14b7 *data/wtowncoords.rda
+73e8c2a679d7cefa4b26757604c496f7 *data/wtowns.rda
 6d8605850b7a7e5f4f3d093864ea6012 *inst/CITATION
 70a3e088b234a51eaccbd26e33c5e9a4 *inst/doc/lgcp.Rnw
-3d2b126fbdf7e6a27cd0f564bd366767 *inst/doc/lgcp.pdf
+7a78c8d6dbf981a9cd9f933ff3873da9 *inst/doc/lgcp.pdf
 b6b94922f7888b82a36cb73bf39ac520 *man/BetaParameters.Rd
 12bc49ebbf1360cd0ef4fd0837dda508 *man/C.diff.single.im.Rd
 03594686e5a40c7732460e8f6b02fbbc *man/CovFunction.Rd
