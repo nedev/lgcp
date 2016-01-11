@@ -60,7 +60,7 @@
 ###' @importFrom rpanel rp.block rp.button rp.control rp.radiogroup rp.slider rp.textentry rp.checkbox
 ###' @importFrom tcltk setTkProgressBar tclvalue tkProgressBar tkwinfo tkwm.geometry 
 ###' @importFrom rgeos gDisjoint gIntersection gIntersects gTouches gUnaryUnion 
-###' @importFrom ncdf close.ncdf get.var.ncdf open.ncdf dim.def.ncdf var.def.ncdf create.ncdf put.var.ncdf sync.ncdf
+###' @importFrom ncdf4 nc_open nc_close nc_sync ncvar_get ncdim_def ncvar_def nc_create ncvar_put
 ###' @importFrom maptools label
 ###' @importFrom iterators icount iter nextElem 
 ###' @importFrom fields image.plot  
@@ -75,4 +75,5 @@
 
 `lgcp` = NA
 
-
+# package ncdf obsolete
+### @importFrom ncdf close.ncdf get.var.ncdf open.ncdf dim.def.ncdf var.def.ncdf create.ncdf put.var.ncdf sync.ncdf

@@ -199,24 +199,24 @@ GFinitialise.dump2dir <- function(F,...){
     nlevs <- get("nlevs",envir=parent.frame())
     MTmode <- get("MultiTypeMode",envir=parent.frame())
     fn <- paste(F$dirname,"simout.nc",sep="")  
-    x <- dim.def.ncdf( "X", "x coordinates", 1:M) 
-    y <- dim.def.ncdf( "Y", "y coordinates", 1:N)
+    x <- ncdim_def( "X", "x coordinates", 1:M) 
+    y <- ncdim_def( "Y", "y coordinates", 1:N)
     if (F$lastonly){
-        t <- dim.def.ncdf( "T", "time index", 1) 
+        t <- ncdim_def( "T", "time index", 1) 
     }
     else{
-        t <- dim.def.ncdf( "T", "time index", 1:tlen) 
+        t <- ncdim_def( "T", "time index", 1:tlen) 
     }   
-    iter <- dim.def.ncdf( "iter", "iteration", 1:nsamp)
+    iter <- ncdim_def( "iter", "iteration", 1:nsamp)
     if(MTmode){
-        proc <- dim.def.ncdf( "P", "processes", 1:(nlevs+1)) # gives space for one common field and 'nlevs' other fields
-        sout <- var.def.ncdf("simrun","none", list(x,y,t,proc,iter), missval=1.e30,prec="double")
+        proc <- ncdim_def( "P", "processes", 1:(nlevs+1)) # gives space for one common field and 'nlevs' other fields
+        sout <- ncvar_def("simrun","none", list(x,y,t,proc,iter), missval=1.e30,prec="double")
     }
     else{ 
-        sout <- var.def.ncdf("simrun","none", list(x,y,t,iter), missval=1.e30,prec="double")
+        sout <- ncvar_def("simrun","none", list(x,y,t,iter), missval=1.e30,prec="double")
     }
-    ncdata <- create.ncdf(fn,sout) # allocates the disk space to be written
-    close.ncdf(ncdata)
+    ncdata <- nc_create(fn,sout) # allocates the disk space to be written
+    nc_close(ncdata)
     cat(paste("Netcdf file: ",fn," created\n",sep=""))
 }
 
@@ -259,7 +259,7 @@ GFupdate.dump2dir <- function(F,...){
     N <- get("N",envir=parent.frame())
     tfit <- get("temporal.fitted",envir=parent.frame())
     tlen <- length(tfit)
-    ncdata <- open.ncdf(paste(F$dirname,"simout.nc",sep=""),write=TRUE)
+    ncdata <- nc_open(paste(F$dirname,"simout.nc",sep=""),write=TRUE)
     
     if(get("SpatialOnlyMode",envir=parent.frame())){
         if(!get("SpatialPlusParameters",envir=parent.frame())){
@@ -291,19 +291,19 @@ GFupdate.dump2dir <- function(F,...){
 
     if (F$lastonly){
         if(get("SpatialPlusParameters",envir=parent.frame())&get("MultiTypeMode",envir=parent.frame())){
-            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,1,F$ret()),count=c(M,N,1,nfields,1))
+            ncvar_put(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,1,F$ret()),count=c(M,N,1,nfields,1))
         }
         else{       
-            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M,N,1,1))
+            ncvar_put(ncdata,ncdata$var[[1]],Y[[length(Y)]],start=c(1,1,1,F$ret()),count=c(M,N,1,1))
         }
     }
     else{
         for (i in 1:tlen){ 
-            put.var.ncdf(ncdata,ncdata$var[[1]],Y[[i]],start=c(1,1,i,F$ret()),count=c(M,N,1,1))
+            ncvar_put(ncdata,ncdata$var[[1]],Y[[i]],start=c(1,1,i,F$ret()),count=c(M,N,1,1))
         }
     }
-    sync.ncdf(ncdata)
-    close.ncdf(ncdata) 
+    nc_sync(ncdata)
+    nc_close(ncdata) 
 }
 
 

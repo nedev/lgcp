@@ -1116,7 +1116,7 @@ autocorrMultitype <- function(x,lags,fieldno,inWindow=x$xyt$window,crop2parentwi
         stop("tidx should either be NULL, or a vector of length 1")
     }
     fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     datadim <- ncdata$var$simrun$varsize
     if (is.null(tidx)){
         tidx <- datadim[3]
@@ -1138,7 +1138,7 @@ autocorrMultitype <- function(x,lags,fieldno,inWindow=x$xyt$window,crop2parentwi
             setTxtProgressBar(pb,j+(i-1)*datadim[2])
             if(!is.null(inWindow)){
                 if (isTRUE(grinw[i,j])){
-                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,fieldno,1), count=c(1,1,1,1,-1))
+                    tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,fieldno,1), count=c(1,1,1,1,-1))
                     result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
                 }
                 else{
@@ -1146,12 +1146,12 @@ autocorrMultitype <- function(x,lags,fieldno,inWindow=x$xyt$window,crop2parentwi
                 }
             }
             else{
-                tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,fieldno,1), count=c(1,1,1,1,-1))
+                tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,fieldno,1), count=c(1,1,1,1,-1))
                 result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
             }
             
             if(trigger){
-                ltst <- length(acf(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,tidx,fieldno,1), count=c(1,1,1,1,-1)),plot=FALSE)$acf)
+                ltst <- length(acf(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,tidx,fieldno,1), count=c(1,1,1,1,-1)),plot=FALSE)$acf)
                 tst <- (lags+1)>ltst
                 if(any(tst)){
                     stop(paste("Cannot return lag",ltst,"or above."))
@@ -1161,7 +1161,7 @@ autocorrMultitype <- function(x,lags,fieldno,inWindow=x$xyt$window,crop2parentwi
         }
     }
     close(pb)
-    close.ncdf(ncdata)
+    nc_close(ncdata)
     attr(result,"lags") <- lags
     attr(result,"xcoords") <- x$mcens
     attr(result,"ycoords") <- x$ncens

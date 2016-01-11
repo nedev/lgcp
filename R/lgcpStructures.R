@@ -935,11 +935,11 @@ samplePosterior <- function(x){
     ans$eta <- x$etarec[idx,]
     
     fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)    
+    ncdata <- nc_open(fn)    
         
-    ans$Y <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,idx), count=c(-1,-1,-1,1))
+    ans$Y <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,idx), count=c(-1,-1,-1,1))
     
-    close.ncdf(ncdata)
+    nc_close(ncdata)
     
     return(ans)
 }
@@ -2163,9 +2163,9 @@ condProbs <- function(obj){
 
     getField <- function(obj,itno,fno){
         fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
-        ncdata <- open.ncdf(fn)
-        ans <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,fno,itno), count=c(-1,-1,-1,1,1))
-        close.ncdf(ncdata)
+        ncdata <- nc_open(fn)
+        ans <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,fno,itno), count=c(-1,-1,-1,1,1))
+        nc_close(ncdata)
         return(ans)
     }
     
@@ -2250,9 +2250,9 @@ segProbs <- function(obj,domprob){
 
     getField <- function(obj,itno,fno){
         fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
-        ncdata <- open.ncdf(fn)
-        ans <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,fno,itno), count=c(-1,-1,-1,1,1))
-        close.ncdf(ncdata)
+        ncdata <- nc_open(fn)
+        ans <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,fno,itno), count=c(-1,-1,-1,1,1))
+        nc_close(ncdata)
         return(ans)
     }
     

@@ -1326,7 +1326,7 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
         fun <- function(a){return(a)}
     }
     fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     datadim <- ncdata$var$simrun$varsize
     if (is.null(tidx)){
         tidx <- datadim[3]
@@ -1355,7 +1355,7 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
             setTxtProgressBar(pb,j+(i-1)*datadim[2])
             if(!is.null(inWindow)){
                 if (isTRUE(grinw[i,j])){
-                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,startidx), count=c(1,1,1,sampcount))
+                    tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,startidx), count=c(1,1,1,sampcount))
                     tr <- sapply(tr,fun)
                     result[i,j,] <- quantile(tr,qt)
                 }
@@ -1364,14 +1364,14 @@ quantile.lgcpPredict <- function(x,qt,tidx=NULL,fun=NULL,inWindow=x$xyt$window,c
                 }
             }
             else{
-                tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
                 tr <- sapply(tr,fun)
                 result[i,j,] <- quantile(tr,qt)
             }
         }
     }
     close(pb)
-    close.ncdf(ncdata)
+    nc_close(ncdata)
     attr(result,"quantiles") <- qt
     attr(result,"xcoords") <- x$mcens
     attr(result,"ycoords") <- x$ncens
@@ -1549,7 +1549,7 @@ expectation.lgcpPredict <- function(obj,fun,maxit=NULL,...){
         stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
     }
     fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     if (!is.null(maxit)){
         if (maxit<2 | maxit>ncdata$dim$iter$len){
             stop(paste("maxit must be between 2 and",ncdata$dim$iter$len))
@@ -1559,14 +1559,14 @@ expectation.lgcpPredict <- function(obj,fun,maxit=NULL,...){
     else{
         endloop <- ncdata$dim$iter$len
     }
-    Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
-    result <- tryCatch(lapply(Y$grid,fun),finally=close.ncdf(ncdata))
+    Y <- lgcpgrid(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
+    result <- tryCatch(lapply(Y$grid,fun),finally=nc_close(ncdata))
     pb <- txtProgressBar(min=1,max=endloop,style=3)
     setTxtProgressBar(pb,1)
     for (i in 2:endloop){
-        ncdata <- open.ncdf(fn)
-        Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
-        result <- tryCatch(add.list(result,lapply(Y$grid,fun)),finally=close.ncdf(ncdata))
+        ncdata <- nc_open(fn)
+        Y <- lgcpgrid(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
+        result <- tryCatch(add.list(result,lapply(Y$grid,fun)),finally=nc_close(ncdata))
         setTxtProgressBar(pb,i)
     }
     close(pb)
@@ -1596,7 +1596,7 @@ expectation.lgcpPredictSpatialOnlyPlusParameters <- function(obj,fun,maxit=NULL,
         stop("dump2dir not specified, MCMC output must have be dumped to disk to use this function.  See ?dump2dir.")
     }
     fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     if (!is.null(maxit)){
         if (maxit<2 | maxit>ncdata$dim$iter$len){
             stop(paste("maxit must be between 2 and",ncdata$dim$iter$len))
@@ -1606,14 +1606,14 @@ expectation.lgcpPredictSpatialOnlyPlusParameters <- function(obj,fun,maxit=NULL,
     else{
         endloop <- ncdata$dim$iter$len
     }
-    Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
-    result <- tryCatch(lapply(Y$grid,fun,eta=obj$etarec[1,,drop=FALSE],beta=obj$betarec[1,,drop=FALSE],Z=obj$Z,otherargs=obj),finally=close.ncdf(ncdata))
+    Y <- lgcpgrid(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,1), count=c(-1,-1,-1,1))) # first "simulation"
+    result <- tryCatch(lapply(Y$grid,fun,eta=obj$etarec[1,,drop=FALSE],beta=obj$betarec[1,,drop=FALSE],Z=obj$Z,otherargs=obj),finally=nc_close(ncdata))
     pb <- txtProgressBar(min=1,max=endloop,style=3)
     setTxtProgressBar(pb,1)
     for (i in 2:endloop){
-        ncdata <- open.ncdf(fn)
-        Y <- lgcpgrid(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
-        result <- tryCatch(add.list(result,lapply(Y$grid,fun,eta=obj$etarec[i,,drop=FALSE],beta=obj$betarec[i,,drop=FALSE],Z=obj$Z,otherargs=obj)),finally=close.ncdf(ncdata))
+        ncdata <- nc_open(fn)
+        Y <- lgcpgrid(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,i), count=c(-1,-1,-1,1)))
+        result <- tryCatch(add.list(result,lapply(Y$grid,fun,eta=obj$etarec[i,,drop=FALSE],beta=obj$betarec[i,,drop=FALSE],Z=obj$Z,otherargs=obj)),finally=nc_close(ncdata))
         setTxtProgressBar(pb,i)
     }
     close(pb)
@@ -1652,7 +1652,7 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2pare
         stop("either x and y OR inWindow must be given")
     }
     fn <- paste(obj$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     
     if(is.null(inWindow)){
         if(((length(x)>1)&any(x==-1)) | ((length(y)>1)&any(y==-1)) | ((length(t)>1)&any(t==-1)) | ((length(s)>1)&any(s==-1))){
@@ -1679,7 +1679,7 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2pare
         startidx[mo] <- 1
         ct <- rep(-1,4)
         ct[which(!mo)] <- c(max(x),max(y),max(t),max(s))[which(!mo)] - c(min(x),min(y),min(t),min(s))[which(!mo)] + 1
-        data <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=startidx, count=ct)
+        data <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=startidx, count=ct)
         attr(data,"mode") <- "block"
         attr(data,"xcoords") <- obj$mcens[min(x):max(x)]
         attr(data,"ycoords") <- obj$ncens[min(y):max(y)]
@@ -1710,7 +1710,7 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2pare
         d[d==-1] <- vs[d==-1]
         data <- array(dim=c(n,d))
         for (i in 1:n){
-            data[i,,] <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(idx[i,],startidx), count=c(1,1,ct))
+            data[i,,] <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(idx[i,],startidx), count=c(1,1,ct))
         }
         attr(data,"xcoords") <- obj$mcens
         attr(data,"ycoords") <- obj$ncens
@@ -1719,7 +1719,7 @@ extract.lgcpPredict <- function(obj,x=NULL,y=NULL,t,s=-1,inWindow=NULL,crop2pare
         attr(data,"mask") <- grinw # can be used to translate returned vector back into 2 dimensional object (idea is to save storage space)
         class(data) <- c("lgcpExtractInWindow","lgcpExtract","array")
     }
-    close.ncdf(ncdata)   
+    nc_close(ncdata)   
     return(data)
 }
 
@@ -1901,7 +1901,7 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
         stop("tidx should either be NULL, or a vector of length 1")
     }
     fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- open.ncdf(fn)
+    ncdata <- nc_open(fn)
     datadim <- ncdata$var$simrun$varsize
     if (is.null(tidx)){
         tidx <- datadim[3]
@@ -1941,7 +1941,7 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
             setTxtProgressBar(pb,j+(i-1)*datadim[2])
             if(!is.null(inWindow)){
                 if (isTRUE(grinw[i,j])){
-                    tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                    tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
                     result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
                 }
                 else{
@@ -1949,12 +1949,12 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
                 }
             }
             else{
-                tr <- get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
+                tr <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(i,j,tidx,1), count=c(1,1,1,-1))
                 result[i,j,] <- acf(tr,plot=FALSE)$acf[lags+1]
             }
             
             if(trigger){
-                ltst <- length(acf(get.var.ncdf(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,tidx,1), count=c(1,1,1,-1)),plot=FALSE)$acf)
+                ltst <- length(acf(ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,tidx,1), count=c(1,1,1,-1)),plot=FALSE)$acf)
                 tst <- (lags+1)>ltst
                 if(any(tst)){
                     stop(paste("Cannot return lag",ltst,"or above."))
@@ -1964,7 +1964,7 @@ autocorr <- function(x,lags,tidx=NULL,inWindow=x$xyt$window,crop2parentwindow=TR
         }
     }
     close(pb)
-    close.ncdf(ncdata)
+    nc_close(ncdata)
     attr(result,"lags") <- lags
     attr(result,"xcoords") <- x$mcens
     attr(result,"ycoords") <- x$ncens
