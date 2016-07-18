@@ -191,7 +191,7 @@ my.ginhomAverage <- function (xyt, spatial.intensity, temporal.intensity, time.w
     ct <- 1
     if (ntls > 1) {
         for (i in 2:ntls) {
-            if (!class(pcf[[i]])[1] == "try-error") {
+            if ((class(pcf[[i]])[1]!="try-error")&&(npoints(xyt[xyt$t==tls[i]])>1)) {
                 li <- add.list(li, as.list(pcf[[i]]))
                 ct <- ct + 1
             }
@@ -288,7 +288,7 @@ my.KinhomAverage <- function (xyt, spatial.intensity, temporal.intensity, time.w
     ct <- 1
     if (ntls > 1) {
         for (i in 2:ntls) {
-            if (!class(pcf[[i]])[1] == "try-error") {
+            if ((class(pcf[[i]])[1]!="try-error")&&(npoints(xyt[xyt$t==tls[i]])>1)) {
                 li <- add.list(li, as.list(pcf[[i]]))
                 ct <- ct + 1
             }
