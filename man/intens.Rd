@@ -20,4 +20,3 @@ Generic function to return the Poisson Intensity.
 \seealso{
 \link{lgcpPredict}, \link{intens.lgcpPredict}
 }
-

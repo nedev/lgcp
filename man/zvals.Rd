@@ -20,4 +20,3 @@ Generic for extractign the 'z values' from an object.
 \seealso{
 \link{xvals},  \link{yvals}, \link{xvals.default}, \link{yvals.default}, \link{zvals.default}, \link{xvals.fromXYZ}, \link{yvals.fromXYZ}, \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame}, \link{yvals.SpatialGridDataFrame}, \link{zvals.SpatialGridDataFrame}
 }
-

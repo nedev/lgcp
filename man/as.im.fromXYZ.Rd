@@ -20,4 +20,3 @@ Convert an object of class fromXYZ (created by spatialAtRisk for example) into a
 \seealso{
 \link{as.im.fromSPDF}, \link{as.im.fromFunction}, \link{as.fromXYZ}
 }
-

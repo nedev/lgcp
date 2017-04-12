@@ -20,4 +20,3 @@ Finalise a Monte Carlo averaging scheme. Divide the sum by the number of iterati
 \seealso{
 \link{MonteCarloAverage}, \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

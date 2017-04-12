@@ -28,4 +28,3 @@ the base matrix of a block circulant matrix representing a stationary covariance
 Compute the base matrix of a continuous Gaussian field. Computed as a block circulant matrix on a torus where x and y is the 
 x and y centroids (must be equally spaced)
 }
-

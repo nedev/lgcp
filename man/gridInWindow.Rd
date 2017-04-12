@@ -22,4 +22,3 @@ matrix of TRUE/FALSE, which elements of the grid are inside the observation wind
 For the grid defined by x-coordinates, xvals, and y-coordinates, yvals, and an owin object W, this function just returns
 a logical matrix M, whose [i,j] entry is TRUE if the point(xvals[i], yvals[j]) is inside the observation window.
 }
-

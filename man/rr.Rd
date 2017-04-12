@@ -20,4 +20,3 @@ Generic function to return relative risk.
 \seealso{
 \link{lgcpPredict}, \link{rr.lgcpPredict}
 }
-

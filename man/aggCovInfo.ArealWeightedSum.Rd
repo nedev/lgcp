@@ -19,4 +19,3 @@ Areal weighted Sum.
 \description{
 Aggregation via weighted sum. Use to sum up population counts in regions.
 }
-

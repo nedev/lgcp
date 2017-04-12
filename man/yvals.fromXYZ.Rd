@@ -20,4 +20,3 @@ Method for extracting 'y values' from an object of class fromXYZ
 \seealso{
 \link{xvals},  \link{yvals}, \link{zvals}, \link{xvals.default}, \link{yvals.default}, \link{zvals.default}, \link{xvals.fromXYZ}, \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame}, \link{yvals.SpatialGridDataFrame}, \link{zvals.SpatialGridDataFrame}
 }
-

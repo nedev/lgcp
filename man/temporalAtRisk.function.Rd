@@ -42,4 +42,3 @@ expected number of cases during the unit time interval containnig t.
 \seealso{
 \link{temporalAtRisk}, \link{spatialAtRisk}, \link{temporalAtRisk.numeric},  \link{constantInTime}, \link{constantInTime.numeric}, \link{constantInTime.stppp}, \link{print.temporalAtRisk}, \link{plot.temporalAtRisk}
 }
-

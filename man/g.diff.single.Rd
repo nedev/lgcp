@@ -28,4 +28,3 @@ A single numeric value providing the minimum contrast value for the specified va
 A function to find the minimum contrast (squared discrepancy) value based on the pair correlation function, for one specific value of phi
 (spatial scale) and one specific value of sigma^2 (spatial variance) for the LGCP.
 }
-

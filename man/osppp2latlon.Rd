@@ -15,4 +15,3 @@ a pppobject in Lat/Lon
 \description{
 A function to transform a ppp object in the OSGB projection (epsg:27700) to a ppp object in the latitude/longitude (epsg:4326) projection.
 }
-

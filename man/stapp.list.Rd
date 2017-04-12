@@ -23,4 +23,3 @@ should be a SpatialPolygonsDataFrame, the second element of the list a counts ma
 vector of times, the fourth element a vector giving the bounds of the temporal observation window and the fifth element
 a spatstat owin object giving the spatial observation window.
 }
-

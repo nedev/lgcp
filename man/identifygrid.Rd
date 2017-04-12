@@ -20,4 +20,3 @@ Identifies the indices of grid cells on plots of objects.
 \seealso{
 \link{lgcpPredict}, \link{loc2poly}, \link{identify.lgcpPredict}
 }
-

@@ -22,4 +22,3 @@ lgcp vignette, code{vignette("lgcp")}, for further details on writing adaptive M
 \seealso{
 \link{updateAMCMC.constanth}, \link{updateAMCMC.andrieuthomsh}
 }
-

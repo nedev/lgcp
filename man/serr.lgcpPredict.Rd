@@ -20,4 +20,3 @@ Accessor function returning the standard error of relative risk as an lgcpgrid o
 \seealso{
 \link{lgcpPredict}
 }
-

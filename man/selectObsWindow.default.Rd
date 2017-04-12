@@ -27,4 +27,3 @@ algorithm.
 \seealso{
 \link{spatialAtRisk} \link{selectObsWindow.stppp}
 }
-

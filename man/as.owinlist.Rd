@@ -17,4 +17,3 @@ method as.owinlist
 \description{
 Generic function for creating lists of owin objects
 }
-

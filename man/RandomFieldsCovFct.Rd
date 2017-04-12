@@ -24,4 +24,3 @@ lgcp only offers estimation for sigma and phi, any additional paramters are trea
 \seealso{
 \link{CovFunction.function}, \link{exponentialCovFct}, \link{SpikedExponentialCovFct}, \link{CovarianceFct}
 }
-

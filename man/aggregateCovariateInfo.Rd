@@ -27,4 +27,3 @@ the interpolated covariate information onto the FFT grid
 \description{
 A function called by cov.interp.fft to allocate and perform interpolation of covariate infomation onto the FFT grid
 }
-

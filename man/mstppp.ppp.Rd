@@ -26,4 +26,3 @@ Construct a marked space-time planar point pattern from a ppp object
 \seealso{
 \link{mstppp}, \link{mstppp.list}
 }
-

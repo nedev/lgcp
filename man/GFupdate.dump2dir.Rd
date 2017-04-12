@@ -20,4 +20,3 @@ This function gets the required information from \code{MALAlgcp} and writes the 
 \seealso{
 \link{dump2dir}, \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

@@ -23,4 +23,3 @@ the cell indices of the neighbours
 \description{
 A function to compute the neighbours of a cell on a toral grid
 }
-

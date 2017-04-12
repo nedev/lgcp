@@ -42,4 +42,3 @@ the choice of sigma.range and phi.range.
 \seealso{
 \link{ginhomAverage}, \link{KinhomAverage}, \link{thetaEst}, \link{lambdaEst}, \link{muEst}
 }
-

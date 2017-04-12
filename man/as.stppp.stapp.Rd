@@ -29,4 +29,3 @@ A function to convert stapp objects to stppp objects for use in lgcpPredict. The
 assigned a random location within each areal region proportional to a population density (if that is available) else
 the counts are distributed uniformly across the observation windows.
 }
-

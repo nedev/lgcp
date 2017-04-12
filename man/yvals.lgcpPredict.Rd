@@ -20,4 +20,3 @@ Gets the y-coordinates of the centroids of the prediction grid.
 \seealso{
 \link{lgcpPredict}
 }
-

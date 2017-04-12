@@ -22,4 +22,3 @@ a functioin that returns the base matrix of the precision matrix
 A function to compute the parametrised base matrix of a precision matrix of a GMRF on an M x N toral grid with neighbourhood size ns. Note that 
 the precision matrix is block circulant. The returned function operates on a parameter vector as in Rue and Held (2005) pp 187.
 }
-

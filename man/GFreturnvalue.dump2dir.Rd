@@ -20,4 +20,3 @@ This function returns the name of the directory the netCDF file was written to.
 \seealso{
 \link{dump2dir}, \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

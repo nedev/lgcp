@@ -44,4 +44,3 @@ A tool to visually estimate the temporal correlation parameter theta; note that 
 \seealso{
 \link{ginhomAverage}, \link{KinhomAverage}, \link{spatialparsEst}, \link{lambdaEst}, \link{muEst}
 }
-

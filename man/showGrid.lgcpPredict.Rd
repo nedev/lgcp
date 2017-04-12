@@ -23,4 +23,3 @@ of class \code{lgcpPredict}, then for any of the plots produced, a call to
 \seealso{
 \link{lgcpPredict}, \link{showGrid.default}, \link{showGrid.stppp}
 }
-

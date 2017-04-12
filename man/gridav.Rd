@@ -20,4 +20,3 @@ A generic function for returning \code{gridmeans} objects.
 \seealso{
 \link{setoutput}, \link{lgcpgrid}
 }
-

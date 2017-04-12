@@ -35,4 +35,3 @@ where window is a polygonal subregion of interest.
 \seealso{
 \link{lgcpPredict}, \link{loc2poly}, \link{dump2dir}, \link{setoutput}
 }
-

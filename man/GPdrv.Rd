@@ -42,4 +42,3 @@ first  derivatives of the log target at the specified paramters Y, eta and beta
 \description{
 A function to compute the first derivatives of the log target with respect to the paramters of the latent field. Not intended for general purpose use.
 }
-

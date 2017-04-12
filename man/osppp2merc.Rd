@@ -15,4 +15,3 @@ a ppp object in Mercator
 \description{
 A function to transform a ppp object in the OS GB projection (epsg:27700) to a ppp object in the Mercator (epsg:3857) projection.
 }
-

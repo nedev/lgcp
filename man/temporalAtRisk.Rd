@@ -58,4 +58,3 @@ for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which
 \seealso{
 \link{spatialAtRisk}, \link{lgcpPredict}, \link{lgcpSim}, \link{temporalAtRisk.numeric}, \link{temporalAtRisk.function}, \link{constantInTime}, \link{constantInTime.numeric}, \link{constantInTime.stppp}, \link{print.temporalAtRisk}, \link{plot.temporalAtRisk}
 }
-

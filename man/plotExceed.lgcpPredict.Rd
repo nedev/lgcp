@@ -42,4 +42,3 @@ Function for plotting exceedance probabilities stored in \code{lgcpPredict} ojec
 \seealso{
 \link{lgcpPredict}, \link{MonteCarloAverage}, \link{setoutput}
 }
-

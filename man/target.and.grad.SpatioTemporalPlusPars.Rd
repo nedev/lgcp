@@ -38,4 +38,3 @@ the target and gradient for the spatiotemporal model.
 \description{
 A function to compute the target and gradient for the Bayesian spatiotemporal LGCP.
 }
-

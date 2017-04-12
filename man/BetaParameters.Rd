@@ -15,4 +15,3 @@ BetaParameters(beta)
 \description{
 An internal function to declare a vector a parameter vector for the main effects.
 }
-

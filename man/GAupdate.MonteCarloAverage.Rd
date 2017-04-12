@@ -20,4 +20,3 @@ Update a Monte Carlo averaging scheme. This function performs the Monte Carlo su
 \seealso{
 \link{MonteCarloAverage}, \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

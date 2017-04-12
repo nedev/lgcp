@@ -20,4 +20,3 @@ Returns the required Monte Carlo average.
 \seealso{
 \link{MonteCarloAverage}, \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

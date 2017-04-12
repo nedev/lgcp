@@ -4,31 +4,31 @@
 ##'
 ##' The following is a mathematical description of a log-Gaussian Cox Process, it is best viewed in the pdf version of the manual.
 ##'
-##' Let \eqn{\mathcal Y(s,t)}{\mathcal Y(s,t)} be a spatiotemporal Gaussian process, \eqn{W\subset R^2}{W\subset R^2} be an 
-##' observation window in space and \eqn{T\subset R_{\geq 0}}{T\subset R_{\geq 0}} be an interval of time of interest. 
-##' Cases occur at spatio-temporal positions \eqn{(x,t) \in W \times T}{(x,t) \in W \times T} 
+##' Let \eqn{\mathcal Y(s,t)}{\mathcal Y(s,t)} be a spatiotemporal Gaussian process, \eqn{W\subset R^2}{W\subset R^2} be an
+##' observation window in space and \eqn{T\subset R_{\geq 0}}{T\subset R_{\geq 0}} be an interval of time of interest.
+##' Cases occur at spatio-temporal positions \eqn{(x,t) \in W \times T}{(x,t) \in W \times T}
 ##'  according to an inhomogeneous spatio-temporal Cox process,
 ##' i.e. a Poisson process with a stochastic intensity \eqn{R(x,t)}{R(x,t)},
-##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in 
-##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is 
+##'   The number of cases, \eqn{X_{S,[t_1,t_2]}}{X_{S,[t_1,t_2]}}, arising in
+##'   any \eqn{S \subseteq W}{S \subseteq W} during the interval \eqn{[t_1,t_2]\subseteq T}{[t_1,t_2]\subseteq T} is
 ##'   then Poisson distributed conditional on \eqn{R(\cdot)}{R(\cdot)},
 ##' \deqn{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}}{X_{S,[t_1,t_2]} \sim \mbox{Poisson}\left\{\int_S\int_{t_1}^{t_2} R(s,t)d sd t\right\}.}
 ##' Following Brix and Diggle (2001) and Diggle et al (2005), the intensity is decomposed multiplicatively as
 ##' \deqn{R(s,t) = \lambda(s)\mu(t)\exp\{\mathcal Y(s,t)\}.}{R(s,t) = \lambda(s)\mu(t)Exp\{\mathcal Y(s,t)\}.}
-##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
+##' In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}},
 ##' is a known function, proportional to the population at risk at each point in space and scaled so that
 ##' \deqn{\int_W\lambda(s)d s=1,}{\int_W\lambda(s)d s=1,}
-##' whilst the fixed temporal component, 
+##' whilst the fixed temporal component,
 ##'  \eqn{\mu:R_{\geq 0}\mapsto R_{\geq 0}}{\mu:R_{\geq 0}\mapsto R_{\geq 0}}, is also a known function with
 ##' \deqn{\mu(t) \delta t = E[X_{W,\delta t}],}{\mu(t) \delta t = E[X_{W,\delta t}],}
 ##' for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.
 ##'
 ##' @param owin polygonal observation window
 ##' @param tlim time interval on which to simulate data
-##' @param spatial.intensity object that can be coerced into a spatialAtRisk object. if NULL then uniform spatial is chosen 
+##' @param spatial.intensity object that can be coerced into a spatialAtRisk object. if NULL then uniform spatial is chosen
 ##' @param temporal.intensity the fixed temporal component: either a numeric vector, or a function that can be coerced into an object of class temporalAtRisk
 ##' @param cellwidth width of cells  in same units as observation window
-##' @param model.parameters parameters of model, see ?lgcppars. 
+##' @param model.parameters parameters of model, see ?lgcppars.
 ##' @param spatial.covmodel spatial covariance function, default is exponential, see ?CovarianceFct
 ##' @param covpars vector of additional parameters for spatial covariance function, in order they appear in chosen model in ?CovarianceFct
 ##' @param returnintensities logigal, whether to return the spatial intensities and true field Y at each time. Default FALSE.
@@ -39,7 +39,7 @@
 ##' @param sleeptime time in seconds to sleep between plots
 ##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return an stppp object containing the data
-##' @references 
+##' @references
 ##' \enumerate{
 ##'     \item Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle (2013). Journal of Statistical Software, 52(4), 1-40. URL http://www.jstatsoft.org/v52/i04/
 ##'     \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
@@ -48,7 +48,7 @@
 ##'     \item Moller J, Syversveen AR, Waagepetersen RP (1998). Log Gaussian Cox Processes. Scandinavian Journal of Statistics, 25(3), 451-482.
 ##' }
 ##' @seealso \link{lgcpPredict}, \link{showGrid.stppp}, \link{stppp}
-##' @examples xyt <- lgcpSim()
+##' @examples \dontrun{library(spatstat); library(spatstat.utils); xyt <- lgcpSim()}
 ##' @export
 
 lgcpSim <- function(owin=NULL,
@@ -66,7 +66,7 @@ lgcpSim <- function(owin=NULL,
                     ratepow=0.25,
                     sleeptime=0,
                     inclusion="touching"){
-                                    
+
     if (!inherits(tlim,"integer")){
 	    warning("Converting tlim into integer values, see ?as.integer")
 	    tlim <- as.integer(tlim) # convert times into integer values: they should already be in this form.
@@ -77,7 +77,7 @@ lgcpSim <- function(owin=NULL,
 	}
 	toffset <- tlim[1]
 	maxt <- tlim[2] - toffset
-                                                  
+
     sigma <- model.parameters$sigma
 	phi <- model.parameters$phi
 	mu <- model.parameters$mu
@@ -86,7 +86,7 @@ lgcpSim <- function(owin=NULL,
     if(is.null(owin)){
         owin <- owin()
     }
-    
+
     if (is.null(temporal.intensity)){
         temporal.intensity <- constantInTime(100,tlim)
     }
@@ -97,27 +97,27 @@ lgcpSim <- function(owin=NULL,
         if(!all(tlim==attr(temporal.intensity,"tlim"))){
 	        stop("Incompatible temporal.intensity, integer time limits (tlim and temporal.intensity$tlim) do not match")
 	    }
-    } 
-    
+    }
+
     ndivs <- diff(tlim) # just choose "integer" time divisions: gives greater consistency between data used in simulation and inference (compared with the above)
     tdiff = maxt/ndivs
-    times <- tdiff/2 + tdiff*(0:(ndivs-1)) 
+    times <- tdiff/2 + tdiff*(0:(ndivs-1))
     mut <- sapply(times+toffset,temporal.intensity)
-    
+
     if (progressbar){
         pb <- txtProgressBar(min=1,max=ndivs,style=3)
-    }   
-    
+    }
+
     const0 <- 0.05 # level below which correlation function must drop to be considered not important
-    
+
     # check space discretisation
-    c2 <- -phi*log(const0) # the number at which exp(-theta*x) = 0.05, use this to choose time discretisation 
+    c2 <- -phi*log(const0) # the number at which exp(-theta*x) = 0.05, use this to choose time discretisation
     if (cellwidth>c2/2){
         warning(paste("cellwidth should be at least",c2/2,"to get accurate results."))
     }
-     
+
     xyt <- ppp(window=owin)
-      
+
     ow <- selectObsWindow(xyt,cellwidth)
 	xyt <- ow$xyt
 	M <- ow$M
@@ -128,39 +128,39 @@ lgcpSim <- function(owin=NULL,
         spatial <- spatialAtRisk(list(X=seq(xyt$window$xrange[1],xyt$window$xrange[2],length.out=M),Y=seq(xyt$window$yrange[1],xyt$window$yrange[2],length.out=N),Zm=matrix(1/(M*N),M,N)))
     }
     else{
-        if(!any(class(spatial.intensity)=="spatialAtRisk")){		
+        if(!any(class(spatial.intensity)=="spatialAtRisk")){
             spatial <- spatialAtRisk(spatial.intensity)
         }
         else{
             spatial <- spatial.intensity
         }
     }
-   
+
     ################################################################
     # Create grid and FFT objects
     ################################################################
-    
+
     study.region <- xyt$window
-	
+
 	## DEFINE LATTICE & CENTROIDS ##
-		
+
 	del1 <- (study.region$xrange[2]-study.region$xrange[1])/M
-	del2 <- (study.region$yrange[2]-study.region$yrange[1])/N 
-	
-	Mext <- ext*M 
+	del2 <- (study.region$yrange[2]-study.region$yrange[1])/N
+
+	Mext <- ext*M
 	Next <- ext*N
-	
+
 	mcens <- study.region$xrange[1]+.5*del1+(0:(Mext-1))*del1
-	ncens <- study.region$yrange[1]+.5*del2+(0:(Next-1))*del2	
-	
+	ncens <- study.region$yrange[1]+.5*del2+(0:(Next-1))*del2
+
 	xg <- mcens[1:M]
 	yg <- ncens[1:N]
-	
+
 	cellarea <- del1*del2
-	
+
 	if(inclusion=="centroid"){
         cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
-    }    
+    }
     else if(inclusion=="touching"){
         cellInside <- touchingowin(x=mcens,y=ncens,w=study.region)
     }
@@ -168,23 +168,23 @@ lgcpSim <- function(owin=NULL,
         stop("Invlaid choice for argument 'inclusion'.")
     }
 	cellInside <- as.numeric(matrix(as.logical(cellInside),Mext,Next)[1:M,1:N])
-	
+
 	## OBTAIN SPATIAL VALS ON LATTICE (LINEAR INTERPOLATION) ##
-	
+
 	spatialvals <- fftinterpolate(spatial,mcens,ncens,ext=ext)
 	spatialvals <- spatialvals[1:M,1:N]
 	spatialvals <- spatialvals*cellInside
 	spatialvals <- spatialvals / (cellarea*sum(spatialvals))
-	
+
 	# compute the base matrix of the covariance matrix
     bcb <- blockcircbase(x=mcens,y=ncens,sigma=sigma,phi=phi,model=spatial.covmodel,additionalparameters=covpars)
-    
+
     Qeigs <- eigenfrombase(inversebase(bcb)) # eigenvalues of Q (the precision matrix)
     rqe <- sqrt(Qeigs) # square root of the eigenvalues (used in computation)
-    irqe <- 1/rqe # reciprocal root (commputation)    
-    	
+    irqe <- 1/rqe # reciprocal root (commputation)
+
 	################################################################
-    # Simulate the data	
+    # Simulate the data
 	################################################################
 
     if(returnintensities){
@@ -195,9 +195,9 @@ lgcpSim <- function(owin=NULL,
 	    intensities <- NULL
 	    truefield <- NULL
 	}
-	
-    
-    
+
+
+
     cases <- NULL
     t <- NULL
     Y <- YfromGamma(matrix(rnorm(Mext*Next),Mext,Next),invrootQeigs=irqe,mu=mu)[1:M,1:N]
@@ -236,9 +236,9 @@ lgcpSim <- function(owin=NULL,
                 image.plot(xg,yg,matrix(rate,M,N)^ratepow)
                 points(newcases,pch="+",cex=0.5)
                 Sys.sleep(sleeptime)
-            }    
+            }
         }
-        
+
         if(returnintensities){
     	    intensities[,,i] <- rate
     	    truefield[,,i] <- Y
@@ -252,14 +252,14 @@ lgcpSim <- function(owin=NULL,
 	}
 	if(is.null(t)){
 	    stop("No data generated for chosen parameters")
-	}    
-	
+	}
+
 	if(!all(inside.owin(cases[,1],cases[,2],owin))){
 	    remidx <- which(!inside.owin(cases[,1],cases[,2],owin))
 	    cases <- cases[-remidx,]
 	    t <- t[-remidx]
 	}
-	
+
 	xyt <- stppp(ppp(x=cases[,1],y=cases[,2],window=owin),t=(t+toffset),tlim=tlim)
 
 	attr(xyt,"rejects") <- NULL # get rid of rejects: these are due to discrete approximation
@@ -277,8 +277,7 @@ lgcpSim <- function(owin=NULL,
     attr(xyt,"xvals") <- xg
     attr(xyt,"yvals") <- yg
     attr(xyt,"intensities") <- intensities
-    attr(xyt,"truefield") <- truefield 
-    attr(xyt,"inclusion") <- inclusion  
+    attr(xyt,"truefield") <- truefield
+    attr(xyt,"inclusion") <- inclusion
     return(xyt)
 }
-

@@ -20,4 +20,3 @@ Generic function for the computation of rotation matrices.
 \seealso{
 \link{getRotation.stppp}
 }
-

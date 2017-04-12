@@ -17,4 +17,3 @@ getup(n, lev = 1)
 \description{
 A function to get an object from a parent frame.
 }
-

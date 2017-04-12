@@ -39,4 +39,3 @@ setting the argument \code{inWindow}, which has a sensible default).
 \seealso{
 \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpQuantiles}
 }
-

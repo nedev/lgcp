@@ -17,4 +17,3 @@ method aggCovInfo
 \description{
 Generic function for aggregation of covariate information.
 }
-

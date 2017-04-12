@@ -23,4 +23,3 @@ A single numeric value representing the theoretical K function evaluated at u.
 \description{
 A function to compute the theoretical K function for the LGCP.
 }
-

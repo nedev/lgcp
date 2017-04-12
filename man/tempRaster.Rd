@@ -17,4 +17,3 @@ an empty raster object
 \description{
 A function to create a temporary raster object from an x-y regular grid of cell centroids. Useful for projection from one raster to another.
 }
-

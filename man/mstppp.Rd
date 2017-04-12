@@ -24,4 +24,3 @@ Observations are assumed to occur in the plane and the observation window is ass
 \seealso{
 \link{mstppp}, \link{mstppp.ppp}, \link{mstppp.list}
 }
-

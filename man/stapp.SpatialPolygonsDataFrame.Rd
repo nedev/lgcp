@@ -25,4 +25,3 @@ an object of class stapp
 \description{
 Construct a space-time aggregated point-process (stapp) object from a SpatialPolygonsDataFrame (along with some other info)
 }
-

@@ -24,4 +24,3 @@ a list of owin objects corresponding to the constituent Polygons objects
 \description{
 A function to create a list of owin objects from a SpatialPolygonsDataFrame
 }
-

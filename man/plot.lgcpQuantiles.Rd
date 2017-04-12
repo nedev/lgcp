@@ -35,4 +35,3 @@ Plots \code{lgcpQuantiles} objects: output from \code{quantiles.lgcpPredict}
 \seealso{
 \link{quantile.lgcpPredict}
 }
-

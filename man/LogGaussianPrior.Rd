@@ -23,4 +23,3 @@ A function to create a Gaussian prior on the log scale
 \seealso{
 \link{GaussianPrior}, link{PriorSpec.list}
 }
-

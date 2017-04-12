@@ -15,17 +15,16 @@ chooseCellwidth(obj, cwinit)
 produces a plot of the observation window and computational grid.
 }
 \description{
-A function to help choose the cell width (the parameter "cellwidth" in lgcpPredictSpatialPlusPars, for example) prior to setting up the FFT grid, 
+A function to help choose the cell width (the parameter "cellwidth" in lgcpPredictSpatialPlusPars, for example) prior to setting up the FFT grid,
 before an MCMC run.
 }
 \details{
-Ideally this function should be used after having made a preliminary guess at the parameters of the latent field.The idea is to run chooseCellwidth 
+Ideally this function should be used after having made a preliminary guess at the parameters of the latent field.The idea is to run chooseCellwidth
 several times, adjusting the parameter "cwinit" so as to balance available computational resources with output grid size.
 }
 \seealso{
 \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 \link{lgcpPredictMultitypeSpatialPlusPars}
 }
-

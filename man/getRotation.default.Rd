@@ -20,4 +20,3 @@ Presently there is no default method, see ?getRotation.stppp
 \seealso{
 \link{getRotation.stppp}
 }
-

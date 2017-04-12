@@ -17,4 +17,3 @@ method expectation
 \description{
 Generic function used in the computation of Monte Carlo expectations.
 }
-

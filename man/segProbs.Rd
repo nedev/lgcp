@@ -33,11 +33,11 @@ computational grid. The other parameters in the model are beta_k , the covariate
 kth type; and eta_i = [log(sigma_i),log(phi_i)], the parameters of the process Y_i for i = 1,...,K+1 on
 an appropriately transformed (again, in this case log) scale.
 
-The term 'conditional probability of type k' means the probability that at a particular location, x, there 
+The term 'conditional probability of type k' means the probability that at a particular location, x, there
 will be an event of type k, we denote this p_k(x).
 
 It is also of interest to scientists to be able to illustrate spatial regions where a genotype
-dominates a posteriori. We say that type k dominates at position x if p_k(x)>c, where c (the parameter domprob) is a 
+dominates a posteriori. We say that type k dominates at position x if p_k(x)>c, where c (the parameter domprob) is a
 threshold is a threshold set by the user. Let A_k(c,q) denote the set of locations x for which P[p_k(x)>c|X] > q.
 
 As the quantities c and q tend to 1 each area A_k(c,p) shrinks towards the empty set; this
@@ -45,4 +45,3 @@ happens more slowly in a highly segregated pattern compared with a weakly segreg
 
 The function segProbs computes P[p_k(x)>c|X] for each type, from which plots of P[p_k(x)>c|X] > q can be produced.
 }
-

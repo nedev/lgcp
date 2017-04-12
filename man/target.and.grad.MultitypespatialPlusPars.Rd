@@ -34,4 +34,3 @@ the target and gradient
 \description{
 A function to compute the taget an gradient for the Bayesian multivariate lgcp
 }
-

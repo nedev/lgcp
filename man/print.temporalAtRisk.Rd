@@ -20,4 +20,3 @@ Printing method for temporalAtRisk objects.
 \seealso{
 \link{temporalAtRisk}, \link{spatialAtRisk}, \link{temporalAtRisk.numeric}, \link{temporalAtRisk.function}, \link{constantInTime}, \link{constantInTime.numeric}, \link{constantInTime.stppp}, \link{plot.temporalAtRisk}
 }
-

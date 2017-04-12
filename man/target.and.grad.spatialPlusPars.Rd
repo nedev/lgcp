@@ -34,4 +34,3 @@ the target and graient for this model
 \description{
 A function to compute the target and gradient for the Bayesian spatial LGCP
 }
-

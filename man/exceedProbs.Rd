@@ -26,4 +26,3 @@ of these.
 \seealso{
 \link{MonteCarloAverage}, \link{setoutput}
 }
-

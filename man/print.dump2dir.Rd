@@ -20,4 +20,3 @@ Display function for dump2dir objects.
 \seealso{
 \link{dump2dir},
 }
-

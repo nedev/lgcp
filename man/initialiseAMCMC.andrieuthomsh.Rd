@@ -27,4 +27,3 @@ Initialises the \link{andrieuthomsh} adaptive scheme.
 \seealso{
 \link{andrieuthomsh}
 }
-

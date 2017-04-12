@@ -120,4 +120,3 @@ The user must provide a list of design matrices to use this function. In the int
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

@@ -17,4 +17,3 @@ prints the object
 \description{
 Print method for objects of class fromSPDF.
 }
-

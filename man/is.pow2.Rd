@@ -19,4 +19,3 @@ Tests whether a number id
 is.pow2(128)  # TRUE
 is.pow2(64.9) # FALSE
 }
-

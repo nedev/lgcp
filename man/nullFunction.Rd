@@ -15,4 +15,3 @@ This is a null function and performs no action.
 \seealso{
 \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

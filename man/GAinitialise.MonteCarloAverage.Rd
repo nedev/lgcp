@@ -20,4 +20,3 @@ Initialise a Monte Carlo averaging scheme.
 \seealso{
 \link{MonteCarloAverage}, \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

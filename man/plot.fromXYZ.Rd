@@ -17,4 +17,3 @@ an image plot
 \description{
 Plot method for objects of class fromXYZ.
 }
-

@@ -25,7 +25,7 @@ aggCovInfo <- function(obj,...){
 
 aggCovInfo.Majority <- function(obj,regwts,...){
     if(all(is.na(obj))){
-        return(NA)    
+        return(NA)
     }
     else{
         idx <- which(regwts==max(regwts,na.rm=TRUE))
@@ -50,20 +50,20 @@ aggCovInfo.Majority <- function(obj,regwts,...){
 ##' @export
 
 aggCovInfo.ArealWeightedMean <- function(obj,regwts,...){
-    x <- regwts*obj/sum(regwts,na.rm=TRUE) 
+    x <- regwts*obj/sum(regwts,na.rm=TRUE)
     if(all(is.na(x))){
         return(NA)
     }
     else{
         return(sum(x,na.rm=TRUE))
-    }    
+    }
     return()
 }
 
 
 ##' aggCovInfo.ArealWeightedSum function
 ##'
-##' Aggregation via weighted sum. Use to sum up population counts in regions. 
+##' Aggregation via weighted sum. Use to sum up population counts in regions.
 ##'
 ##' @method aggCovInfo ArealWeightedSum
 ##' @param obj an ArealWeightedSum object
@@ -73,13 +73,13 @@ aggCovInfo.ArealWeightedMean <- function(obj,regwts,...){
 ##' @export
 
 aggCovInfo.ArealWeightedSum <- function(obj,regwts,...){
-    x <- (regwts/attr(regwts,"polyareas"))*obj 
+    x <- (regwts/attr(regwts,"polyareas"))*obj
     if(all(is.na(x))){
         return(NA)
     }
     else{
         return(sum(x,na.rm=TRUE))
-    }    
+    }
     return()
 }
 
@@ -90,7 +90,7 @@ aggCovInfo.ArealWeightedSum <- function(obj,regwts,...){
 ##' A function called by cov.interp.fft to allocate and perform interpolation of covariate infomation onto the FFT grid
 ##'
 ##' @param cellidx the index of the cell
-##' @param cidx index of covariate, no longer used 
+##' @param cidx index of covariate, no longer used
 ##' @param gidx grid index
 ##' @param df the data frame containing the covariate information
 ##' @param fftovl an overlay of the fft grid onto the SpatialPolygonsDataFrame or SpatialPixelsDataFrame objects
@@ -102,10 +102,10 @@ aggCovInfo.ArealWeightedSum <- function(obj,regwts,...){
 aggregateCovariateInfo <- function(cellidx,cidx,gidx,df,fftovl,classes,polyareas){
     olinfo <- fftovl$info[fftovl$info$grididx==gidx[cellidx],]
     dat <- df[olinfo$polyidx,,drop=FALSE]
-    sapply(1:ncol(dat),function(i){class(dat[[i]]) <<- classes[,i]}) 
+    sapply(1:ncol(dat),function(i){class(dat[[i]]) <<- classes[,i]})
     regwts <- olinfo$area
     attr(regwts,"polyareas") <- polyareas[olinfo$polyidx]
-    return(sapply(dat,aggCovInfo,regwts=regwts))    
+    return(sapply(dat,aggCovInfo,regwts=regwts))
 }
 
 ##' cov.interp.fft function
@@ -128,11 +128,11 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     if(!is.null(overl)){
         if(!(isTRUE(all.equal(mcens,overl$mcens)) & isTRUE(all.equal(ncens,overl$ncens)))){
             stop("Differing FFT grids ... check this is the correct overlay")
-        }    
+        }
     }
 
-    varn <- variablesinformula(formula)[-1] #independent variable names    
-    
+    varn <- variablesinformula(formula)[-1] #independent variable names
+
     if(!is.null(regionalcovariates)){
         if(any(is.na(getinterp(regionalcovariates@data)))){
             stop("No interpolation method specified for one or more regional covariates, see ?assigninterp and ?guessinterp. Note that this should also be supplied for pixelcovariates, if applicable.")
@@ -150,7 +150,7 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     if(is.null(regionalcovariates) & is.null(pixelcovariates)){
 
         testf <- as.formula(X~1)
-        attr(testf, ".Environment") <- .GlobalEnv        
+        attr(testf, ".Environment") <- .GlobalEnv
 
         if(identical(formula,testf)){
             Zmat <- matrix(cellInside,M*N,1)
@@ -167,21 +167,21 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
             attr(Zmat,"FORM") <- formula
             attr(Zmat,"fftpoly") <- NULL
             return(Zmat)
-        }        
-        
+        }
+
         stop("Must have either regional or pixel covariates.")
     }
 
-    spoly <- as(W,"SpatialPolygons")    
-    
+    spoly <- as(W,"SpatialPolygons")
+
     if(!is.null(overl)){
         fftpoly <- overl$fftpoly
     }
     else{
         fftpoly <- grid2spoly(mcens,ncens) # fft grid cells
-    }   
-    
-   
+    }
+
+
     Zmat <- 0
     dmat <- as.data.frame(matrix(NA,length(fftpoly),length(varn)))
     clsvec <- c()
@@ -189,7 +189,7 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     pixeloverlay <- NULL
     if(!is.null(regionalcovariates)){
         cat("aggregating regional covariate information ...\n")
-        s <- Sys.time()        
+        s <- Sys.time()
         polyareas <- sapply(1:length(regionalcovariates),function(ii){sum(sapply(slot(regionalcovariates[ii,],"polygons"),slot,"area"))})
         if(!is.null(overl)){
             cat("loading polygon overlay ...\n")
@@ -198,13 +198,16 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
         else{
             cat("performing polygon overlay operations ...\n")
             polyol <- gOverlay(fftpoly,regionalcovariates)
-        }         
+        }
         cidx <- match(varn,names(regionalcovariates))
-        cidx <- cidx[!is.na(cidx)]       
-        gidx <- sort(unique(polyol$info$grididx))        
-        dtemp <- as.data.frame(matrix(NA,length(gidx),length(cidx)))        
+        if(any(is.na(cidx))){
+            stop("There is a mismatch between the names of variables in the supplied formula and the variables in the data frame.")
+        }
+        cidx <- cidx[!is.na(cidx)]
+        gidx <- sort(unique(polyol$info$grididx))
+        dtemp <- as.data.frame(matrix(NA,length(gidx),length(cidx)))
         regionalcovariates <- regionalcovariates@data[,cidx,drop=FALSE] # drop=FALSE here prevents loss of interpolation information
-        classes <- sapply(regionalcovariates,class) 
+        classes <- sapply(regionalcovariates,class)
         cat("interpolating ...\n")
         sapply(1:length(gidx),function(i){dtemp[i,1:length(cidx)] <<- aggregateCovariateInfo(cellidx=i,cidx=cidx,gidx=gidx,df=regionalcovariates,fftovl=polyol,classes=classes,polyareas=polyareas)})
         dmat[gidx,1:length(cidx)] <- dtemp
@@ -220,21 +223,25 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
         oldclasses <- sapply(pixelcovariates@data,class)
         polyareas <- rep(prod(pixelcovariates@grid@cellsize),length(pixelcovariates))
         pixelcovariates <- as(pixelcovariates,"SpatialPolygonsDataFrame")
-        sapply(1:ncol(pixelcovariates),function(i){class(pixelcovariates[[i]]) <<- oldclasses[,i]}) 
+        sapply(1:ncol(pixelcovariates),function(i){class(pixelcovariates[[i]]) <<- oldclasses[,i]})
         if(!is.null(overl)){
             cat("loading polygon overlay ...\n")
             polyol <- overl$pixol
         }
         else{
             cat("performing polygon overlay operations ...\n")
-            polyol <- gOverlay(fftpoly,pixelcovariates)   
+            polyol <- gOverlay(fftpoly,pixelcovariates)
         }
         cidx <- match(varn,names(pixelcovariates))
-        cidx <- cidx[!is.na(cidx)]       
-        gidx <- sort(unique(polyol$info$grididx))        
-        dtemp <- as.data.frame(matrix(NA,length(gidx),length(cidx)))        
+        if(any(is.na(cidx))){
+            stop("There is a mismatch between the names of variables in the supplied formula and the variables in the data frame.")
+        }
+        cidx <- cidx[!is.na(cidx)]
+        gidx <- sort(unique(polyol$info$grididx))
+        dtemp <- as.data.frame(matrix(NA,length(gidx),length(cidx)))
         pixelcovariates <- pixelcovariates@data[,cidx,drop=FALSE] # drop=FALSE here prevents loss of interpolation information
-        classes <- sapply(pixelcovariates,class) 
+        classes <- sapply(pixelcovariates,class)
+
         cat("interpolating ...\n")
         sapply(1:length(gidx),function(i){dtemp[i,1:length(cidx)] <<- aggregateCovariateInfo(cellidx=i,cidx=cidx,gidx=gidx,df=pixelcovariates,fftovl=polyol,classes=classes,polyareas=polyareas)})
         dmat[gidx,(length(varn)-length(cidx)+1):length(varn)] <- dtemp
@@ -254,18 +261,18 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
                 dmat[,iii][is.na(dmat[,iii])] <- median(dmat[,iii],na.rm=TRUE)
             }
         }
-        anymiss <- apply(dmat,1,function(x){any(is.na(x))})        
+        anymiss <- apply(dmat,1,function(x){any(is.na(x))})
     }
-    
+
     sapply(1:length(clsvec),function(i){dmat[[i]] <<- eval(call(paste("as.",clsvec[i],sep=""),dmat[[i]]))})
     names(dmat) <- varn
-    dmat$X <- rep(1,sum(cellInside))            
+    dmat$X <- rep(1,sum(cellInside))
     dmat <- as.data.frame(dmat)
     DM <- dmat
     dmat <- model.matrix(formula,data=dmat)
-    
+
     missingind <- rep(0,dim(dmat)[2])
-    
+
     Zmat <- matrix(0,M*N,dim(dmat)[2])
     colnames(Zmat) <- colnames(dmat)
     rownames(dmat) <- NULL
@@ -287,8 +294,8 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
     attr(Zmat,"FORM") <- formula
     attr(Zmat,"fftpoly") <- fftpoly
     attr(Zmat,"missingind") <- missingind
-    
-    return(Zmat)  
+
+    return(Zmat)
 }
 
 ##' getpolyol function
@@ -296,16 +303,16 @@ cov.interp.fft <- function(formula,W,regionalcovariates=NULL,pixelcovariates=NUL
 ##' A function to perform polygon/polygon overlay operations and form the computational grid, on which inference will eventually take place.
 ##' For details and examples of using this fucntion, please see the package vignette "Bayesian_lgcp"
 ##'
-##' @param data an object of class ppp or SpatialPolygonsDataFrame, containing the event counts, i.e. the dataset that will eventually be analysed 
-##' @param regionalcovariates an object of class SpatialPolygonsDataFrame containng regionally measured covariate information 
+##' @param data an object of class ppp or SpatialPolygonsDataFrame, containing the event counts, i.e. the dataset that will eventually be analysed
+##' @param regionalcovariates an object of class SpatialPolygonsDataFrame containng regionally measured covariate information
 ##' @param pixelcovariates X an object of class SpatialPixelsDataFrame containng regionally measured covariate information
-##' @param cellwidth the chosen cell width 
+##' @param cellwidth the chosen cell width
 ##' @param ext the amount by which to extend the observation window in forming the FFT grid, default is 2. In the case that the point pattern has long range spatial correlation, this may need to be increased.
-##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former, the default, includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window. 
+##' @param inclusion criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former, the default, includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.
 ##' @return an object of class lgcppolyol, which can then be fed into the function getZmat.
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @export
 
@@ -314,14 +321,14 @@ getpolyol <- function(data,regionalcovariates=NULL,pixelcovariates=NULL,cellwidt
         spatstat.options(checkpolygons=FALSE)
         W <- as(gUnaryUnion(data),"owin")
         spatstat.options(checkpolygons=TRUE)
-        sd <- ppp(window=W)         
+        sd <- ppp(window=W)
     }
-    else{    
+    else{
         sd <- data
     }
-    ow <- selectObsWindow(sd,cellwidth) 
+    ow <- selectObsWindow(sd,cellwidth)
 	sd <- ow$xyt
-	M <- ow$M # note for this function, M and N are powers of 2 
+	M <- ow$M # note for this function, M and N are powers of 2
 	N <- ow$N
 	study.region <- sd$window
     gridobj <- genFFTgrid(study.region=study.region,M=M,N=N,ext=ext,inclusion=inclusion)
@@ -333,33 +340,33 @@ getpolyol <- function(data,regionalcovariates=NULL,pixelcovariates=NULL,cellwidt
 	ncens <- gridobj$ncens
 	cellarea <- gridobj$cellarea
 	cellInside <- gridobj$cellInside
-	
+
 	W <-study.region
     mcens <- mcens[1:M]
     ncens <- ncens[1:N]
     cellInside <- cellInside[1:M,1:N]
     M <- length(mcens)
     N <- length(ncens)
-    
-    cat("Computing FFT grid ...\n") 
+
+    cat("Computing FFT grid ...\n")
     fftpoly <- grid2spoly(mcens,ncens) # fft grid cells
-    
+
     polyol <- NULL
     pixol <- NULL
-    
-    if(!is.null(regionalcovariates)){     
+
+    if(!is.null(regionalcovariates)){
         cat("performing polygon overlay operations ...\n")
-        polyol <- gOverlay(fftpoly,regionalcovariates) 
+        polyol <- gOverlay(fftpoly,regionalcovariates)
     }
     if(!is.null(pixelcovariates)){
         cat("converting SpatialPixelsDataFrame to SpatialPolygonsDataFrame ...\n")
         #oldclasses <- sapply(pixelcovariates@data,class)
         pixelcovariates <- as(pixelcovariates,"SpatialPolygonsDataFrame")
-        #sapply(1:ncol(pixelcovariates),function(i){class(pixelcovariates[[i]]) <<- oldclasses[,i]}) 
+        #sapply(1:ncol(pixelcovariates),function(i){class(pixelcovariates[[i]]) <<- oldclasses[,i]})
         cat("performing polygon overlay operations ...\n")
         pixol <- gOverlay(fftpoly,pixelcovariates)
     }
-    
+
     ans <- list()
     ans$gridobj <- gridobj
     ans$fftpoly <- fftpoly
@@ -370,11 +377,11 @@ getpolyol <- function(data,regionalcovariates=NULL,pixelcovariates=NULL,cellwidt
     ans$cellwidth <- cellwidth
     ans$ext <- ext
     ans$inclusion <- inclusion
-    
+
     class(ans) <- c("lgcppolyol","list")
-    
-    return(ans) 
-}	
+
+    return(ans)
+}
 
 ##' clearinterp function
 ##'
@@ -399,14 +406,14 @@ clearinterp <- function(df){
 ##'
 ##' The three types of interpolation method employed in the package lgcp are:\cr
 ##' \enumerate{
-##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying 
+##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying
 ##'        the largest area of the computational cell.
-##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate 
+##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate
 ##'        values contributing to the computational cell weighted by their respective areas.
-##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates 
-##'        weighed by the proportion of area with respect to the covariate polygons. For example, 
-##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants. 
-##'        If that region occupies half of a computational grid cell, then this interpolation type assigns 
+##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates
+##'        weighed by the proportion of area with respect to the covariate polygons. For example,
+##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants.
+##'        If that region occupies half of a computational grid cell, then this interpolation type assigns
 ##'        250 inhabitants from A to the computational grid cell.
 ##' }
 ##'
@@ -426,14 +433,14 @@ getinterp <- function(df){
 ##'
 ##' The three types of interpolation method employed in the package lgcp are:\cr
 ##' \enumerate{
-##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying 
+##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying
 ##'        the largest area of the computational cell.
-##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate 
+##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate
 ##'        values contributing to the computational cell weighted by their respective areas.
-##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates 
-##'        weighed by the proportion of area with respect to the covariate polygons. For example, 
-##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants. 
-##'        If that region occupies half of a computational grid cell, then this interpolation type assigns 
+##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates
+##'        weighed by the proportion of area with respect to the covariate polygons. For example,
+##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants.
+##'        If that region occupies half of a computational grid cell, then this interpolation type assigns
 ##'        250 inhabitants from A to the computational grid cell.
 ##' }
 ##'
@@ -450,14 +457,14 @@ interptypes <- function(){
 ##'
 ##' The three types of interpolation method employed in the package lgcp are:\cr
 ##' \enumerate{
-##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying 
+##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying
 ##'        the largest area of the computational cell.
-##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate 
+##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate
 ##'        values contributing to the computational cell weighted by their respective areas.
-##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates 
-##'        weighed by the proportion of area with respect to the covariate polygons. For example, 
-##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants. 
-##'        If that region occupies half of a computational grid cell, then this interpolation type assigns 
+##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates
+##'        weighed by the proportion of area with respect to the covariate polygons. For example,
+##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants.
+##'        If that region occupies half of a computational grid cell, then this interpolation type assigns
 ##'        250 inhabitants from A to the computational grid cell.
 ##' }
 ##'
@@ -467,7 +474,7 @@ interptypes <- function(){
 ##' @return assigns an interpolation type to a variable
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @examples
 ##' \dontrun{spdf a SpatialPolygonsDataFrame}
@@ -501,14 +508,14 @@ assigninterp <- function(df,vars,value){
 ##'
 ##' The three types of interpolation method employed in the package lgcp are:\cr
 ##' \enumerate{
-##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying 
+##'    \item 'Majority' The interpolated value corresponds to the value of the covariate occupying
 ##'        the largest area of the computational cell.
-##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate 
+##'    \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate
 ##'        values contributing to the computational cell weighted by their respective areas.
-##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates 
-##'        weighed by the proportion of area with respect to the covariate polygons. For example, 
-##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants. 
-##'        If that region occupies half of a computational grid cell, then this interpolation type assigns 
+##'    \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates
+##'        weighed by the proportion of area with respect to the covariate polygons. For example,
+##'        suppose region A has the same area as a computational grid cell and has 500 inhabitants.
+##'        If that region occupies half of a computational grid cell, then this interpolation type assigns
 ##'        250 inhabitants from A to the computational grid cell.
 ##' }
 ##'
@@ -517,11 +524,11 @@ assigninterp <- function(df,vars,value){
 ##' @return the data frame, but with attributes describing the interpolation method for each variable
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
-##' @examples 
+##' @examples
 ##' \dontrun{spdf a SpatialPolygonsDataFrame}
-##' \dontrun{spdf@@data <- guessinterp(spdf@@data)} 
+##' \dontrun{spdf@@data <- guessinterp(spdf@@data)}
 ##' @export
 
 guessinterp <- function(df){
@@ -556,7 +563,7 @@ grid2spix <- function(xgrid,ygrid,proj4string=CRS(as.character(NA))){
     m <- length(xgrid)
     n <- length(ygrid)
     return(SpatialPixels(SpatialPoints(cbind(rep(xgrid,n),rep(ygrid,each=m))),proj4string=proj4string))
-} 
+}
 
 ##' grid2spts function
 ##'
@@ -572,12 +579,12 @@ grid2spts <- function(xgrid,ygrid,proj4string=CRS(as.character(NA))){
     m <- length(xgrid)
     n <- length(ygrid)
     return(SpatialPoints(cbind(rep(xgrid,n),rep(ygrid,each=m)),proj4string=proj4string))
-} 
+}
 
 
 ##' grid2spdf function
 ##'
-##' A function to convert a regular (x,y) grid of centroids into a SpatialPoints object 
+##' A function to convert a regular (x,y) grid of centroids into a SpatialPoints object
 ##'
 ##' @param xgrid vector of x centroids (equally spaced)
 ##' @param ygrid vector of x centroids (equally spaced)
@@ -593,4 +600,3 @@ grid2spdf <- function(xgrid,ygrid,proj4string=CRS(as.character(NA))){
   spdf <- SpatialPolygonsDataFrame(sps,data=data.frame(grid=1:(m*n)),match.ID=FALSE)
   return(spdf)
 }
-

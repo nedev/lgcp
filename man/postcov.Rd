@@ -19,8 +19,7 @@ Generic function for producing plots of the posterior covariance function from a
 lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars.
 }
 \seealso{
-\link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters}, \link{postcov.lgcpPredictSpatioTemporalPlusParameters}, \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},  
+\link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters}, \link{postcov.lgcpPredictSpatioTemporalPlusParameters}, \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

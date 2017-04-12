@@ -30,4 +30,3 @@ The interpolated design matrix, ready for analysis
 \description{
 A function to interpolate covariate values onto the fft grid, ready for analysis
 }
-

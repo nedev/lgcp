@@ -22,4 +22,3 @@ A wrapper function for \link{density.ppp}.
 \seealso{
 \link{density.ppp}
 }
-

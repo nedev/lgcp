@@ -20,4 +20,3 @@ Generic function for extracting information dumped to disk. See \link{extract.lg
 \seealso{
 \link{extract.lgcpPredict}
 }
-

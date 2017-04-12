@@ -31,4 +31,3 @@ Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox process
 \seealso{
 \link{lgcpPredict}
 }
-

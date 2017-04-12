@@ -27,4 +27,3 @@ A function to print a text description of the inferred paramerers beta and eta f
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

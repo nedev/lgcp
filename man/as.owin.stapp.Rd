@@ -19,4 +19,3 @@ an owin object
 \description{
 A function to extract the SpatialPolygons part of W and return it as an owin object.
 }
-

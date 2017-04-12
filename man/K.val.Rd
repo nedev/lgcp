@@ -23,4 +23,3 @@ A single numeric value representing a component of the theoretical K function
 \description{
 An internal function used in computing the theoretical K function for the LGCP. See \link{K.u} for the theoretical K.
 }
-

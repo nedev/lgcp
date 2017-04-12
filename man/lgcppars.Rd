@@ -25,4 +25,3 @@ set of parameters also features mu=-0.5*sigma^2, gives mean(exp(Y)) = 1.
 \seealso{
 \link{lgcpPredict}
 }
-

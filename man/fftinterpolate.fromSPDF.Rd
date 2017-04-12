@@ -26,4 +26,3 @@ This method performs interpolation within the function \code{fftgrid} for \code{
 \seealso{
 \link{fftgrid}, \link{spatialAtRisk.SpatialPolygonsDataFrame}
 }
-

@@ -44,4 +44,3 @@ Function for plotting exceedance probabilities stored in array objects. Used in 
 \seealso{
 \link{plotExceed.lgcpPredict}
 }
-

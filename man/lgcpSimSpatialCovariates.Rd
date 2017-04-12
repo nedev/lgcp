@@ -44,4 +44,3 @@ a ppp onject containing the simulated data
 \description{
 A function to  simulate a spatial LGCP.
 }
-

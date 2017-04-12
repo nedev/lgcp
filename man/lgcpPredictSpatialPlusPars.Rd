@@ -100,4 +100,3 @@ We recommend the user takes the following steps before running this method:
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

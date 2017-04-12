@@ -20,4 +20,3 @@ Print method for lgcpPredict objects.
 \seealso{
 \link{lgcpPredict}
 }
-

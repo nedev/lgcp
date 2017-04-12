@@ -20,4 +20,3 @@ Construct a space-time planar point pattern from a list object
 \seealso{
 \link{stppp}, \link{stppp.ppp},
 }
-

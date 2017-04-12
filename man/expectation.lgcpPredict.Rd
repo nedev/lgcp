@@ -35,4 +35,3 @@ practice, there is no need to compute the mean on line explicitly, as this is al
 \seealso{
 \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}
 }
-

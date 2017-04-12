@@ -21,4 +21,3 @@ set in the \code{output.control} argument of the function \code{lgcpPredict}.
 \seealso{
 \link{setoutput}, \link{lgcpgrid}
 }
-

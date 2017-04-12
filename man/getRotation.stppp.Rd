@@ -17,4 +17,3 @@ the optimal rotation matrix and rotated data and observation window. Note it may
 \description{
 Compute  rotation matrix if observation window is a polygonal boundary
 }
-

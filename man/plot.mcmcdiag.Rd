@@ -23,4 +23,3 @@ mcmc traces of a subset of the cells, provided they have been stored, see \code{
 \seealso{
 \link{mcmctrace.lgcpPredict}, \link{mcmcpars},
 }
-

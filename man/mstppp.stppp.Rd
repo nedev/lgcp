@@ -22,4 +22,3 @@ Construct a marked space-time planar point pattern from an stppp object
 \seealso{
 \link{mstppp}, \link{mstppp.list}
 }
-

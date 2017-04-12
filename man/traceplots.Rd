@@ -30,4 +30,3 @@ A function to produce trace plots for the paramerers beta and eta from a call to
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

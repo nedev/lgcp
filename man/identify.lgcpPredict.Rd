@@ -27,4 +27,3 @@ the user has selected all points of interest, the right button is pressed, which
 \seealso{
 \link{lgcpPredict}, \link{loc2poly}
 }
-

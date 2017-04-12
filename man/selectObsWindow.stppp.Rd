@@ -28,4 +28,3 @@ algorithm.
 \seealso{
 \link{spatialAtRisk}
 }
-

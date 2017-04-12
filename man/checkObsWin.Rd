@@ -19,4 +19,3 @@ the choice of cell width is correct.
 \seealso{
 \link{chooseCellwidth}
 }
-

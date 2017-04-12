@@ -34,4 +34,3 @@ matchcovariance(xg, yg, ns, sigma, phi, model, additionalparameters,
 \description{
 A function to match the covariance matrix of a Gaussian Field with an approximate GMRF with neighbourhood size ns.
 }
-

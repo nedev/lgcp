@@ -19,4 +19,3 @@ The most popular cell type.
 \description{
 Aggregation via majority.
 }
-

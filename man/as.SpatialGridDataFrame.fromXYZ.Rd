@@ -20,4 +20,3 @@ Method for converting objects of class fromXYZ into those of class SpatialGridDa
 \seealso{
 \link{as.SpatialGridDataFrame}
 }
-

@@ -20,4 +20,3 @@ Generic method for convertign to an object of class SpatialGridDataFrame.
 \seealso{
 \link{as.SpatialGridDataFrame.fromXYZ}
 }
-

@@ -17,4 +17,3 @@ the variance of the latent field
 \description{
 A function to return the variance of the latent field from a call to lgcpPredictINLA output.
 }
-

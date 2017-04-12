@@ -15,4 +15,3 @@ the base matrix of the inverse of the circulant matrix
 \description{
 A function to compute the base of the inverse os a block circulant matrix, given the base of the matrix
 }
-

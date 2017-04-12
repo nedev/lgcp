@@ -21,4 +21,3 @@ The function is called invisibly within \code{MALAlgcp} and facilitates the dump
 \seealso{
 \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFreturnvalue}
 }
-

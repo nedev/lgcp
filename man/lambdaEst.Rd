@@ -20,4 +20,3 @@ Generic function for estimating bivariate densities by eye. Specific methods exi
 \seealso{
 \link{lambdaEst.stppp}, \link{lambdaEst.ppp}
 }
-

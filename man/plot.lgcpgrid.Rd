@@ -25,4 +25,3 @@ This is a wrapper function for image.lgcpgrid
 \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
 \link{summary.lgcpgrid},\link{quantile.lgcpgrid}, \link{image.lgcpgrid}
 }
-

@@ -20,4 +20,3 @@ Generic function to return standard error of relative risk.
 \seealso{
 \link{lgcpPredict}, \link{serr.lgcpPredict}
 }
-

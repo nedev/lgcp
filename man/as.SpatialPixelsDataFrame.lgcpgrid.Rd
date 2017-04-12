@@ -17,4 +17,3 @@ Either a SpatialPixelsDataFrame, or a list consisting of SpatialPixelsDataFrame 
 \description{
 Method to convert lgcpgrid objects to SpatialPixelsDataFrame objects.
 }
-

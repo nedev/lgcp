@@ -21,14 +21,13 @@ blockcircbaseFunction(x, y, CovFunction, CovParameters, inverse = FALSE)
 the base matrix of a block circulant matrix representing a stationary covariance function on a toral grid.
 }
 \description{
-Compute the base matrix of a continuous Gaussian field. Computed as a block circulant matrix on a torus where x and y is the 
+Compute the base matrix of a continuous Gaussian field. Computed as a block circulant matrix on a torus where x and y is the
 x and y centroids (must be equally spaced). This is an extension of the function blockcircbase to extend the range of covariance functions
 that can be fitted to the model.
 }
 \seealso{
 \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits},
-\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 \link{lgcpPredictMultitypeSpatialPlusPars}
 }
-

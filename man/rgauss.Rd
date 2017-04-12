@@ -29,4 +29,3 @@ an lgcp grid object containing the simulated field(s).
 \description{
 A function to simulate a Gaussian field on a regular square lattice, the returned object is of class lgcpgrid.
 }
-

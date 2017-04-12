@@ -19,4 +19,3 @@ plots the mstppp object x
 \description{
 Plot method for mstppp objects
 }
-

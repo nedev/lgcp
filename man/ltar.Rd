@@ -13,11 +13,10 @@ ltar(lg)
 the log-target from each saved iteration of the MCMC chain.
 }
 \description{
-A function to return the sampled log-target from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, 
+A function to return the sampled log-target from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars,
 lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars. This is used as a convergence diagnostic.
 }
 \seealso{
 \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

@@ -34,4 +34,3 @@ A vector corresponding to the time-averaged PCF for spatiotemporal data, evaluat
 A carbon-copy of ginhomAverage from package 'lgcp', with extra control over the printing of progress bars and other output to the console during execution. 
 Computes the time-averaged version of the nonparametric PCF (for use with spatiotemporal data).
 }
-

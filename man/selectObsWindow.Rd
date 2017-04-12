@@ -21,4 +21,3 @@ See ?selectObsWindow.stppp for further details on usage. This is a generic funct
 \seealso{
 \link{selectObsWindow.default}, \link{selectObsWindow.stppp}
 }
-

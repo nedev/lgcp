@@ -38,4 +38,3 @@ requires an FFT 'grid' to be pre-computed, see \link{fftgrid}.
 \seealso{
 \link{fftgrid}
 }
-

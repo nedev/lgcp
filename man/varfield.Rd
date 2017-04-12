@@ -20,4 +20,3 @@ Generic function to extract the variance of the latent field Y.
 \seealso{
 \link{lgcpPredict}
 }
-

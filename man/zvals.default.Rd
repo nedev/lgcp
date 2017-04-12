@@ -20,4 +20,3 @@ Default method for extracting 'z values' looks for $Zm, $Z, $z in that order.
 \seealso{
 \link{xvals},  \link{yvals}, \link{zvals}, \link{xvals.default}, \link{yvals.default}, \link{xvals.fromXYZ}, \link{yvals.fromXYZ}, \link{zvals.fromXYZ}, \link{xvals.SpatialGridDataFrame}, \link{yvals.SpatialGridDataFrame}, \link{zvals.SpatialGridDataFrame}
 }
-

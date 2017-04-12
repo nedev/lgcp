@@ -26,4 +26,3 @@ a realisation of a spatiotemporal Gaussian process on a regular grid
 A function to store a realisation of a spatiotemporal gaussian process for use in MCMC algorithms that include Bayesian parameter estimation.
 Stores not only the realisation, but also computational quantities.
 }
-

@@ -36,4 +36,3 @@ fft objects for use in MALA
 \bold{Advanced use only.} Computes various quantities for use in \code{lgcpPredict},
 \code{lgcpSim} .
 }
-

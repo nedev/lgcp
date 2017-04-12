@@ -20,4 +20,3 @@ Initialises the \link{constanth} adaptive scheme.
 \seealso{
 \link{constanth}
 }
-

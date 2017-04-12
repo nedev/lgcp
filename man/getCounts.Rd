@@ -34,4 +34,3 @@ ctssub <- cts[1:64,1:64] # returns the cell counts in the observation
 \seealso{
 \link{lgcpPredict}
 }
-

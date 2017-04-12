@@ -17,4 +17,3 @@ method stapp
 \description{
 Generic function for space-time aggregated point-process data
 }
-

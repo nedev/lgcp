@@ -15,4 +15,3 @@ logical, whether the circulant matrix the base represents is SPD
 \description{
 A function to compute whether a block circulant matrix is symmetric positive definite (SPD), given its base matrix.
 }
-

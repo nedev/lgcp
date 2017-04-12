@@ -15,4 +15,3 @@ an object of class SpatialPolygonsDataFrame
 \description{
 A function to return the SpatialPolygonsDataFrame part of an stapp object
 }
-

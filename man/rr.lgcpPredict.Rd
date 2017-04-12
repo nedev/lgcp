@@ -20,4 +20,3 @@ Accessor function returning the relative risk = exp(Y) as an lgcpgrid object.
 \seealso{
 \link{lgcpPredict}
 }
-

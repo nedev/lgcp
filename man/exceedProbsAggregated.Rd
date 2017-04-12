@@ -31,4 +31,3 @@ of these.
 \seealso{
 \link{lgcpPredictAggregated}
 }
-

@@ -20,4 +20,3 @@ Generic function for extracting the FFT discrete window.
 \seealso{
 \link{discreteWindow.lgcpPredict}
 }
-

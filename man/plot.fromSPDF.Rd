@@ -17,4 +17,3 @@ prints the object
 \description{
 Plot method for objects of class fromSPDF.
 }
-

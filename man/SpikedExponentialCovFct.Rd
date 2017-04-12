@@ -23,4 +23,3 @@ lgcp only offers estimation for sigma and phi, the additional parameter 'spikeva
 \seealso{
 \link{CovFunction.function}, \link{exponentialCovFct}, \link{RandomFieldsCovFct}
 }
-

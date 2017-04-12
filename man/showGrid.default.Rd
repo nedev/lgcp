@@ -23,4 +23,3 @@ centroids.
 \seealso{
 \link{showGrid.lgcpPredict}, \link{showGrid.stppp}
 }
-

@@ -16,4 +16,3 @@ value of \code{gridmeans} in the argument \code{output.control}.
 \seealso{
 \link{setoutput}, \link{lgcpPredict}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

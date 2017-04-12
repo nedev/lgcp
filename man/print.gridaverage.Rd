@@ -17,4 +17,3 @@ just prints out details
 \description{
 Print method for \code{gridaverage} objects
 }
-

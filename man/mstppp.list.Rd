@@ -21,4 +21,3 @@ Construct a marked space-time planar point pattern from a list object
 \seealso{
 \link{mstppp}, \link{mstppp.ppp},
 }
-

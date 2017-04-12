@@ -21,4 +21,3 @@ Method to convert an lgcpgrid object into a list of matrices.
 \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{print.lgcpgrid}, 
 \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{image.lgcpgrid}, \link{plot.lgcpgrid}
 }
-

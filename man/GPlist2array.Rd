@@ -17,4 +17,3 @@ an array
 \description{
 An internal function for turning a list of GPrealisation objects into an an array by a particular common element of the GPrealisation object
 }
-

@@ -60,4 +60,3 @@ for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which
 \seealso{
 \link{selectObsWindow} \link{lgcpPredict}, link{lgcpSim}, \link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, \link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.SpatialPolygonsDataFrame}, \link{spatialAtRisk.bivden}
 }
-

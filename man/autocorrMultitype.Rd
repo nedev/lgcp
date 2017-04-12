@@ -26,4 +26,3 @@ an array, the [,,i]th slice being the grid of cell-wise autocorrelations.
 \description{
 A function to compute cell-wise autocorrelation in the latent field at specifiec lags
 }
-

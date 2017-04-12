@@ -19,4 +19,3 @@ vector of TRUE or FALSE according to whether the cell
 \description{
 A function to compute which cells are touching an owin or spatial polygons object
 }
-

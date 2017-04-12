@@ -37,4 +37,3 @@ a ppp object containing the data
 \description{
 A function to simulate from a log gaussian process
 }
-

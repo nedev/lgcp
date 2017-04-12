@@ -23,4 +23,3 @@ A function to create a Gaussian prior.
 \seealso{
 \link{LogGaussianPrior}, link{PriorSpec.list}
 }
-

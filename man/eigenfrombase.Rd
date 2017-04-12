@@ -15,4 +15,3 @@ the eigenvalues
 \description{
 A function to compute the eigenvalues of an SPD block circulant matrix given the base matrix.
 }
-

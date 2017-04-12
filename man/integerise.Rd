@@ -20,4 +20,3 @@ Generic function for converting the time variable of an stppp object.
 \seealso{
 \link{integerise.stppp}
 }
-

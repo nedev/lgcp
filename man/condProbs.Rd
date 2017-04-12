@@ -30,7 +30,7 @@ computational grid. The other parameters in the model are beta_k , the covariate
 kth type; and eta_i = [log(sigma_i),log(phi_i)], the parameters of the process Y_i for i = 1,...,K+1 on
 an appropriately transformed (again, in this case log) scale.
 
-The term 'conditional probability of type k' means the probability that at a particular location there 
+The term 'conditional probability of type k' means the probability that at a particular location there
 will be an event of type k, which denoted p_k.
 }
 \seealso{
@@ -38,4 +38,3 @@ will be an event of type k, which denoted p_k.
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

@@ -15,4 +15,3 @@ plots the objects.
 \description{
 A function to plot various objects. A developmental tool: not intended for general use
 }
-

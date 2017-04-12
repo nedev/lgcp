@@ -21,4 +21,3 @@ the user to create their own \code{gridfunction} and \code{gridmeans} schemes.
 \seealso{
 \link{lgcpPredict}, \link{dump2dir}, \link{MonteCarloAverage}
 }
-

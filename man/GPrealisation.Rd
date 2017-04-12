@@ -24,4 +24,3 @@ a realisation of a spatial Gaussian process on a regular grid
 A function to store a realisation of a spatial gaussian process for use in MCMC algorithms that include Bayesian parameter estimation.
 Stores not only the realisation, but also computational quantities.
 }
-

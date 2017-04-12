@@ -21,4 +21,3 @@ Print method for lgcp grid objects.
 \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid},
 \link{summary.lgcpgrid} \link{quantile.lgcpgrid} \link{image.lgcpgrid} \link{plot.lgcpgrid}
 }
-

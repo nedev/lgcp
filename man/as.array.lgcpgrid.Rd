@@ -17,4 +17,3 @@ conversion from lgcpgrid to array
 \description{
 Method to convert an lgcpgrid object into an array.
 }
-

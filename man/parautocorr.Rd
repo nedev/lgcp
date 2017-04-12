@@ -29,4 +29,3 @@ A function to produce autocorrelation plots for the paramerers beta and eta from
 \link{ltar}, \link{autocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

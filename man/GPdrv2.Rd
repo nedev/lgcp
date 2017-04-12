@@ -42,4 +42,3 @@ first and second derivatives of the log target at the specified paramters Y, eta
 \description{
 A function to compute the second derivative of the log target with respect to the paramters of the latent field. Not intended for general purpose use.
 }
-

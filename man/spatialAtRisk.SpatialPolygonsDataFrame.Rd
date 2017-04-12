@@ -24,4 +24,3 @@ Creates a spatialAtRisk object from a SpatialPolygonsDataFrame object.
 \seealso{
 \link{lgcpPredict}, link{lgcpSim}, \link{spatialAtRisk.default}, \link{spatialAtRisk.fromXYZ}, \link{spatialAtRisk.im}, \link{spatialAtRisk.function}, \link{spatialAtRisk.SpatialGridDataFrame}, \link{spatialAtRisk.bivden}
 }
-

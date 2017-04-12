@@ -32,4 +32,3 @@ A vector corresponding to the time-averaged K function for spatiotemporal data, 
 A carbon-copy of KinhomAverage from package 'lgcp', with extra control over the printing of progress bars and other output to the console during execution. 
 Computes the time-averaged version of the nonparametric K function (for use with spatiotemporal data).
 }
-

@@ -19,4 +19,3 @@ A function to return the sampled beta from a call to the function lgcpPredictSpa
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{etavals}
 }
-

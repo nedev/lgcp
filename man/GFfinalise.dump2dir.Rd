@@ -20,4 +20,3 @@ This function finalises the dumping of data to a netCDF file.
 \seealso{
 \link{dump2dir}, \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

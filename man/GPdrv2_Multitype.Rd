@@ -44,4 +44,3 @@ first and second derivatives of the log target  for tyupe k at the specified par
 \description{
 A function to compute the second derivatives of the log target for the multivariate model with respect to the paramters of the latent field. Not intended for general use.
 }
-

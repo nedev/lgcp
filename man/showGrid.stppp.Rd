@@ -26,4 +26,3 @@ this function will display the grid centroids that were used in the simulation
 \seealso{
 \link{lgcpSim}, \link{showGrid.default}, \link{showGrid.lgcpPredict}
 }
-

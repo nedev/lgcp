@@ -19,4 +19,3 @@ Areal weighted mean.
 \description{
 Aggregation via weighted mean.
 }
-

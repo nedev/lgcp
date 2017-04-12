@@ -46,4 +46,3 @@ andrieuthomsh(inith=1,alpha=0.5,C=1,targetacceptance=0.574)
 \seealso{
 \link{mcmcpars}, \link{lgcpPredict}
 }
-

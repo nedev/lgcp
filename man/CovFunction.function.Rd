@@ -24,4 +24,3 @@ A function used to define the covariance function for the latent field prior to 
 \seealso{
 \link{exponentialCovFct}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}, \link{CovarianceFct}
 }
-

@@ -17,4 +17,3 @@ prints the mstppp object x
 \description{
 Print method for mstppp objects
 }
-

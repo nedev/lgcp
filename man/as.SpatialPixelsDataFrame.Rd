@@ -20,4 +20,3 @@ Generic function for conversion to SpatialPixels objects.
 \seealso{
 \link{as.SpatialPixelsDataFrame.lgcpgrid}
 }
-

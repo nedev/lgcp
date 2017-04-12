@@ -31,4 +31,3 @@ Simple plotting function for objects of class \code{lgcpPredict}.
 \seealso{
 \link{lgcpPredict}
 }
-

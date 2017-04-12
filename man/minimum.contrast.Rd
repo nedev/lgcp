@@ -39,4 +39,3 @@ for spatial data.
 \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
 \link{lgcpPredictMultitypeSpatialPlusPars}
 }
-

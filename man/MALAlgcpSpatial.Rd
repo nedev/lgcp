@@ -61,4 +61,3 @@ object passed back to lgcpPredictSpatial
 \description{
 ADVANCED USE ONLY A function to perform MALA for the spatial only case
 }
-

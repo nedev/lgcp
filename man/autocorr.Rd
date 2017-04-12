@@ -33,4 +33,3 @@ setting the argument \code{inWindow}, which has a sensible default).
 \link{lgcpPredict}, \link{dump2dir}, \link{setoutput}, \link{plot.lgcpAutocorr}, \link{ltar}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

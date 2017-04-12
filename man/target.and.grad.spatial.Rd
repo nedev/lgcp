@@ -34,4 +34,3 @@ the back-transformed Y, its exponential, the log-target and gradient for use in 
 \description{
 A function to compute the target and gradient for 'spatial only' MALA
 }
-

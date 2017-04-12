@@ -23,4 +23,3 @@ this is just a wrapper for CovarianceFct
 \description{
 gu function
 }
-

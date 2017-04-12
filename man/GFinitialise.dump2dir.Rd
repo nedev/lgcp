@@ -20,4 +20,3 @@ Creates a directory (if necessary) and allocates space for a netCDF dump.
 \seealso{
 \link{dump2dir}, \link{setoutput}, \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

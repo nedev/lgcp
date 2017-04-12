@@ -17,4 +17,3 @@ bt.scalar(t, theta)
 \description{
 bt.scalar function
 }
-

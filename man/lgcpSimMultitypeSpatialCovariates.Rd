@@ -42,4 +42,3 @@ a marked ppp object, the simulated data
 \description{
 A function to Simulate multivariate point process models
 }
-

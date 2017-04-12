@@ -33,4 +33,3 @@ This function is used in \code{thetaEst} to estimate the temporal correlation pa
 \seealso{
 \link{thetaEst}
 }
-

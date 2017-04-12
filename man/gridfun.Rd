@@ -20,4 +20,3 @@ A generic function for returning \code{gridfunction} objects.
 \seealso{
 \link{setoutput}, \link{lgcpgrid}
 }
-

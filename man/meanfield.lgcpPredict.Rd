@@ -21,4 +21,3 @@ field Y as an lgcpgrid object.
 \seealso{
 \link{lgcpPredict}, \link{lgcpgrid}
 }
-

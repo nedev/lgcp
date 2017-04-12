@@ -22,4 +22,3 @@ Observations are assumed to occur in the plane and the observation window is ass
 \seealso{
 \link{stppp}, \link{stppp.ppp}, \link{stppp.list}
 }
-

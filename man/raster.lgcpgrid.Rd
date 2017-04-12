@@ -21,4 +21,3 @@
 \description{
 A function to convert lgcpgrid objects into either a raster object, or a RasterBrick object.
 }
-

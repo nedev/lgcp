@@ -25,4 +25,3 @@ A function to produce a summary table for the parameters beta and eta from a cal
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

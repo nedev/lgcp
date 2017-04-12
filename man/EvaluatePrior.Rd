@@ -19,4 +19,3 @@ the prior evaluated at the given values.
 \description{
 An internal function used in the MCMC routine to evaluate the prior for a given set of parameters
 }
-

@@ -17,4 +17,3 @@ method getCovParameters
 \description{
 Internal function for retrieving covariance parameters. not indended for general use.
 }
-

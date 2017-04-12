@@ -17,4 +17,3 @@ method as.stppp
 \description{
 Generic function for converting to stppp objects
 }
-

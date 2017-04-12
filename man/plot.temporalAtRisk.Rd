@@ -20,4 +20,3 @@ Pot a temporalAtRisk object.
 \seealso{
 \link{temporalAtRisk}, \link{spatialAtRisk}, \link{temporalAtRisk.numeric}, \link{temporalAtRisk.function}, \link{constantInTime}, \link{constantInTime.numeric}, \link{constantInTime.stppp}, \link{print.temporalAtRisk},
 }
-

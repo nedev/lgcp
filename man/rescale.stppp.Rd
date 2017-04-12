@@ -19,4 +19,3 @@ a ppp object without observation times
 \description{
 Rescale an stppp object. Similar to rescale.ppp
 }
-

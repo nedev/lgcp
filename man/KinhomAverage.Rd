@@ -41,4 +41,3 @@ A function to estimate the inhomogeneous K function for a spatiotemporal point p
 \seealso{
 \link{ginhomAverage}, \link{spatialparsEst}, \link{thetaEst}, \link{lambdaEst}, \link{muEst}
 }
-

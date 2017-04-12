@@ -115,4 +115,3 @@ required.
 \link{mcmctrace.lgcpPredict}, \link{plotExceed.lgcpPredict}, \link{quantile.lgcpPredict}, \link{identify.lgcpPredict}, \link{expectation.lgcpPredict},
 \link{extract.lgcpPredict}, \link{showGrid.lgcpPredict}
 }
-

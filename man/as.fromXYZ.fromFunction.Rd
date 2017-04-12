@@ -27,4 +27,3 @@ user to specify a grid onto which to compute the discretised verion.
 \seealso{
 \link{as.im.fromXYZ}, \link{as.im.fromSPDF}, \link{as.im.fromFunction}, \link{as.fromXYZ}
 }
-

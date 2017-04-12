@@ -17,4 +17,3 @@ a list with ith entry the sum of list1[[i]] and list2[[i]]
 \description{
 This function adds the elements of two list objects together and returns the result in another list object.
 }
-

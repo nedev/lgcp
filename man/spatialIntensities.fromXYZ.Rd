@@ -22,4 +22,3 @@ Extract the spatial intensities from an object of class fromXYZ (as would have b
 \seealso{
 \link{spatialIntensities}, \link{spatialIntensities.fromSPDF}
 }
-

@@ -15,4 +15,3 @@ the transformation matrix corresponding to an anticlockwise rotation of theta ra
 \description{
 This function returns a rotation matrix corresponding to an anticlockwise rotation of theta radians about the origin
 }
-

@@ -24,4 +24,3 @@ For further details of temporalAtRisk objects, see ?temporalAtRisk>
 \seealso{
 \link{temporalAtRisk}, \link{spatialAtRisk}, \link{temporalAtRisk.numeric}, \link{temporalAtRisk.function}, \link{constantInTime}, \link{constantInTime.numeric}, \link{print.temporalAtRisk}, \link{plot.temporalAtRisk},
 }
-

@@ -29,4 +29,3 @@ which is the default setting).
 \seealso{
 \link{setoutput}, \ \link{GFinitialise}, \link{GFupdate}, \link{GFfinalise}, \link{GFreturnvalue}
 }
-

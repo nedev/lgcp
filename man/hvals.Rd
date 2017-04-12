@@ -17,4 +17,3 @@ method hvals
 \description{
 Generic function to return the values of the proposal scaling \eqn{h}{h} in the MCMC algorithm.
 }
-

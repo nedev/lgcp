@@ -15,4 +15,3 @@ removes the interpolation methods
 \description{
 A function to remove the interpolation methods from a data frame.
 }
-

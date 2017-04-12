@@ -16,4 +16,3 @@ the spatialAtRisk object on a slightly larger grid, with zeros appearing outside
 A function to extend a spatialAtRisk object, used in interpolating the fft grid NOTE THIS DOES NOT RETURN A PROPER spatialAtRisk OBJECT SINCE THE 
 NORMALISING CONSTANT IS PUT BACK IN.
 }
-

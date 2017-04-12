@@ -17,4 +17,3 @@ method mcmctrace
 \description{
 Generic function to extract the information required to produce MCMC trace plots.
 }
-

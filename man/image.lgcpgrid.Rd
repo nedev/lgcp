@@ -25,4 +25,3 @@ Produce an image plot of an lgcpgrid object.
 \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{as.list.lgcpgrid}, \link{print.lgcpgrid}, 
 \link{summary.lgcpgrid}, \link{quantile.lgcpgrid}, \link{plot.lgcpgrid}
 }
-

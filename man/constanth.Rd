@@ -23,4 +23,3 @@ constanth(0.01)
 \seealso{
 \link{mcmcpars}, \link{lgcpPredict}
 }
-

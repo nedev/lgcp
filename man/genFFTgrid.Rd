@@ -24,4 +24,3 @@ a list
 A function to generate an FFT grid and associated quantities including cell dimensions,
 size of extended grid, centroids, cell area, cellInside matrix (a 0/1 matrix: is the centroid of the cell inside the observation window?)
 }
-

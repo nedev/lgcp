@@ -30,4 +30,3 @@ only implemented for spatial processes (lgcpPredictSpatialPlusPars and lgcpPredi
 \seealso{
 \link{expectation},  \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}
 }
-

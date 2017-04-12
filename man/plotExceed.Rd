@@ -20,4 +20,3 @@ A generic function for plotting exceedance probabilities.
 \seealso{
 \link{plotExceed.lgcpPredict}, \link{plotExceed.array}
 }
-

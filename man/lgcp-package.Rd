@@ -2,8 +2,8 @@
 % Please edit documentation in R/lgcp.R
 \docType{package}
 \name{lgcp-package}
-\alias{lgcp}
 \alias{lgcp-package}
+\alias{lgcp}
 \title{lgcp}
 \format{An object of class \code{logical} of length 1.}
 \usage{
@@ -62,4 +62,3 @@ Benjamin Taylor, Health and Medicine, Lancaster University,
  Peter Diggle, Health and Medicine, Lancaster University
 }
 \keyword{package}
-

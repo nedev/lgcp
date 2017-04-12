@@ -45,4 +45,3 @@ for spatiotemporal data. Currently only implemented for univariate (i.e. unmarke
 \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
 \link{lgcpPredictMultitypeSpatialPlusPars}
 }
-

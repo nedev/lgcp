@@ -20,4 +20,3 @@ This is a null function and performs no action.
 \seealso{
 \link{nullAverage}, \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}
 }
-

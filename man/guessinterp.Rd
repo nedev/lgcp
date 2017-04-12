@@ -20,25 +20,24 @@ interpolation by majority vote (see below). Not that the interpolation type Area
 \details{
 The three types of interpolation method employed in the package lgcp are:\cr
 \enumerate{
-   \item 'Majority' The interpolated value corresponds to the value of the covariate occupying 
+   \item 'Majority' The interpolated value corresponds to the value of the covariate occupying
        the largest area of the computational cell.
-   \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate 
+   \item 'ArealWeightedMean' The interpolated value corresponds to the mean of all covariate
        values contributing to the computational cell weighted by their respective areas.
-   \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates 
-       weighed by the proportion of area with respect to the covariate polygons. For example, 
-       suppose region A has the same area as a computational grid cell and has 500 inhabitants. 
-       If that region occupies half of a computational grid cell, then this interpolation type assigns 
+   \item 'ArealWeightedSum' The interpolated value is the sum of all contributing covariates
+       weighed by the proportion of area with respect to the covariate polygons. For example,
+       suppose region A has the same area as a computational grid cell and has 500 inhabitants.
+       If that region occupies half of a computational grid cell, then this interpolation type assigns
        250 inhabitants from A to the computational grid cell.
 }
 }
 \examples{
 \dontrun{spdf a SpatialPolygonsDataFrame}
-\dontrun{spdf@data <- guessinterp(spdf@data)} 
+\dontrun{spdf@data <- guessinterp(spdf@data)}
 }
 \seealso{
 \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{getZmat},
 \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+\link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 \link{lgcpPredictMultitypeSpatialPlusPars}
 }
-

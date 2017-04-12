@@ -20,4 +20,3 @@ Accessor function returning the Poisson intensity as an lgcpgrid object.
 \seealso{
 \link{lgcpPredict}
 }
-

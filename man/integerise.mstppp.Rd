@@ -17,4 +17,3 @@ The mstppp object, but with integerised times.
 \description{
 Function for converting the times and time limits of an mstppp object into integer values.
 }
-

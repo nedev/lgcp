@@ -70,4 +70,3 @@ output from the MCMC run
 \description{
 A function to run the MCMC algorithm for multivariate spatial point process data. Not for general purpose use.
 }
-

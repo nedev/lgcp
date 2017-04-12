@@ -17,4 +17,3 @@ method meanfield
 \description{
 Generic function to extract the mean of the latent field Y.
 }
-

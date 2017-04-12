@@ -24,4 +24,3 @@ Construct a space-time planar point pattern from a ppp object
 \seealso{
 \link{stppp}, \link{stppp.list}
 }
-

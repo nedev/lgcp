@@ -20,4 +20,3 @@ Generic function used for computing interpolations used in the function \link{ff
 \seealso{
 \link{fftgrid}
 }
-

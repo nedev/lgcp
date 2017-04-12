@@ -20,4 +20,3 @@ Generic method for displaying the FFT grid used in computation.
 \seealso{
 \link{showGrid.default}, \link{showGrid.lgcpPredict}, \link{showGrid.stppp}
 }
-

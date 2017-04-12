@@ -15,4 +15,3 @@ character string of colour
 \description{
 A function to return a transparent green colour.
 }
-

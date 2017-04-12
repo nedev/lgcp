@@ -17,4 +17,3 @@ a list with ith entry the scalar multiple of const * list[[i]]
 \description{
 This function multiplies each element of a list by a scalar constant.
 }
-

@@ -22,4 +22,3 @@ Monte Carlo Averages online.
 \seealso{
 \link{setoutput}, \link{GAinitialise}, \link{GAupdate}, \link{GAreturnvalue}
 }
-

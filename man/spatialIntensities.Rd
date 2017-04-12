@@ -20,4 +20,3 @@ Generic method for extracting spatial intensities.
 \seealso{
 \link{spatialIntensities.fromXYZ}, \link{spatialIntensities.fromSPDF}
 }
-

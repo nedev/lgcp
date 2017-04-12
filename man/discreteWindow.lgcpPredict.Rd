@@ -19,4 +19,3 @@
 \description{
 A function for extracting the FFT discrete window from an lgcpPredict object.
 }
-

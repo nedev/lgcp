@@ -20,4 +20,3 @@ A function to declare and also evaluate an exponential covariance function.
 \seealso{
 \link{CovFunction.function}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}
 }
-

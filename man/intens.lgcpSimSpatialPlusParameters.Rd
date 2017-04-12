@@ -17,4 +17,3 @@ the Poisson intensity
 \description{
 A function to return the cellwise Poisson intensity used during in constructing the simulated data.
 }
-

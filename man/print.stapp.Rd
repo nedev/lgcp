@@ -19,4 +19,3 @@ prints the stapp object x
 \description{
 Print method for stapp objects
 }
-

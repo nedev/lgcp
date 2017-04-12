@@ -13,16 +13,16 @@
 
 genFFTgrid <- function(study.region,M,N,ext,inclusion="touching"){
     del1 <- (study.region$xrange[2]-study.region$xrange[1])/M
-    del2 <- (study.region$yrange[2]-study.region$yrange[1])/N 
-    
-    Mext <- ext*M	
+    del2 <- (study.region$yrange[2]-study.region$yrange[1])/N
+
+    Mext <- ext*M
     Next <- ext*N
-    
+
     mcens <- study.region$xrange[1]+.5*del1+(0:(Mext-1))*del1
-    ncens <- study.region$yrange[1]+.5*del2+(0:(Next-1))*del2	
-    
+    ncens <- study.region$yrange[1]+.5*del2+(0:(Next-1))*del2
+
     cellarea <- del1*del2
-    
+
     if(inclusion=="centroid"){
         cellInside <- inside.owin(x=rep(mcens,Next),y=rep(ncens,each=Mext),w=study.region)
     }
@@ -32,30 +32,30 @@ genFFTgrid <- function(study.region,M,N,ext,inclusion="touching"){
     else{
         stop("Invlaid choice for argument 'inclusion'.")
     }
-    
+
     cellInside <- matrix(as.numeric(cellInside),Mext,Next)
-    
-    obj <- list(del1=del1,del2=del2,Mext=Mext,Next=Next,mcens=mcens,ncens=ncens,cellarea=cellarea,cellInside=cellInside,inclusion=inclusion)    
+
+    obj <- list(del1=del1,del2=del2,Mext=Mext,Next=Next,mcens=mcens,ncens=ncens,cellarea=cellarea,cellInside=cellInside,inclusion=inclusion)
     class(obj) <- "FFTgrid"
-    
-    return(obj)   
+
+    return(obj)
 }
 
 ##' blockcircbaseFunction function
 ##'
-##' Compute the base matrix of a continuous Gaussian field. Computed as a block circulant matrix on a torus where x and y is the 
+##' Compute the base matrix of a continuous Gaussian field. Computed as a block circulant matrix on a torus where x and y is the
 ##' x and y centroids (must be equally spaced). This is an extension of the function blockcircbase to extend the range of covariance functions
 ##' that can be fitted to the model.
 ##'
 ##' @param x x centroids, an equally spaced vector
 ##' @param y y centroids, an equally spaced vector
 ##' @param CovFunction a function of distance, returning the covariance between points that distance apart
-##' @param CovParameters an object of class CovParamters, see ?CovParameters 
+##' @param CovParameters an object of class CovParamters, see ?CovParameters
 ##' @param inverse logical. Whether to return the base matrix of the inverse covariance matrix (ie the base matrix for the precision matrix), default is FALSE
 ##' @return the base matrix of a block circulant matrix representing a stationary covariance function on a toral grid.
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits},
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @export
 blockcircbaseFunction <- function(x,y,CovFunction,CovParameters,inverse=FALSE){
@@ -67,7 +67,7 @@ blockcircbaseFunction <- function(x,y,CovFunction,CovParameters,inverse=FALSE){
     dyidx <- pmin(abs(yidx-yidx[1]),N-abs(yidx-yidx[1]))
     d <- sqrt(((x[2]-x[1])*dxidx)^2+((y[2]-y[1])*dyidx)^2)
     covbase <- matrix(CovFunction(d,CovParameters=CovParameters),M,N)
-    if(!inverse){ 
+    if(!inverse){
         return(covbase)
     }
     else{
@@ -101,7 +101,7 @@ GPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d){
     if(class(covParameters)!="CovParamaters"){
         stop("argument 'covParamaters' must be an object of class CovParamaters, see ?CovParamaters")
     }
-    
+
     Mext <- length(fftgrid$mcens)
     Next <- length(fftgrid$ncens)
     covbase <- covFunction(d=d,CovParameters=covParameters)
@@ -110,9 +110,9 @@ GPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d){
 
     gp <- list()
     gp$gamma <- gamma
-    gp$CovFunction <- covFunction 
+    gp$CovFunction <- covFunction
     gp$CovParameters <- covParameters
-    gp$covbase <- covbase 
+    gp$covbase <- covbase
     #gp$fftcovbase <- lapply(covbase,function(x){Re(fft(x))})
     gp$rootQeigs <- sqrt(1/Re(fft(covbase[[1]])))#sqrt(1/gp$fftcovbase$eval)
     gp$invrootQeigs <- 1/gp$rootQeigs
@@ -120,10 +120,10 @@ GPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d){
     gp$expY <- exp(gp$Y) # for computational purposes
     gp$mcens <- fftgrid$mcens
     gp$ncens <- fftgrid$ncens
-    
-    class(gp) <- "GPrealisation"    
-    return(gp)    
-    
+
+    class(gp) <- "GPrealisation"
+    return(gp)
+
 }
 
 ##' stGPrealisation function
@@ -136,7 +136,7 @@ GPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d){
 ##' @param covFunction an object of class function returning the spatial covariance
 ##' @param covParameters an object of class CovParamaters, see ?CovParamaters
 ##' @param d matrix of grid distances
-##' @param tdiff vector of time differences 
+##' @param tdiff vector of time differences
 ##' @return a realisation of a spatiotemporal Gaussian process on a regular grid
 ##' @export
 
@@ -155,19 +155,19 @@ stGPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d,tdiff){
     if(class(covParameters)!="CovParamaters"){
         stop("argument 'covParamaters' must be an object of class CovParamaters, see ?CovParamaters")
     }
-    
+
     Mext <- length(fftgrid$mcens)
     Next <- length(fftgrid$ncens)
     covbase <- covFunction(d=d,CovParameters=covParameters)
     covbase <- lapply(covbase,matrix,nrow=Mext,ncol=Next)
     ###############
-    
+
 
     gp <- list()
     gp$gamma <- gamma
-    gp$CovFunction <- covFunction 
+    gp$CovFunction <- covFunction
     gp$CovParameters <- covParameters
-    gp$covbase <- covbase 
+    gp$covbase <- covbase
     gp$rootQeigs <- sqrt(1/Re(fft(covbase[[1]])))
     gp$invrootQeigs <- 1/gp$rootQeigs
     gp$at <- covParameters$mu*(1-exp(-covParameters$theta*tdiff))
@@ -176,79 +176,79 @@ stGPrealisation <- function(gamma,fftgrid,covFunction,covParameters,d,tdiff){
     gp$tdiff <- tdiff
     gp$Y <- list()
     gp$Y[[1]] <- YfromGamma(gamma[[1]],invrootQeigs=gp$invrootQeigs,mu=covParameters$mu)
-    sapply(2:length(tdiff),function(i){gp$Y[[i]] <<- gp$at[[i]]+gp$bt[[i]]*gp$Y[[i-1]]+sqrt(gp$gt[[i]])*YfromGamma(gamma[[i]],invrootQeigs=gp$invrootQeigs,mu=0)})       
+    sapply(2:length(tdiff),function(i){gp$Y[[i]] <<- gp$at[[i]]+gp$bt[[i]]*gp$Y[[i-1]]+sqrt(gp$gt[[i]])*YfromGamma(gamma[[i]],invrootQeigs=gp$invrootQeigs,mu=0)})
     gp$expY <- lapply(gp$Y,exp) # for computational purposes
     gp$mcens <- fftgrid$mcens
     gp$ncens <- fftgrid$ncens
-    
-    class(gp) <- "stGPrealisation"    
-    return(gp)    
-    
+
+    class(gp) <- "stGPrealisation"
+    return(gp)
+
 }
 
 ##' GPdrv2 function
 ##'
 ##' A function to compute the second derivative of the log target with respect to the paramters of the latent field. Not intended for general purpose use.
 ##'
-##' @param GP an object of class GPrealisation 
-##' @param prior priors for the model 
+##' @param GP an object of class GPrealisation
+##' @param prior priors for the model
 ##' @param Z design matirix on the FFT grid
 ##' @param Zt transpose of the design matrix
 ##' @param eta vector of parameters, eta
 ##' @param beta vector of parameters, beta
 ##' @param nis cell counts on the extended grid
-##' @param cellarea the cell area 
+##' @param cellarea the cell area
 ##' @param spatial the poisson offset
-##' @param gradtrunc gradient truncation parameter 
+##' @param gradtrunc gradient truncation parameter
 ##' @param fftgrid an object of class FFTgrid
-##' @param covfunction the choice of covariance function, see ?CovFunction 
+##' @param covfunction the choice of covariance function, see ?CovFunction
 ##' @param d matrix of toral distances
-##' @param eps the finite difference step size 
+##' @param eps the finite difference step size
 ##' @return first and second derivatives of the log target at the specified paramters Y, eta and beta
 ##' @export
 
 GPdrv2 <- function(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc,fftgrid,covfunction,d,eps=1e-6){
 
     tar <- target.and.grad.spatialPlusPars(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-              
-    cp1 <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2])))      
+
+    cp1 <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2])))
     gp1 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp1,d=d)
     tar1 <- target.and.grad.spatialPlusPars(GP=gp1,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    cp11 <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2])))      
+    cp11 <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2])))
     gp11 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp11,d=d)
     tar11 <- target.and.grad.spatialPlusPars(GP=gp11,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    
-    cp2 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]+eps)))      
+
+    cp2 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]+eps)))
     gp2 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp2,d=d)
     tar2 <- target.and.grad.spatialPlusPars(GP=gp2,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    cp22 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]-eps)))      
+    cp22 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]-eps)))
     gp22 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp22,d=d)
     tar22 <- target.and.grad.spatialPlusPars(GP=gp22,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    
+
     dlsigma <- (tar1-tar11)/(2*eps)
-    dlphi <- (tar2-tar22)/(2*eps)    
-    
-    cpA <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2]+eps)))      
+    dlphi <- (tar2-tar22)/(2*eps)
+
+    cpA <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2]+eps)))
     gpA <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cpA,d=d)
     tarA <- target.and.grad.spatialPlusPars(GP=gpA,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    
-    cpB <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2]-eps)))      
+
+    cpB <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2]-eps)))
     gpB <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cpB,d=d)
     tarB <- target.and.grad.spatialPlusPars(GP=gpB,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    
-    cpC <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2]+eps)))      
+
+    cpC <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2]+eps)))
     gpC <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cpC,d=d)
     tarC <- target.and.grad.spatialPlusPars(GP=gpC,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-    
-    cpD <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2]-eps)))      
+
+    cpD <- CovParameters(list(sigma=exp(eta[1]-eps),phi=exp(eta[2]-eps)))
     gpD <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cpD,d=d)
-    tarD <- target.and.grad.spatialPlusPars(GP=gpD,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget  
-    
+    tarD <- target.and.grad.spatialPlusPars(GP=gpD,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
+
     d2lsigma2 <- (tar1-2*tar+tar11)/(eps^2)
     d2lphi2 <- (tar2-2*tar+tar22)/(eps^2)
     d2lsigmalphi <- (tarA-tarB-tarC+tarD)/(4*eps^2)
     hess <- matrix(c(d2lsigma2,d2lsigmalphi,d2lsigmalphi,d2lphi2),2,2)
-    
+
     return(list(dlsigma=dlsigma,dlphi=dlphi,hess=hess))
 }
 
@@ -259,20 +259,20 @@ GPdrv2 <- function(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc,fftgrid
 ##'
 ##' A function to compute the second derivatives of the log target for the multivariate model with respect to the paramters of the latent field. Not intended for general use.
 ##'
-##' @param GPlist a list of objects of class GPrealisation 
+##' @param GPlist a list of objects of class GPrealisation
 ##' @param priorlist list of priors for the model
 ##' @param Zlist list of design matirices on the FFT grid
 ##' @param Ztlist list of transpose design matrices
 ##' @param etalist list of parameters, eta, for each realisation
 ##' @param betalist clist of parameters, beta, for each realisation
 ##' @param nis cell counts of each type the extended grid
-##' @param cellarea  the cell area  
+##' @param cellarea  the cell area
 ##' @param spatial list of poisson offsets for each type
 ##' @param gradtrunc  gradient truncation parameter
 ##' @param fftgrid an object of class FFTgrid
-##' @param covfunction list giving the choice of covariance function for each type, see ?CovFunction  
+##' @param covfunction list giving the choice of covariance function for each type, see ?CovFunction
 ##' @param d matrix of toral distances
-##' @param eps the finite difference step size 
+##' @param eps the finite difference step size
 ##' @param k index of type for which to compute the gradient and hessian
 ##' @return first and second derivatives of the log target  for tyupe k at the specified paramters Y, eta and beta
 ##' @export
@@ -280,67 +280,67 @@ GPdrv2 <- function(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc,fftgrid
 GPdrv2_Multitype <- function(GPlist,priorlist,Zlist,Ztlist,etalist,betalist,nis,cellarea,spatial,gradtrunc,fftgrid,covfunction,d,eps=1e-6,k){ # k is list index
 
     tar <- target.and.grad.MultitypespatialPlusPars(GPlist=GPlist,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-    
+
+
     etatemp <- etalist
     gptemp <- GPlist
-              
-    cp1 <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2])))      
+
+    cp1 <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2])))
     gp1 <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cp1,d=d)
     gplist1 <- gptemp
     gplist1[[k]] <- gp1
     tar1 <- target.and.grad.MultitypespatialPlusPars(GPlist=gplist1,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    cp11 <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2])))      
+    cp11 <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2])))
     gp11 <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cp11,d=d)
     gplist11 <- gptemp
     gplist11[[k]] <- gp11
     tar11 <- target.and.grad.MultitypespatialPlusPars(GPlist=gplist11,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-    cp2 <- CovParameters(list(sigma=exp(etalist[[k]][1]),phi=exp(etalist[[k]][2]+eps)))      
+
+    cp2 <- CovParameters(list(sigma=exp(etalist[[k]][1]),phi=exp(etalist[[k]][2]+eps)))
     gp2 <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cp2,d=d)
     gplist2 <- gptemp
     gplist2[[k]] <- gp2
     tar2 <- target.and.grad.MultitypespatialPlusPars(GPlist=gplist2,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    cp22 <- CovParameters(list(sigma=exp(etalist[[k]][1]),phi=exp(etalist[[k]][2]-eps)))      
+    cp22 <- CovParameters(list(sigma=exp(etalist[[k]][1]),phi=exp(etalist[[k]][2]-eps)))
     gp22 <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cp22,d=d)
     gplist22 <- gptemp
     gplist22[[k]] <- gp22
     tar22 <- target.and.grad.MultitypespatialPlusPars(GPlist=gplist22,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
+
     dlsigma <- (tar1-tar11)/(2*eps)
-    dlphi <- (tar2-tar22)/(2*eps)    
-    
-    cpA <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2]+eps)))      
+    dlphi <- (tar2-tar22)/(2*eps)
+
+    cpA <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2]+eps)))
     gpA <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cpA,d=d)
     gplistA <- gptemp
     gplistA[[k]] <- gpA
     tarA <- target.and.grad.MultitypespatialPlusPars(GPlist=gplistA,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-    cpB <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2]-eps)))      
+
+    cpB <- CovParameters(list(sigma=exp(etalist[[k]][1]+eps),phi=exp(etalist[[k]][2]-eps)))
     gpB <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cpB,d=d)
     gplistB <- gptemp
     gplistB[[k]] <- gpB
     tarB <- target.and.grad.MultitypespatialPlusPars(GPlist=gplistB,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-    cpC <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2]+eps)))      
+
+    cpC <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2]+eps)))
     gpC <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cpC,d=d)
     gplistC <- gptemp
     gplistC[[k]] <- gpC
     tarC <- target.and.grad.MultitypespatialPlusPars(GPlist=gplistC,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-    cpD <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2]-eps)))      
+
+    cpD <- CovParameters(list(sigma=exp(etalist[[k]][1]-eps),phi=exp(etalist[[k]][2]-eps)))
     gpD <- GPrealisation(gamma=GPlist[[k]]$gamma,fftgrid=fftgrid,covFunction=covfunction[[k]],covParameters=cpD,d=d)
     gplistD <- gptemp
     gplistD[[k]] <- gpD
     tarD <- target.and.grad.MultitypespatialPlusPars(GPlist=gplistD,priorlist=priorlist,Zlist=Zlist,Ztlist=Ztlist,eta=etalist,beta=betalist,nis=nis,cellarea=cellarea,spatial=spatial,gradtrunc=gradtrunc)$logtarget
-    
-        
-    
+
+
+
     d2lsigma2 <- (tar1-2*tar+tar11)/(eps^2)
     d2lphi2 <- (tar2-2*tar+tar22)/(eps^2)
     d2lsigmalphi <- (tarA-tarB-tarC+tarD)/(4*eps^2)
     hess <- matrix(c(d2lsigma2,d2lsigmalphi,d2lsigmalphi,d2lphi2),2,2)
-    
+
     return(list(dlsigma=dlsigma,dlphi=dlphi,hess=hess))
 }
 
@@ -348,38 +348,38 @@ GPdrv2_Multitype <- function(GPlist,priorlist,Zlist,Ztlist,etalist,betalist,nis,
 ##'
 ##' A function to compute the first derivatives of the log target with respect to the paramters of the latent field. Not intended for general purpose use.
 ##'
-##' @param GP an object of class GPrealisation 
-##' @param prior priors for the model 
+##' @param GP an object of class GPrealisation
+##' @param prior priors for the model
 ##' @param Z design matirix on the FFT grid
 ##' @param Zt transpose of the design matrix
 ##' @param eta vector of parameters, eta
 ##' @param beta vector of parameters, beta
 ##' @param nis cell counts on the extended grid
-##' @param cellarea the cell area 
+##' @param cellarea the cell area
 ##' @param spatial the poisson offset
-##' @param gradtrunc gradient truncation parameter 
+##' @param gradtrunc gradient truncation parameter
 ##' @param fftgrid an object of class FFTgrid
-##' @param covfunction the choice of covariance function, see ?CovFunction 
+##' @param covfunction the choice of covariance function, see ?CovFunction
 ##' @param d matrix of toral distances
-##' @param eps the finite difference step size 
+##' @param eps the finite difference step size
 ##' @return first  derivatives of the log target at the specified paramters Y, eta and beta
 ##' @export
 
 GPdrv <- function(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc,fftgrid,covfunction,d,eps=1e-6){
 
     tar <- target.and.grad.spatialPlusPars(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-              
-    cp1 <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2])))      
+
+    cp1 <- CovParameters(list(sigma=exp(eta[1]+eps),phi=exp(eta[2])))
     gp1 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp1,d=d)
     tar1 <- target.and.grad.spatialPlusPars(GP=gp1,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
 
-    cp2 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]+eps)))      
+    cp2 <- CovParameters(list(sigma=exp(eta[1]),phi=exp(eta[2]+eps)))
     gp2 <- GPrealisation(gamma=GP$gamma,fftgrid=fftgrid,covFunction=covfunction,covParameters=cp2,d=d)
     tar2 <- target.and.grad.spatialPlusPars(GP=gp2,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc)$logtarget
-      
+
     dlsigma <- (tar1-tar)/(eps)
     dlphi <- (tar2-tar)/(eps)
-    
+
     return(list(dlsigma=dlsigma,dlphi=dlphi))
 }
 
@@ -389,7 +389,7 @@ GPdrv <- function(GP,prior,Z,Zt,eta,beta,nis,cellarea,spatial,gradtrunc,fftgrid,
 
 ##' PriorSpec function
 ##'
-##' Generic for declaring that an object is of valid type for use as as prior in lgcp. For further details and examples, see the vignette "Bayesian_lgcp". 
+##' Generic for declaring that an object is of valid type for use as as prior in lgcp. For further details and examples, see the vignette "Bayesian_lgcp".
 ##'
 ##' @param obj an object
 ##' @param ... additional arguments
@@ -412,7 +412,7 @@ PriorSpec <- function(obj,...){
 ##' @param ... additional arguments
 ##' @return an object suitable for use in a call to the MCMC routines
 ##' @seealso \link{GaussianPrior}, \link{LogGaussianPrior}
-##' @examples 
+##' @examples
 ##' \dontrun{PriorSpec(LogGaussianPrior(mean=log(c(1,500)),variance=diag(0.15,2)))}
 ##' \dontrun{PriorSpec(GaussianPrior(mean=rep(0,9),variance=diag(10^6,9)))}
 ##' @export
@@ -429,8 +429,8 @@ PriorSpec.list <- function(obj,...){
     }
     if(is.null(obj$inverse_transform)){
         stop("obj must have an element $inverse_transform, a function returning the inverse of the parameter transform (which can be the identity function, see ?identity)")
-    }    
-    
+    }
+
     class(obj) <- c("PriorSpec",class(obj))
     return(obj)
 }
@@ -444,7 +444,7 @@ PriorSpec.list <- function(obj,...){
 ##' @param variance a 2x2 matrix representing the variance (on the log scale)
 ##' @return an object of class LogGaussianPrior that can be passed to the function PriorSpec.
 ##' @seealso \link{GaussianPrior}, link{PriorSpec.list}
-##' @examples 
+##' @examples
 ##' \dontrun{LogGaussianPrior(mean=log(c(1,500)),variance=diag(0.15,2))}
 ##' @export
 
@@ -456,13 +456,13 @@ LogGaussianPrior <- function(mean,variance){
     prior$precision <- solve(prior$variance)
     prior$dim <- length(mean)
     prior$const <- -(prior$dim/2)*log(2*pi) - (1/2)*log(prior$determinant)
-    
+
     prior$eval <- function(x){
         vec <- prior$precision%*%(x-prior$mean)
         value <- prior$const -(1/2)*t(x-prior$mean)%*%vec
         return(list(loglik=value,gradcontrib=vec))
     }
-    
+
     prior$transform <- log # ie the log function
     prior$inverse_transform <- exp # ie the exponential function
     prior$jacobian <- exp # ie (dsigma/dlogsigma,dphi/dlogphi), a function of (logsigma,logphi)
@@ -478,7 +478,7 @@ LogGaussianPrior <- function(mean,variance){
 ##' @param variance a 2x2 matrix representing the variance.
 ##' @return an object of class LogGaussianPrior that can be passed to the function PriorSpec.
 ##' @seealso \link{LogGaussianPrior}, link{PriorSpec.list}
-##' @examples 
+##' @examples
 ##' \dontrun{GaussianPrior(mean=rep(0,9),variance=diag(10^6,9))}
 ##' @export
 
@@ -490,13 +490,13 @@ GaussianPrior <- function(mean,variance){
     prior$precision <- solve(prior$variance)
     prior$dim <- length(mean)
     prior$const <- -(prior$dim/2)*log(2*pi) - (1/2)*log(prior$determinant)
-    
+
     prior$eval <- function(x){
         vec <- prior$precision%*%(x-prior$mean)
         value <- prior$const -(1/2)*t(x-prior$mean)%*%vec
         return(list(loglik=value,gradcontrib=vec))
     }
-    
+
     prior$inverse_transform <- identity # ie the identity function
     class(prior) <- c("GaussianPrior","list")
     return(prior)
@@ -505,16 +505,16 @@ GaussianPrior <- function(mean,variance){
 
 ##' lgcpPrior function
 ##'
-##' A function to create the prior for beta and eta ready for a run of the MCMC algorithm. 
+##' A function to create the prior for beta and eta ready for a run of the MCMC algorithm.
 ##'
 ##' @param etaprior an object of class PriorSpec defining the prior for the parameters of the latent field, eta. See ?PriorSpec.list.
 ##' @param betaprior etaprior an object of class PriorSpec defining the prior for the parameters of main effects, beta. See ?PriorSpec.list.
 ##' @return an R structure representing the prior density ready for a run of the MCMC algorithm.
 ##' @seealso \link{GaussianPrior}, \link{LogGaussianPrior}, \link{PriorSpec.list}, \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
-##' @examples 
+##' @examples
 ##' lgcpPrior(etaprior=PriorSpec(LogGaussianPrior(mean=log(c(1,500)),
 ##'     variance=diag(0.15,2))),betaprior=PriorSpec(GaussianPrior(mean=rep(0,9),
 ##'     variance=diag(10^6,9))))
@@ -534,7 +534,7 @@ lgcpPrior <- function(etaprior=NULL,betaprior=NULL){
         }
     }
     obj <- list()
-    obj$etaprior <- etaprior 
+    obj$etaprior <- etaprior
     obj$betaprior <- betaprior
     class(obj) <- "lgcpPrior"
     return(obj)
@@ -552,7 +552,7 @@ CovParameters <- function(list){ # spatial or spatiotemporal parameters
     if(is.null(list$sigma) | is.null(list$phi)){
         stop("argument 'list' must be a named list object containing elements $sigma and $phi as a minimum.")
     }
-    
+
     if(!is.null(list$mu)){
         stop("argument 'list' must NOT contain an element $mu, as this is set by default")
     }
@@ -565,7 +565,7 @@ CovParameters <- function(list){ # spatial or spatiotemporal parameters
 
 ##' CovFunction function
 ##'
-##' A Generic method used to specify the choice of covariance function for use in the MCMC algorithm. For further details and examples, 
+##' A Generic method used to specify the choice of covariance function for use in the MCMC algorithm. For further details and examples,
 ##' see the vignette "Bayesian_lgcp".
 ##'
 ##' @param obj an object
@@ -589,7 +589,7 @@ CovFunction <- function(obj,...){
 ##' @param ... additional arguments
 ##' @return the covariance function ready to run the MCMC routine.
 ##' @seealso \link{exponentialCovFct}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}, \link{CovarianceFct}
-##' @examples 
+##' @examples
 ##' \dontrun{cf1 <- CovFunction(exponentialCovFct)}
 ##' \dontrun{cf2 <- CovFunction(RandomFieldsCovFct(model="matern",additionalparameters=1))}
 ##' @export
@@ -636,7 +636,7 @@ SpikedExponentialCovFct <- function(d,CovParameters,spikevar=1){
     x <- exp(-d/CovParameters$phi)
     ans <- list()
     ans$eval <- CovParameters$sigma^2*x
-    ans$eval[d==0] <- ans$eval[d==0] + spikevar 
+    ans$eval[d==0] <- ans$eval[d==0] + spikevar
     return(ans)
 }
 
@@ -646,10 +646,10 @@ SpikedExponentialCovFct <- function(d,CovParameters,spikevar=1){
 ##' lgcp only offers estimation for sigma and phi, any additional paramters are treated as fixed.
 ##'
 ##' @param model the choice of model e.g.  "matern"
-##' @param additionalparameters additional parameters for chosen covariance model. See ?CovarianceFct 
+##' @param additionalparameters additional parameters for chosen covariance model. See ?CovarianceFct
 ##' @return a covariance function from the RandomFields package
 ##' @seealso \link{CovFunction.function}, \link{exponentialCovFct}, \link{SpikedExponentialCovFct}, \link{CovarianceFct}
-##' @examples 
+##' @examples
 ##' \dontrun{RandomFieldsCovFct(model="matern",additionalparameters=1)}
 ##' @export
 
@@ -747,8 +747,8 @@ EvaluatePrior <- function(etaParameters,betaParameters,prior){
     if(class(prior)!="lgcpPrior"){
         stop("prior must be an object of class lgcpPrior")
     }
- 
-    
+
+
     if(!is.null(betaParameters)){
         ans <- list(etacontrib=prior$etaprior$eval(etaParameters),betacontrib=prior$betaprior$eval(betaParameters))
         class(ans) <- "EvalPrior"
@@ -762,12 +762,12 @@ EvaluatePrior <- function(etaParameters,betaParameters,prior){
 
 ##' lgcpInits function
 ##'
-##' A function to declare initial values for a run of the MCMC routine. If specified, the MCMC algorithm will calibrate the proposal 
+##' A function to declare initial values for a run of the MCMC routine. If specified, the MCMC algorithm will calibrate the proposal
 ##' density using these as provisional estimates of the parameters.
 ##'
-##' It is not necessary to supply intial values to the MCMC routine, by default the functions lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, 
-##' lgcpPredictSpatioTemporalPlusPars and lgcpPredictMultitypeSpatialPlusPars will initialise the MCMC as follows. For eta, if no initial value is 
-##' specified then the initial value of eta in the MCMC run will be the prior mean. For beta, if no initial value is specified then 
+##' It is not necessary to supply intial values to the MCMC routine, by default the functions lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars,
+##' lgcpPredictSpatioTemporalPlusPars and lgcpPredictMultitypeSpatialPlusPars will initialise the MCMC as follows. For eta, if no initial value is
+##' specified then the initial value of eta in the MCMC run will be the prior mean. For beta, if no initial value is specified then
 ##' the initial value of beta in the MCMC run will be estimated from an overdispersed Poisson fit to the cell counts, ignoring spatial correlation. The user cannot
 ##' specify an initial value of Y (or equivalently Gamma), as a sensible value is chosen by the MCMC function.
 ##'
@@ -778,9 +778,9 @@ EvaluatePrior <- function(etaParameters,betaParameters,prior){
 ##' @return an object of class lgcpInits used in the MCMC routine.
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{CovFunction},
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
-##' @examples 
+##' @examples
 ##' \dontrun{INITS <- lgcpInits(etainit=log(c(sqrt(1.5),275)), betainit=NULL)}
 ##' @export
 
@@ -832,9 +832,40 @@ formulaList <- function(X){
     return(X)
 }
 
+
+## termsinformula function
+##
+## A function to extract terms from a formula, taken from the spatstat package version 1.40-0
+##
+## @param x an object
+## @return ...
+## @export
+
+# termsinformula <- function(x) {
+#   if(is.null(x)) return(character(0))
+#   if(class(x) != "formula")
+#     stop("argument is not a formula")
+#   attr(terms(x), "term.labels")
+# }
+
+
+## variablesinformula function
+##
+## A function to extract variables from a formula, taken from the spatstat package version 1.40-0
+##
+## @param x an object
+## @return ...
+## @export
+# variablesinformula <- function(x) {
+#   if(is.null(x)) return(character(0))
+#   if(class(x) != "formula")
+#     stop("argument is not a formula")
+#   all.vars(as.expression(x))
+# }
+
 ##' aggregateformulaList function
 ##'
-##' An internal function to collect terms from a formulalist. Not intended for general use. 
+##' An internal function to collect terms from a formulalist. Not intended for general use.
 ##'
 ##' @param x an object of class "formulaList"
 ##' @param ... other arguments
@@ -849,11 +880,11 @@ aggregateformulaList <- function(x,...){
     f <- formula(paste("X~",rhs))
     attr(f, ".Environment")= .GlobalEnv
     return(f)
-}  
+}
 
 ##' getLHSformulaList function
 ##'
-##' A function to retrieve the dependent variables from a formulaList object. Not intended for general use. 
+##' A function to retrieve the dependent variables from a formulaList object. Not intended for general use.
 ##'
 ##' @param fl an object of class "formulaList"
 ##' @return the indepentdent variables
@@ -861,26 +892,26 @@ aggregateformulaList <- function(x,...){
 
 getLHSformulaList <- function(fl){
     return(sapply(fl,function(x){as.character(x[2])}))
-}  
+}
 
 ##' getZmats function
 ##'
-##' An internal function to create Z_k from an lgcpZmat object, for use in the multivariate MCMC algorithm. Not intended for general use.  
+##' An internal function to create Z_k from an lgcpZmat object, for use in the multivariate MCMC algorithm. Not intended for general use.
 ##'
 ##' @param Zmat an objecty of class "lgcpZmat"
 ##' @param formulaList an object of class "formulaList"
 ##' @return design matrices for each of the point types
 ##' @export
 
-getZmats <- function(Zmat,formulaList){      
+getZmats <- function(Zmat,formulaList){
     dmat <- attr(Zmat,"data.frame")
     cellInside <- attr(Zmat,"cellInside")
     anymiss <- attr(Zmat,"anymiss")
     M <- attr(Zmat,"M")
     N <- attr(Zmat,"N")
-    
+
     lhs <- getLHSformulaList(formulaList)
-    
+
     Zmatlist <- list()
     for(i in 1:length(formulaList)){
         dmat[[lhs[i]]] <- dmat$X
@@ -894,7 +925,7 @@ getZmats <- function(Zmat,formulaList){
             Zmatlist[[i]][as.logical(cellInside),] <-  DM
         }
     }
-    return(Zmatlist)  
+    return(Zmatlist)
 }
 
 ## Redundant:
@@ -907,7 +938,7 @@ getZmats <- function(Zmat,formulaList){
 
 ##' fftmultiply function
 ##'
-##' A function to pre-multiply a vector by a block cirulant matrix 
+##' A function to pre-multiply a vector by a block cirulant matrix
 ##'
 ##' @param efb eigenvalues of the matrix
 ##' @param vector the vector
@@ -920,7 +951,7 @@ fftmultiply <- function(efb,vector){ # efb == "eigenfrombase(base)" == Re(fft(ba
 
 ##' samplePosterior function
 ##'
-##' A function to draw a sample from the posterior of a spatial LGCP. Randomly selects an index i, and returns the ith value of eta, 
+##' A function to draw a sample from the posterior of a spatial LGCP. Randomly selects an index i, and returns the ith value of eta,
 ##' the ith value of beta and the ith value of Y as a named list.
 ##'
 ##' @param x an object of class lgcpPredictSpatialOnlyPlusParameters or lgcpPredictAggregateSpatialPlusParameters
@@ -933,14 +964,14 @@ samplePosterior <- function(x){
     ans <- list()
     ans$beta <- x$betarec[idx,]
     ans$eta <- x$etarec[idx,]
-    
+
     fn <- paste(x$gridfunction$dirname,"simout.nc",sep="")
-    ncdata <- nc_open(fn)    
-        
+    ncdata <- nc_open(fn)
+
     ans$Y <- ncvar_get(nc=ncdata, varid=ncdata$var[[1]], start=c(1,1,1,idx), count=c(-1,-1,-1,1))
-    
+
     nc_close(ncdata)
-    
+
     return(ans)
 }
 
@@ -963,14 +994,14 @@ plotit <- function(x){
     }
     if(class(x)=="GPrealisation"){
         image.plot(x$mcens,x$ncens,x$Y)
-    }    
+    }
 }
 
 ##' getup function
 ##'
 ##' A function to get an object from a parent frame.
 ##'
-##' @param n a character string, the name of the object 
+##' @param n a character string, the name of the object
 ##' @param lev how many levels up the hierarchy to go (see the argument "envir" from the function "get"), default is 1.
 ##' @return ...
 ##' @export
@@ -1013,16 +1044,16 @@ checkObsWin <- function(ow){
 tempRaster <- function(mcens,ncens){
     M <- length(mcens)
     N <- length(ncens)
-    
+
     dx <- diff(mcens[1:2])
     dy <- diff(ncens[1:2])
-    
+
     return(raster(nrows=M,ncols=N,xmn=mcens[1]-dx/2,xmx=mcens[M]+dx/2,ymn=ncens[1]-dy/2,ymx=ncens[N]+dy/2))
 }
 
 ##' gOverlay function
 ##'
-##' A function to overlay the FFT grid, a SpatialPolygons object, onto a SpatialPolygonsDataFrame object. 
+##' A function to overlay the FFT grid, a SpatialPolygons object, onto a SpatialPolygonsDataFrame object.
 ##'
 ##' this code was adapted from Roger Bivand:\cr
 ##' https://stat.ethz.ch/pipermail/r-sig-geo/2011-June/012099.html
@@ -1034,50 +1065,102 @@ tempRaster <- function(mcens,ncens){
 
 
 gOverlay <- function(grid,spdf){
-    int <- gIntersects(spdf,grid,byid=TRUE)  
+    int <- gIntersects(spdf,grid,byid=TRUE)
     cnt <- 0
     idx <- c()
     cellnum <- 0
     pb <- txtProgressBar(min=0,max=nrow(int)*ncol(int),style=3)
+    not_intersect <- c()
     for (i in 1:nrow(int)){
         for (j in 1:ncol(int)){
-            cellnum <- cellnum + 1           
+            cellnum <- cellnum + 1
             if(int[i,j]){
                 cnt <- cnt + 1
                 vec <- try(gIntersection(grid[i,],spdf[j,], byid=TRUE),silent=TRUE)
-                if(inherits(vec,"try-error")|inherits(vec,"SpatialPoints")|inherits(vec,"SpatialLines")){
+                if(inherits(vec,"try-error")|inherits(vec,"SpatialPoints")|inherits(vec,"SpatialLines")|inherits(vec,"SpatialCollections")){
                     cnt <- cnt - 1
+                    not_intersect <- rbind(not_intersect,c(i,j))
                 }
                 else{
+                    #print(c(i,j))
                     idx <- rbind(idx,c(i,j,sum(sapply(slot(vec,"polygons"),slot,"area"))))
                 }
             }
             setTxtProgressBar(pb,cellnum)
         }
     }
-    close(pb) 
+    close(pb)
     idx <- data.frame(idx)
     names(idx) <- c("grididx","polyidx","area")
     ans <- list()
     ans$info <- idx
+    if(!is.null(nrow(not_intersect))){
+        colnames(not_intersect) <- c("grididx","polyidx")
+    }
+    attr(ans,"not_intersect") <- not_intersect
     return(ans)
 }
+
+# ## gOverlay_overlap function
+# ##
+# ## A function to overlay the FFT grid, a SpatialPolygons object, onto a SpatialPolygonsDataFrame object.
+# ##
+# ## this code was adapted from Roger Bivand:\cr
+# ## https://stat.ethz.ch/pipermail/r-sig-geo/2011-June/012099.html
+# ##
+# ## @param grid the FFT grid, a SpatialPolygons object
+# ## @param spdf  a SpatialPolygonsDataFrame object
+# ## @return a matrix describing the features of the overlay: the originating indices of grid and spdf (all non-trivial intersections) and the area of each intersection.
+# ## @export
+#
+#
+# gOverlay_overlap <- function(grid,spdf){
+#     int <- gIntersects(spdf,grid,byid=TRUE)
+#     #browser()
+#     cnt <- 0
+#     idx <- c()
+#     cellnum <- 0
+#     pb <- txtProgressBar(min=0,max=nrow(int)*ncol(int),style=3)
+#     for (i in 1:nrow(int)){
+#         for (j in 1:ncol(int)){
+#             cellnum <- cellnum + 1
+#             if(int[i,j]){
+#                 cnt <- cnt + 1
+#                 vec <- try(gIntersection(grid[i,],spdf[j,], byid=TRUE),silent=TRUE)
+#                 if(inherits(vec,"try-error")|inherits(vec,"SpatialPoints")|inherits(vec,"SpatialLines")){
+#                     cnt <- cnt - 1
+#                 }
+#                 else{
+#                     idx <- rbind(idx,c(i,j,sum(sapply(slot(vec,"polygons"),slot,"area"))))
+#                 }
+#             }
+#             setTxtProgressBar(pb,cellnum)
+#         }
+#     }
+#     close(pb)
+#     idx <- data.frame(idx)
+#     names(idx) <- c("grididx","polyidx","area")
+#     ans <- list()
+#     ans$info <- idx
+#     browser()
+#     return(ans)
+# }
 
 ##' getZmat function
 ##'
 ##' A function to construct a design matrix for use with the Bayesian MCMC routines in lgcp. See the vignette "Bayesian_lgcp" for further details on
 ##' how to use this function.\cr
-##' 
+##'
 ##' For example, a spatial LGCP model for the would have the form:\cr
 ##' \cr
 ##' X(s) ~ Poisson[R(s)]\cr
 ##' \cr
 ##' R(s) = C_A lambda(s) exp[Z(s)beta+Y(s)]\cr
-##' \cr 
+##' \cr
 ##'
 ##' The function getZmat helps create the matrix Z. The returned object is passed onto an MCMC function, for example lgcpPredictSpatialPlusPars or
 ##' lgcpPredictAggregateSpatialPlusPars. This function can also be used to help construct Z for use with lgcpPredictSpatioTemporalPlusPars and
-##' lgcpPredictMultitypeSpatialPlusPars, but these functions require a list of such objects: see the vignette "Bayesian_lgcp" for examples. 
+##' lgcpPredictMultitypeSpatialPlusPars, but these functions require a list of such objects: see the vignette "Bayesian_lgcp" for examples.
 ##'
 ##' @param formula a formula object of the form X ~ var1 + var2 etc. The name of the dependent variable must be "X". Only accepts 'simple' formulae, such as the example given.
 ##' @param data the data to be analysed (using, for example lgcpPredictSpatialPlusPars). Either an object of class ppp, or an object of class SpatialPolygonsDataFrame
@@ -1090,7 +1173,7 @@ gOverlay <- function(grid,spdf){
 ##' @return a design matrix for passing on to the Bayesian MCMC functions
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @export
 
@@ -1104,14 +1187,14 @@ getZmat <- function(formula,data,regionalcovariates=NULL,pixelcovariates=NULL,ce
         spatstat.options(checkpolygons=FALSE)
         W <- as(gUnaryUnion(data),"owin")
         spatstat.options(checkpolygons=TRUE)
-        sd <- ppp(window=W)         
+        sd <- ppp(window=W)
     }
-    else{    
+    else{
         sd <- data
     }
-    ow <- selectObsWindow(sd,cellwidth) 
+    ow <- selectObsWindow(sd,cellwidth)
 	sd <- ow$xyt
-	M <- ow$M # note for this function, M and N are powers of 2 
+	M <- ow$M # note for this function, M and N are powers of 2
 	N <- ow$N
 	study.region <- sd$window
 	if(!is.null(overl)){
@@ -1128,30 +1211,30 @@ getZmat <- function(formula,data,regionalcovariates=NULL,pixelcovariates=NULL,ce
 	ncens <- gridobj$ncens
 	cellarea <- gridobj$cellarea
 	cellInside <- gridobj$cellInside
-	
+
 	ans <- cov.interp.fft(formula=formula,W=study.region,regionalcovariates=regionalcovariates,pixelcovariates=pixelcovariates,mcens=mcens[1:M],ncens=ncens[1:N],cellInside=cellInside[1:M,1:N],overl=overl)
 	attr(ans,"gridobj") <- gridobj
 	attr(ans,"inclusion") <- inclusion
 	attr(ans,"ext") <- ext
-	attr(ans,"cellwidth") <- cellwidth 
+	attr(ans,"cellwidth") <- cellwidth
 	class(ans) <- c("lgcpZmat","matrix")
     return(ans)
 }
 
 ##' chooseCellwidth function
 ##'
-##' A function to help choose the cell width (the parameter "cellwidth" in lgcpPredictSpatialPlusPars, for example) prior to setting up the FFT grid, 
-##' before an MCMC run. 
-##' 
-##' Ideally this function should be used after having made a preliminary guess at the parameters of the latent field.The idea is to run chooseCellwidth 
-##' several times, adjusting the parameter "cwinit" so as to balance available computational resources with output grid size. 
+##' A function to help choose the cell width (the parameter "cellwidth" in lgcpPredictSpatialPlusPars, for example) prior to setting up the FFT grid,
+##' before an MCMC run.
+##'
+##' Ideally this function should be used after having made a preliminary guess at the parameters of the latent field.The idea is to run chooseCellwidth
+##' several times, adjusting the parameter "cwinit" so as to balance available computational resources with output grid size.
 ##'
 ##' @param obj an object of class ppp, stppp, SpatialPolygonsDataFrame, or owin
 ##' @param cwinit the cell width
-##' @return produces a plot of the observation window and computational grid. 
+##' @return produces a plot of the observation window and computational grid.
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @export
 
@@ -1171,12 +1254,12 @@ chooseCellwidth <- function(obj,cwinit){
     else{
         stop("Cannot extract observation window.")
     }
-    
-    OW <- selectObsWindow(ppp(window=W),cellwidth=cwinit)           
+
+    OW <- selectObsWindow(ppp(window=W),cellwidth=cwinit)
     plot(NULL,xlim=range(OW$xvals),ylim=range(OW$yvals),xlab="",ylab="",asp=1)
     plot(W,add=TRUE)
     points(expand.grid(OW$xvals,OW$yvals),pch="+",cex=0.5)
-    title(sub=paste("Output Grid: M=",length(OW$xvals),"N=",length(OW$yvals)))  
+    title(sub=paste("Output Grid: M=",length(OW$xvals),"N=",length(OW$yvals)))
 }
 
 ##' priorpost function
@@ -1201,13 +1284,13 @@ priorpost <- function(obj,breaks=30,xlab=NULL,ylab="Density",main="",ask=TRUE,..
     XLAB <- xlab
 
     par(ask=ask)
-    
+
     nms <- c("sigma","phi","theta")
-    
+
     if(!inherits(obj$priors,"list")){
         if(inherits(obj$priors$etaprior,"LogGaussianPrior")){
-            for (i in 1:length(obj$priors$etaprior$mean)){             
-                rg <- diff(range(exp(obj$etarec[,i])))           
+            for (i in 1:length(obj$priors$etaprior$mean)){
+                rg <- diff(range(exp(obj$etarec[,i])))
                 denx <- seq(min(exp(obj$etarec[,i]))-rg/2,max(exp(obj$etarec[,i]))+rg/2,length.out=1000)
                 if(is.null(XLAB)){
                     xlab <- parse(text=paste(nms[i],sep=""))
@@ -1219,10 +1302,10 @@ priorpost <- function(obj,breaks=30,xlab=NULL,ylab="Density",main="",ask=TRUE,..
         else{
             stop("prior for eta currently unsupported by priorpost")
         }
-        
+
         if(inherits(obj$priors$betaprior,"GaussianPrior")){
             for (i in 1:length(obj$priors$betaprior$mean)){
-                rg <- diff(range(obj$betarec[,i]))            
+                rg <- diff(range(obj$betarec[,i]))
                 denx <- seq(min(obj$betarec[,i])-rg/2,max(obj$betarec[,i])+rg/2,length.out=1000)
                 if(is.null(XLAB)){
                     xlab <- parse(text=paste("beta[",names(coefficients(obj$glmfit))[i],"]",sep=""))
@@ -1236,11 +1319,11 @@ priorpost <- function(obj,breaks=30,xlab=NULL,ylab="Density",main="",ask=TRUE,..
         }
     }
     else{ # multivariate
-        etaidx <- 1        
+        etaidx <- 1
         for(k in 1:length(obj$priors)){
             if(inherits(obj$priors[[k]]$etaprior,"LogGaussianPrior")){
-                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){             
-                    rg <- diff(range(exp(obj$etarec[,etaidx])))           
+                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){
+                    rg <- diff(range(exp(obj$etarec[,etaidx])))
                     denx <- seq(min(exp(obj$etarec[,etaidx]))-rg/2,max(exp(obj$etarec[,etaidx]))+rg/2,length.out=1000)
                     if(is.null(XLAB)){
                         xlab <- parse(text=paste(nms[i],"[",k,"]",sep=""))
@@ -1254,12 +1337,12 @@ priorpost <- function(obj,breaks=30,xlab=NULL,ylab="Density",main="",ask=TRUE,..
                 stop("prior for eta currently unsupported by priorpost")
             }
         }
-        
-        betaidx <- 1     
-        for(k in 1:(length(obj$priors)-1)){    
+
+        betaidx <- 1
+        for(k in 1:(length(obj$priors)-1)){
             if(inherits(obj$priors[[k]]$betaprior,"GaussianPrior")){
                 for (i in 1:length(obj$priors[[k]]$betaprior$mean)){
-                    rg <- diff(range(obj$betarec[,betaidx]))            
+                    rg <- diff(range(obj$betarec[,betaidx]))
                     denx <- seq(min(obj$betarec[,betaidx])-rg/2,max(obj$betarec[,betaidx])+rg/2,length.out=1000)
                     if(is.null(XLAB)){
                         xlab <- parse(text=paste("beta[(",k,")][",names(coefficients(obj$glmfit[[k]]))[i],"]",sep=""))
@@ -1273,15 +1356,15 @@ priorpost <- function(obj,breaks=30,xlab=NULL,ylab="Density",main="",ask=TRUE,..
                 stop("prior for beta currently unsupported by priorpost")
             }
         }
-    }   
-    
+    }
+
 }
 
 ##' transblue function
 ##'
 ##' A function to return a transparent blue colour.
 ##'
-##' @param alpha transparency parameter, see ?rgb 
+##' @param alpha transparency parameter, see ?rgb
 ##' @return character string of colour
 ##' @export
 
@@ -1294,7 +1377,7 @@ transblue <- function(alpha=0.1){
 ##'
 ##' A function to return a transparent green colour.
 ##'
-##' @param alpha transparency parameter, see ?rgb  
+##' @param alpha transparency parameter, see ?rgb
 ##' @return character string of colour
 ##' @export
 
@@ -1307,7 +1390,7 @@ transgreen <- function(alpha=0.1){
 ##'
 ##' A function to return a transparent red colour.
 ##'
-##' @param alpha transparency parameter, see ?rgb  
+##' @param alpha transparency parameter, see ?rgb
 ##' @return character string of colour
 ##' @export
 
@@ -1320,7 +1403,7 @@ transred <- function(alpha=0.1){
 ##'
 ##' A function to return a transparent black colour.
 ##'
-##' @param alpha transparency parameter, see ?rgb 
+##' @param alpha transparency parameter, see ?rgb
 ##' @return character string of colour
 ##' @export
 
@@ -1331,7 +1414,7 @@ transblack <- function(alpha=0.1){
 
 ##' osppp2latlon function
 ##'
-##' A function to transform a ppp object in the OSGB projection (epsg:27700) to a ppp object in the latitude/longitude (epsg:4326) projection. 
+##' A function to transform a ppp object in the OSGB projection (epsg:27700) to a ppp object in the latitude/longitude (epsg:4326) projection.
 ##'
 ##' @param obj a ppp object in OSGB
 ##' @return a pppobject in Lat/Lon
@@ -1352,9 +1435,9 @@ osppp2latlon <- function(obj){
 
 ##' osppp2merc function
 ##'
-##' A function to transform a ppp object in the OS GB projection (epsg:27700) to a ppp object in the Mercator (epsg:3857) projection. 
+##' A function to transform a ppp object in the OS GB projection (epsg:27700) to a ppp object in the Mercator (epsg:3857) projection.
 ##'
-##' @param obj a ppp object in OSGB 
+##' @param obj a ppp object in OSGB
 ##' @return a ppp object in Mercator
 ##' @export
 
@@ -1377,10 +1460,10 @@ osppp2merc <- function(obj){
 ##' A function used in conjunction with the function "expectation" to compute the expected number of cases in each computational grid cell. Currently
 ##' only implemented for spatial processes (lgcpPredictSpatialPlusPars and lgcpPredictAggregateSpatialPlusPars).
 ##'
-##' @param Y the latent field 
-##' @param beta the main effects 
+##' @param Y the latent field
+##' @param beta the main effects
 ##' @param eta the parameters of the latent field
-##' @param Z the design matrix 
+##' @param Z the design matrix
 ##' @param otherargs other arguments to the function (see vignette "Bayesian_lgcp" for an explanation)
 ##' @return the number of cases in each cell
 ##' @seealso \link{expectation},  \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}
@@ -1401,10 +1484,10 @@ numCases <- function(Y,beta,eta,Z,otherargs){
 ##' in each computational grid cell. Currently
 ##' only implemented for spatial processes (lgcpPredictSpatialPlusPars and lgcpPredictAggregateSpatialPlusPars).
 ##'
-##' @param Y the latent field 
-##' @param beta the main effects 
+##' @param Y the latent field
+##' @param beta the main effects
 ##' @param eta the parameters of the latent field
-##' @param Z the design matrix 
+##' @param Z the design matrix
 ##' @param otherargs other arguments to the function (see vignette "Bayesian_lgcp" for an explanation)
 ##' @return the main effects
 ##' @seealso \link{expectation},  \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}
@@ -1438,9 +1521,9 @@ traceplots <- function(obj,xlab="Sample No.",ylab=NULL,main="",ask=TRUE,...){
     YLAB <- ylab
 
     par(ask=ask)
-    
+
     nms <- c("sigma","phi","theta")
-    
+
     if(!inherits(obj$priors,"list")){
         if(inherits(obj$priors$etaprior,"LogGaussianPrior")){
             for (i in 1:length(obj$priors$etaprior$mean)){
@@ -1453,7 +1536,7 @@ traceplots <- function(obj,xlab="Sample No.",ylab=NULL,main="",ask=TRUE,...){
         else{
             stop("prior for eta currently unsupported by traceplots")
         }
-        
+
         if(inherits(obj$priors$betaprior,"GaussianPrior")){
             for (i in 1:length(obj$priors$betaprior$mean)){
                 if(is.null(YLAB)){
@@ -1467,10 +1550,10 @@ traceplots <- function(obj,xlab="Sample No.",ylab=NULL,main="",ask=TRUE,...){
         }
     }
     else{ # multivariate
-        etaidx <- 1        
+        etaidx <- 1
         for(k in 1:length(obj$priors)){
             if(inherits(obj$priors[[k]]$etaprior,"LogGaussianPrior")){
-                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){             
+                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){
                     if(is.null(YLAB)){
                         ylab <- parse(text=paste(nms[i],"[",k,"]",sep=""))
                     }
@@ -1482,9 +1565,9 @@ traceplots <- function(obj,xlab="Sample No.",ylab=NULL,main="",ask=TRUE,...){
                 stop("prior for eta currently unsupported by traceplots")
             }
         }
-        
-        betaidx <- 1     
-        for(k in 1:(length(obj$priors)-1)){    
+
+        betaidx <- 1
+        for(k in 1:(length(obj$priors)-1)){
             if(inherits(obj$priors[[k]]$betaprior,"GaussianPrior")){
                 for (i in 1:length(obj$priors[[k]]$betaprior$mean)){
                     if(is.null(YLAB)){
@@ -1498,8 +1581,8 @@ traceplots <- function(obj,xlab="Sample No.",ylab=NULL,main="",ask=TRUE,...){
                 stop("prior for beta currently unsupported by traceplots")
             }
         }
-    }   
-    
+    }
+
 }
 
 
@@ -1523,9 +1606,9 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
     YLAB <- ylab
 
     par(ask=ask)
-    
+
     nms <- c("log(sigma)","log(phi)","log(theta)")
-    
+
     if(!inherits(obj$priors,"list")){
         if(inherits(obj$priors$etaprior,"LogGaussianPrior")){
             for (i in 1:length(obj$priors$etaprior$mean)){
@@ -1538,7 +1621,7 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
         else{
             stop("prior for eta currently unsupported by parautocorr")
         }
-        
+
         if(inherits(obj$priors$betaprior,"GaussianPrior")){
             for (i in 1:length(obj$priors$betaprior$mean)){
                 if(is.null(YLAB)){
@@ -1552,10 +1635,10 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
         }
     }
     else{ # multivariate
-        etaidx <- 1        
+        etaidx <- 1
         for(k in 1:length(obj$priors)){
             if(inherits(obj$priors[[k]]$etaprior,"LogGaussianPrior")){
-                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){             
+                for (i in 1:length(obj$priors[[k]]$etaprior$mean)){
                     if(is.null(YLAB)){
                         ylab <- parse(text=paste(nms[i],"[",k,"]",sep=""))
                     }
@@ -1567,9 +1650,9 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
                 stop("prior for eta currently unsupported by priorpost")
             }
         }
-        
-        betaidx <- 1     
-        for(k in 1:(length(obj$priors)-1)){    
+
+        betaidx <- 1
+        for(k in 1:(length(obj$priors)-1)){
             if(inherits(obj$priors[[k]]$betaprior,"GaussianPrior")){
                 for (i in 1:length(obj$priors[[k]]$betaprior$mean)){
                     if(is.null(YLAB)){
@@ -1583,8 +1666,8 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
                 stop("prior for beta currently unsupported by parautocorr")
             }
         }
-    }   
-    
+    }
+
 }
 
 
@@ -1605,7 +1688,7 @@ parautocorr <- function(obj,xlab="Lag",ylab=NULL,main="",ask=TRUE,...){
 parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
 
     mode <- "spatial"
-    
+
     if(expon){
         if(LaTeX){
             nms <- c("$\\sigma$","$\\phi$","$\\theta$")
@@ -1627,30 +1710,30 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
         }
         else{
             nms <- c("log(sigma)","log(phi)","log(theta)")
-        } 
-        latexnms <- nms <- c("$\\log(\\sigma)$","$\\log(\\phi)$","$\\log(\\theta)$")        
-    }    
+        }
+        latexnms <- nms <- c("$\\log(\\sigma)$","$\\log(\\phi)$","$\\log(\\theta)$")
+    }
     cnams <- c("median" , "lower 95\\% CRI" , "upper 95\\% CRI")
-    
-    
+
+
     fun <- function(x){
         return(quantile(x,c(0.5,0.025,0.975)))
     }
-    
+
     verbify <- function(x){
         return(paste("\\verb=",x,"=",sep=""))
     }
-        
+
     info <- c()
-    rnams <- c() 
-    
+    rnams <- c()
+
     parnames <- c()
     modno <- c()
-    
+
     if(!inherits(obj$priors,"list")){
         if(inherits(obj$priors$etaprior,"LogGaussianPrior")){
             for (i in 1:length(obj$priors$etaprior$mean)){
-                ylab <- paste(nms[i],sep="")            
+                ylab <- paste(nms[i],sep="")
                 rnams <- c(rnams,ylab)
                 if(expon){
                     info <- rbind(info,fun(exp(obj$etarec[,i])))
@@ -1667,9 +1750,9 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
         else{
             stop("prior for eta currently unsupported by parsummary")
         }
-        
+
         if(inherits(obj$priors$betaprior,"GaussianPrior")){
-            for (i in 1:length(obj$priors$betaprior$mean)){                
+            for (i in 1:length(obj$priors$betaprior$mean)){
                 if(expon){
                     if(LaTeX){
                         ylab <- paste("$\\exp(\\beta_{",names(coefficients(obj$glmfit))[i],"})$",sep="")
@@ -1700,7 +1783,7 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
     }
     else{ # multivariate
         mode <- "multivariate"
-        etaidx <- 1        
+        etaidx <- 1
         for(k in 1:length(obj$priors)){
             if(inherits(obj$priors[[k]]$etaprior,"LogGaussianPrior")){
                 for (i in 1:length(obj$priors[[k]]$etaprior$mean)){
@@ -1721,11 +1804,11 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
                 stop("prior for eta currently unsupported by parsummary")
             }
         }
-        
-        betaidx <- 1     
-        for(k in 1:(length(obj$priors)-1)){    
+
+        betaidx <- 1
+        for(k in 1:(length(obj$priors)-1)){
             if(inherits(obj$priors[[k]]$betaprior,"GaussianPrior")){
-                for (i in 1:length(obj$priors[[k]]$betaprior$mean)){                    
+                for (i in 1:length(obj$priors[[k]]$betaprior$mean)){
                     if(expon){
                         if(LaTeX){
                             ylab <- paste("$\\exp[\\beta(",k,")(",names(coefficients(obj$glmfit[[k]]))[i],")]$",sep="")
@@ -1757,15 +1840,15 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
             }
         }
     }
-    
+
     rownames(info) <- rnams
     colnames(info) <- cnams
-    
+
     attr(info,"parnames") <- parnames
     attr(info,"mode") <- mode
-    attr(info,"modno") <- modno     
+    attr(info,"modno") <- modno
 
-    return(info)       
+    return(info)
 }
 
 
@@ -1773,11 +1856,11 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
 ##'
 ##' A function to print a text description of the inferred paramerers beta and eta from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars
 ##'
-##' @param obj an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars 
-##' @param digits see the option "digits" in ?format 
+##' @param obj an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars
+##' @param digits see the option "digits" in ?format
 ##' @param scientific see the option "scientific" in ?format
 ##' @param inclIntercept logical: whether to summarise the intercept term, default is FALSE.
-##' @param ... other arguments passed to the function "format" 
+##' @param ... other arguments passed to the function "format"
 ##' @return A text summary, that can be pasted into a LaTeX document and later edited.
 ##' @seealso \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary},
 ##' \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
@@ -1785,7 +1868,7 @@ parsummary <- function(obj,expon=TRUE,LaTeX=FALSE,...){
 
 textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
     psu <- parsummary(obj)
-    parnames <- attr(psu,"parnames") 
+    parnames <- attr(psu,"parnames")
     mode <- attr(psu,"mode")
     modno <- attr(psu,"modno")
 
@@ -1794,22 +1877,22 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
         if(length(grep("e",xtxt))>0){
             spl <- unlist(strsplit(xtxt,"e"))
             xtxt <- paste(spl[1],"$\\times10^{",as.character(as.numeric(spl[2])),"}$",sep="")
-        }    
+        }
         return(xtxt)
     }
-    
-    parvals <- matrix(sapply(psu,form),nrow=nrow(psu),ncol=ncol(psu)) 
-    
+
+    parvals <- matrix(sapply(psu,form),nrow=nrow(psu),ncol=ncol(psu))
+
     sigf <- apply(psu[,2:3],1,function(x){ifelse((x[1]<1 & x[2]<1)|(x[1]>1 & x[2]>1),TRUE,FALSE)})
-    
-       
-     
+
+
+
     nspar <- 2
     if(mode=="spatiotemporal"){
         nspar <- 3
     }
     np <- nrow(psu) - nspar
-    
+
     if(nspar==2){
         lfsen <- paste("A summary of the parameters of the latent field is as follows. The parameter ",parnames[1]," had median ",
                         parvals[1,1]," (95\\% CRI ",parvals[1,2]," to ",parvals[1,3],") and the parameter ",parnames[2]," had median ",
@@ -1821,13 +1904,13 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
                         parvals[2,1]," (95\\% CRI ",parvals[2,2]," to ",parvals[2,3],"); and the parameter ",parnames[3]," had median ",
                         parvals[3,1]," (95\\% CRI ",parvals[3,2]," to ",parvals[3,3],").",sep="")
     }
-    
-    
+
+
     tab <- parvals[(nspar+1):nrow(parvals),]
     tsi <- sigf[(nspar+1):nrow(parvals)]
-    efd <- sapply(psu[,1],function(x){ifelse(x>1,1,-1)})[(nspar+1):nrow(parvals)] 
+    efd <- sapply(psu[,1],function(x){ifelse(x>1,1,-1)})[(nspar+1):nrow(parvals)]
     prn <- parnames[(nspar+1):nrow(parvals)]
-    
+
     if(!inclIntercept){
         if(any(prn=="\\verb=(Intercept)=")){
             idx <- which(prn=="\\verb=(Intercept)=")
@@ -1837,7 +1920,7 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
             prn <- prn[-idx]
         }
     }
-    
+
     sumrow <- function(infor){
         i <- infor[1]
         dir <- infor[2]
@@ -1847,10 +1930,10 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
         }
         return(paste("each unit increase in ",pr[i]," led to a ",direc," in relative risk with median ",tt[i,1]," (95\\% CRI ",tt[i,2]," to ",tt[i,3],")",sep=""))
     }
-    
+
     pardesc <- c()
     pardesc2 <- c()
-    
+
     if(all(tsi)){
         pardesc <- "All of the main effects were found to be significant: "
         tt <- tab[tsi,drop=FALSE,]
@@ -1874,9 +1957,9 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
             pr <- pr[ord]
             apply(cbind(1:nrow(tt),ef),1,function(x){pardesc <<- paste(pardesc,sumrow(x),ifelse(x[1]==nrow(tt),". ","; "),sep="")})
         }
-        
-        
-        
+
+
+
         if(all(!tsi)){
             pardesc2 <- "None of the main effects were found to be significant: "
         }
@@ -1891,7 +1974,7 @@ textsummary <- function(obj,digits=3,scientific=-3,inclIntercept=FALSE,...){
         ef <- ef[ord]
         pr <- pr[ord]
         apply(cbind(1:nrow(tt),ef),1,function(x){pardesc2 <<- paste(pardesc2,sumrow(x),ifelse(x[1]==nrow(tt),". ","; "),sep="")})
-    }      
+    }
     #browser()
 
     cat("\n")
@@ -1926,9 +2009,9 @@ etavals <- function(lg){
 
 ##' betavals function
 ##'
-##' A function to return the sampled beta from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars 
+##' A function to return the sampled beta from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars
 ##'
-##' @param lg an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars 
+##' @param lg an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars
 ##' @return the posterior sampled beta
 ##' @seealso \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 ##' \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{etavals}
@@ -1939,10 +2022,10 @@ betavals <- function(lg){
 
 ##' ltar function
 ##'
-##' A function to return the sampled log-target from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, 
+##' A function to return the sampled log-target from a call to the function lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars,
 ##' lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars. This is used as a convergence diagnostic.
 ##'
-##' @param lg an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars 
+##' @param lg an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars
 ##' @return the log-target from each saved iteration of the MCMC chain.
 ##' @seealso \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 ##' \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
@@ -1962,9 +2045,9 @@ ltar <- function(lg){
 ##' @param ... additional arguments
 ##' @return method postcov
 ##' @seealso
-##' \link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters}, \link{postcov.lgcpPredictSpatioTemporalPlusParameters}, \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},  
+##' \link{postcov.lgcpPredictSpatialOnlyPlusParameters},\link{postcov.lgcpPredictAggregateSpatialPlusParameters}, \link{postcov.lgcpPredictSpatioTemporalPlusParameters}, \link{postcov.lgcpPredictMultitypeSpatialPlusParameters},
 ##'\link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
-##' \link{priorpost}, \link{exceedProbs}, \link{betavals}, \link{etavals}  
+##' \link{priorpost}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 ##' @export
 
 postcov <- function(obj,...){
@@ -1975,7 +2058,7 @@ postcov <- function(obj,...){
 
 ##' postcov.lgcpPredictSpatioTemporalPlusParameters function
 ##'
-##' A function for producing plots of the posterior spatiotemporal covariance function. 
+##' A function for producing plots of the posterior spatiotemporal covariance function.
 ##'
 ##' @method postcov lgcpPredictSpatioTemporalPlusParameters
 ##' @param obj an lgcpPredictSpatioTemporalPlusParameters object
@@ -1991,10 +2074,10 @@ postcov <- function(obj,...){
 ##' @export
 
 postcov.lgcpPredictSpatioTemporalPlusParameters <- function(obj,qts=c(0.025,0.5,0.975),covmodel=NULL,ask=TRUE,...){
-    postcov.lgcpPredictSpatialOnlyPlusParameters(obj=obj,qts=qts,covmodel=covmodel,ask=ask,...)   
-   
+    postcov.lgcpPredictSpatialOnlyPlusParameters(obj=obj,qts=qts,covmodel=covmodel,ask=ask,...)
+
     xrg <- seq(0,diff(range(obj$aggtimes))+1,length.out=100)
-    n <- nrow(obj$etarec) 
+    n <- nrow(obj$etarec)
     if(length(qts)!=3){
         stop("Argument qts must have length 3")
     }
@@ -2011,7 +2094,7 @@ postcov.lgcpPredictSpatioTemporalPlusParameters <- function(obj,qts=c(0.025,0.5,
 
 ##' postcov.lgcpPredictSpatialOnlyPlusParameters function
 ##'
-##' A function for producing plots of the posterior spatial covariance function. 
+##' A function for producing plots of the posterior spatial covariance function.
 ##'
 ##' @method postcov lgcpPredictSpatialOnlyPlusParameters
 ##' @param obj an lgcpPredictSpatialOnlyPlusParameters object
@@ -2032,11 +2115,11 @@ postcov.lgcpPredictSpatialOnlyPlusParameters <- function(obj,qts=c(0.025,0.5,0.9
         covmodel <- obj$covFct
         if(is.null(covmodel)){
             covmodel <- exponentialCovFct
-            warning("Exponential Covariance function assumed.",immediate.=TRUE)    
+            warning("Exponential Covariance function assumed.",immediate.=TRUE)
         }
     }
     xrg <- seq(0,3*max(exp(obj$etarec[,2])),length.out=100)
-    n <- nrow(obj$etarec) 
+    n <- nrow(obj$etarec)
     if(length(qts)!=3){
         stop("Argument qts must have length 3")
     }
@@ -2054,7 +2137,7 @@ postcov.lgcpPredictSpatialOnlyPlusParameters <- function(obj,qts=c(0.025,0.5,0.9
 
 ##' postcov.lgcpPredictMultitypeSpatialPlusParameters function
 ##'
-##' A function for producing plots of the posterior covariance function. 
+##' A function for producing plots of the posterior covariance function.
 ##'
 ##' @method postcov lgcpPredictMultitypeSpatialPlusParameters
 ##' @param obj an lgcpPredictMultitypeSpatialPlusParameters object
@@ -2076,13 +2159,13 @@ postcov.lgcpPredictMultitypeSpatialPlusParameters <- function(obj,qts=c(0.025,0.
             covmodel <- obj$covFct[[i]]
             if(is.null(covmodel)){
                 covmodel <- exponentialCovFct
-                warning("Exponential Covariance function assumed.",immediate.=TRUE)    
+                warning("Exponential Covariance function assumed.",immediate.=TRUE)
             }
         }
         sidx <- 2*i-1
         pidx <- 2*i
         xrg <- seq(0,3*max(exp(obj$etarec[,pidx])),length.out=100)
-        n <- nrow(obj$etarec) 
+        n <- nrow(obj$etarec)
         if(length(qts)!=3){
             stop("Argument qts must have length 3")
         }
@@ -2094,7 +2177,7 @@ postcov.lgcpPredictMultitypeSpatialPlusParameters <- function(obj,qts=c(0.025,0.
         lines(xrg,qtil[3,],lty="dashed")
         legend("topright",lty=c("solid","dashed"),legend=c(paste(qts[2],"quantile"),paste(qts[1],"-",qts[3]," CRI",sep="")))
     }
-    
+
     sapply(1:length(obj$covFct),plotfun,obj=obj,qts=qts,covmodel=covmodel,ask=ask,...)
 }
 
@@ -2102,7 +2185,7 @@ postcov.lgcpPredictMultitypeSpatialPlusParameters <- function(obj,qts=c(0.025,0.
 
 ##' postcov.lgcpPredictAggregateSpatialPlusParameters function
 ##'
-##' A function for producing plots of the posterior covariance function. 
+##' A function for producing plots of the posterior covariance function.
 ##'
 ##' @method postcov lgcpPredictAggregateSpatialPlusParameters
 ##' @param obj an lgcpPredictAggregateSpatialPlusParameters object
@@ -2132,7 +2215,7 @@ postcov.lgcpPredictAggregateSpatialPlusParameters <- function(obj,qts=c(0.025,0.
 ##' \cr
 ##' R_k(s) = C_A lambda_k(s) exp[Z_k(s)beta_k+Y_k(s)]\cr
 ##' \cr
-##' 
+##'
 ##' Here X_k(s) is the number of events of type k in the computational grid cell containing the
 ##' point s, R_k(s) is the Poisson rate, C_A is the cell area, lambda_k(s) is a known offset, Z_k(s) is a vector
 ##' of measured covariates and Y_i(s) where i = 1,...,K+1 are latent Gaussian processes on the
@@ -2140,7 +2223,7 @@ postcov.lgcpPredictAggregateSpatialPlusParameters <- function(obj,qts=c(0.025,0.
 ##' kth type; and eta_i = [log(sigma_i),log(phi_i)], the parameters of the process Y_i for i = 1,...,K+1 on
 ##' an appropriately transformed (again, in this case log) scale.
 ##'
-##' The term 'conditional probability of type k' means the probability that at a particular location there 
+##' The term 'conditional probability of type k' means the probability that at a particular location there
 ##' will be an event of type k, which denoted p_k.
 ##'
 ##' @param obj an lgcpPredictMultitypeSpatialPlusParameters object
@@ -2168,7 +2251,7 @@ condProbs <- function(obj){
         nc_close(ncdata)
         return(ans)
     }
-    
+
     getRisk <- function(obj,itno,fno){
         if(fno>Nfields){
             stop("Error in function condProbs, getRisk subroutine")
@@ -2179,7 +2262,7 @@ condProbs <- function(obj){
         beta <- obj$betarec[itno,betacols,drop=FALSE]
         return(cins*exp(matrix(ZML[[fno]]%*%t(beta),obj$M,obj$N)+S+T))
     }
-    
+
     pb <- txtProgressBar(min=0,max=nits,style=3)
     cprob <- array(0,dim=c(obj$M,obj$N,Nfields))
     for(i in 1:nits){
@@ -2190,7 +2273,7 @@ condProbs <- function(obj){
         }
         for(j in 1:Nfields){
            cprob[,,j] <- cprob[,,j] + get(paste("l",j,sep=""))/lsum
-        } 
+        }
         setTxtProgressBar(pb,i)
     }
     close(pb)
@@ -2211,7 +2294,7 @@ condProbs <- function(obj){
 ##' \cr
 ##' R_k(s) = C_A lambda_k(s) exp[Z_k(s)beta_k+Y_k(s)]\cr
 ##' \cr
-##' 
+##'
 ##' Here X_k(s) is the number of events of type k in the computational grid cell containing the
 ##' point s, R_k(s) is the Poisson rate, C_A is the cell area, lambda_k(s) is a known offset, Z_k(s) is a vector
 ##' of measured covariates and Y_i(s) where i = 1,...,K+1 are latent Gaussian processes on the
@@ -2219,13 +2302,13 @@ condProbs <- function(obj){
 ##' kth type; and eta_i = [log(sigma_i),log(phi_i)], the parameters of the process Y_i for i = 1,...,K+1 on
 ##' an appropriately transformed (again, in this case log) scale.
 ##'
-##' The term 'conditional probability of type k' means the probability that at a particular location, x, there 
+##' The term 'conditional probability of type k' means the probability that at a particular location, x, there
 ##' will be an event of type k, we denote this p_k(x).
-##' 
+##'
 ##' It is also of interest to scientists to be able to illustrate spatial regions where a genotype
-##' dominates a posteriori. We say that type k dominates at position x if p_k(x)>c, where c (the parameter domprob) is a 
+##' dominates a posteriori. We say that type k dominates at position x if p_k(x)>c, where c (the parameter domprob) is a
 ##' threshold is a threshold set by the user. Let A_k(c,q) denote the set of locations x for which P[p_k(x)>c|X] > q.
-##' 
+##'
 ##' As the quantities c and q tend to 1 each area A_k(c,p) shrinks towards the empty set; this
 ##' happens more slowly in a highly segregated pattern compared with a weakly segregated one.
 ##'
@@ -2233,7 +2316,7 @@ condProbs <- function(obj){
 ##'
 ##' @param obj an lgcpPredictMultitypeSpatialPlusParameters object
 ##' @param domprob the threshold beyond which we declare a type as dominant e.g. a value of 0.8 would mean we would consider each type to be dominant if the
-##' conditional probability of an event of a given type at that location exceeded 0.8. 
+##' conditional probability of an event of a given type at that location exceeded 0.8.
 ##' @return an lgcpgrid object contatining the segregation probabilities.
 ##' @export
 
@@ -2255,7 +2338,7 @@ segProbs <- function(obj,domprob){
         nc_close(ncdata)
         return(ans)
     }
-    
+
     getRisk <- function(obj,itno,fno){
         if(fno>Nfields){
             stop("Error in function condProbs, getRisk subroutine")
@@ -2266,7 +2349,7 @@ segProbs <- function(obj,domprob){
         beta <- obj$betarec[itno,betacols,drop=FALSE]
         return(cins*exp(matrix(ZML[[fno]]%*%t(beta),obj$M,obj$N)+S+T))
     }
-    
+
     pb <- txtProgressBar(min=0,max=nits,style=3)
     segrec <- array(0,dim=c(obj$M,obj$N,Nfields))
     for(i in 1:nits){
@@ -2274,11 +2357,11 @@ segProbs <- function(obj,domprob){
         for(j in 1:Nfields){
            assign(paste("l",j,sep=""),getRisk(obj,i,j))
            lsum <- lsum + get(paste("l",j,sep=""))
-        }        
+        }
         for(j in 1:Nfields){
            cprob <- get(paste("l",j,sep=""))/lsum
-           segrec[,,j] <- segrec[,,j] + matrix(as.vector(cprob>domprob)/nits,obj$M,obj$N)   
-        } 
+           segrec[,,j] <- segrec[,,j] + matrix(as.vector(cprob>domprob)/nits,obj$M,obj$N)
+        }
         setTxtProgressBar(pb,i)
     }
     close(pb)
@@ -2286,26 +2369,26 @@ segProbs <- function(obj,domprob){
     segrec <- lgcpgrid(segrec,xvals=obj$mcens,yvals=obj$ncens)
 
     attr(segrec,"domprob") <- domprob
-    
+
     return(segrec)
 }
 
 ##' addTemporalCovariates function
 ##'
-##' A function to 'bolt on' temporal data onto a spatial covariate design matrix. The function takes a spatial design matrix, Z(s) and 
+##' A function to 'bolt on' temporal data onto a spatial covariate design matrix. The function takes a spatial design matrix, Z(s) and
 ##' converts it to a spatiotemporal design matrix Z(s,t) when the effects can be separably decomposed i.e.,\cr
 ##' Z(s,t)beta = Z_1(s)beta_1 + Z_2(t)beta_2\cr
 ##' \cr
 ##' An example of this function in action is given in the vignette "Bayesian_lgcp", in the section on spatiotemporal data.
-##' 
+##'
 ##' The main idea of this function is: having created a spatial Z(s) using getZmat, to create a dummy dataset tdata and temporal
 ##' formula corresponding to the temporal component of the separable effects. The entries in the model matrix Z(s,t) corresponsing to
-##' the time covariates are constant over the observation window in space, but in general vary from time-point to time-point. 
+##' the time covariates are constant over the observation window in space, but in general vary from time-point to time-point.
 ##'
 ##' Note that if there is an intercept in the spatial part of the model e.g., X ~ var1 + var2, then in the temporal model,
-##' the intercept should be removed i.e., t ~ tvar1 + tvar2 - 1  
+##' the intercept should be removed i.e., t ~ tvar1 + tvar2 - 1
 ##'
-##' @param temporal.formula a formula of the form t ~ tvar1 + tvar2 etc. Where the left hand side is a "t". Note there should 
+##' @param temporal.formula a formula of the form t ~ tvar1 + tvar2 etc. Where the left hand side is a "t". Note there should
 ##' not be an intercept term in both of the the spatial and temporal components.
 ##' @param T the time point of interest
 ##' @param laglength  the number of previous time points to include in the analysis
@@ -2314,7 +2397,7 @@ segProbs <- function(obj,domprob){
 ##' @return A list of design matrices, one for each time, Z(s,t) for t in (T-laglength):T
 ##' @seealso \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, \link{chooseCellwidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 ##' \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars}, 
+##' \link{lgcpPredictSpatialPlusPars}, \link{lgcpPredictAggregateSpatialPlusPars}, \link{lgcpPredictSpatioTemporalPlusPars},
 ##' \link{lgcpPredictMultitypeSpatialPlusPars}
 ##' @export
 
@@ -2323,43 +2406,43 @@ addTemporalCovariates <- function(temporal.formula,T,laglength,tdata,Zmat){
     if(attr(terms(temporal.formula),"intercept")==1){
         stop("temporal.formula must not include an intercept term, please specify as t ~ ... - 1, where ... are the existiing independent vasriable names")
     }
-    
-    varn <- variablesinformula(temporal.formula)[-1] #independent variable names      
+
+    varn <- variablesinformula(temporal.formula)[-1] #independent variable names
     cidx <- match(varn,names(tdata))
     cidx <- cidx[!is.na(cidx)]
-    
-    temporal.formula <- as.formula(paste("t ~", paste(varn,collapse=" + "))) # trick to deal with factor variables ... removed below ... if this is not done, a problem occurs later in the call to glm in MALAlgcpSpatioTemporal.PlusPars 
+
+    temporal.formula <- as.formula(paste("t ~", paste(varn,collapse=" + "))) # trick to deal with factor variables ... removed below ... if this is not done, a problem occurs later in the call to glm in MALAlgcpSpatioTemporal.PlusPars
 
     if (!inherits(T,"integer")){
 	    warning("Converting T into integer value, see ?as.integer",immediate.=TRUE)
-	    T <- as.integer(T) 
+	    T <- as.integer(T)
 	}
 	if (!inherits(laglength,"integer")){
 	    warning("Converting laglength into integer values, see ?as.integer",immediate.=TRUE)
-	    laglength <- as.integer(laglength) 
+	    laglength <- as.integer(laglength)
 	}
 	aggtimes <- T - laglength:0
-	
+
 	idx <- sapply(aggtimes,match,tdata$t)
-    
-    tdata <- tdata[idx,]	
+
+    tdata <- tdata[idx,]
 
     dmat <- tdata
-    modmat <- model.matrix(temporal.formula,data=tdata)[,-1,drop=FALSE] # now remove intercept term, see above	
-    
-    dmat <- dmat[,cidx,drop=FALSE]    
-    
+    modmat <- model.matrix(temporal.formula,data=tdata)[,-1,drop=FALSE] # now remove intercept term, see above
+
+    dmat <- dmat[,cidx,drop=FALSE]
+
     cins <- as.vector(attr(Zmat,"cellInside"))
-    
+
     ZmatList <- list()
     for(i in 1:length(aggtimes)){
         zmtemp <- Zmat
         zmtemp <- cbind(zmtemp,matrix(modmat[i,],nrow=nrow(Zmat),ncol=ncol(modmat),byrow=TRUE))
         colnames(zmtemp) <- c(colnames(Zmat),colnames(modmat))
-        
+
         dmattemp <- cbind(attr(Zmat,"data.frame"),dmat[i,])
         colnames(dmattemp) <- c(colnames(attr(Zmat,"data.frame")),colnames(dmat))
-        
+
         attr(zmtemp,"data.frame") <- dmattemp
         attr(zmtemp,"cellInside") <- attr(Zmat,"cellInside")
         attr(zmtemp,"anymiss") <- attr(Zmat,"anymiss")
@@ -2375,10 +2458,10 @@ addTemporalCovariates <- function(temporal.formula,T,laglength,tdata,Zmat){
         attr(zmtemp,"gridobj") <- attr(Zmat,"gridobj")
 	    attr(zmtemp,"inclusion") <- attr(Zmat,"inclusion")
 	    attr(zmtemp,"ext") <- attr(Zmat,"ext")
-	    attr(zmtemp,"cellwidth") <- attr(Zmat,"cellwidth") 
-              
+	    attr(zmtemp,"cellwidth") <- attr(Zmat,"cellwidth")
+
         ZmatList[[i]] <- zmtemp
-    }	
-	
-	return(ZmatList)   
+    }
+
+	return(ZmatList)
 }

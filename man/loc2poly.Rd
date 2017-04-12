@@ -30,4 +30,3 @@ Select the sequence of edges via left mouse button clicks and store the polygon 
 \seealso{
 \link{lgcpPredict}, \link{identify.lgcpPredict}
 }
-

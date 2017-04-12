@@ -47,4 +47,3 @@ that displayed when colour adjustment is set equal to 1.
 \seealso{
 \link{spatialAtRisk}, \link{ginhomAverage}, \link{KinhomAverage}, \link{spatialparsEst}, \link{thetaEst}, \link{muEst}
 }
-

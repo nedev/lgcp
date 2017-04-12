@@ -20,4 +20,3 @@ Generic function for conversion to a fromXYZ object (eg as would have been produ
 \seealso{
 \link{as.im.fromXYZ}, \link{as.im.fromSPDF}, \link{as.im.fromFunction}, \link{as.fromXYZ}
 }
-

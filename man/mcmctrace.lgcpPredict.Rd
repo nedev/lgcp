@@ -20,4 +20,3 @@ If \code{MCMCdiag} was positive when \code{lgcpPredict} was called, then this re
 \seealso{
 \link{lgcpPredict}, \link{plot.mcmcdiag}
 }
-

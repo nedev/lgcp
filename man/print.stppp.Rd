@@ -17,4 +17,3 @@ prints the stppp object x
 \description{
 Print method for stppp objects
 }
-

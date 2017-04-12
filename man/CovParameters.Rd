@@ -15,4 +15,3 @@ an object used in the MCMC routine.
 \description{
 A function to provide a structure for the parameters of the latent field. Not intended for general use.
 }
-

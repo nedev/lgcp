@@ -24,4 +24,3 @@ Method for declaring a Bayesian prior density in lgcp. Checks to confirm that th
 \seealso{
 \link{GaussianPrior}, \link{LogGaussianPrior}
 }
-

@@ -33,4 +33,3 @@ and the posterior appears as a histogram.
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

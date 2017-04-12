@@ -20,4 +20,3 @@ Generic for declaring that an object is of valid type for use as as prior in lgc
 \seealso{
 \link{PriorSpec.list}
 }
-

@@ -19,4 +19,3 @@ the object acted on by the transformation matrix
 \description{
 An affine transformation of an object of class \code{fromFunction}
 }
-

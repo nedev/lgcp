@@ -21,4 +21,3 @@ objects of class \code{lgcpPredict}
 \seealso{
 \link{lgcpPredict}
 }
-

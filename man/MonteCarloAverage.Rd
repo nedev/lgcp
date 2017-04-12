@@ -45,4 +45,3 @@ mca2 <- MonteCarloAverage(c("fun1","fun2","fun3"),lastonly=TRUE)
 \seealso{
 \link{setoutput}, \link{lgcpPredict}, \link{GAinitialise}, \link{GAupdate}, \link{GAfinalise}, \link{GAreturnvalue}, \link{exceedProbs}
 }
-

@@ -17,4 +17,3 @@ design matrices for each of the point types
 \description{
 An internal function to create Z_k from an lgcpZmat object, for use in the multivariate MCMC algorithm. Not intended for general use.
 }
-

@@ -28,4 +28,3 @@ A single numeric value providing the minimum contrast value for the specified va
 A function to find the minimum contrast (squared discrepancy) value based on the the temporal autocorrelation function, for one specific value of theta (temporal scale) for the spatiotemporal LGCP.
 Only the exponential form is considered for the theoretical temporal correlation function. This also depends upon a static pair of values for the spatial scale and spatial variance of the latent Gaussian process (usually estimated first).
 }
-

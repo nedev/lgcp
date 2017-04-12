@@ -20,4 +20,3 @@ Generic function to return the standard error of the Poisson Intensity.
 \seealso{
 \link{lgcpPredict}, \link{seintens.lgcpPredict}
 }
-

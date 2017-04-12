@@ -31,4 +31,3 @@ the first element, obj$y.mean$grid[[1]],contains the output from the first time 
 \seealso{
 \link{lgcpgrid.list}, \link{lgcpgrid.array}, \link{lgcpgrid.matrix}
 }
-

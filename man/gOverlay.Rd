@@ -21,4 +21,3 @@ A function to overlay the FFT grid, a SpatialPolygons object, onto a SpatialPoly
 this code was adapted from Roger Bivand:\cr
 https://stat.ethz.ch/pipermail/r-sig-geo/2011-June/012099.html
 }
-

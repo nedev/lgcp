@@ -42,4 +42,3 @@ A function to estimate the inhomogeneous pair correlation function for a spatiot
 \seealso{
 \link{KinhomAverage}, \link{spatialparsEst}, \link{thetaEst}, \link{lambdaEst}, \link{muEst}
 }
-

@@ -34,4 +34,3 @@ the target and gradient
 \description{
 A function to compute the target and gradient for the Bayesian aggregated point process model. Not for general use.
 }
-

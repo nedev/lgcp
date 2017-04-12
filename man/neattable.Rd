@@ -21,4 +21,3 @@ Function to print right-aligned tables to the console.
 mat <- rbind(c("one","two","three"),matrix(round(runif(9),3),3,3))
 neattable(mat)
 }
-

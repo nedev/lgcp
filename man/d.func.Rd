@@ -25,4 +25,3 @@ d.func(mat1il, mat2jk, i, j, l, k)
 \description{
 d.func function
 }
-

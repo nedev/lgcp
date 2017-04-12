@@ -21,4 +21,3 @@ The number of observations in each grid cell.
 \description{
 This function is used to count the number of observations falling inside grid cells.
 }
-

@@ -22,4 +22,3 @@ the dimensions must be powers of 2. The function \code{window.lgcpPredict} retur
 \seealso{
 \link{lgcpPredict}
 }
-

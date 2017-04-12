@@ -19,4 +19,3 @@ a SpatialPolygons object
 \description{
 A function to convert a regular (x,y) grid of centroids into a SpatialPolygons object
 }
-

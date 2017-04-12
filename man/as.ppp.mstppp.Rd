@@ -19,4 +19,3 @@ a ppp object without observation times
 \description{
 Convert from mstppp to ppp. Can be useful for data handling.
 }
-

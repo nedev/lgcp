@@ -20,4 +20,3 @@ Compute whether there might be any advantage in rotating the observation window 
 \seealso{
 \link{getRotation.stppp}
 }
-

@@ -15,10 +15,9 @@ CovFunction(obj, ...)
 method CovFunction
 }
 \description{
-A Generic method used to specify the choice of covariance function for use in the MCMC algorithm. For further details and examples, 
+A Generic method used to specify the choice of covariance function for use in the MCMC algorithm. For further details and examples,
 see the vignette "Bayesian_lgcp".
 }
 \seealso{
 \link{CovFunction.function}, \link{exponentialCovFct}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}
 }
-

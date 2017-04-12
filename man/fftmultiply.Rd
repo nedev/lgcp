@@ -17,4 +17,3 @@ a vector: the product of the matrix and the vector.
 \description{
 A function to pre-multiply a vector by a block cirulant matrix
 }
-

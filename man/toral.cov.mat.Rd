@@ -25,4 +25,3 @@ circulant covariacne matrix
 \description{
 A function to compute the covariance matrix of a stationary process on a torus.
 }
-

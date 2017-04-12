@@ -34,4 +34,3 @@ Plots \code{lgcpAutocorr} objects: output from \code{autocorr}
 \seealso{
 \link{autocorr}
 }
-

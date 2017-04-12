@@ -17,4 +17,3 @@ plots the stppp object x
 \description{
 Plot method for stppp objects
 }
-

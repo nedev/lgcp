@@ -20,4 +20,3 @@ Accessor function returning the  standard error of the Poisson intensity as an l
 \seealso{
 \link{lgcpPredict}
 }
-

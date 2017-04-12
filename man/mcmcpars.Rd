@@ -26,4 +26,3 @@ A function for setting MCMC options in a run of \code{lgcpPredict} for example.
 \seealso{
 \link{lgcpPredict}
 }
-

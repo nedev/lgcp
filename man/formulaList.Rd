@@ -16,4 +16,3 @@ an object of class "formulaList"
 A function to creat an object of class "formulaList" from a list of "formula" objects; use to define the model for the main effects
 prior to running the multivariate MCMC algorithm.
 }
-

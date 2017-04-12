@@ -8,7 +8,7 @@ lgcpPredictAggregateSpatialPlusPars(formula, spdf, Zmat = NULL,
   overlayInZmat = FALSE, model.priors, model.inits = lgcpInits(),
   spatial.covmodel, cellwidth = NULL, poisson.offset = NULL, mcmc.control,
   output.control = setoutput(), gradtrunc = Inf, ext = 2, Nfreq = 101,
-  inclusion = "touching")
+  inclusion = "touching", overlapping = FALSE, pixwts = NULL)
 }
 \arguments{
 \item{formula}{a formula object of the form X ~ var1 + var2 etc. The name of the dependent variable must be "X". Only accepts 'simple' formulae, such as the example given.}
@@ -40,6 +40,10 @@ lgcpPredictAggregateSpatialPlusPars(formula, spdf, Zmat = NULL,
 \item{Nfreq}{the sampling frequency for the cell counts. Default is every 101 iterations.}
 
 \item{inclusion}{criterion for cells being included into observation window. Either 'touching' or 'centroid'. The former, the default, includes all cells that touch the observation window, the latter includes all cells whose centroids are inside the observation window.}
+
+\item{overlapping}{logical does spdf contain overlapping polygons? Default is FALSE. If set to TRUE, spdf can contain a variable named 'sintens' that gives the sampling intensity for each polygon; the default is to assume that cases are evenly split between overlapping regions.}
+
+\item{pixwts}{optional matrix of dimension (NM) x (number of regions in spdf) where M, N are the number of cells in the x and y directions (not the number of cells on the Fourier grid, rather the number of cell on the output grid). The ith row of this matrix are the probabilities that for the ith grid cell (in the same order as expand.grid(mcens,ncens)) a case belongs to each of the regions in spdf. Including this object overrides 'sintens' in the overlapping option above.}
 }
 \value{
 an object of class lgcpPredictAggregateSpatialPlusParameters
@@ -58,39 +62,39 @@ X(s) ~ Poisson[R(s)]\cr
 R(s) = C_A lambda(s) exp[Z(s)beta+Y(s)]\cr
 \cr
 
-Here X(s) is the number of events in the cell of the computational grid containing s, R(s) is the Poisson rate, 
-C_A is the cell area, lambda(s) is a known offset, Z(s) is a vector of measured covariates and Y(s) is the 
-latent Gaussian process on the computational grid. The other parameters in the model are beta, the covariate effects; 
+Here X(s) is the number of events in the cell of the computational grid containing s, R(s) is the Poisson rate,
+C_A is the cell area, lambda(s) is a known offset, Z(s) is a vector of measured covariates and Y(s) is the
+latent Gaussian process on the computational grid. The other parameters in the model are beta, the covariate effects;
 and eta=[log(sigma),log(phi)], the parameters of the process Y on an appropriately transformed (in this case log) scale.
 
 We recommend the user takes the following steps before running this method:
 
 \enumerate{
-   \item Compute approximate values of the parameters, eta, of the process Y using the function minimum.contrast. 
-       These approximate values are used for two main reasons: (1) to help inform the size of the computational grid, since we 
-       will need to use a cell width that enables us to capture the dependence properties of Y and (2) to help inform the 
+   \item Compute approximate values of the parameters, eta, of the process Y using the function minimum.contrast.
+       These approximate values are used for two main reasons: (1) to help inform the size of the computational grid, since we
+       will need to use a cell width that enables us to capture the dependence properties of Y and (2) to help inform the
        proposal kernel for the MCMC algorithm.
-   \item Choose an appropriate grid on which to perform inference using the function chooseCellwidth; this will partly be determined 
-       by the results of the first stage and partly by the available computational resource available to perform inference. 
-   \item Using the function getpolyol, construct the computational grid and polygon overlays, as required. As this can be an expensive step, 
-       we recommend that the user saves this object after it has been 
-       constructed and in future reference to the data, reloads this object, rather than having to re-compute it (provided the 
+   \item Choose an appropriate grid on which to perform inference using the function chooseCellwidth; this will partly be determined
+       by the results of the first stage and partly by the available computational resource available to perform inference.
+   \item Using the function getpolyol, construct the computational grid and polygon overlays, as required. As this can be an expensive step,
+       we recommend that the user saves this object after it has been
+       constructed and in future reference to the data, reloads this object, rather than having to re-compute it (provided the
        computational grid has not changed).
-   \item Decide on which covariates are to play a part in the analysis and use the lgcp function getZmat to interpolate these 
-       onto the computational grid. Note that having saved the results from the previous step, this is a relatively quick operation, 
+   \item Decide on which covariates are to play a part in the analysis and use the lgcp function getZmat to interpolate these
+       onto the computational grid. Note that having saved the results from the previous step, this is a relatively quick operation,
        and allows the user to quickly construct different design matrices, Z, from different candidate models for the data
-   \item If required, set up the population offset using SpatialAtRisk functions (see the vignette "Bayesian_lgcp"); specify the priors 
+   \item If required, set up the population offset using SpatialAtRisk functions (see the vignette "Bayesian_lgcp"); specify the priors
        using lgcpPrior; and if desired, the initial values for the MCMC, using the function lgcpInits.
-   \item Run the MCMC algorithm and save the output to disk. We recommend dumping information to disk using the dump2dir function 
+   \item Run the MCMC algorithm and save the output to disk. We recommend dumping information to disk using the dump2dir function
        in the output.control argument because it offers much greater flexibility in terms of MCMC diagnosis and post-processing.
-   \item Perform post-processing analyses including MCMC diagnostic checks and produce summaries of the posterior expectations 
+   \item Perform post-processing analyses including MCMC diagnostic checks and produce summaries of the posterior expectations
        we require for presentation. (see the vignette "Bayesian_lgcp" for further details). Functions of use in this step include
        traceplots, autocorr, parautocorr, ltar, parsummary, priorpost, postcov, textsummary, expectation, exceedProbs and lgcp:::expectation.lgcpPredict
 }
 }
 \references{
 \enumerate{
-    \item Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle. Bayesian Inference and Data Augmentation Schemes for Spatial, Spatiotemporal and Multivariate Log-Gaussian Cox Processes in R. Submitted. 
+    \item Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle. Bayesian Inference and Data Augmentation Schemes for Spatial, Spatiotemporal and Multivariate Log-Gaussian Cox Processes in R. Submitted.
     \item Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle (2013). Journal of Statistical Software, 52(4), 1-40. URL http://www.jstatsoft.org/v52/i04/
     \item Brix A, Diggle PJ (2001). Spatiotemporal Prediction for log-Gaussian Cox processes. Journal of the Royal Statistical Society, Series B, 63(4), 823-841.
     \item Diggle P, Rowlingson B, Su T (2005). Point Process Methodology for On-line Spatio-temporal Disease Surveillance. Environmetrics, 16(5), 423-434.
@@ -101,9 +105,8 @@ We recommend the user takes the following steps before running this method:
 \seealso{
 \link{minimum.contrast}, \link{minimum.contrast.spatiotemporal}, link{chooseCellWidth}, \link{getpolyol}, \link{guessinterp}, \link{getZmat},
 \link{addTemporalCovariates}, \link{lgcpPrior}, \link{lgcpInits}, \link{CovFunction}
-\link{lgcpPredictSpatialPlusPars},  \link{lgcpPredictSpatioTemporalPlusPars}, 
+\link{lgcpPredictSpatialPlusPars},  \link{lgcpPredictSpatioTemporalPlusPars},
 \link{lgcpPredictMultitypeSpatialPlusPars},
 \link{ltar}, \link{autocorr}, \link{parautocorr}, \link{traceplots}, \link{parsummary}, \link{textsummary},
 \link{priorpost}, \link{postcov}, \link{exceedProbs}, \link{betavals}, \link{etavals}
 }
-

@@ -17,4 +17,3 @@ a formula of the form X ~ var1 + var2 tec.
 \description{
 An internal function to collect terms from a formulalist. Not intended for general use.
 }
-
