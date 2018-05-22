@@ -2,12 +2,8 @@
 ###'
 ###' An R package for spatiotemporal prediction and forecasting for log-Gaussian Cox processes.
 ###'
-###' \tabular{ll}{
-###' Package: \tab lgcp\cr
-###' Version: \tab 0.9-4-1\cr
-###' Date: \tab 2012-17-04\cr
-###' License: \tab GPL (>= 2) \cr
-###' }
+###' \packageDESCRIPTION{cruts}
+###' \packageIndices{cruts}
 ###'
 ###'
 ###' For examples and further details of the package, type vignette("lgcp"), or refer to the paper associated with this package.

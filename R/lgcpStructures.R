@@ -620,6 +620,46 @@ exponentialCovFct <- function(d,CovParameters){
     return(ans)
 }
 
+
+##' maternCovFct15 function
+##'
+##' A function to declare and also evaluate an Matern 1.5 covariance function.
+##'
+##' @author Dominic Schumacher
+##' @param d toral distance
+##' @param CovParameters parameters of the latent field, an object of class "CovParamaters".
+##' @return the exponential covariance function
+##' @seealso \link{CovFunction.function}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}
+##' @export
+
+maternCovFct15 <- function(d,CovParameters) {
+  ans <- list()
+  r <- sqrt(3)*d/CovParameters$phi  # 3=2nu
+  corr <- (r + 1)*exp(-r)
+  ans$eval <- CovParameters$sigma^2 * corr
+  return(ans)
+}
+
+
+##' maternCovFct25 function
+##'
+##' A function to declare and also evaluate an Matern 2.5 covariance function.
+##'
+##' @author Dominic Schumacher
+##' @param d toral distance
+##' @param CovParameters parameters of the latent field, an object of class "CovParamaters".
+##' @return the exponential covariance function
+##' @seealso \link{CovFunction.function}, \link{RandomFieldsCovFct}, \link{SpikedExponentialCovFct}
+##' @export
+
+maternCovFct25 <- function(d,CovParameters) {
+  ans <- list()
+  r <- sqrt(5)*d/CovParameters$phi  # 5=2nu
+  corr <- ((r^2)/3 + r + 1)*exp(-r)
+  ans$eval <- CovParameters$sigma^2 * corr
+  return(ans)
+}
+
 ##' SpikedExponentialCovFct function
 ##'
 ##' A function to declare and also evaluate a spiked exponential covariance function. Note that the present version of
