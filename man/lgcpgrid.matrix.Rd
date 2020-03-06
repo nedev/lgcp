@@ -4,8 +4,7 @@
 \alias{lgcpgrid.matrix}
 \title{lgcpgrid.matrix function}
 \usage{
-\method{lgcpgrid}{matrix}(grid, xvals = 1:nrow(grid), yvals = 1:ncol(grid),
-  ...)
+\method{lgcpgrid}{matrix}(grid, xvals = 1:nrow(grid), yvals = 1:ncol(grid), ...)
 }
 \arguments{
 \item{grid}{a three dimensional array object}

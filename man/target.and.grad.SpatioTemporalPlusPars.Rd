@@ -4,8 +4,20 @@
 \alias{target.and.grad.SpatioTemporalPlusPars}
 \title{target.and.grad.SpatioTemporalPlusPars function}
 \usage{
-target.and.grad.SpatioTemporalPlusPars(GP, prior, Z, Zt, eta, beta, nis,
-  cellarea, spatial, gradtrunc, ETA0, tdiff)
+target.and.grad.SpatioTemporalPlusPars(
+  GP,
+  prior,
+  Z,
+  Zt,
+  eta,
+  beta,
+  nis,
+  cellarea,
+  spatial,
+  gradtrunc,
+  ETA0,
+  tdiff
+)
 }
 \arguments{
 \item{GP}{an object created using the stGPrealisation function}

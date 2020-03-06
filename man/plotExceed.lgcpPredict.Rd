@@ -4,8 +4,16 @@
 \alias{plotExceed.lgcpPredict}
 \title{plotExceed.lgcpPredict function}
 \usage{
-\method{plotExceed}{lgcpPredict}(obj, fun, nlevel = 64, ask = TRUE,
-  plotcases = FALSE, mapunderlay = NULL, alpha = 1, ...)
+\method{plotExceed}{lgcpPredict}(
+  obj,
+  fun,
+  nlevel = 64,
+  ask = TRUE,
+  plotcases = FALSE,
+  mapunderlay = NULL,
+  alpha = 1,
+  ...
+)
 }
 \arguments{
 \item{obj}{an object}

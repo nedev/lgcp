@@ -4,10 +4,35 @@
 \alias{MALAlgcp}
 \title{MALAlgcp function}
 \usage{
-MALAlgcp(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi, theta,
-  mu, nis, cellarea, spatialvals, temporal.fitted, tdiff, scaleconst, rootQeigs,
-  invrootQeigs, cellInside, MCMCdiag, gradtrunc, gridfun, gridav, mcens, ncens,
-  aggtimes)
+MALAlgcp(
+  mcmcloop,
+  inits,
+  adaptivescheme,
+  M,
+  N,
+  Mext,
+  Next,
+  sigma,
+  phi,
+  theta,
+  mu,
+  nis,
+  cellarea,
+  spatialvals,
+  temporal.fitted,
+  tdiff,
+  scaleconst,
+  rootQeigs,
+  invrootQeigs,
+  cellInside,
+  MCMCdiag,
+  gradtrunc,
+  gridfun,
+  gridav,
+  mcens,
+  ncens,
+  aggtimes
+)
 }
 \arguments{
 \item{mcmcloop}{an mcmcLoop object}

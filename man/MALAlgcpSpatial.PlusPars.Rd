@@ -4,10 +4,32 @@
 \alias{MALAlgcpSpatial.PlusPars}
 \title{MALAlgcpSpatial.PlusPars function}
 \usage{
-MALAlgcpSpatial.PlusPars(mcmcloop, inits, adaptivescheme, M, N, Mext, Next,
-  mcens, ncens, formula, Zmat, model.priors, model.inits, fftgrid,
-  spatial.covmodel, nis, cellarea, spatialvals, cellInside, MCMCdiag, gradtrunc,
-  gridfun, gridav, d)
+MALAlgcpSpatial.PlusPars(
+  mcmcloop,
+  inits,
+  adaptivescheme,
+  M,
+  N,
+  Mext,
+  Next,
+  mcens,
+  ncens,
+  formula,
+  Zmat,
+  model.priors,
+  model.inits,
+  fftgrid,
+  spatial.covmodel,
+  nis,
+  cellarea,
+  spatialvals,
+  cellInside,
+  MCMCdiag,
+  gradtrunc,
+  gridfun,
+  gridav,
+  d
+)
 }
 \arguments{
 \item{mcmcloop}{details of the mcmc loop}

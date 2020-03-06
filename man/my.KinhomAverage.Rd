@@ -4,9 +4,16 @@
 \alias{my.KinhomAverage}
 \title{my.KinhomAverage function}
 \usage{
-my.KinhomAverage(xyt, spatial.intensity, temporal.intensity,
-  time.window = xyt$tlim, rvals = NULL, correction = "iso",
-  suppresswarnings = FALSE, verbose = TRUE)
+my.KinhomAverage(
+  xyt,
+  spatial.intensity,
+  temporal.intensity,
+  time.window = xyt$tlim,
+  rvals = NULL,
+  correction = "iso",
+  suppresswarnings = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{xyt}{an object of class stppp.}

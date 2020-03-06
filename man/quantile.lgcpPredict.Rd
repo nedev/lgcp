@@ -4,9 +4,17 @@
 \alias{quantile.lgcpPredict}
 \title{quantile.lgcpPredict function}
 \usage{
-\method{quantile}{lgcpPredict}(x, qt, tidx = NULL, fun = NULL,
-  inWindow = x$xyt$window, crop2parentwindow = TRUE, startidx = 1,
-  sampcount = NULL, ...)
+\method{quantile}{lgcpPredict}(
+  x,
+  qt,
+  tidx = NULL,
+  fun = NULL,
+  inWindow = x$xyt$window,
+  crop2parentwindow = TRUE,
+  startidx = 1,
+  sampcount = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class lgcpPredict}

@@ -4,8 +4,13 @@
 \alias{lgcpgrid.list}
 \title{lgcpgrid.list function}
 \usage{
-\method{lgcpgrid}{list}(grid, xvals = 1:dim(grid[[1]])[1],
-  yvals = 1:dim(grid[[1]])[2], zvals = 1:length(grid), ...)
+\method{lgcpgrid}{list}(
+  grid,
+  xvals = 1:dim(grid[[1]])[1],
+  yvals = 1:dim(grid[[1]])[2],
+  zvals = 1:length(grid),
+  ...
+)
 }
 \arguments{
 \item{grid}{a list object with each member of the list being a numeric matrix, each matrix having the same dimension}

@@ -4,8 +4,20 @@
 \alias{target.and.grad.spatiotemporal}
 \title{target.and.grad.spatiotemporal function}
 \usage{
-target.and.grad.spatiotemporal(Gamma, nis, cellarea, rootQeigs, invrootQeigs,
-  mu, spatial, logspat, temporal, bt, gt, gradtrunc)
+target.and.grad.spatiotemporal(
+  Gamma,
+  nis,
+  cellarea,
+  rootQeigs,
+  invrootQeigs,
+  mu,
+  spatial,
+  logspat,
+  temporal,
+  bt,
+  gt,
+  gradtrunc
+)
 }
 \arguments{
 \item{Gamma}{current state of the chain, Gamma}

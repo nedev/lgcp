@@ -4,8 +4,18 @@
 \alias{target.and.grad.AggregateSpatialPlusPars}
 \title{target.and.grad.AggregateSpatialPlusPars function}
 \usage{
-target.and.grad.AggregateSpatialPlusPars(GP, prior, Z, Zt, eta, beta, nis,
-  cellarea, spatial, gradtrunc)
+target.and.grad.AggregateSpatialPlusPars(
+  GP,
+  prior,
+  Z,
+  Zt,
+  eta,
+  beta,
+  nis,
+  cellarea,
+  spatial,
+  gradtrunc
+)
 }
 \arguments{
 \item{GP}{an object constructed using GPrealisation}

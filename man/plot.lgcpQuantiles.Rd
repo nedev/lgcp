@@ -4,8 +4,7 @@
 \alias{plot.lgcpQuantiles}
 \title{plot.lgcpQuantiles function}
 \usage{
-\method{plot}{lgcpQuantiles}(x, sel = 1:dim(x)[3], ask = TRUE,
-  crop = TRUE, plotwin = FALSE, ...)
+\method{plot}{lgcpQuantiles}(x, sel = 1:dim(x)[3], ask = TRUE, crop = TRUE, plotwin = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class lgcpQuantiles}

@@ -4,11 +4,22 @@
 \alias{lgcpPredictMultitypeSpatialPlusPars}
 \title{lgcpPredictMultitypeSpatialPlusPars function}
 \usage{
-lgcpPredictMultitypeSpatialPlusPars(formulaList, sd, typemark = NULL,
-  Zmat = NULL, model.priorsList, model.initsList = NULL,
-  spatial.covmodelList, cellwidth = NULL, poisson.offset = NULL,
-  mcmc.control, output.control = setoutput(), gradtrunc = Inf, ext = 2,
-  inclusion = "touching")
+lgcpPredictMultitypeSpatialPlusPars(
+  formulaList,
+  sd,
+  typemark = NULL,
+  Zmat = NULL,
+  model.priorsList,
+  model.initsList = NULL,
+  spatial.covmodelList,
+  cellwidth = NULL,
+  poisson.offset = NULL,
+  mcmc.control,
+  output.control = setoutput(),
+  gradtrunc = Inf,
+  ext = 2,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{formulaList}{an object of class formulaList, see ?formulaList. A list of formulae of the form t1 ~ var1 + var2 etc. The name of the dependent variable must correspond to the name of the point type. Only accepts 'simple' formulae, such as the example given.}
@@ -62,7 +73,7 @@ computational grid. The other parameters in the model are beta_k , the covariate
 kth type; and eta_i = [log(sigma_i),log(phi_i)], the parameters of the process Y_i for i = 1,...,K+1 on
 an appropriately transformed (again, in this case log) scale.
 
-We recommend the user takes the following steps before running this method:
+We recommend the user takes the following steps before running this method: 
 
 \enumerate{
    \item Compute approximate values of the parameters, eta, of the process Y using the function minimum.contrast. 

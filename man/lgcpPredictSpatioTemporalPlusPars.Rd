@@ -4,11 +4,23 @@
 \alias{lgcpPredictSpatioTemporalPlusPars}
 \title{lgcpPredictSpatioTemporalPlusPars function}
 \usage{
-lgcpPredictSpatioTemporalPlusPars(formula, xyt, T, laglength, ZmatList = NULL,
-  model.priors, model.inits = lgcpInits(), spatial.covmodel,
-  cellwidth = NULL, poisson.offset = NULL, mcmc.control,
-  output.control = setoutput(), gradtrunc = Inf, ext = 2,
-  inclusion = "touching")
+lgcpPredictSpatioTemporalPlusPars(
+  formula,
+  xyt,
+  T,
+  laglength,
+  ZmatList = NULL,
+  model.priors,
+  model.inits = lgcpInits(),
+  spatial.covmodel,
+  cellwidth = NULL,
+  poisson.offset = NULL,
+  mcmc.control,
+  output.control = setoutput(),
+  gradtrunc = Inf,
+  ext = 2,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{formula}{a formula object of the form X ~ var1 + var2 etc. The name of the dependent variable must be "X". Only accepts 'simple' formulae, such as the example given.}
@@ -62,7 +74,7 @@ C_A is the cell area, lambda(s,t) is a known offset, Z(s,t) is a vector of measu
 latent Gaussian process on the computational grid. The other parameters in the model are beta, the covariate effects; 
 and eta=[log(sigma),log(phi),log(theta)], the parameters of the process Y on an appropriately transformed (in this case log) scale.\cr
 
-We recommend the user takes the following steps before running this method:
+We recommend the user takes the following steps before running this method: 
 
 \enumerate{
    \item Compute approximate values of the parameters, eta, of the process Y using the function minimum.contrast. 
@@ -87,7 +99,7 @@ We recommend the user takes the following steps before running this method:
        traceplots, autocorr, parautocorr, ltar, parsummary, priorpost, postcov, textsummary, expectation, exceedProbs and lgcp:::expectation.lgcpPredict
 }
 
-The user must provide a list of design matrices to use this function. In the interpolation step above, there are three cases to consider
+The user must provide a list of design matrices to use this function. In the interpolation step above, there are three cases to consider 
 
 \enumerate{
    \item where Z(s,t) cannot be decomposed, i.e., Z are true spatiotemporal covariates. In this case, each element of the list must 

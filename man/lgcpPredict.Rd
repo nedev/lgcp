@@ -4,11 +4,25 @@
 \alias{lgcpPredict}
 \title{lgcpPredict function}
 \usage{
-lgcpPredict(xyt, T, laglength, model.parameters = lgcppars(),
-  spatial.covmodel = "exponential", covpars = c(), cellwidth = NULL,
-  gridsize = NULL, spatial.intensity, temporal.intensity, mcmc.control,
-  output.control = setoutput(), missing.data.areas = NULL,
-  autorotate = FALSE, gradtrunc = Inf, ext = 2, inclusion = "touching")
+lgcpPredict(
+  xyt,
+  T,
+  laglength,
+  model.parameters = lgcppars(),
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  cellwidth = NULL,
+  gridsize = NULL,
+  spatial.intensity,
+  temporal.intensity,
+  mcmc.control,
+  output.control = setoutput(),
+  missing.data.areas = NULL,
+  autorotate = FALSE,
+  gradtrunc = Inf,
+  ext = 2,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{xyt}{a spatio-temporal point pattern object, see ?stppp}

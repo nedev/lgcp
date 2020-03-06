@@ -4,8 +4,23 @@
 \alias{GPdrv2_Multitype}
 \title{GPdrv2_Multitype function}
 \usage{
-GPdrv2_Multitype(GPlist, priorlist, Zlist, Ztlist, etalist, betalist, nis,
-  cellarea, spatial, gradtrunc, fftgrid, covfunction, d, eps = 1e-06, k)
+GPdrv2_Multitype(
+  GPlist,
+  priorlist,
+  Zlist,
+  Ztlist,
+  etalist,
+  betalist,
+  nis,
+  cellarea,
+  spatial,
+  gradtrunc,
+  fftgrid,
+  covfunction,
+  d,
+  eps = 1e-06,
+  k
+)
 }
 \arguments{
 \item{GPlist}{a list of objects of class GPrealisation}

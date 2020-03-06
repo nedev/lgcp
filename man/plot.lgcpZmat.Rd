@@ -4,8 +4,15 @@
 \alias{plot.lgcpZmat}
 \title{plot.lgcpZmat function}
 \usage{
-\method{plot}{lgcpZmat}(x, ask = TRUE, pow = 1, main = NULL,
-  misscol = "black", obswin = NULL, ...)
+\method{plot}{lgcpZmat}(
+  x,
+  ask = TRUE,
+  pow = 1,
+  main = NULL,
+  misscol = "black",
+  obswin = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an lgcpZmat object, see ?getZmat}

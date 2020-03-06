@@ -4,9 +4,21 @@
 \alias{plotExceed.array}
 \title{plotExceed.array function}
 \usage{
-\method{plotExceed}{array}(obj, fun, lgcppredict = NULL, xvals = NULL,
-  yvals = NULL, window = NULL, cases = NULL, nlevel = 64, ask = TRUE,
-  mapunderlay = NULL, alpha = 1, sub = NULL, ...)
+\method{plotExceed}{array}(
+  obj,
+  fun,
+  lgcppredict = NULL,
+  xvals = NULL,
+  yvals = NULL,
+  window = NULL,
+  cases = NULL,
+  nlevel = 64,
+  ask = TRUE,
+  mapunderlay = NULL,
+  alpha = 1,
+  sub = NULL,
+  ...
+)
 }
 \arguments{
 \item{obj}{an object}

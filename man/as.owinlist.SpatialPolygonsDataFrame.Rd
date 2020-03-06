@@ -4,8 +4,7 @@
 \alias{as.owinlist.SpatialPolygonsDataFrame}
 \title{as.owinlist.SpatialPolygonsDataFrame function}
 \usage{
-\method{as.owinlist}{SpatialPolygonsDataFrame}(obj, dmin = 0, check = TRUE,
-  subset = rep(TRUE, length(obj)), ...)
+\method{as.owinlist}{SpatialPolygonsDataFrame}(obj, dmin = 0, check = TRUE, subset = rep(TRUE, length(obj)), ...)
 }
 \arguments{
 \item{obj}{a SpatialPolygonsDataFrame object}

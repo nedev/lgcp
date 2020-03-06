@@ -4,8 +4,14 @@
 \alias{autocorrMultitype}
 \title{autocorrMultitype function}
 \usage{
-autocorrMultitype(x, lags, fieldno, inWindow = x$xyt$window,
-  crop2parentwindow = TRUE, ...)
+autocorrMultitype(
+  x,
+  lags,
+  fieldno,
+  inWindow = x$xyt$window,
+  crop2parentwindow = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class lgcpPredictMultitypeSpatialPlusParameters}

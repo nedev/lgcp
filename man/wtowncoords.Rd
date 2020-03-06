@@ -3,7 +3,7 @@
 \alias{wtowncoords}
 \title{Welsh town details: location}
 \description{Welsh town details: location}
-\usage{wtowncoords}
+\usage{data(wtowncoords)}
 \format{matrix}
 \source{Wikipedia}
 \references{\url{http://www.wikipedia.org/}}

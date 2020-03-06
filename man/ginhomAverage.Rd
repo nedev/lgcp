@@ -4,9 +4,16 @@
 \alias{ginhomAverage}
 \title{ginhomAverage function}
 \usage{
-ginhomAverage(xyt, spatial.intensity, temporal.intensity,
-  time.window = xyt$tlim, rvals = NULL, correction = "iso",
-  suppresswarnings = FALSE, ...)
+ginhomAverage(
+  xyt,
+  spatial.intensity,
+  temporal.intensity,
+  time.window = xyt$tlim,
+  rvals = NULL,
+  correction = "iso",
+  suppresswarnings = FALSE,
+  ...
+)
 }
 \arguments{
 \item{xyt}{an object of class stppp}

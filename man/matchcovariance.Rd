@@ -4,8 +4,18 @@
 \alias{matchcovariance}
 \title{matchcovariance function}
 \usage{
-matchcovariance(xg, yg, ns, sigma, phi, model, additionalparameters,
-  verbose = TRUE, r = 1, method = "Nelder-Mead")
+matchcovariance(
+  xg,
+  yg,
+  ns,
+  sigma,
+  phi,
+  model,
+  additionalparameters,
+  verbose = TRUE,
+  r = 1,
+  method = "Nelder-Mead"
+)
 }
 \arguments{
 \item{xg}{x grid must be equally spaced}

@@ -4,10 +4,19 @@
 \alias{minimum.contrast.spatiotemporal}
 \title{minimum.contrast.spatiotemporal function}
 \usage{
-minimum.contrast.spatiotemporal(data, model, method = "g",
-  spatial.dens = NULL, temporal.intens = NULL, power = 1,
-  transform = NULL, spatial.startvals = NULL, temporal.interval = NULL,
-  verbose = TRUE, ...)
+minimum.contrast.spatiotemporal(
+  data,
+  model,
+  method = "g",
+  spatial.dens = NULL,
+  temporal.intens = NULL,
+  power = 1,
+  transform = NULL,
+  spatial.startvals = NULL,
+  temporal.interval = NULL,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{An object of class 'stppp' from package 'lgcp'. Must be univariate i.e. have ' data$markformat=="none" '}

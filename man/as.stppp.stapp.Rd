@@ -4,8 +4,7 @@
 \alias{as.stppp.stapp}
 \title{as.stppp.stapp function}
 \usage{
-\method{as.stppp}{stapp}(obj, popden = NULL, n = 100, dmin = 0,
-  check = TRUE, ...)
+\method{as.stppp}{stapp}(obj, popden = NULL, n = 100, dmin = 0, check = TRUE, ...)
 }
 \arguments{
 \item{obj}{an object of class stapp}

@@ -4,10 +4,22 @@
 \alias{lgcpSimSpatialCovariates}
 \title{lgcpSimSpatialCovariates function}
 \usage{
-lgcpSimSpatialCovariates(formula, owin, regionalcovariates = NULL,
-  pixelcovariates = NULL, Zmat = NULL, beta, poisson.offset = NULL,
-  cellwidth, model.parameters, spatial.covmodel = "exponential",
-  covpars = c(), ext = 2, plot = FALSE, inclusion = "touching")
+lgcpSimSpatialCovariates(
+  formula,
+  owin,
+  regionalcovariates = NULL,
+  pixelcovariates = NULL,
+  Zmat = NULL,
+  beta,
+  poisson.offset = NULL,
+  cellwidth,
+  model.parameters,
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  ext = 2,
+  plot = FALSE,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{formula}{a formula of the form X ~ var1 + var2 etc.}

@@ -16,6 +16,7 @@ An R package for spatiotemporal prediction and forecasting for log-Gaussian Cox 
 \packageDESCRIPTION{cruts}
 \packageIndices{cruts}
 
+
 For examples and further details of the package, type vignette("lgcp"), or refer to the paper associated with this package.
 
 The content of \code{lgcp} can be broken up as follows:\cr

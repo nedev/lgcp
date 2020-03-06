@@ -4,7 +4,7 @@
 \alias{temporalAtRisk.function}
 \title{temporalAtRisk.function function}
 \usage{
-\method{temporalAtRisk}{function}(obj, tlim, xyt = NULL, warn = TRUE, ...)
+\method{temporalAtRisk}{`function`}(obj, tlim, xyt = NULL, warn = TRUE, ...)
 }
 \arguments{
 \item{obj}{a function accepting single, scalar, numeric argument, t, that returns the temporal intensity for time t}

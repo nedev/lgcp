@@ -4,11 +4,18 @@
 \alias{lgcpSimSpatial}
 \title{lgcpSimSpatial function}
 \usage{
-lgcpSimSpatial(owin = NULL, spatial.intensity = NULL,
-  expectednumcases = 100, cellwidth = 0.05,
+lgcpSimSpatial(
+  owin = NULL,
+  spatial.intensity = NULL,
+  expectednumcases = 100,
+  cellwidth = 0.05,
   model.parameters = lgcppars(sigma = 2, phi = 0.2),
-  spatial.covmodel = "exponential", covpars = c(), ext = 2,
-  plot = FALSE, inclusion = "touching")
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  ext = 2,
+  plot = FALSE,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{owin}{observation window}

@@ -4,8 +4,18 @@
 \alias{target.and.grad.MultitypespatialPlusPars}
 \title{target.and.grad.MultitypespatialPlusPars function}
 \usage{
-target.and.grad.MultitypespatialPlusPars(GPlist, priorlist, Zlist, Ztlist, eta,
-  beta, nis, cellarea, spatial, gradtrunc)
+target.and.grad.MultitypespatialPlusPars(
+  GPlist,
+  priorlist,
+  Zlist,
+  Ztlist,
+  eta,
+  beta,
+  nis,
+  cellarea,
+  spatial,
+  gradtrunc
+)
 }
 \arguments{
 \item{GPlist}{list of Gaussian processes}

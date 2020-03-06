@@ -4,8 +4,7 @@
 \alias{traceplots}
 \title{traceplots function}
 \usage{
-traceplots(obj, xlab = "Sample No.", ylab = NULL, main = "", ask = TRUE,
-  ...)
+traceplots(obj, xlab = "Sample No.", ylab = NULL, main = "", ask = TRUE, ...)
 }
 \arguments{
 \item{obj}{an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars orlgcpPredictMultitypeSpatialPlusPars}

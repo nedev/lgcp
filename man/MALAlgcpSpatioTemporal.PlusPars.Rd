@@ -4,10 +4,35 @@
 \alias{MALAlgcpSpatioTemporal.PlusPars}
 \title{MALAlgcpSpatioTemporal.PlusPars function}
 \usage{
-MALAlgcpSpatioTemporal.PlusPars(mcmcloop, inits, adaptivescheme, M, N, Mext,
-  Next, mcens, ncens, formula, ZmatList, model.priors, model.inits, fftgrid,
-  spatial.covmodel, nis, tdiff, cellarea, spatialvals, cellInside, MCMCdiag,
-  gradtrunc, gridfun, gridav, d, aggtimes, spatialOnlyCovariates)
+MALAlgcpSpatioTemporal.PlusPars(
+  mcmcloop,
+  inits,
+  adaptivescheme,
+  M,
+  N,
+  Mext,
+  Next,
+  mcens,
+  ncens,
+  formula,
+  ZmatList,
+  model.priors,
+  model.inits,
+  fftgrid,
+  spatial.covmodel,
+  nis,
+  tdiff,
+  cellarea,
+  spatialvals,
+  cellInside,
+  MCMCdiag,
+  gradtrunc,
+  gridfun,
+  gridav,
+  d,
+  aggtimes,
+  spatialOnlyCovariates
+)
 }
 \arguments{
 \item{mcmcloop}{details of the mcmc loop}

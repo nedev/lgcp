@@ -4,9 +4,31 @@
 \alias{MALAlgcpSpatial}
 \title{MALAlgcpSpatial function}
 \usage{
-MALAlgcpSpatial(mcmcloop, inits, adaptivescheme, M, N, Mext, Next, sigma, phi,
-  mu, nis, cellarea, spatialvals, scaleconst, rootQeigs, invrootQeigs,
-  cellInside, MCMCdiag, gradtrunc, gridfun, gridav, mcens, ncens)
+MALAlgcpSpatial(
+  mcmcloop,
+  inits,
+  adaptivescheme,
+  M,
+  N,
+  Mext,
+  Next,
+  sigma,
+  phi,
+  mu,
+  nis,
+  cellarea,
+  spatialvals,
+  scaleconst,
+  rootQeigs,
+  invrootQeigs,
+  cellInside,
+  MCMCdiag,
+  gradtrunc,
+  gridfun,
+  gridav,
+  mcens,
+  ncens
+)
 }
 \arguments{
 \item{mcmcloop}{an mcmcLoop object}

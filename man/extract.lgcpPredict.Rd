@@ -4,8 +4,16 @@
 \alias{extract.lgcpPredict}
 \title{extract.lgcpPredict function}
 \usage{
-\method{extract}{lgcpPredict}(obj, x = NULL, y = NULL, t, s = -1,
-  inWindow = NULL, crop2parentwindow = TRUE, ...)
+\method{extract}{lgcpPredict}(
+  obj,
+  x = NULL,
+  y = NULL,
+  t,
+  s = -1,
+  inWindow = NULL,
+  crop2parentwindow = TRUE,
+  ...
+)
 }
 \arguments{
 \item{obj}{an object of class lgcpPredict}

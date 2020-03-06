@@ -4,7 +4,7 @@
 \alias{spatialAtRisk.function}
 \title{spatialAtRisk.function function}
 \usage{
-\method{spatialAtRisk}{function}(X, warn = TRUE, ...)
+\method{spatialAtRisk}{`function`}(X, warn = TRUE, ...)
 }
 \arguments{
 \item{X}{a function with accepts arguments x and y that returns the at risk population at coordinate (x,y), which should be a numeric of length 1}

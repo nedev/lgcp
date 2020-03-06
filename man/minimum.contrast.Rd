@@ -4,8 +4,17 @@
 \alias{minimum.contrast}
 \title{minimum.contrast function}
 \usage{
-minimum.contrast(data, model, method = "g", intens = NULL, power = 1,
-  transform = NULL, startvals = NULL, verbose = TRUE, ...)
+minimum.contrast(
+  data,
+  model,
+  method = "g",
+  intens = NULL,
+  power = 1,
+  transform = NULL,
+  startvals = NULL,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{An object of class 'ppp' (package spatstat) with a polygonal window. May be univariate or multitype.}

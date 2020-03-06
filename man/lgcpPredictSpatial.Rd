@@ -4,11 +4,21 @@
 \alias{lgcpPredictSpatial}
 \title{lgcpPredictSpatial function}
 \usage{
-lgcpPredictSpatial(sd, model.parameters = lgcppars(),
-  spatial.covmodel = "exponential", covpars = c(), cellwidth = NULL,
-  gridsize = NULL, spatial.intensity, spatial.offset = NULL, mcmc.control,
-  output.control = setoutput(), gradtrunc = Inf, ext = 2,
-  inclusion = "touching")
+lgcpPredictSpatial(
+  sd,
+  model.parameters = lgcppars(),
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  cellwidth = NULL,
+  gridsize = NULL,
+  spatial.intensity,
+  spatial.offset = NULL,
+  mcmc.control,
+  output.control = setoutput(),
+  gradtrunc = Inf,
+  ext = 2,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{sd}{a spatial point pattern object, see ?ppp}
@@ -60,6 +70,7 @@ Following Brix and Diggle (2001) and Diggle et al (2005) (but ignoring temporal 
 In the above, the fixed spatial component, \eqn{\lambda:R^2\mapsto R_{\geq 0}}{\lambda:R^2\mapsto R_{\geq 0}}, 
 is a known function, proportional to the population at risk at each point in space and scaled so that
 \deqn{\int_W\lambda(s)d s=1.}{\int_W\lambda(s)d s=1.}
+
 
 Before calling this function, the user must decide on the parameters, spatial covariance model, spatial discretisation,
 fixed spatial (\eqn{\lambda(s)}{\lambda(s)}) component, mcmc parameters, and whether or not any output is

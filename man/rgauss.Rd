@@ -4,9 +4,15 @@
 \alias{rgauss}
 \title{rgauss function}
 \usage{
-rgauss(n = 1, range = c(0, 1), ncells = 128,
-  spatial.covmodel = "exponential", model.parameters = lgcppars(sigma = 2,
-  phi = 0.1), covpars = c(), ext = 2)
+rgauss(
+  n = 1,
+  range = c(0, 1),
+  ncells = 128,
+  spatial.covmodel = "exponential",
+  model.parameters = lgcppars(sigma = 2, phi = 0.1),
+  covpars = c(),
+  ext = 2
+)
 }
 \arguments{
 \item{n}{the number of realisations to generate. Default is 1.}

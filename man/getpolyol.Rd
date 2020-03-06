@@ -4,8 +4,14 @@
 \alias{getpolyol}
 \title{getpolyol function}
 \usage{
-getpolyol(data, regionalcovariates = NULL, pixelcovariates = NULL,
-  cellwidth, ext = 2, inclusion = "touching")
+getpolyol(
+  data,
+  regionalcovariates = NULL,
+  pixelcovariates = NULL,
+  cellwidth,
+  ext = 2,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{data}{an object of class ppp or SpatialPolygonsDataFrame, containing the event counts, i.e. the dataset that will eventually be analysed}

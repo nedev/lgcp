@@ -4,8 +4,14 @@
 \alias{autocorr}
 \title{autocorr function}
 \usage{
-autocorr(x, lags, tidx = NULL, inWindow = x$xyt$window,
-  crop2parentwindow = TRUE, ...)
+autocorr(
+  x,
+  lags,
+  tidx = NULL,
+  inWindow = x$xyt$window,
+  crop2parentwindow = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class lgcpPredict}

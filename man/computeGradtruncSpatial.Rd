@@ -4,8 +4,17 @@
 \alias{computeGradtruncSpatial}
 \title{computeGradtruncSpatial function}
 \usage{
-computeGradtruncSpatial(nsims = 100, scale = 1, nis, mu, rootQeigs,
-  invrootQeigs, scaleconst, spatial, cellarea)
+computeGradtruncSpatial(
+  nsims = 100,
+  scale = 1,
+  nis,
+  mu,
+  rootQeigs,
+  invrootQeigs,
+  scaleconst,
+  spatial,
+  cellarea
+)
 }
 \arguments{
 \item{nsims}{The number of simulations to use in computation of gradient truncation.}

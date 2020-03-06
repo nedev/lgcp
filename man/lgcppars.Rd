@@ -4,8 +4,7 @@
 \alias{lgcppars}
 \title{lgcppars function}
 \usage{
-lgcppars(sigma = NULL, phi = NULL, theta = NULL, mu = NULL,
-  beta = NULL)
+lgcppars(sigma = NULL, phi = NULL, theta = NULL, mu = NULL, beta = NULL)
 }
 \arguments{
 \item{sigma}{sigma parameter}

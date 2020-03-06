@@ -4,8 +4,14 @@
 \alias{spatialparsEst}
 \title{spatialparsEst function}
 \usage{
-spatialparsEst(gk, sigma.range, phi.range, spatial.covmodel, covpars = c(),
-  guess = FALSE)
+spatialparsEst(
+  gk,
+  sigma.range,
+  phi.range,
+  spatial.covmodel,
+  covpars = c(),
+  guess = FALSE
+)
 }
 \arguments{
 \item{gk}{an R object; output from the function KinhomAverage or ginhomAverage}

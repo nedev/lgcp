@@ -4,8 +4,16 @@
 \alias{getZmat}
 \title{getZmat function}
 \usage{
-getZmat(formula, data, regionalcovariates = NULL, pixelcovariates = NULL,
-  cellwidth, ext = 2, inclusion = "touching", overl = NULL)
+getZmat(
+  formula,
+  data,
+  regionalcovariates = NULL,
+  pixelcovariates = NULL,
+  cellwidth,
+  ext = 2,
+  inclusion = "touching",
+  overl = NULL
+)
 }
 \arguments{
 \item{formula}{a formula object of the form X ~ var1 + var2 etc. The name of the dependent variable must be "X". Only accepts 'simple' formulae, such as the example given.}

@@ -4,8 +4,15 @@
 \alias{priorpost}
 \title{priorpost function}
 \usage{
-priorpost(obj, breaks = 30, xlab = NULL, ylab = "Density", main = "",
-  ask = TRUE, ...)
+priorpost(
+  obj,
+  breaks = 30,
+  xlab = NULL,
+  ylab = "Density",
+  main = "",
+  ask = TRUE,
+  ...
+)
 }
 \arguments{
 \item{obj}{an object produced by a call to lgcpPredictSpatialPlusPars, lgcpPredictAggregateSpatialPlusPars, lgcpPredictSpatioTemporalPlusPars or lgcpPredictMultitypeSpatialPlusPars}

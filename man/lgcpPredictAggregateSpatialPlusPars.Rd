@@ -4,11 +4,25 @@
 \alias{lgcpPredictAggregateSpatialPlusPars}
 \title{lgcpPredictAggregateSpatialPlusPars function}
 \usage{
-lgcpPredictAggregateSpatialPlusPars(formula, spdf, Zmat = NULL,
-  overlayInZmat = FALSE, model.priors, model.inits = lgcpInits(),
-  spatial.covmodel, cellwidth = NULL, poisson.offset = NULL, mcmc.control,
-  output.control = setoutput(), gradtrunc = Inf, ext = 2, Nfreq = 101,
-  inclusion = "touching", overlapping = FALSE, pixwts = NULL)
+lgcpPredictAggregateSpatialPlusPars(
+  formula,
+  spdf,
+  Zmat = NULL,
+  overlayInZmat = FALSE,
+  model.priors,
+  model.inits = lgcpInits(),
+  spatial.covmodel,
+  cellwidth = NULL,
+  poisson.offset = NULL,
+  mcmc.control,
+  output.control = setoutput(),
+  gradtrunc = Inf,
+  ext = 2,
+  Nfreq = 101,
+  inclusion = "touching",
+  overlapping = FALSE,
+  pixwts = NULL
+)
 }
 \arguments{
 \item{formula}{a formula object of the form X ~ var1 + var2 etc. The name of the dependent variable must be "X". Only accepts 'simple' formulae, such as the example given.}

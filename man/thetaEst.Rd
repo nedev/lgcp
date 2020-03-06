@@ -4,9 +4,17 @@
 \alias{thetaEst}
 \title{thetaEst function}
 \usage{
-thetaEst(xyt, spatial.intensity = NULL, temporal.intensity = NULL, sigma,
-  phi, theta.range = c(0, 10), N = 100, spatial.covmodel = "exponential",
-  covpars = c())
+thetaEst(
+  xyt,
+  spatial.intensity = NULL,
+  temporal.intensity = NULL,
+  sigma,
+  phi,
+  theta.range = c(0, 10),
+  N = 100,
+  spatial.covmodel = "exponential",
+  covpars = c()
+)
 }
 \arguments{
 \item{xyt}{object of class stppp}

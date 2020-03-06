@@ -4,12 +4,23 @@
 \alias{lgcpSim}
 \title{lgcpSim function}
 \usage{
-lgcpSim(owin = NULL, tlim = as.integer(c(0, 10)),
-  spatial.intensity = NULL, temporal.intensity = NULL, cellwidth = 0.05,
+lgcpSim(
+  owin = NULL,
+  tlim = as.integer(c(0, 10)),
+  spatial.intensity = NULL,
+  temporal.intensity = NULL,
+  cellwidth = 0.05,
   model.parameters = lgcppars(sigma = 2, phi = 0.2, theta = 1),
-  spatial.covmodel = "exponential", covpars = c(),
-  returnintensities = FALSE, progressbar = TRUE, ext = 2, plot = FALSE,
-  ratepow = 0.25, sleeptime = 0, inclusion = "touching")
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  returnintensities = FALSE,
+  progressbar = TRUE,
+  ext = 2,
+  plot = FALSE,
+  ratepow = 0.25,
+  sleeptime = 0,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{owin}{polygonal observation window}

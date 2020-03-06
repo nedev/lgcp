@@ -4,8 +4,7 @@
 \alias{fftgrid}
 \title{fftgrid function}
 \usage{
-fftgrid(xyt, M, N, spatial, sigma, phi, model, covpars,
-  inclusion = "touching")
+fftgrid(xyt, M, N, spatial, sigma, phi, model, covpars, inclusion = "touching")
 }
 \arguments{
 \item{xyt}{object of class stppp}

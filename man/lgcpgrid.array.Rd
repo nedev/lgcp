@@ -4,8 +4,13 @@
 \alias{lgcpgrid.array}
 \title{lgcpgrid.array function}
 \usage{
-\method{lgcpgrid}{array}(grid, xvals = 1:dim(grid)[1],
-  yvals = 1:dim(grid)[2], zvals = 1:dim(grid)[3], ...)
+\method{lgcpgrid}{array}(
+  grid,
+  xvals = 1:dim(grid)[1],
+  yvals = 1:dim(grid)[2],
+  zvals = 1:dim(grid)[3],
+  ...
+)
 }
 \arguments{
 \item{grid}{a three dimensional array object}

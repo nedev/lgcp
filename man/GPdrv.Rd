@@ -4,8 +4,22 @@
 \alias{GPdrv}
 \title{GPdrv function}
 \usage{
-GPdrv(GP, prior, Z, Zt, eta, beta, nis, cellarea, spatial, gradtrunc, fftgrid,
-  covfunction, d, eps = 1e-06)
+GPdrv(
+  GP,
+  prior,
+  Z,
+  Zt,
+  eta,
+  beta,
+  nis,
+  cellarea,
+  spatial,
+  gradtrunc,
+  fftgrid,
+  covfunction,
+  d,
+  eps = 1e-06
+)
 }
 \arguments{
 \item{GP}{an object of class GPrealisation}

@@ -4,8 +4,16 @@
 \alias{cov.interp.fft}
 \title{cov.interp.fft function}
 \usage{
-cov.interp.fft(formula, W, regionalcovariates = NULL,
-  pixelcovariates = NULL, mcens, ncens, cellInside, overl = NULL)
+cov.interp.fft(
+  formula,
+  W,
+  regionalcovariates = NULL,
+  pixelcovariates = NULL,
+  mcens,
+  ncens,
+  cellInside,
+  overl = NULL
+)
 }
 \arguments{
 \item{formula}{an object of class formula (or one that can be coerced to that class) starting with X ~ (eg X~var1+var2 *NOT for example* Y~var1+var2): a symbolic description of the model to be fitted.}

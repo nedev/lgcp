@@ -4,8 +4,7 @@
 \alias{plot.lgcpAutocorr}
 \title{plot.lgcpAutocorr function}
 \usage{
-\method{plot}{lgcpAutocorr}(x, sel = 1:dim(x)[3], ask = TRUE, crop = TRUE,
-  plotwin = FALSE, ...)
+\method{plot}{lgcpAutocorr}(x, sel = 1:dim(x)[3], ask = TRUE, crop = TRUE, plotwin = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class lgcpAutocorr}

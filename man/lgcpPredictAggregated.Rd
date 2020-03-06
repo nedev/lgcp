@@ -4,12 +4,26 @@
 \alias{lgcpPredictAggregated}
 \title{lgcpPredictAggregated function}
 \usage{
-lgcpPredictAggregated(app, popden = NULL, T, laglength,
-  model.parameters = lgcppars(), spatial.covmodel = "exponential",
-  covpars = c(), cellwidth = NULL, gridsize = NULL, spatial.intensity,
-  temporal.intensity, mcmc.control, output.control = setoutput(),
-  autorotate = FALSE, gradtrunc = NULL, n = 100, dmin = 0,
-  check = TRUE)
+lgcpPredictAggregated(
+  app,
+  popden = NULL,
+  T,
+  laglength,
+  model.parameters = lgcppars(),
+  spatial.covmodel = "exponential",
+  covpars = c(),
+  cellwidth = NULL,
+  gridsize = NULL,
+  spatial.intensity,
+  temporal.intensity,
+  mcmc.control,
+  output.control = setoutput(),
+  autorotate = FALSE,
+  gradtrunc = NULL,
+  n = 100,
+  dmin = 0,
+  check = TRUE
+)
 }
 \arguments{
 \item{app}{a spatio-temporal aggregated point pattern object, see ?stapp}

@@ -4,8 +4,15 @@
 \alias{plot.lgcpPredict}
 \title{plot.lgcpPredict function}
 \usage{
-\method{plot}{lgcpPredict}(x, type = "relrisk", sel = 1:x$EY.mean$len,
-  plotdata = TRUE, ask = TRUE, clipWindow = TRUE, ...)
+\method{plot}{lgcpPredict}(
+  x,
+  type = "relrisk",
+  sel = 1:x$EY.mean$len,
+  plotdata = TRUE,
+  ask = TRUE,
+  clipWindow = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class lgcpPredict}

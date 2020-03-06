@@ -4,8 +4,18 @@
 \alias{target.and.grad.spatial}
 \title{target.and.grad.spatial function}
 \usage{
-target.and.grad.spatial(Gamma, nis, cellarea, rootQeigs, invrootQeigs, mu,
-  spatial, logspat, scaleconst, gradtrunc)
+target.and.grad.spatial(
+  Gamma,
+  nis,
+  cellarea,
+  rootQeigs,
+  invrootQeigs,
+  mu,
+  spatial,
+  logspat,
+  scaleconst,
+  gradtrunc
+)
 }
 \arguments{
 \item{Gamma}{current state of the chain, Gamma}

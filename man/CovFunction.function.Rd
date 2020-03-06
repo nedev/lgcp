@@ -4,7 +4,7 @@
 \alias{CovFunction.function}
 \title{CovFunction.function function}
 \usage{
-\method{CovFunction}{function}(obj, ...)
+\method{CovFunction}{`function`}(obj, ...)
 }
 \arguments{
 \item{obj}{a function object}

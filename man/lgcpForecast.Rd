@@ -4,8 +4,13 @@
 \alias{lgcpForecast}
 \title{lgcpForecast function}
 \usage{
-lgcpForecast(lg, ptimes, spatial.intensity, temporal.intensity,
-  inclusion = "touching")
+lgcpForecast(
+  lg,
+  ptimes,
+  spatial.intensity,
+  temporal.intensity,
+  inclusion = "touching"
+)
 }
 \arguments{
 \item{lg}{an object of class lgcpPredict}
