@@ -6,5 +6,5 @@
 \usage{data(wtowncoords)}
 \format{matrix}
 \source{Wikipedia}
-\references{\url{http://www.wikipedia.org/}}
+\references{\url{https://www.wikipedia.org/}}
 \keyword{datasets}

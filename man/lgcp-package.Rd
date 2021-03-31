@@ -5,7 +5,9 @@
 \alias{lgcp-package}
 \alias{lgcp}
 \title{lgcp}
-\format{An object of class \code{logical} of length 1.}
+\format{
+An object of class \code{logical} of length 1.
+}
 \usage{
 lgcp
 }
